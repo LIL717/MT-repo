@@ -1,0 +1,444 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		7060522C14F88D43001A1CDB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7060522B14F88D43001A1CDB /* UIKit.framework */; };
+		7060522E14F88D43001A1CDB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7060522D14F88D43001A1CDB /* Foundation.framework */; };
+		7060523014F88D43001A1CDB /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7060522F14F88D43001A1CDB /* CoreGraphics.framework */; };
+		7060523614F88D43001A1CDB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7060523414F88D43001A1CDB /* InfoPlist.strings */; };
+		7060523814F88D43001A1CDB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7060523714F88D43001A1CDB /* main.m */; };
+		7060523C14F88D43001A1CDB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7060523B14F88D43001A1CDB /* AppDelegate.m */; };
+		7060523F14F88D43001A1CDB /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7060523D14F88D43001A1CDB /* MainStoryboard.storyboard */; };
+		7060524214F88D44001A1CDB /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7060524114F88D44001A1CDB /* ViewController.m */; };
+		7060524A14F88D44001A1CDB /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7060524914F88D44001A1CDB /* SenTestingKit.framework */; };
+		7060524B14F88D44001A1CDB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7060522B14F88D43001A1CDB /* UIKit.framework */; };
+		7060524C14F88D44001A1CDB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7060522D14F88D43001A1CDB /* Foundation.framework */; };
+		7060525414F88D44001A1CDB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7060525214F88D44001A1CDB /* InfoPlist.strings */; };
+		7060525714F88D44001A1CDB /* MegaTunes_PlayerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7060525614F88D44001A1CDB /* MegaTunes_PlayerTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		7060524D14F88D44001A1CDB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7060521E14F88D43001A1CDB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7060522614F88D43001A1CDB;
+			remoteInfo = "MegaTunes Player";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		7060522714F88D43001A1CDB /* MegaTunes Player.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MegaTunes Player.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7060522B14F88D43001A1CDB /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		7060522D14F88D43001A1CDB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		7060522F14F88D43001A1CDB /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		7060523314F88D43001A1CDB /* MegaTunes Player-Info.plist */ = {isa = PBXFileReference; path = "MegaTunes Player-Info.plist"; sourceTree = "<group>"; };
+		7060523514F88D43001A1CDB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		7060523714F88D43001A1CDB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		7060523914F88D43001A1CDB /* MegaTunes Player-Prefix.pch */ = {isa = PBXFileReference; path = "MegaTunes Player-Prefix.pch"; sourceTree = "<group>"; };
+		7060523A14F88D43001A1CDB /* AppDelegate.h */ = {isa = PBXFileReference; path = AppDelegate.h; sourceTree = "<group>"; };
+		7060523B14F88D43001A1CDB /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		7060523E14F88D43001A1CDB /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
+		7060524014F88D43001A1CDB /* ViewController.h */ = {isa = PBXFileReference; path = ViewController.h; sourceTree = "<group>"; };
+		7060524114F88D44001A1CDB /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		7060524814F88D44001A1CDB /* MegaTunes PlayerTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "MegaTunes PlayerTests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7060524914F88D44001A1CDB /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		7060525114F88D44001A1CDB /* MegaTunes PlayerTests-Info.plist */ = {isa = PBXFileReference; path = "MegaTunes PlayerTests-Info.plist"; sourceTree = "<group>"; };
+		7060525314F88D44001A1CDB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		7060525514F88D44001A1CDB /* MegaTunes_PlayerTests.h */ = {isa = PBXFileReference; path = MegaTunes_PlayerTests.h; sourceTree = "<group>"; };
+		7060525614F88D44001A1CDB /* MegaTunes_PlayerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MegaTunes_PlayerTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		7060522414F88D43001A1CDB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7060522C14F88D43001A1CDB /* UIKit.framework in Frameworks */,
+				7060522E14F88D43001A1CDB /* Foundation.framework in Frameworks */,
+				7060523014F88D43001A1CDB /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7060524414F88D44001A1CDB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7060524A14F88D44001A1CDB /* SenTestingKit.framework in Frameworks */,
+				7060524B14F88D44001A1CDB /* UIKit.framework in Frameworks */,
+				7060524C14F88D44001A1CDB /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		7060521C14F88D43001A1CDB = {
+			isa = PBXGroup;
+			children = (
+				7060523114F88D43001A1CDB /* MegaTunes Player */,
+				7060524F14F88D44001A1CDB /* MegaTunes PlayerTests */,
+				7060522A14F88D43001A1CDB /* Frameworks */,
+				7060522814F88D43001A1CDB /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		7060522814F88D43001A1CDB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7060522714F88D43001A1CDB /* MegaTunes Player.app */,
+				7060524814F88D44001A1CDB /* MegaTunes PlayerTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		7060522A14F88D43001A1CDB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7060522B14F88D43001A1CDB /* UIKit.framework */,
+				7060522D14F88D43001A1CDB /* Foundation.framework */,
+				7060522F14F88D43001A1CDB /* CoreGraphics.framework */,
+				7060524914F88D44001A1CDB /* SenTestingKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		7060523114F88D43001A1CDB /* MegaTunes Player */ = {
+			isa = PBXGroup;
+			children = (
+				7060523A14F88D43001A1CDB /* AppDelegate.h */,
+				7060523B14F88D43001A1CDB /* AppDelegate.m */,
+				7060523D14F88D43001A1CDB /* MainStoryboard.storyboard */,
+				7060524014F88D43001A1CDB /* ViewController.h */,
+				7060524114F88D44001A1CDB /* ViewController.m */,
+				7060523214F88D43001A1CDB /* Supporting Files */,
+			);
+			path = "MegaTunes Player";
+			sourceTree = "<group>";
+		};
+		7060523214F88D43001A1CDB /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				7060523314F88D43001A1CDB /* MegaTunes Player-Info.plist */,
+				7060523414F88D43001A1CDB /* InfoPlist.strings */,
+				7060523714F88D43001A1CDB /* main.m */,
+				7060523914F88D43001A1CDB /* MegaTunes Player-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		7060524F14F88D44001A1CDB /* MegaTunes PlayerTests */ = {
+			isa = PBXGroup;
+			children = (
+				7060525514F88D44001A1CDB /* MegaTunes_PlayerTests.h */,
+				7060525614F88D44001A1CDB /* MegaTunes_PlayerTests.m */,
+				7060525014F88D44001A1CDB /* Supporting Files */,
+			);
+			path = "MegaTunes PlayerTests";
+			sourceTree = "<group>";
+		};
+		7060525014F88D44001A1CDB /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				7060525114F88D44001A1CDB /* MegaTunes PlayerTests-Info.plist */,
+				7060525214F88D44001A1CDB /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		7060522614F88D43001A1CDB /* MegaTunes Player */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7060525A14F88D44001A1CDB /* Build configuration list for PBXNativeTarget "MegaTunes Player" */;
+			buildPhases = (
+				7060522314F88D43001A1CDB /* Sources */,
+				7060522414F88D43001A1CDB /* Frameworks */,
+				7060522514F88D43001A1CDB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "MegaTunes Player";
+			productName = "MegaTunes Player";
+			productReference = 7060522714F88D43001A1CDB /* MegaTunes Player.app */;
+			productType = "com.apple.product-type.application";
+		};
+		7060524714F88D44001A1CDB /* MegaTunes PlayerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7060525D14F88D44001A1CDB /* Build configuration list for PBXNativeTarget "MegaTunes PlayerTests" */;
+			buildPhases = (
+				7060524314F88D44001A1CDB /* Sources */,
+				7060524414F88D44001A1CDB /* Frameworks */,
+				7060524514F88D44001A1CDB /* Resources */,
+				7060524614F88D44001A1CDB /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7060524E14F88D44001A1CDB /* PBXTargetDependency */,
+			);
+			name = "MegaTunes PlayerTests";
+			productName = "MegaTunes PlayerTests";
+			productReference = 7060524814F88D44001A1CDB /* MegaTunes PlayerTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		7060521E14F88D43001A1CDB /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = 7060522114F88D43001A1CDB /* Build configuration list for PBXProject "MegaTunes Player" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 7060521C14F88D43001A1CDB;
+			productRefGroup = 7060522814F88D43001A1CDB /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				7060522614F88D43001A1CDB /* MegaTunes Player */,
+				7060524714F88D44001A1CDB /* MegaTunes PlayerTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		7060522514F88D43001A1CDB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7060523614F88D43001A1CDB /* InfoPlist.strings in Resources */,
+				7060523F14F88D43001A1CDB /* MainStoryboard.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7060524514F88D44001A1CDB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7060525414F88D44001A1CDB /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		7060524614F88D44001A1CDB /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		7060522314F88D43001A1CDB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7060523814F88D43001A1CDB /* main.m in Sources */,
+				7060523C14F88D43001A1CDB /* AppDelegate.m in Sources */,
+				7060524214F88D44001A1CDB /* ViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7060524314F88D44001A1CDB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7060525714F88D44001A1CDB /* MegaTunes_PlayerTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		7060524E14F88D44001A1CDB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7060522614F88D43001A1CDB /* MegaTunes Player */;
+			targetProxy = 7060524D14F88D44001A1CDB /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		7060523414F88D43001A1CDB /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7060523514F88D43001A1CDB /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		7060523D14F88D43001A1CDB /* MainStoryboard.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7060523E14F88D43001A1CDB /* en */,
+			);
+			name = MainStoryboard.storyboard;
+			sourceTree = "<group>";
+		};
+		7060525214F88D44001A1CDB /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7060525314F88D44001A1CDB /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		7060525814F88D44001A1CDB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		7060525914F88D44001A1CDB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		7060525B14F88D44001A1CDB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MegaTunes Player/MegaTunes Player-Prefix.pch";
+				INFOPLIST_FILE = "MegaTunes Player/MegaTunes Player-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		7060525C14F88D44001A1CDB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MegaTunes Player/MegaTunes Player-Prefix.pch";
+				INFOPLIST_FILE = "MegaTunes Player/MegaTunes Player-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		7060525E14F88D44001A1CDB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/MegaTunes Player.app/MegaTunes Player";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MegaTunes Player/MegaTunes Player-Prefix.pch";
+				INFOPLIST_FILE = "MegaTunes PlayerTests/MegaTunes PlayerTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		7060525F14F88D44001A1CDB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/MegaTunes Player.app/MegaTunes Player";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MegaTunes Player/MegaTunes Player-Prefix.pch";
+				INFOPLIST_FILE = "MegaTunes PlayerTests/MegaTunes PlayerTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		7060522114F88D43001A1CDB /* Build configuration list for PBXProject "MegaTunes Player" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7060525814F88D44001A1CDB /* Debug */,
+				7060525914F88D44001A1CDB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7060525A14F88D44001A1CDB /* Build configuration list for PBXNativeTarget "MegaTunes Player" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7060525B14F88D44001A1CDB /* Debug */,
+				7060525C14F88D44001A1CDB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		7060525D14F88D44001A1CDB /* Build configuration list for PBXNativeTarget "MegaTunes PlayerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7060525E14F88D44001A1CDB /* Debug */,
+				7060525F14F88D44001A1CDB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 7060521E14F88D43001A1CDB /* Project object */;
+}
