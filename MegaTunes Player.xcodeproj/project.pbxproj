@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		70515C1A160C038700D96335 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70515C19160C038700D96335 /* Default-568h@2x.png */; };
+		70515C1D160C072700D96335 /* PlaylistPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70515C1C160C072700D96335 /* PlaylistPickerViewController.m */; };
+		70515C20160CBE7600D96335 /* Playlist.m in Sources */ = {isa = PBXBuildFile; fileRef = 70515C1F160CBE7600D96335 /* Playlist.m */; };
+		70515C26160E1CB300D96335 /* vinyl-record.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 70515C25160E1CB300D96335 /* vinyl-record.jpg */; };
+		70515C29160F986E00D96335 /* PlaylistCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 70515C28160F986E00D96335 /* PlaylistCell.m */; };
+		70515C2C160FD2DC00D96335 /* PlaylistDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70515C2B160FD2DC00D96335 /* PlaylistDetailController.m */; };
+		70515C2F160FFE9200D96335 /* DurationPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70515C2E160FFE9200D96335 /* DurationPickerController.m */; };
+		70515C321610184A00D96335 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70515C311610184A00D96335 /* MainViewController.m */; };
+		70515C3516101BC200D96335 /* MusicTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70515C3416101BC200D96335 /* MusicTableViewController.m */; };
 		7060522C14F88D43001A1CDB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7060522B14F88D43001A1CDB /* UIKit.framework */; };
 		7060522E14F88D43001A1CDB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7060522D14F88D43001A1CDB /* Foundation.framework */; };
 		7060523014F88D43001A1CDB /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7060522F14F88D43001A1CDB /* CoreGraphics.framework */; };
@@ -14,12 +23,17 @@
 		7060523814F88D43001A1CDB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7060523714F88D43001A1CDB /* main.m */; };
 		7060523C14F88D43001A1CDB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7060523B14F88D43001A1CDB /* AppDelegate.m */; };
 		7060523F14F88D43001A1CDB /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7060523D14F88D43001A1CDB /* MainStoryboard.storyboard */; };
-		7060524214F88D44001A1CDB /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7060524114F88D44001A1CDB /* ViewController.m */; };
 		7060524A14F88D44001A1CDB /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7060524914F88D44001A1CDB /* SenTestingKit.framework */; };
 		7060524B14F88D44001A1CDB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7060522B14F88D43001A1CDB /* UIKit.framework */; };
 		7060524C14F88D44001A1CDB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7060522D14F88D43001A1CDB /* Foundation.framework */; };
 		7060525414F88D44001A1CDB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7060525214F88D44001A1CDB /* InfoPlist.strings */; };
 		7060525714F88D44001A1CDB /* MegaTunes_PlayerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7060525614F88D44001A1CDB /* MegaTunes_PlayerTests.m */; };
+		706052DD14FEE669001A1CDB /* video_next_64.png in Resources */ = {isa = PBXBuildFile; fileRef = 706052D914FEE669001A1CDB /* video_next_64.png */; };
+		706052DE14FEE669001A1CDB /* video_pause_64.png in Resources */ = {isa = PBXBuildFile; fileRef = 706052DA14FEE669001A1CDB /* video_pause_64.png */; };
+		706052DF14FEE669001A1CDB /* video_play_64.png in Resources */ = {isa = PBXBuildFile; fileRef = 706052DB14FEE669001A1CDB /* video_play_64.png */; };
+		706052E014FEE669001A1CDB /* video_previous_64.png in Resources */ = {isa = PBXBuildFile; fileRef = 706052DC14FEE669001A1CDB /* video_previous_64.png */; };
+		706052E214FEEFE5001A1CDB /* TimePlaceHolder.png in Resources */ = {isa = PBXBuildFile; fileRef = 706052E114FEEFE5001A1CDB /* TimePlaceHolder.png */; };
+		706052E414FEF095001A1CDB /* TimePlaceHolder2.png in Resources */ = {isa = PBXBuildFile; fileRef = 706052E314FEF095001A1CDB /* TimePlaceHolder2.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,25 +47,45 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		70515C19160C038700D96335 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		70515C1B160C072700D96335 /* PlaylistPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaylistPickerViewController.h; sourceTree = "<group>"; };
+		70515C1C160C072700D96335 /* PlaylistPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaylistPickerViewController.m; sourceTree = "<group>"; };
+		70515C1E160CBE7600D96335 /* Playlist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Playlist.h; sourceTree = "<group>"; };
+		70515C1F160CBE7600D96335 /* Playlist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Playlist.m; sourceTree = "<group>"; };
+		70515C25160E1CB300D96335 /* vinyl-record.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "vinyl-record.jpg"; path = "../../../../Images/vinyl-record.jpg"; sourceTree = "<group>"; };
+		70515C27160F986E00D96335 /* PlaylistCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaylistCell.h; sourceTree = "<group>"; };
+		70515C28160F986E00D96335 /* PlaylistCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaylistCell.m; sourceTree = "<group>"; };
+		70515C2A160FD2DC00D96335 /* PlaylistDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaylistDetailController.h; sourceTree = "<group>"; };
+		70515C2B160FD2DC00D96335 /* PlaylistDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaylistDetailController.m; sourceTree = "<group>"; };
+		70515C2D160FFE9200D96335 /* DurationPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DurationPickerController.h; sourceTree = "<group>"; };
+		70515C2E160FFE9200D96335 /* DurationPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DurationPickerController.m; sourceTree = "<group>"; };
+		70515C301610184A00D96335 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
+		70515C311610184A00D96335 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		70515C3316101BC200D96335 /* MusicTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicTableViewController.h; sourceTree = "<group>"; };
+		70515C3416101BC200D96335 /* MusicTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MusicTableViewController.m; sourceTree = "<group>"; };
 		7060522714F88D43001A1CDB /* MegaTunes Player.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MegaTunes Player.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7060522B14F88D43001A1CDB /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		7060522D14F88D43001A1CDB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		7060522F14F88D43001A1CDB /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		7060523314F88D43001A1CDB /* MegaTunes Player-Info.plist */ = {isa = PBXFileReference; path = "MegaTunes Player-Info.plist"; sourceTree = "<group>"; };
+		7060523314F88D43001A1CDB /* MegaTunes Player-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MegaTunes Player-Info.plist"; sourceTree = "<group>"; };
 		7060523514F88D43001A1CDB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		7060523714F88D43001A1CDB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		7060523914F88D43001A1CDB /* MegaTunes Player-Prefix.pch */ = {isa = PBXFileReference; path = "MegaTunes Player-Prefix.pch"; sourceTree = "<group>"; };
-		7060523A14F88D43001A1CDB /* AppDelegate.h */ = {isa = PBXFileReference; path = AppDelegate.h; sourceTree = "<group>"; };
+		7060523914F88D43001A1CDB /* MegaTunes Player-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MegaTunes Player-Prefix.pch"; sourceTree = "<group>"; };
+		7060523A14F88D43001A1CDB /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		7060523B14F88D43001A1CDB /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		7060523E14F88D43001A1CDB /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
-		7060524014F88D43001A1CDB /* ViewController.h */ = {isa = PBXFileReference; path = ViewController.h; sourceTree = "<group>"; };
-		7060524114F88D44001A1CDB /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		7060524814F88D44001A1CDB /* MegaTunes PlayerTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "MegaTunes PlayerTests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7060524914F88D44001A1CDB /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		7060525114F88D44001A1CDB /* MegaTunes PlayerTests-Info.plist */ = {isa = PBXFileReference; path = "MegaTunes PlayerTests-Info.plist"; sourceTree = "<group>"; };
+		7060525114F88D44001A1CDB /* MegaTunes PlayerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MegaTunes PlayerTests-Info.plist"; sourceTree = "<group>"; };
 		7060525314F88D44001A1CDB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		7060525514F88D44001A1CDB /* MegaTunes_PlayerTests.h */ = {isa = PBXFileReference; path = MegaTunes_PlayerTests.h; sourceTree = "<group>"; };
+		7060525514F88D44001A1CDB /* MegaTunes_PlayerTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MegaTunes_PlayerTests.h; sourceTree = "<group>"; };
 		7060525614F88D44001A1CDB /* MegaTunes_PlayerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MegaTunes_PlayerTests.m; sourceTree = "<group>"; };
+		706052D914FEE669001A1CDB /* video_next_64.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video_next_64.png; sourceTree = "<group>"; };
+		706052DA14FEE669001A1CDB /* video_pause_64.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video_pause_64.png; sourceTree = "<group>"; };
+		706052DB14FEE669001A1CDB /* video_play_64.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video_play_64.png; sourceTree = "<group>"; };
+		706052DC14FEE669001A1CDB /* video_previous_64.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video_previous_64.png; sourceTree = "<group>"; };
+		706052E114FEEFE5001A1CDB /* TimePlaceHolder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TimePlaceHolder.png; path = "../MegaTunes Player/TimePlaceHolder.png"; sourceTree = "<group>"; };
+		706052E314FEF095001A1CDB /* TimePlaceHolder2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TimePlaceHolder2.png; path = "../MegaTunes Player/TimePlaceHolder2.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +115,7 @@
 		7060521C14F88D43001A1CDB = {
 			isa = PBXGroup;
 			children = (
+				70515C19160C038700D96335 /* Default-568h@2x.png */,
 				7060523114F88D43001A1CDB /* MegaTunes Player */,
 				7060524F14F88D44001A1CDB /* MegaTunes PlayerTests */,
 				7060522A14F88D43001A1CDB /* Frameworks */,
@@ -111,11 +146,24 @@
 		7060523114F88D43001A1CDB /* MegaTunes Player */ = {
 			isa = PBXGroup;
 			children = (
+				7060523D14F88D43001A1CDB /* MainStoryboard.storyboard */,
 				7060523A14F88D43001A1CDB /* AppDelegate.h */,
 				7060523B14F88D43001A1CDB /* AppDelegate.m */,
-				7060523D14F88D43001A1CDB /* MainStoryboard.storyboard */,
-				7060524014F88D43001A1CDB /* ViewController.h */,
-				7060524114F88D44001A1CDB /* ViewController.m */,
+				70515C301610184A00D96335 /* MainViewController.h */,
+				70515C311610184A00D96335 /* MainViewController.m */,
+				70515C3316101BC200D96335 /* MusicTableViewController.h */,
+				70515C3416101BC200D96335 /* MusicTableViewController.m */,
+				70515C1E160CBE7600D96335 /* Playlist.h */,
+				70515C1F160CBE7600D96335 /* Playlist.m */,
+				70515C2D160FFE9200D96335 /* DurationPickerController.h */,
+				70515C2E160FFE9200D96335 /* DurationPickerController.m */,
+				70515C2A160FD2DC00D96335 /* PlaylistDetailController.h */,
+				70515C2B160FD2DC00D96335 /* PlaylistDetailController.m */,
+				70515C27160F986E00D96335 /* PlaylistCell.h */,
+				70515C28160F986E00D96335 /* PlaylistCell.m */,
+				70515C1B160C072700D96335 /* PlaylistPickerViewController.h */,
+				70515C1C160C072700D96335 /* PlaylistPickerViewController.m */,
+				70515C25160E1CB300D96335 /* vinyl-record.jpg */,
 				7060523214F88D43001A1CDB /* Supporting Files */,
 			);
 			path = "MegaTunes Player";
@@ -145,10 +193,25 @@
 		7060525014F88D44001A1CDB /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				706052E114FEEFE5001A1CDB /* TimePlaceHolder.png */,
+				706052E314FEF095001A1CDB /* TimePlaceHolder2.png */,
+				706052D814FEE669001A1CDB /* audio player icons */,
 				7060525114F88D44001A1CDB /* MegaTunes PlayerTests-Info.plist */,
 				7060525214F88D44001A1CDB /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		706052D814FEE669001A1CDB /* audio player icons */ = {
+			isa = PBXGroup;
+			children = (
+				706052D914FEE669001A1CDB /* video_next_64.png */,
+				706052DA14FEE669001A1CDB /* video_pause_64.png */,
+				706052DB14FEE669001A1CDB /* video_play_64.png */,
+				706052DC14FEE669001A1CDB /* video_previous_64.png */,
+			);
+			name = "audio player icons";
+			path = "../MegaTunes Player/audio player icons";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -196,7 +259,7 @@
 		7060521E14F88D43001A1CDB /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0450;
 			};
 			buildConfigurationList = 7060522114F88D43001A1CDB /* Build configuration list for PBXProject "MegaTunes Player" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -223,6 +286,14 @@
 			files = (
 				7060523614F88D43001A1CDB /* InfoPlist.strings in Resources */,
 				7060523F14F88D43001A1CDB /* MainStoryboard.storyboard in Resources */,
+				706052DD14FEE669001A1CDB /* video_next_64.png in Resources */,
+				706052DE14FEE669001A1CDB /* video_pause_64.png in Resources */,
+				706052DF14FEE669001A1CDB /* video_play_64.png in Resources */,
+				706052E014FEE669001A1CDB /* video_previous_64.png in Resources */,
+				706052E214FEEFE5001A1CDB /* TimePlaceHolder.png in Resources */,
+				706052E414FEF095001A1CDB /* TimePlaceHolder2.png in Resources */,
+				70515C1A160C038700D96335 /* Default-568h@2x.png in Resources */,
+				70515C26160E1CB300D96335 /* vinyl-record.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -259,7 +330,13 @@
 			files = (
 				7060523814F88D43001A1CDB /* main.m in Sources */,
 				7060523C14F88D43001A1CDB /* AppDelegate.m in Sources */,
-				7060524214F88D44001A1CDB /* ViewController.m in Sources */,
+				70515C1D160C072700D96335 /* PlaylistPickerViewController.m in Sources */,
+				70515C20160CBE7600D96335 /* Playlist.m in Sources */,
+				70515C29160F986E00D96335 /* PlaylistCell.m in Sources */,
+				70515C2C160FD2DC00D96335 /* PlaylistDetailController.m in Sources */,
+				70515C2F160FFE9200D96335 /* DurationPickerController.m in Sources */,
+				70515C321610184A00D96335 /* MainViewController.m in Sources */,
+				70515C3516101BC200D96335 /* MusicTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -315,7 +392,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -330,6 +407,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -340,6 +418,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -349,6 +428,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -429,6 +509,7 @@
 				7060525C14F88D44001A1CDB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		7060525D14F88D44001A1CDB /* Build configuration list for PBXNativeTarget "MegaTunes PlayerTests" */ = {
 			isa = XCConfigurationList;
@@ -437,6 +518,7 @@
 				7060525F14F88D44001A1CDB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

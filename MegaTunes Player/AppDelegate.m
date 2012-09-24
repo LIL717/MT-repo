@@ -7,17 +7,41 @@
 //
 
 #import "AppDelegate.h"
+#import "PlaylistPickerViewController.h"
+#import "Playlist.h"
 
-@implementation AppDelegate
-
+@implementation AppDelegate {
+	NSMutableArray *playlists;
+}
 @synthesize window = _window;
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
-    // Override point for customization after application launch.
-    return YES;
-}
-							
+//- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+//{
+//    // Override point for customization after application launch.
+//    playlists = [NSMutableArray arrayWithCapacity:20];
+//	Playlist *playlist = [[Playlist alloc] init];
+//	playlist.name = @"Woot Woot";
+//	playlist.duration = @"55:00";
+//	[playlists addObject:playlist];
+//    
+//	playlist = [[Playlist alloc] init];
+//	playlist.name = @"Easy Does It";
+//	playlist.duration = @"17:00";
+//	[playlists addObject:playlist];
+//    
+//    playlist = [[Playlist alloc] init];
+//	playlist.name = @"Workin Hard";
+//	playlist.duration = @"70:00";
+//	[playlists addObject:playlist];
+//
+//	UINavigationController *navigationController =
+//    (UINavigationController *) self.window.rootViewController;
+//	PlaylistPickerViewController *playlistPickerViewController =
+//    [[navigationController viewControllers] objectAtIndex:0];
+//	playlistPickerViewController.playlists = playlists;
+//    return YES;
+//}
+
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     /*
