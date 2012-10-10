@@ -5,24 +5,41 @@
 //  Created by Lori Hill on 9/23/12.
 //
 //
-#import "DurationPickerController.h"
-@class PlaylistDetailController;
-@class Playlist;
 
-@protocol PlaylistDetailControllerDelegate <NSObject>
+//#import <MediaPlayer/MediaPlayer.h>
+//#import "MainViewController.h"
+//
+//@class PlaylistDetailController;
+//
+//@interface PlaylistDetailController : UITableViewController 
+//
+//@property (strong, nonatomic)        MPMediaItemCollection *currentQueue;
+//
+//@end
+#import <MediaPlayer/MediaPlayer.h>
+@class MainViewController;
 
-- (void)playlistDetailControllerDidCancel: (PlaylistDetailController *)controller;
-- (void)playlistDetailController: (PlaylistDetailController *)controller
-                       didAddPlaylist:(Playlist *)playlist;
+
+@protocol PlaylistDetailControllerDelegate; // forward declaration
+
+@interface PlaylistDetailController : UITableViewController <MPMediaPickerControllerDelegate, UITableViewDelegate> {
+    
+	id <PlaylistDetailControllerDelegate>	__weak delegate;
+    
+}
+
+@property (nonatomic, weak) id <PlaylistDetailControllerDelegate>	delegate;
+@property (nonatomic, strong)   MPMediaItemCollection *currentQueue;
+@property (nonatomic, strong)  MainViewController *mainViewController;
+
 @end
-@interface PlaylistDetailController : UITableViewController <DurationPickerControllerDelegate>
-
-@property (nonatomic, weak) id <PlaylistDetailControllerDelegate> delegate;
-@property (strong, nonatomic) IBOutlet UITextField *nameTextField;
-@property (strong, nonatomic) IBOutlet UILabel *durationLabel;
 
 
-- (IBAction)cancel:(id)sender;
-- (IBAction)done:(id)sender;
+
+@protocol PlaylistDetailControllerDelegate
+
+// implemented in MainViewController.m
+//- (void) musicTableViewControllerDidFinish: (MMusicTableViewController *) controller;
+//- (void) updatePlayerQueueWithMediaCollection: (MPMediaItemCollection *) mediaItemCollection;
 
 @end

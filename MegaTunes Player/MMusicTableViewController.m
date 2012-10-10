@@ -2,18 +2,21 @@
 //  MusicTableViewController.m
 //  MegaTunes Player
 //
-//  Created by Lori Hill on 9/23/12.
+//  Created by Lori Hill on 9/25/12.
 //
 //
 
-#import "MusicTableViewController.h"
+
+#import "MMusicTableViewController.h"
 #import "MainViewController.h"
+#import "PlaylistCell.h"
 
-@interface MusicTableViewController ()
+
+@interface MMusicTableViewController ()
 
 @end
 
-@implementation MusicTableViewController
+@implementation MMusicTableViewController
 
 static NSString *kCellIdentifier = @"Cell";
 
@@ -22,16 +25,9 @@ static NSString *kCellIdentifier = @"Cell";
 @synthesize addMusicButton;				// The button for invoking the media item picker. Setting the title
 //		programmatically supports localization.
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
 // Configures the table view.
+
 - (void) viewDidLoad {
     
     [super viewDidLoad];
@@ -61,15 +57,14 @@ static NSString *kCellIdentifier = @"Cell";
 	
 	[[UIApplication sharedApplication] setStatusBarStyle: UIStatusBarStyleDefault animated:YES];
     
-	[self presentModalViewController: picker animated: YES];
-//	[picker release];
+    [self presentViewController: picker animated:YES completion:NULL];
 }
 
 
 // Responds to the user tapping Done after choosing music.
 - (void) mediaPicker: (MPMediaPickerController *) mediaPicker didPickMediaItems: (MPMediaItemCollection *) mediaItemCollection {
     
-	[self dismissModalViewControllerAnimated: YES];
+    [self dismissViewControllerAnimated:YES completion:NULL];
 	[self.delegate updatePlayerQueueWithMediaCollection: mediaItemCollection];
 	[self.mediaItemCollectionTable reloadData];
     
@@ -80,12 +75,9 @@ static NSString *kCellIdentifier = @"Cell";
 // Responds to the user tapping done having chosen no music.
 - (void) mediaPickerDidCancel: (MPMediaPickerController *) mediaPicker {
     
-	[self dismissModalViewControllerAnimated: YES];
-    
+    [self dismissViewControllerAnimated:YES completion:NULL];
 	[[UIApplication sharedApplication] setStatusBarStyle: UIStatusBarStyleBlackOpaque animated:YES];
 }
-
-
 
 #pragma mark Table view methods________________________
 
@@ -98,47 +90,23 @@ static NSString *kCellIdentifier = @"Cell";
     return 1;
 }
 
-- (NSInteger) tableView: (UITableView *) table numberOfRowsInSection: (NSInteger)section {
-    
-	MainViewController *mainViewController = (MainViewController *) self.delegate;
-	MPMediaItemCollection *currentQueue = mainViewController.userMediaItemCollection;
-	return [currentQueue.items count];
-}
-
 - (UITableViewCell *) tableView: (UITableView *) tableView cellForRowAtIndexPath: (NSIndexPath *) indexPath {
     
-	NSInteger row = [indexPath row];
-	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: kCellIdentifier];
-	
-	if (cell == nil) {
-        
-		cell = [[[UITableViewCell alloc] initWithFrame: CGRectZero
-									   reuseIdentifier: kCellIdentifier] autorelease];
-	}
-	
+	PlaylistCell *cell = (PlaylistCell *)[tableView
+                                            dequeueReusableCellWithIdentifier:@"MusicListCell"];
+    
 	MainViewController *mainViewController = (MainViewController *) self.delegate;
 	MPMediaItemCollection *currentQueue = mainViewController.userMediaItemCollection;
-	MPMediaItem *anItem = (MPMediaItem *)[currentQueue.items objectAtIndex: row];
-	
+	MPMediaItem *anItem = (MPMediaItem *)[currentQueue.items objectAtIndex:indexPath.row];
+    
 	if (anItem) {
-		cell.textLabel.text = [anItem valueForProperty:MPMediaItemPropertyTitle];
+		cell.nameLabel.text = [anItem valueForProperty:MPMediaItemPropertyTitle];
 	}
     
-	[tableView deselectRowAtIndexPath: indexPath animated: YES];
-	
+    //	[tableView deselectRowAtIndexPath: indexPath animated: YES];
+    
 	return cell;
 }
-//- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//	PlaylistCell *cell = (PlaylistCell *)[tableView
-//                                          dequeueReusableCellWithIdentifier:@"Playlist"];
-//	Playlist *playlist = [self.playlists objectAtIndex:indexPath.row];
-//    cell.nameLabel.text = playlist.name;
-//    cell.durationLabel.text = playlist.duration;
-//    cell.coverImageView.image = [UIImage imageNamed:@"vinyl-record.jpg"];
-//    return cell;
-//}
-
 
 //	 To conform to the Human Interface Guidelines, selections should not be persistent --
 //	 deselect the row after it has been selected.
@@ -147,12 +115,23 @@ static NSString *kCellIdentifier = @"Cell";
 	[tableView deselectRowAtIndexPath: indexPath animated: YES];
 }
 
+
+
+- (NSInteger) tableView: (UITableView *) table numberOfRowsInSection: (NSInteger)section {
+    
+	MainViewController *mainViewController = (MainViewController *) self.delegate;
+	MPMediaItemCollection *currentQueue = mainViewController.userMediaItemCollection;
+	return [currentQueue.items count];
+}
+
 #pragma mark Application state management_____________
 // Standard methods for managing application state.
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
+    
+	// Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+	
+	// Release any cached data, images, etc that aren't in use.
 }
 
 - (void)viewDidUnload {
@@ -162,4 +141,3 @@ static NSString *kCellIdentifier = @"Cell";
 }
 
 @end
-

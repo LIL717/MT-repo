@@ -1,15 +1,17 @@
 //
-//  MusicListCell.m
+//  PlaylistCell.m
 //  MegaTunes Player
 //
 //  Created by Lori Hill on 9/23/12.
 //
 //
 
-#import "PlaylistCell.h"
+#import "SonglistCell.h"
 
-@implementation PlaylistCell
+@implementation SonglistCell
 @synthesize nameLabel;
+@synthesize durationLabel;
+@synthesize artworkImageView;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {

@@ -1,8 +1,8 @@
 //
-//  Playlists.h
+//  Playlist.h
 //  MegaTunes Player
 //
-//  Created by Lori Hill on 9/21/12.
+//  Created by Lori Hill on 9/26/12.
 //
 //
 
@@ -11,7 +11,5 @@
 @interface Playlist : NSObject
 
 @property (nonatomic, copy) NSString *name;
-@property (nonatomic, copy) NSString *duration;
-@property (nonatomic, copy) UIImage *cover;
 
 @end

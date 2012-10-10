@@ -1,8 +1,8 @@
 //
-//  Playlists.m
+//  Playlist.m
 //  MegaTunes Player
 //
-//  Created by Lori Hill on 9/21/12.
+//  Created by Lori Hill on 9/26/12.
 //
 //
 
@@ -11,7 +11,5 @@
 @implementation Playlist
 
 @synthesize name;
-@synthesize duration;
-@synthesize cover;
 
 @end
