@@ -6,18 +6,10 @@
 //
 //
 
-//#import <UIKit/UIKit.h>
-//#import <MediaPlayer/MediaPlayer.h>
-//#import "MusicTableViewController.h"
-#import "MainViewController.h"
-
-
-@interface InitialViewController : UIViewController
+@interface InitialViewController : UIViewController <MPMediaPickerControllerDelegate>
 
 @property (nonatomic, strong)           NSArray  *playlists;
 @property (strong, nonatomic) IBOutlet  UIButton *choosePlaylist;
-@property (strong, nonatomic) MainViewController *mainViewController;
-
 
 - (IBAction)	choosePlaylist:	(id) sender;
 

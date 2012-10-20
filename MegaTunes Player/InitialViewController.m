@@ -7,7 +7,8 @@
 //
 
 #import "InitialViewController.h"
-#import "MainViewController.h"
+#import "MediaGroupsViewController.h"
+#import "AppDelegate.h"
 
 @interface InitialViewController ()
 
@@ -17,13 +18,14 @@
 
 @synthesize playlists;
 @synthesize choosePlaylist;
-@synthesize mainViewController;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.mainViewController = [[MainViewController alloc] init];
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[[AppDelegate instance].colorSwitcher processImageWithName:@"background.png"]]];
+    [self.choosePlaylist setTitleColor: [UIColor whiteColor] forState: UIControlStateNormal];
+    [self.choosePlaylist setBackgroundColor: [UIColor clearColor]];
 }
 
 - (void)didReceiveMemoryWarning
@@ -37,22 +39,12 @@
     [super viewDidUnload];
 }
 
-- (IBAction)	choosePlaylist:	(id) sender
+- (IBAction) choosePlaylist: (id) sender
 {
     MPMediaQuery *myPlaylistsQuery = [MPMediaQuery playlistsQuery];
     
     self.playlists = [myPlaylistsQuery collections];
-    
-    //        for (MPMediaPlaylist *playlist in self.playlists) {
-    //            NSLog (@"%@", [playlist valueForProperty: MPMediaPlaylistPropertyName]);
-    //            NSArray *songs = [playlist items];
-    //            for (MPMediaItem *song in songs) {
-    //                NSString *songTitle =
-    //                [song valueForProperty: MPMediaItemPropertyTitle];
-    //                NSLog (@"\t\t%@", songTitle);
-    //            }
-    
-    //       }
+
 }
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
@@ -60,10 +52,9 @@
 	if ([segue.identifier isEqualToString:@"ChoosePlaylist"])
 	{
 		UINavigationController *navigationController = segue.destinationViewController;
-		MusicTableViewController *musicTableViewController = [[navigationController viewControllers] objectAtIndex:0];
+		MediaGroupsViewController *musicTableViewController = [[navigationController viewControllers] objectAtIndex:0];
         
-        musicTableViewController.delegate = self.mainViewController;
-		musicTableViewController.playlists = self.playlists;
+		musicTableViewController.collection = self.playlists;
 	}
 }
 

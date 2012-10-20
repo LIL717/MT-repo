@@ -1,19 +1,20 @@
 //
-//  PlaylistDetailController.m
+//  CollectionViewController.m
 //  MegaTunes Player
 //
 //  Created by Lori Hill on 9/23/12.
 //
 //
 #import "MainViewController.h"
-#import "PlaylistDetailController.h"
+#import "NotesViewController.h"
+#import "CollectionViewController.h"
 #import "SonglistCell.h"
+#import "CollectionItem.h"
 
-@implementation PlaylistDetailController
+@implementation CollectionViewController
 
-@synthesize delegate;
-@synthesize currentQueue;
-@synthesize mainViewController;
+@synthesize itemCollection;
+@synthesize playlist;
 
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -30,11 +31,8 @@
 {
     LogMethod();
     [super viewDidLoad];
-    
-//    MainViewController *mainViewController = (MainViewController *) self.delegate;
-    self.mainViewController = (MainViewController *) self.delegate;
 
-    self.currentQueue = self.mainViewController.userMediaItemCollection;
+//    self.currentQueue = self.mainViewController.userMediaItemCollection;
     
 //    NSArray *returnedQueue = [self.currentQueue items];
 //    
@@ -69,9 +67,9 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    NSLog (@"song count %d", [[self.currentQueue items] count]);
+//    NSLog (@"song count %d", [[self.currentQueue items] count]);
     
-    return [[self.currentQueue items] count];
+    return [[self.itemCollection items] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -79,7 +77,7 @@
 	SonglistCell *cell = (SonglistCell *)[tableView
                                           dequeueReusableCellWithIdentifier:@"SonglistCell"];
     
-    MPMediaItem *song = [[self.currentQueue items] objectAtIndex:indexPath.row];
+    MPMediaItem *song = [[self.itemCollection items] objectAtIndex:indexPath.row];
 
     cell.nameLabel.text = [song valueForProperty:  MPMediaItemPropertyTitle];
     
@@ -99,30 +97,31 @@
     return cell;
 }
 #pragma mark - Table view delegate
-//- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-//{
-//    LogMethod();
-//    	if ([segue.identifier isEqualToString:@"LaunchPlayer"])
-//	{
-//        segue.destinationViewController = self.mainViewController;
-//
-////        self.mainViewController = segue.destinationViewController;
-////
-////        MainViewController *mainViewController = (MainViewController *) self.delegate;
-////        playlistDetailController.delegate = mainViewController;
-//        
-////        MainViewController *mainViewController = segue.destinationViewController;
-//        
-////        self.mainViewController = (MainViewController *) self.delegate;
-////        self.mainViewController.userMediaItemCollection = self.currentQueue;
-//        NSArray *returnedQueue = [self.currentQueue items];
-//        
-//        for (MPMediaItem *song in returnedQueue) {
-//            NSString *songTitle = [song valueForProperty: MPMediaItemPropertyTitle];
-//            NSLog (@"\t\t%@", songTitle);
-//        }
-//    }
-//}
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    LogMethod();
+    
+	if ([segue.identifier isEqualToString:@"ViewNotes"])
+	{
+        NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
+
+        NotesViewController *notesViewController = segue.destinationViewController;
+        
+        MPMediaItem *song = [[self.itemCollection items] objectAtIndex:indexPath.row];
+        
+        NSString *notesTitle = [NSString stringWithFormat: @"%@ - Notes",[song valueForProperty:  MPMediaItemPropertyTitle]];
+        notesViewController.title = notesTitle;
+//        long playbackDuration = [[song valueForProperty: MPMediaItemPropertyPlaybackDuration] longValue];
+
+	}
+    	if ([segue.identifier isEqualToString:@"LaunchPlayer"])
+	{
+        MainViewController *mainViewController = segue.destinationViewController;
+
+        mainViewController.userMediaItemCollection = self.itemCollection;
+        mainViewController.playlist = self.playlist;
+    }
+}
 
 - (void)viewDidUnload {
 

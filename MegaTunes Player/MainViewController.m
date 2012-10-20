@@ -7,7 +7,12 @@
 //
 
 #import "MainViewController.h"
-#import <Foundation/Foundation.h>
+#import "CollectionItem.h"
+#import "TextMagnifierViewController.h"
+#import "TimeMagnifierViewController.h"
+#import "AppDelegate.h"
+
+
 
 #pragma mark Audio session callbacks_______________________
 
@@ -87,33 +92,20 @@ void audioRouteChangeListenerCallback (
 
 @implementation MainViewController
 
-//@synthesize artworkItem;				// the now-playing media item's artwork image, displayed in the Navigation bar
 @synthesize userMediaItemCollection;	// the media item collection created by the user, using the media item picker
-//@synthesize playBarButton;				// the button for invoking Play on the music player
-//@synthesize pauseBarButton;				// the button for invoking Pause on the music player
 @synthesize musicPlayer;				// the music player, which plays media items from the iPod library
 @synthesize navigationBar;				// the application's Navigation bar
-//@synthesize noArtworkImage;				// an image to display when a media item has no associated artwork
-//@synthesize backgroundColorTimer;		// a timer for changing the background color -- represents an application that is
-//		doing something else while iPod music is playing
 @synthesize nowPlayingLabel;			// descriptive text shown on the main screen about the now-playing media item
-//@synthesize appSoundButton;				// the button to invoke playback for the application sound
-//@synthesize addOrShowMusicButton;		// the button for invoking the media item picker. if the user has already
-//		specified a media item collection, the title changes to "Show Music" and
-//		the button invokes a table view that shows the specified collection
+//@synthesize autoScrollLabel;
 @synthesize appSoundPlayer;				// An AVAudioPlayer object for playing application sound
-//@synthesize soundFileURL;				// The path to the application sound
-@synthesize interruptedOnPlayback;		// A flag indicating whether or not the application was interrupted during
-//		application audio playback
-@synthesize playedMusicOnce;			// A flag indicating if the user has played iPod library music at least one time
-//		since application launch.
-@synthesize playing;					// An application that responds to interruptions must keep track of its playing/
-//		not-playing state.
-@synthesize playlists;
+@synthesize soundFileURL;				// The path to the application sound
+@synthesize interruptedOnPlayback;		// A flag indicating whether or not the application was interrupted during application audio playback
+@synthesize playedMusicOnce;			// A flag indicating if the user has played iPod library music at least one time since application launch.
+@synthesize playing;					// An application that responds to interruptions must keep track of its playing not-playing state.
+@synthesize playbackTimer;
 
 //these lines came from player view controller
 
-//@synthesize songs;
 @synthesize currentQueue;
 @synthesize elapsedTimeLabel;
 @synthesize progressSlider;
@@ -122,161 +114,118 @@ void audioRouteChangeListenerCallback (
 @synthesize playPauseButton;
 @synthesize nextButton;
 @synthesize nextSongLabel;
+@synthesize playlist;
 
 
 #pragma mark Music control________________________________
 
-- (void)viewDidLoad
-{
-    LogMethod();
-    [super viewDidLoad];
-	// Do any additional setup after loading the view.
-    
-    self.currentQueue = self.userMediaItemCollection;
-    
-    NSArray *returnedQueue = [self.currentQueue items];
-
-    for (MPMediaItem *song in returnedQueue) {
-        NSString *songTitle = [song valueForProperty: MPMediaItemPropertyTitle];
-        NSLog (@"\t\t%@", songTitle);
-    }
-    
-//    [musicPlayer setQueueWithItemCollection: userMediaItemCollection];
-//    [self setPlayedMusicOnce: YES];
-    [musicPlayer play];
-    
-    self.nowPlayingLabel.text = [[[self.userMediaItemCollection items] objectAtIndex:0] valueForProperty:  MPMediaItemPropertyTitle];
-    self.nextSongLabel.text = [[[self.userMediaItemCollection items] objectAtIndex:1] valueForProperty:  MPMediaItemPropertyTitle];
-}
 // A toggle control for playing or pausing iPod library music playback, invoked
-//		when the user taps the 'playBarButton' in the Navigation bar.
+//		when the user taps the 'playButton'.
 - (IBAction) playOrPauseMusic: (id)sender {
    LogMethod();    
 	MPMusicPlaybackState playbackState = [musicPlayer playbackState];
     
 	if (playbackState == MPMusicPlaybackStateStopped || playbackState == MPMusicPlaybackStatePaused) {
-		[musicPlayer play];
+        [self playMusic];
+
 	} else if (playbackState == MPMusicPlaybackStatePlaying) {
 		[musicPlayer pause];
 	}
 }
 
-// If there is no selected media item collection, display the media item picker. If there's
-// already a selected collection, display the list of selected songs.
-//- (IBAction) AddMusicOrShowMusic: (id) sender {
-//        LogMethod();
-//	// if the user has already chosen some music, display that list
-//	if (userMediaItemCollection) {
-//        
-//		MusicTableViewController *controller = [[MusicTableViewController alloc] initWithNibName: @"MusicTableView" bundle: nil];
-//		controller.delegate = self;
-//		
-//		controller.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-//		
-//        [self presentViewController: controller animated:YES completion:NULL];
-        
-        // else, if no music is chosen yet, display the media item picker
-//	} else {
-//        MPMediaQuery *myPlaylistsQuery = [MPMediaQuery playlistsQuery];
-//        
-//        self.playlists = [myPlaylistsQuery collections];
+- (IBAction)skipBack:(id)sender {
+    if ([musicPlayer currentPlaybackTime] > 5.0) {
+        [musicPlayer skipToBeginning];
+    } else {
+        [musicPlayer skipToPreviousItem];
+    }
+}
 
-//        for (MPMediaPlaylist *playlist in self.playlists) {
-//            NSLog (@"%@", [playlist valueForProperty: MPMediaPlaylistPropertyName]);
-//            NSArray *songs = [playlist items];
-//            for (MPMediaItem *song in songs) {
-//                NSString *songTitle =
-//                [song valueForProperty: MPMediaItemPropertyTitle];
-//                NSLog (@"\t\t%@", songTitle);
-//            }
+- (IBAction)skipForward:(id)sender {
+    [musicPlayer skipToNextItem];
 
-//       }
-//        UINavigationController *navigationController = (UINavigationController *) applicationDelegate.window.rootViewController;
-//        PlaylistPickerViewController *playlistPickerViewController =[[navigationController viewControllers] objectAtIndex:0];
-//        playlistPickerViewController.playlists = self.playlists;
-/* //temporarily commented to see if I can display just a playlist
-		MPMediaPickerController *picker =
-        [[MPMediaPickerController alloc] initWithMediaTypes: MPMediaTypeMusic];
-		
-		picker.delegate						= self;
-		picker.allowsPickingMultipleItems	= YES;
-		picker.prompt						= NSLocalizedString (@"Add songs to play", "Prompt in media item picker");
-		
-		// The media item picker uses the default UI style, so it needs a default-style
-		//		status bar to match it visually
-		[[UIApplication sharedApplication] setStatusBarStyle: UIStatusBarStyleDefault animated: YES];
-		
-        [self presentViewController: picker animated:YES completion:NULL];
- */
-//	}
-//}
+}
 
-
-// Invoked by the delegate of the media item picker when the user is finished picking music.
-//		The delegate is either this class or the table view controller, depending on the
-//		state of the application.
-- (void) updatePlayerQueueWithMediaCollection: (MPMediaItemCollection *) mediaItemCollection {
+- (IBAction)moveSlider:(id)sender {
     LogMethod();
-	// Configure the music player, but only if the user chose at least one song to play
-	if (mediaItemCollection) {
+    [musicPlayer setCurrentPlaybackTime: [self.progressSlider value]];
+}
+- (void) playMusic {
+    
+    [musicPlayer play];
+    [self updateTime];
+    playbackTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                                     target:self
+                                                   selector:@selector(updateTime)
+                                                   userInfo:nil
+                                                    repeats:YES];
+}
+
+- (void) updateTime
+{
+    long playbackSeconds = musicPlayer.currentPlaybackTime;
+    long songDuration = [[self.musicPlayer.nowPlayingItem valueForProperty:MPMediaItemPropertyPlaybackDuration] floatValue];
+    
+    long playlistDuration = [self.playlist.duration longValue];
         
-		// If there's no playback queue yet...
-//		if (userMediaItemCollection == nil) {
+    long songRemainingSeconds = songDuration - playbackSeconds;
+    
+    long playlistElapsed = [[self calculatePlaylistElapsed] longValue] + playbackSeconds;
+    long playlistRemainingSeconds = playlistDuration - playlistElapsed;
+    
+    NSString *elapsed = [NSString stringWithFormat:@"%02lu:%02lu",playbackSeconds/60,playbackSeconds-(playbackSeconds/60)*60];
+    NSString *songRemaining = [NSString stringWithFormat:@"%02lu:%02lu",songRemainingSeconds/60,songRemainingSeconds-(songRemainingSeconds/60)*60];
+    NSString *playlistRemaining = [NSString stringWithFormat:@"%02lu:%02lu",playlistRemainingSeconds/60,playlistRemainingSeconds-(playlistRemainingSeconds/60)*60];
         
-			// apply the new media item collection as a playback queue for the music player
-			self.userMediaItemCollection = mediaItemCollection;
-			[musicPlayer setQueueWithItemCollection: userMediaItemCollection];
-			[self setPlayedMusicOnce: YES];
-//			[musicPlayer play];
+    //Use NSDateFormatter to get seconds and minutes from the time string:
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    formatter.dateFormat = @"m:ss";
+    NSDate *elapsedTime = [formatter dateFromString:elapsed];
+    NSDate *songRemainingTime = [formatter dateFromString:songRemaining];
+    NSDate *playlistRemainingTime = [formatter dateFromString:playlistRemaining];
+    
+    self.elapsedTimeLabel.text = [formatter stringFromDate:elapsedTime];
+    self.elapsedTimeLabel.textColor = [UIColor whiteColor];
+    self.remainingTimeLabel.text = [NSString stringWithFormat:@"-%@",[formatter stringFromDate:songRemainingTime]];
+    self.remainingTimeLabel.textColor = [UIColor whiteColor];
+
+    
+    NSString *playlistRemainingLabel = [NSString stringWithFormat:@"-%@",[formatter stringFromDate:playlistRemainingTime]];
+    
+//    NSLog (@" playlistRemaining %@", playlistRemainingLabel);
+
+    UIBarButtonItem *durationButton = [[UIBarButtonItem alloc] initWithTitle:playlistRemainingLabel style:UIBarButtonItemStyleBordered target:self action: @selector(magnify)];
+    
+    self.navigationItem.rightBarButtonItem=durationButton;
+    
+    [self actualizeSlider];
+}
+- (void) updatePlaylistRemaining {
+    
+}
+- (NSNumber *)calculatePlaylistElapsed {
         
-//        MPMediaItemCollection *currentQueue = self.userMediaItemCollection;
-//        for (MPMediaItem *song in [currentQueue items]) {
-//            NSString *songTitle = [song valueForProperty: MPMediaItemPropertyTitle];
-//            NSLog (@"\t\t%@", songTitle);
-//        }
-//            // Obtain the music player's state so it can then be
-//            //		restored after updating the playback queue.
-//		}
-//        else {
-//            
-//			// Take note of whether or not the music player is playing. If it is
-//			//		it needs to be started again at the end of this method.
-//			BOOL wasPlaying = NO;
-//			if (musicPlayer.playbackState == MPMusicPlaybackStatePlaying) {
-//				wasPlaying = YES;
-//			}
-//			
-//			// Save the now-playing item and its current playback time.
-//			MPMediaItem *nowPlayingItem			= musicPlayer.nowPlayingItem;
-//			NSTimeInterval currentPlaybackTime	= musicPlayer.currentPlaybackTime;
-//            
-//			// Combine the previously-existing media item collection with the new one
-//			NSMutableArray *combinedMediaItems	= [[userMediaItemCollection items] mutableCopy];
-//			NSArray *newMediaItems				= [mediaItemCollection items];
-//			[combinedMediaItems addObjectsFromArray: newMediaItems];
-//			
-//			[self setUserMediaItemCollection: [MPMediaItemCollection collectionWithItems: (NSArray *) combinedMediaItems]];
-//            
-//			// Apply the new media item collection as a playback queue for the music player.
-//			[musicPlayer setQueueWithItemCollection: userMediaItemCollection];
-//			
-//			// Restore the now-playing item and its current playback time.
-//			musicPlayer.nowPlayingItem			= nowPlayingItem;
-//			musicPlayer.currentPlaybackTime		= currentPlaybackTime;
-//			
-//			// If the music player was playing, get it playing again.
-//			if (wasPlaying) {
-//				[musicPlayer play];
-//			}
-//		}
-        
-		// Finally, because the music player now has a playback queue, ensure that
-		//		the music play/pause button in the Navigation bar is enabled.
-//		navigationBar.topItem.leftBarButtonItem.enabled = YES;
-//        
-//		[addOrShowMusicButton	setTitle: NSLocalizedString (@"Show Music", @"Alternate title for 'Add Music' button, after user has chosen some music")
-//                              forState: UIControlStateNormal];
-	}
+    NSArray *returnedQueue = [self.userMediaItemCollection items];
+    NSUInteger count = [musicPlayer indexOfNowPlayingItem];
+    long playlistElapsed = 0;
+    
+    for (NSUInteger i = 0; i < count; i++) {
+#pragma mark TODO aborts on this line on reload
+        playlistElapsed = (playlistElapsed + [[[returnedQueue objectAtIndex: i] valueForProperty:MPMediaItemPropertyPlaybackDuration] longValue]);
+    }
+
+    return [NSNumber numberWithLong: playlistElapsed];
+}
+- (void)actualizeSlider {
+    self.progressSlider.value = musicPlayer.currentPlaybackTime;
+    self.progressSlider.minimumValue = 0;
+    
+    NSNumber *duration = [self.musicPlayer.nowPlayingItem valueForProperty:MPMediaItemPropertyPlaybackDuration];
+    
+    float totalTime = [duration floatValue];
+    
+    self.progressSlider.maximumValue = totalTime;
 }
 
 // If the music player was paused, leave it paused. If it was playing, it will continue to
@@ -286,92 +235,56 @@ void audioRouteChangeListenerCallback (
 - (void) restorePlaybackState {
    LogMethod();    
 	if (musicPlayer.playbackState == MPMusicPlaybackStateStopped && userMediaItemCollection) {
-        
-//		[addOrShowMusicButton	setTitle: NSLocalizedString (@"Show Music", @"Alternate title for 'Add Music' button, after user has chosen some music")
-//                              forState: UIControlStateNormal];
 		
 		if (playedMusicOnce == NO) {
             
 			[self setPlayedMusicOnce: YES];
-			[musicPlayer play];
+			[self playMusic];
 		}
 	}
     
 }
 
-
-
-#pragma mark Media item picker delegate methods________
-
-// Invoked when the user taps the Done button in the media item picker after having chosen
-//		one or more media items to play.
-- (void) mediaPicker: (MPMediaPickerController *) mediaPicker didPickMediaItems: (MPMediaItemCollection *) mediaItemCollection {
-    LogMethod();   
-	// Dismiss the media item picker.
-    [self dismissViewControllerAnimated:YES completion:NULL];
-	// Apply the chosen songs to the music player's queue.
-	[self updatePlayerQueueWithMediaCollection: mediaItemCollection];
-    
-	[[UIApplication sharedApplication] setStatusBarStyle: UIStatusBarStyleBlackOpaque animated: YES];
-}
-
-// Invoked when the user taps the Done button in the media item picker having chosen zero
-//		media items to play
-- (void) mediaPickerDidCancel: (MPMediaPickerController *) mediaPicker {
-   LogMethod();    
-    [self dismissViewControllerAnimated:YES completion:NULL];
-	[[UIApplication sharedApplication] setStatusBarStyle: UIStatusBarStyleBlackOpaque animated: YES];
-}
-
-
-
 #pragma mark Music notification handlers__________________
 
-// When the now-playing item changes, update the media item artwork and the now-playing label.
+// When the now-playing item changes, update the now-playing label and the next label.
 - (void) handle_NowPlayingItemChanged: (id) notification {
 //   LogMethod();    
 	MPMediaItem *currentItem = [musicPlayer nowPlayingItem];
 	
-	// Assume that there is no artwork for the media item.
-//	UIImage *artworkImage = noArtworkImage;
-	
-	// Get the artwork from the current media item, if it has artwork.
-//	MPMediaItemArtwork *artwork = [currentItem valueForProperty: MPMediaItemPropertyArtwork];
-	
-	// Obtain a UIImage object from the MPMediaItemArtwork object
-//	if (artwork) {
-//		artworkImage = [artwork imageWithSize: CGSizeMake (30, 30)];
+	// Display the song name for the now-playing media item and next-playing media item with duration
+    // scroll marquee style if too long for field
+
+    self.nowPlayingLabel.text = [currentItem valueForProperty:  MPMediaItemPropertyTitle];
+    self.nowPlayingLabel.textColor = [UIColor whiteColor];
+    UIFont *font = [UIFont systemFontOfSize:12];
+    UIFont *newFont = [font fontWithSize:44];
+    self.nowPlayingLabel.font = newFont;
+
+    
+    NSUInteger nextPlayingIndex = [musicPlayer indexOfNowPlayingItem] + 1;
+    
+    if (nextPlayingIndex >= userMediaItemCollection.count) {
+        self.nextSongLabel.text = [NSString stringWithFormat: @"%@",
+                                   NSLocalizedString (@"End of Playlist Instructions", @"Label for Next song title when last song is playing")];
+    } else {
+        long nextDuration = [[[[self.userMediaItemCollection items] objectAtIndex: nextPlayingIndex] valueForProperty:MPMediaItemPropertyPlaybackDuration] floatValue];
+        NSString *formattedNextDuration = [NSString stringWithFormat:@"%2lu:%02lu",nextDuration/60,nextDuration -(nextDuration/60)*60];
+        self.nextSongLabel.text = [NSString stringWithFormat: @"%@  %@",[[[self.userMediaItemCollection items] objectAtIndex: nextPlayingIndex] valueForProperty:  MPMediaItemPropertyTitle], formattedNextDuration];
+                                   ;
+    }
+    self.nextSongLabel.textColor = [UIColor whiteColor];
+    self.nextSongLabel.font = newFont;
+    self.nextSongLabel.textAlignment = NSTextAlignmentLeft;
+
+//	if (musicPlayer.playbackState == MPMusicPlaybackStateStopped) {
+//		// Provide a suitable prompt to the user now that their chosen music has
+//		//		finished playing.
+//		[nowPlayingLabel setText: [
+//                                   NSString stringWithFormat: @"%@",
+//                                   NSLocalizedString (@"Music-ended Instructions", @"Label for prompting user to play music again after it has stopped")]];
+//        
 //	}
-	
-//	// Obtain a UIButton object and set its background to the UIImage object
-//	UIButton *artworkView = [[UIButton alloc] initWithFrame: CGRectMake (0, 0, 30, 30)];
-//	[artworkView setBackgroundImage: artworkImage forState: UIControlStateNormal];
-    
-	// Obtain a UIBarButtonItem object and initialize it with the UIButton object
-//	UIBarButtonItem *newArtworkItem = [[UIBarButtonItem alloc] initWithCustomView: artworkView];
-//	[self setArtworkItem: newArtworkItem];
-	
-//	[artworkItem setEnabled: NO];
-	
-	// Display the new media item artwork
-	[navigationBar.topItem setRightBarButtonItem: artworkItem animated: YES];
-	
-	// Display the artist and song name for the now-playing media item
-	[nowPlayingLabel setText: [
-                               NSString stringWithFormat: @"%@ %@ %@ %@",
-                               NSLocalizedString (@"Now Playing:", @"Label for introducing the now-playing song title and artist"),
-                               [currentItem valueForProperty: MPMediaItemPropertyTitle],
-                               NSLocalizedString (@"by", @"Article between song name and artist name"),
-                               [currentItem valueForProperty: MPMediaItemPropertyArtist]]];
-    
-	if (musicPlayer.playbackState == MPMusicPlaybackStateStopped) {
-		// Provide a suitable prompt to the user now that their chosen music has
-		//		finished playing.
-		[nowPlayingLabel setText: [
-                                   NSString stringWithFormat: @"%@",
-                                   NSLocalizedString (@"Music-ended Instructions", @"Label for prompting user to play music again after it has stopped")]];
-        
-	}
 }
 
 // When the playback state changes, set the play/pause button in the Navigation bar
@@ -382,22 +295,20 @@ void audioRouteChangeListenerCallback (
 	
 	if (playbackState == MPMusicPlaybackStatePaused) {
         
-//		navigationBar.topItem.leftBarButtonItem = playBarButton;
-        [playPauseButton setImage: [UIImage imageNamed:@"video_play_64.png"] forState:UIControlStateNormal];
+        [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
 		
 	} else if (playbackState == MPMusicPlaybackStatePlaying) {
         
-//		navigationBar.topItem.leftBarButtonItem = pauseBarButton;
-        [playPauseButton setImage: [UIImage imageNamed:@"video_pause_64.png"] forState:UIControlStateNormal];
+        [playPauseButton setImage: [UIImage imageNamed:@"bigpause.png"] forState:UIControlStateNormal];
         
 	} else if (playbackState == MPMusicPlaybackStateStopped) {
         
-//		navigationBar.topItem.leftBarButtonItem = playBarButton;
-        [playPauseButton setImage: [UIImage imageNamed:@"video_play_64.png"] forState:UIControlStateNormal];
+        [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
 		
 		// Even though stopped, invoking 'stop' ensures that the music player will play
 		//		its queue from the start.
 		[musicPlayer stop];
+        [playbackTimer invalidate];
         
 	}
 }
@@ -411,28 +322,20 @@ void audioRouteChangeListenerCallback (
 
 
 
-//#pragma mark Application playback control_________________
-//
-//- (IBAction) playAppSound: (id) sender {
-//    
-//	[appSoundPlayer play];
-//	playing = YES;
-//	[appSoundButton setEnabled: NO];
-//}
-//
-//// delegate method for the audio route change alert view; follows the protocol specified
-////	in the UIAlertViewDelegate protocol.
-//- (void) alertView: routeChangeAlertView clickedButtonAtIndex: buttonIndex {
-//    
-//	if ((NSInteger) buttonIndex == 1) {
-//		[appSoundPlayer play];
-//	} else {
-//		[appSoundPlayer setCurrentTime: 0];
-//		[appSoundButton setEnabled: YES];
-//	}
-//	
-//}
-//
+#pragma mark Application playback control_________________
+
+// delegate method for the audio route change alert view; follows the protocol specified
+//	in the UIAlertViewDelegate protocol.
+- (void) alertView: routeChangeAlertView clickedButtonAtIndex: buttonIndex {
+    
+	if ((NSInteger) buttonIndex == 1) {
+		[appSoundPlayer play];
+	} else {
+		[appSoundPlayer setCurrentTime: 0];
+	}
+	
+}
+
 
 
 #pragma mark AV Foundation delegate methods____________
@@ -440,7 +343,6 @@ void audioRouteChangeListenerCallback (
 - (void) audioPlayerDidFinishPlaying: (AVAudioPlayer *) appSoundPlayer successfully: (BOOL) flag {
    LogMethod();    
 	playing = NO;
-//	[appSoundButton setEnabled: YES];
 }
 
 - (void) audioPlayerBeginInterruption: player {
@@ -472,25 +374,6 @@ void audioRouteChangeListenerCallback (
 }
 
 
-
-#pragma mark Table view delegate methods________________
-
-// Invoked when the user taps the Done button in the table view.
-- (void) musicTableViewControllerDidFinish: (MusicTableViewController *) controller {
-   LogMethod();	
-    [self dismissViewControllerAnimated:YES completion:NULL];
-	[self restorePlaybackState];
-}
-
-// Invoked when the user taps the Done button in the table view.
-//- (void) playlistPickerViewControllerDidFinish: (PlaylistPickerViewController *) controller {
-//	   LogMethod();
-//    [self dismissViewControllerAnimated:YES completion:NULL];
-//	[self restorePlaybackState];
-//}
-//
-
-
 #pragma mark Application setup____________________________
 
 #if TARGET_IPHONE_SIMULATOR
@@ -498,14 +381,14 @@ void audioRouteChangeListenerCallback (
 #endif
 
 //- (void) setupApplicationAudio {
-//	   LogMethod();
-////	// Gets the file system path to the sound to play.
-////	NSString *soundFilePath = [[NSBundle mainBundle]	pathForResource:	@"sound"
-////                                                              ofType:				@"caf"];
-////    
-////	// Converts the sound's file path to an NSURL object
-////	NSURL *newURL = [[NSURL alloc] initFileURLWithPath: soundFilePath];
-////	self.soundFileURL = newURL;
+//	LogMethod();
+//	// Gets the file system path to the sound to play.
+//	NSString *soundFilePath = [[NSBundle mainBundle]	pathForResource:	@"sound"
+//                                                              ofType:				@"caf"];
+//    
+//	// Converts the sound's file path to an NSURL object
+//	NSURL *newURL = [[NSURL alloc] initFileURLWithPath: soundFilePath];
+//	self.soundFileURL = newURL;
 //    
 //	// Registers this class as the delegate of the audio session.
 //	[[AVAudioSession sharedInstance] setDelegate: self];
@@ -548,7 +431,7 @@ void audioRouteChangeListenerCallback (
 //	[appSoundPlayer setVolume: 1.0];
 //	[appSoundPlayer setDelegate: self];
 //}
-//
+
 
 // To learn about notifications, see "Notifications" in Cocoa Fundamentals Guide.
 - (void) registerForMediaPlayerNotifications {
@@ -595,94 +478,59 @@ void audioRouteChangeListenerCallback (
 
 // Configure the application.
 
-//- (void) viewDidLoad {
-//      LogMethod();
-//    [super viewDidLoad];
-
--(id)init {
-    LogMethod();
-    if ( self = [super init] ) {
-
-//        [self setupApplicationAudio];
-        
-        [self setPlayedMusicOnce: NO];
-        
-//	[self setNoArtworkImage:	[UIImage imageNamed: @"no_artwork.png"]];
-        
-//        [self setPlayBarButton:		[[UIBarButtonItem alloc]	initWithBarButtonSystemItem: UIBarButtonSystemItemPlay
-//                                                                               target: self
-//                                                                               action: @selector (playOrPauseMusic:)]];
-//        
-//        [self setPauseBarButton:	[[UIBarButtonItem alloc]	initWithBarButtonSystemItem: UIBarButtonSystemItemPause
-//                                                                               target: self
-//                                                                               action: @selector (playOrPauseMusic:)]];
-        
-//	[addOrShowMusicButton	setTitle: NSLocalizedString (@"Add Music", @"Title for 'Add Music' button, before user has chosen some music")
-//                          forState: UIControlStateNormal];
+- (void) viewDidLoad {
+      LogMethod();
+    [super viewDidLoad];
     
-//	[appSoundButton			setTitle: NSLocalizedString (@"Play App Sound", @"Title for 'Play App Sound' button")
-//                      forState: UIControlStateNormal];
-        
-//  [nowPlayingLabel setText: NSLocalizedString (@"Instructions", @"Brief instructions to user, shown at launch")];
-        
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[[AppDelegate instance].colorSwitcher processImageWithName:@"background.png"]]];
+
+    //not sure, but think this is only needed to play sounds not music
+//    [self setupApplicationAudio];
+    
+    [self setPlayedMusicOnce: NO];
+            
         // Instantiate the music player. If you specied the iPod music player in the Settings app,
         //		honor the current state of the built-in iPod app.
-        if ([self useiPodPlayer]) {
-            
-            [self setMusicPlayer: [MPMusicPlayerController iPodMusicPlayer]];
-            
-            if ([musicPlayer nowPlayingItem]) {
-                
-//                navigationBar.topItem.leftBarButtonItem.enabled = YES;
-                
-                // Update the UI to reflect the now-playing item.
-                [self handle_NowPlayingItemChanged: nil];
-                
-                if ([musicPlayer playbackState] == MPMusicPlaybackStatePaused) {
-//                    navigationBar.topItem.leftBarButtonItem = playBarButton;
-                    [playPauseButton setImage: [UIImage imageNamed:@"video_play_64.png"] forState:UIControlStateNormal];
-                }
-            }
-            
-        } else {
-            
-            [self setMusicPlayer: [MPMusicPlayerController applicationMusicPlayer]];
-            
-            // By default, an application music player takes on the shuffle and repeat modes
-            //		of the built-in iPod app. Here they are both turned off.
-            [musicPlayer setShuffleMode: MPMusicShuffleModeOff];
-            [musicPlayer setRepeatMode: MPMusicRepeatModeNone];
-        }
+    if ([self useiPodPlayer]) {
         
-        [self registerForMediaPlayerNotifications];
+        [self setMusicPlayer: [MPMusicPlayerController iPodMusicPlayer]];
         
-//        // Configure a timer to change the background color. The changing color represents an
-//        //		application that is doing something else while iPod music is playing.
-//        [self setBackgroundColorTimer: [NSTimer scheduledTimerWithTimeInterval: 3.5
-//                                                                        target: self
-//                                                                      selector: @selector (updateBackgroundColor)
-//                                                                      userInfo: nil
-//                                                                       repeats: YES]];
+    } else {
+        
+        [self setMusicPlayer: [MPMusicPlayerController applicationMusicPlayer]];
+        
+        // By default, an application music player takes on the shuffle and repeat modes
+        //		of the built-in iPod app. Here they are both turned off.
+        [musicPlayer setShuffleMode: MPMusicShuffleModeOff];
+        [musicPlayer setRepeatMode: MPMusicRepeatModeNone];
     }
-    
-    return self;
-}
+    if ([musicPlayer nowPlayingItem]) {
+        
+        // Update the UI to reflect the now-playing item.
+        [self handle_NowPlayingItemChanged: nil];
+        
+        if ([musicPlayer playbackState] == MPMusicPlaybackStatePaused) {
+            [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
+//            [nowPlayingLabel setText: NSLocalizedString (@"Instructions", @"Brief instructions to user, shown at launch")];
 
-// Invoked by the backgroundColorTimer.
-//- (void) updateBackgroundColor {
-//	[UIView beginAnimations: nil context: nil];
-//    [UIView setAnimationDuration: 3.0];
+        }
+    }
+    [self registerForMediaPlayerNotifications];
+    
+//    self.currentQueue = userMediaItemCollection;
 //    
-//	CGFloat redLevel	= rand() / (float) RAND_MAX;
-//	CGFloat greenLevel	= rand() / (float) RAND_MAX;
-//	CGFloat blueLevel	= rand() / (float) RAND_MAX;
-//	
-//	self.view.backgroundColor = [UIColor colorWithRed: redLevel
-//												green: greenLevel
-//												 blue: blueLevel
-//												alpha: 1.0];
-//	[UIView commitAnimations];
-//}
+//    NSArray *returnedQueue = [self.currentQueue items];
+//    
+//    for (MPMediaItem *song in returnedQueue) {
+//        NSString *songTitle = [song valueForProperty: MPMediaItemPropertyTitle];
+//        NSLog (@"\t\t%@", songTitle);
+//    }
+//    
+    [musicPlayer setQueueWithItemCollection: userMediaItemCollection];
+    [self setPlayedMusicOnce: YES];
+    [self playMusic];
+    
+}
 
 #pragma mark Application state management_____________
 
@@ -690,14 +538,6 @@ void audioRouteChangeListenerCallback (
        LogMethod();
 	// Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-	
-	// Release any cached data, images, etc that aren't in use.
-}
-
-- (void) viewDidUnload {
-       LogMethod();
-//    addOrShowMusicButton = nil;
-    
     [self setNowPlayingLabel:nil];
     [self setElapsedTimeLabel:nil];
     [self setProgressSlider:nil];
@@ -706,11 +546,9 @@ void audioRouteChangeListenerCallback (
     [self setPlayPauseButton:nil];
     [self setNextButton:nil];
     [self setNextSongLabel:nil];
-    
-	// Release any retained subviews of the main view.
-	// e.g. self.myOutlet = nil;
+	
+	// Release any cached data, images, etc that aren't in use.
 }
-
 
 - (void)dealloc {
        LogMethod();
@@ -734,9 +572,75 @@ void audioRouteChangeListenerCallback (
     
 	[musicPlayer endGeneratingPlaybackNotifications];
     
-//	[backgroundColorTimer		invalidate];
+}
+#pragma mark Prepare for Seque
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    UINavigationController *navigationController = segue.destinationViewController;
+
+	if ([segue.identifier isEqualToString:@"MagnifyRemainingTime"])
+	{
+        TimeMagnifierViewController *timeMagnifierViewController = [[navigationController viewControllers] objectAtIndex:0];
+        timeMagnifierViewController.delegate = self;
+        timeMagnifierViewController.textToMagnify = self.remainingTimeLabel.text;
+        timeMagnifierViewController.timeType = segue.identifier;
+	}
     
+    if ([segue.identifier isEqualToString:@"MagnifyElapsedTime"])
+	{
+        TimeMagnifierViewController *timeMagnifierViewController = [[navigationController viewControllers] objectAtIndex:0];
+        timeMagnifierViewController.delegate = self;
+        timeMagnifierViewController.textToMagnify = self.elapsedTimeLabel.text;
+        timeMagnifierViewController.timeType = segue.identifier;
+
+	}
+    
+    if ([segue.identifier isEqualToString:@"MagnifyNowPlaying"])
+	{
+        TextMagnifierViewController *textMagnifierViewController = [[navigationController viewControllers] objectAtIndex:0];
+        textMagnifierViewController.delegate = self;
+        textMagnifierViewController.textToMagnify = self.nowPlayingLabel.text;
+	}
+    
+    if ([segue.identifier isEqualToString:@"MagnifyPlaylistRemaining"])
+	{
+        TimeMagnifierViewController *timeMagnifierViewController = [[navigationController viewControllers] objectAtIndex:0];
+        timeMagnifierViewController.delegate = self;
+        timeMagnifierViewController.textToMagnify = self.navigationItem.rightBarButtonItem.title;
+        timeMagnifierViewController.timeType = segue.identifier;
+
+	}
+    
+    if ([segue.identifier isEqualToString:@"MagnifyNextSong"])
+	{
+        TextMagnifierViewController *textMagnifierViewController = [[navigationController viewControllers] objectAtIndex:0];
+        textMagnifierViewController.delegate = self;
+        textMagnifierViewController.textToMagnify = self.nextSongLabel.text;
+	}
+    
+
+}
+- (IBAction)magnify {
+
+    [self performSegueWithIdentifier: @"MagnifyPlaylistRemaining" sender: self];
+}
+
+//#pragma mark - TextMagnifierViewControllerDelegate
+
+- (void)textMagnifierViewControllerDidCancel:(TextMagnifierViewController *)controller
+{
+	[self dismissViewControllerAnimated:YES completion:nil];
+}
+//#pragma mark - TextMagnifierViewControllerDelegate
+
+- (void)timeMagnifierViewControllerDidCancel:(TimeMagnifierViewController *)controller
+{
+	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
+- (void)viewDidUnload {
+    [super viewDidUnload];
+}
 @end

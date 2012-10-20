@@ -1,15 +1,14 @@
 //
-//  MusicListCell.m
+//  MediaGroupCell.m
 //  MegaTunes Player
 //
-//  Created by Lori Hill on 9/23/12.
+//  Created by Lori Hill on 10/19/12.
 //
 //
 
-#import "PlaylistCell.h"
+#import "MediaGroupCell.h"
 
-@implementation PlaylistCell
-@synthesize nameLabel;
+@implementation MediaGroupCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {

@@ -11,6 +11,10 @@
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
+    #import <MediaPlayer/MediaPlayer.h>
+    #import <CoreData/CoreData.h>
+    #import "UIImage+iPhone5.h"
+
 #endif
 
 #if DEBUG

@@ -5,64 +5,44 @@
 //  Created by Lori Hill on 9/23/12.
 //
 //
+@class CollectionItem;
+#import "TimeMagnifierViewController.h"
+#import "TextMagnifierViewController.h"
+
 
 #define PLAYER_TYPE_PREF_KEY @"player_type_preference"
 #define AUDIO_TYPE_PREF_KEY @"audio_technology_preference"
 
-#import <UIKit/UIKit.h>
-#import <MediaPlayer/MediaPlayer.h>
 #import <AVFoundation/AVFoundation.h>
 #import <AudioToolbox/AudioToolbox.h>
-#import "MusicTableViewController.h"
-#import "PlaylistDetailController.h"
-#import "AppDelegate.h"
+#import "AutoScrollLabel.h"
 
-@interface MainViewController : UIViewController <MPMediaPickerControllerDelegate, MusicTableViewControllerDelegate, PlaylistDetailControllerDelegate, AVAudioPlayerDelegate> {
+
+@interface MainViewController : UIViewController <MPMediaPickerControllerDelegate, AVAudioPlayerDelegate, TimeMagnifierViewControllerDelegate, TextMagnifierViewControllerDelegate> {
     
-	AppDelegate                 *applicationDelegate;
-	IBOutlet UIBarButtonItem	*artworkItem;
 	IBOutlet UINavigationBar	*navigationBar;
-	IBOutlet UILabel			*nowPlayingLabel;
+	IBOutlet AutoScrollLabel 	*nowPlayingLabel;
 	BOOL						playedMusicOnce;
     
 	AVAudioPlayer				*appSoundPlayer;
-//	NSURL						*soundFileURL;
-//	IBOutlet UIButton			*appSoundButton;
-//	IBOutlet UIButton			*addOrShowMusicButton;
+    NSURL						*soundFileURL;
 	BOOL						interruptedOnPlayback;
 	BOOL						playing ;
-    
-//	UIBarButtonItem				*playBarButton;
-//	UIBarButtonItem				*pauseBarButton;
 	MPMusicPlayerController		*musicPlayer;
 	MPMediaItemCollection		*userMediaItemCollection;
-//	UIImage						*noArtworkImage;
-//	NSTimer						*backgroundColorTimer;
-//    NSArray                     *playlists;
+    NSTimer                     *playbackTimer;
 }
-
-//@property (nonatomic, strong)	UIBarButtonItem			*artworkItem;
 @property (nonatomic, strong)	UINavigationBar			*navigationBar;
-@property (nonatomic, strong)	UILabel					*nowPlayingLabel;
+@property (nonatomic, strong)	AutoScrollLabel			*nowPlayingLabel;
 @property (readwrite)			BOOL					playedMusicOnce;
-
-//@property (nonatomic, strong)	UIBarButtonItem			*playBarButton;
-//@property (nonatomic, strong)	UIBarButtonItem			*pauseBarButton;
 @property (nonatomic, strong)	MPMediaItemCollection	*userMediaItemCollection;
 @property (nonatomic, strong)	MPMusicPlayerController	*musicPlayer;
-//@property (nonatomic, strong)	UIImage					*noArtworkImage;
-//@property (nonatomic, strong)	NSTimer					*backgroundColorTimer;
-
 @property (nonatomic, strong)	AVAudioPlayer			*appSoundPlayer;
-//@property (nonatomic, strong)	NSURL					*soundFileURL;
-//@property (nonatomic, strong)	IBOutlet UIButton		*appSoundButton;
-//@property (nonatomic, strong)	IBOutlet UIButton		*addOrShowMusicButton;
+@property (nonatomic, strong)	NSURL					*soundFileURL;
 @property (readwrite)			BOOL					interruptedOnPlayback;
 @property (readwrite)			BOOL					playing;
-@property (nonatomic, strong)   NSArray                 *playlists;
-
-//@property (strong, nonatomic) NSArray *songs;
-@property (nonatomic, strong)   MPMediaItemCollection *currentQueue;
+@property (nonatomic, strong)   MPMediaItemCollection   *currentQueue;
+@property (nonatomic, retain)   NSTimer                 *playbackTimer;
 
 @property (strong, nonatomic) IBOutlet UILabel *elapsedTimeLabel;
 @property (strong, nonatomic) IBOutlet UISlider *progressSlider;
@@ -70,12 +50,25 @@
 @property (strong, nonatomic) IBOutlet UIButton *previousButton;
 @property (strong, nonatomic) IBOutlet UIButton *playPauseButton;
 @property (strong, nonatomic) IBOutlet UIButton *nextButton;
-@property (strong, nonatomic) IBOutlet UILabel *nextSongLabel;
+@property (strong, nonatomic) IBOutlet AutoScrollLabel *nextSongLabel;
+@property (strong, nonatomic) CollectionItem *playlist;
 
-- (IBAction)	playOrPauseMusic:		(id) sender;
-//- (IBAction)	AddMusicOrShowMusic:	(id) sender;
-//- (IBAction)	playAppSound:			(id) sender;
+- (IBAction)playOrPauseMusic:(id)sender;
+- (IBAction)skipBack:(id)sender;
+- (IBAction)skipForward:(id)sender;
+- (IBAction)moveSlider:(id)sender;
+
+- (void) playMusic;
+- (void) updateTime;
+- (void) updatePlaylistRemaining;
+- (NSNumber *)calculatePlaylistElapsed;
+- (void)actualizeSlider;
 
 - (BOOL) useiPodPlayer;
+
+- (void) playMusic;
+- (IBAction)magnify:(id)sender;
+- (void)timeMagnifierViewControllerDidCancel:(TimeMagnifierViewController *)controller;
+- (void)textMagnifierViewControllerDidCancel:(TextMagnifierViewController *)controller;
 
 @end
