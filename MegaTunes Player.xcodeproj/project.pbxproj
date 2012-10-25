@@ -8,9 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		70515C1A160C038700D96335 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70515C19160C038700D96335 /* Default-568h@2x.png */; };
-		70515C20160CBE7600D96335 /* Songlist.m in Sources */ = {isa = PBXBuildFile; fileRef = 70515C1F160CBE7600D96335 /* Songlist.m */; };
-		70515C29160F986E00D96335 /* SonglistCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 70515C28160F986E00D96335 /* SonglistCell.m */; };
-		70515C2C160FD2DC00D96335 /* CollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70515C2B160FD2DC00D96335 /* CollectionViewController.m */; };
+		70515C29160F986E00D96335 /* SongCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 70515C28160F986E00D96335 /* SongCell.m */; };
+		70515C2C160FD2DC00D96335 /* SongViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70515C2B160FD2DC00D96335 /* SongViewController.m */; };
 		70515C321610184A00D96335 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70515C311610184A00D96335 /* MainViewController.m */; };
 		70515C38161028FE00D96335 /* CollectionItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 70515C37161028FE00D96335 /* CollectionItemCell.m */; };
 		70515C421611208C00D96335 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70515C411611208B00D96335 /* AVFoundation.framework */; };
@@ -79,7 +78,7 @@
 		70974B941630C3B200A33B7D /* list-background.png in Resources */ = {isa = PBXBuildFile; fileRef = 70974B921630C3B000A33B7D /* list-background.png */; };
 		70974B951630C3B200A33B7D /* list-background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70974B931630C3B100A33B7D /* list-background@2x.png */; };
 		70974B991630CB6100A33B7D /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = 70974B981630CB6000A33B7D /* play.png */; };
-		70A13D861631AD8700244866 /* IntialTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70A13D851631AD8700244866 /* IntialTableViewController.m */; };
+		70A13D861631AD8700244866 /* MediaGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70A13D851631AD8700244866 /* MediaGroupViewController.m */; };
 		70A13D8E1631B40300244866 /* MediaGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 70A13D8D1631B40300244866 /* MediaGroup.m */; };
 		70A13D911631BCC100244866 /* MediaGroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 70A13D901631BCC000244866 /* MediaGroupCell.m */; };
 		70A13D951632FEEF00244866 /* highlightedPlayIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 70A13D931632FEEF00244866 /* highlightedPlayIcon.png */; };
@@ -90,9 +89,12 @@
 		70A13DC616330B4500244866 /* redWhitePlay114.png in Resources */ = {isa = PBXBuildFile; fileRef = 70A13DC516330B4500244866 /* redWhitePlay114.png */; };
 		70A13DD11633168E00244866 /* redWhiteBlackPlay57.png in Resources */ = {isa = PBXBuildFile; fileRef = 70A13DD01633168E00244866 /* redWhiteBlackPlay57.png */; };
 		70A13DD3163316A600244866 /* redWhiteBlackPlay114.png in Resources */ = {isa = PBXBuildFile; fileRef = 70A13DD2163316A600244866 /* redWhiteBlackPlay114.png */; };
+		70A13DD916334B6D00244866 /* Song.m in Sources */ = {isa = PBXBuildFile; fileRef = 70A13DD816334B6D00244866 /* Song.m */; };
+		70A13DDF1636346000244866 /* DTCustomColoredAccessory.m in Sources */ = {isa = PBXBuildFile; fileRef = 70A13DDE1636345E00244866 /* DTCustomColoredAccessory.m */; };
+		70A13DE2163734D200244866 /* ScrollLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 70A13DE1163734D000244866 /* ScrollLabel.m */; };
 		70ADDC0C16113CAD00219873 /* sound.caf in Resources */ = {isa = PBXBuildFile; fileRef = 70ADDC0B16113CAD00219873 /* sound.caf */; };
 		70ADDC1F1614178500219873 /* CollectionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 70ADDC1E1614178500219873 /* CollectionItem.m */; };
-		70ADDC30161A4A7700219873 /* MediaGroupsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70ADDC2F161A4A7700219873 /* MediaGroupsViewController.m */; };
+		70ADDC30161A4A7700219873 /* CollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70ADDC2F161A4A7700219873 /* CollectionViewController.m */; };
 		70ADDC33161AC09C00219873 /* InitialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70ADDC32161AC09C00219873 /* InitialViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -108,12 +110,11 @@
 
 /* Begin PBXFileReference section */
 		70515C19160C038700D96335 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../Default-568h@2x.png"; sourceTree = "<group>"; };
-		70515C1E160CBE7600D96335 /* Songlist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Songlist.h; sourceTree = "<group>"; };
-		70515C1F160CBE7600D96335 /* Songlist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Songlist.m; sourceTree = "<group>"; };
-		70515C27160F986E00D96335 /* SonglistCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SonglistCell.h; sourceTree = "<group>"; };
-		70515C28160F986E00D96335 /* SonglistCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SonglistCell.m; sourceTree = "<group>"; };
-		70515C2A160FD2DC00D96335 /* CollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewController.h; sourceTree = "<group>"; };
-		70515C2B160FD2DC00D96335 /* CollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewController.m; sourceTree = "<group>"; };
+		70515C1E160CBE7600D96335 /* Song.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Song.h; sourceTree = "<group>"; };
+		70515C27160F986E00D96335 /* SongCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SongCell.h; sourceTree = "<group>"; };
+		70515C28160F986E00D96335 /* SongCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SongCell.m; sourceTree = "<group>"; };
+		70515C2A160FD2DC00D96335 /* SongViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SongViewController.h; sourceTree = "<group>"; };
+		70515C2B160FD2DC00D96335 /* SongViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SongViewController.m; sourceTree = "<group>"; };
 		70515C301610184A00D96335 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		70515C311610184A00D96335 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		70515C36161028FE00D96335 /* CollectionItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionItemCell.h; sourceTree = "<group>"; };
@@ -205,8 +206,8 @@
 		70974B921630C3B000A33B7D /* list-background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list-background.png"; sourceTree = "<group>"; };
 		70974B931630C3B100A33B7D /* list-background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list-background@2x.png"; sourceTree = "<group>"; };
 		70974B981630CB6000A33B7D /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = "<group>"; };
-		70A13D841631AD8700244866 /* IntialTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntialTableViewController.h; sourceTree = "<group>"; };
-		70A13D851631AD8700244866 /* IntialTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntialTableViewController.m; sourceTree = "<group>"; };
+		70A13D841631AD8700244866 /* MediaGroupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaGroupViewController.h; sourceTree = "<group>"; };
+		70A13D851631AD8700244866 /* MediaGroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaGroupViewController.m; sourceTree = "<group>"; };
 		70A13D8C1631B40300244866 /* MediaGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaGroup.h; sourceTree = "<group>"; };
 		70A13D8D1631B40300244866 /* MediaGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaGroup.m; sourceTree = "<group>"; };
 		70A13D8F1631BCC000244866 /* MediaGroupCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaGroupCell.h; sourceTree = "<group>"; };
@@ -219,11 +220,16 @@
 		70A13DC516330B4500244866 /* redWhitePlay114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redWhitePlay114.png; sourceTree = "<group>"; };
 		70A13DD01633168E00244866 /* redWhiteBlackPlay57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redWhiteBlackPlay57.png; sourceTree = "<group>"; };
 		70A13DD2163316A600244866 /* redWhiteBlackPlay114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redWhiteBlackPlay114.png; sourceTree = "<group>"; };
+		70A13DD4163322A400244866 /* CollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewController.h; sourceTree = "<group>"; };
+		70A13DD816334B6D00244866 /* Song.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Song.m; sourceTree = "<group>"; };
+		70A13DDD1636345900244866 /* DTCustomColoredAccessory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTCustomColoredAccessory.h; path = ../DTCustomColoredAccessory.h; sourceTree = "<group>"; };
+		70A13DDE1636345E00244866 /* DTCustomColoredAccessory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTCustomColoredAccessory.m; path = ../DTCustomColoredAccessory.m; sourceTree = "<group>"; };
+		70A13DE0163734CE00244866 /* ScrollLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollLabel.h; sourceTree = "<group>"; };
+		70A13DE1163734D000244866 /* ScrollLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScrollLabel.m; sourceTree = "<group>"; };
 		70ADDC0B16113CAD00219873 /* sound.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = sound.caf; path = ../../../../AddMusic/Resources/sound.caf; sourceTree = "<group>"; };
 		70ADDC1D1614178500219873 /* CollectionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionItem.h; sourceTree = "<group>"; };
 		70ADDC1E1614178500219873 /* CollectionItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionItem.m; sourceTree = "<group>"; };
-		70ADDC2E161A4A7700219873 /* MediaGroupsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MediaGroupsViewController.h; path = ../MediaGroupsViewController.h; sourceTree = "<group>"; };
-		70ADDC2F161A4A7700219873 /* MediaGroupsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MediaGroupsViewController.m; path = ../MediaGroupsViewController.m; sourceTree = "<group>"; };
+		70ADDC2F161A4A7700219873 /* CollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CollectionViewController.m; path = ../CollectionViewController.m; sourceTree = "<group>"; };
 		70ADDC31161AC09B00219873 /* InitialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InitialViewController.h; sourceTree = "<group>"; };
 		70ADDC32161AC09C00219873 /* InitialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InitialViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -558,14 +564,18 @@
 				70515C37161028FE00D96335 /* CollectionItemCell.m */,
 				70ADDC1D1614178500219873 /* CollectionItem.h */,
 				70ADDC1E1614178500219873 /* CollectionItem.m */,
-				70515C27160F986E00D96335 /* SonglistCell.h */,
-				70515C28160F986E00D96335 /* SonglistCell.m */,
-				70515C1E160CBE7600D96335 /* Songlist.h */,
-				70515C1F160CBE7600D96335 /* Songlist.m */,
+				70515C27160F986E00D96335 /* SongCell.h */,
+				70515C28160F986E00D96335 /* SongCell.m */,
+				70515C1E160CBE7600D96335 /* Song.h */,
+				70A13DD816334B6D00244866 /* Song.m */,
 				707862AD1626410500871260 /* MediaItem.h */,
 				707862AE1626410500871260 /* MediaItem.m */,
 				707862BA1629F33900871260 /* AutoScrollLabel.h */,
 				707862BB1629F33A00871260 /* AutoScrollLabel.m */,
+				70A13DE0163734CE00244866 /* ScrollLabel.h */,
+				70A13DE1163734D000244866 /* ScrollLabel.m */,
+				70A13DDD1636345900244866 /* DTCustomColoredAccessory.h */,
+				70A13DDE1636345E00244866 /* DTCustomColoredAccessory.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -581,12 +591,12 @@
 		70ADDC101612246900219873 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				70A13D841631AD8700244866 /* IntialTableViewController.h */,
-				70A13D851631AD8700244866 /* IntialTableViewController.m */,
-				70ADDC2E161A4A7700219873 /* MediaGroupsViewController.h */,
-				70ADDC2F161A4A7700219873 /* MediaGroupsViewController.m */,
-				70515C2A160FD2DC00D96335 /* CollectionViewController.h */,
-				70515C2B160FD2DC00D96335 /* CollectionViewController.m */,
+				70A13D841631AD8700244866 /* MediaGroupViewController.h */,
+				70A13D851631AD8700244866 /* MediaGroupViewController.m */,
+				70A13DD4163322A400244866 /* CollectionViewController.h */,
+				70ADDC2F161A4A7700219873 /* CollectionViewController.m */,
+				70515C2A160FD2DC00D96335 /* SongViewController.h */,
+				70515C2B160FD2DC00D96335 /* SongViewController.m */,
 				70515C301610184A00D96335 /* MainViewController.h */,
 				70515C311610184A00D96335 /* MainViewController.m */,
 				707862BD162C729300871260 /* TimeMagnifierViewController.h */,
@@ -789,13 +799,12 @@
 			files = (
 				7060523814F88D43001A1CDB /* main.m in Sources */,
 				7060523C14F88D43001A1CDB /* AppDelegate.m in Sources */,
-				70515C20160CBE7600D96335 /* Songlist.m in Sources */,
-				70515C29160F986E00D96335 /* SonglistCell.m in Sources */,
-				70515C2C160FD2DC00D96335 /* CollectionViewController.m in Sources */,
+				70515C29160F986E00D96335 /* SongCell.m in Sources */,
+				70515C2C160FD2DC00D96335 /* SongViewController.m in Sources */,
 				70515C321610184A00D96335 /* MainViewController.m in Sources */,
 				70515C38161028FE00D96335 /* CollectionItemCell.m in Sources */,
 				70ADDC1F1614178500219873 /* CollectionItem.m in Sources */,
-				70ADDC30161A4A7700219873 /* MediaGroupsViewController.m in Sources */,
+				70ADDC30161A4A7700219873 /* CollectionViewController.m in Sources */,
 				70ADDC33161AC09C00219873 /* InitialViewController.m in Sources */,
 				707862A81626391600871260 /* MegaTunes Player.xcdatamodeld in Sources */,
 				707862AF1626410500871260 /* MediaItem.m in Sources */,
@@ -814,9 +823,12 @@
 				70974B591630698200A33B7D /* DetailThemeController.m in Sources */,
 				70974B5A1630698200A33B7D /* ElementThemeController.m in Sources */,
 				70974B5B1630698200A33B7D /* ThemeListController.m in Sources */,
-				70A13D861631AD8700244866 /* IntialTableViewController.m in Sources */,
+				70A13D861631AD8700244866 /* MediaGroupViewController.m in Sources */,
 				70A13D8E1631B40300244866 /* MediaGroup.m in Sources */,
 				70A13D911631BCC100244866 /* MediaGroupCell.m in Sources */,
+				70A13DD916334B6D00244866 /* Song.m in Sources */,
+				70A13DDF1636346000244866 /* DTCustomColoredAccessory.m in Sources */,
+				70A13DE2163734D200244866 /* ScrollLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

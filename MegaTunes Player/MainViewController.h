@@ -16,6 +16,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import <AudioToolbox/AudioToolbox.h>
 #import "AutoScrollLabel.h"
+#import <MediaPlayer/MPNowPlayingInfoCenter.h>
 
 
 @interface MainViewController : UIViewController <MPMediaPickerControllerDelegate, AVAudioPlayerDelegate, TimeMagnifierViewControllerDelegate, TextMagnifierViewControllerDelegate> {
@@ -31,6 +32,7 @@
 	MPMusicPlayerController		*musicPlayer;
 	MPMediaItemCollection		*userMediaItemCollection;
     NSTimer                     *playbackTimer;
+    MPNowPlayingInfoCenter      *nowPlayingInfoCenter;
 }
 @property (nonatomic, strong)	UINavigationBar			*navigationBar;
 @property (nonatomic, strong)	AutoScrollLabel			*nowPlayingLabel;
@@ -43,6 +45,7 @@
 @property (readwrite)			BOOL					playing;
 @property (nonatomic, strong)   MPMediaItemCollection   *currentQueue;
 @property (nonatomic, retain)   NSTimer                 *playbackTimer;
+@property (nonatomic, strong)   MPNowPlayingInfoCenter  *nowPlayingInfoCenter;
 
 @property (strong, nonatomic) IBOutlet UILabel *elapsedTimeLabel;
 @property (strong, nonatomic) IBOutlet UISlider *progressSlider;
@@ -50,8 +53,9 @@
 @property (strong, nonatomic) IBOutlet UIButton *previousButton;
 @property (strong, nonatomic) IBOutlet UIButton *playPauseButton;
 @property (strong, nonatomic) IBOutlet UIButton *nextButton;
+@property (strong, nonatomic) IBOutlet UILabel *nextLabel;
 @property (strong, nonatomic) IBOutlet AutoScrollLabel *nextSongLabel;
-@property (strong, nonatomic) CollectionItem *playlist;
+@property (strong, nonatomic) CollectionItem *collectionItem;
 
 - (IBAction)playOrPauseMusic:(id)sender;
 - (IBAction)skipBack:(id)sender;
@@ -63,11 +67,7 @@
 - (void) updatePlaylistRemaining;
 - (NSNumber *)calculatePlaylistElapsed;
 - (void)actualizeSlider;
-
-- (BOOL) useiPodPlayer;
-
 - (void) playMusic;
-- (IBAction)magnify:(id)sender;
 - (void)timeMagnifierViewControllerDidCancel:(TimeMagnifierViewController *)controller;
 - (void)textMagnifierViewControllerDidCancel:(TextMagnifierViewController *)controller;
 

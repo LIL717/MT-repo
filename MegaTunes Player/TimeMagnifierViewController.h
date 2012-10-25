@@ -20,7 +20,7 @@
 
 @property (strong, nonatomic) IBOutlet UIButton *magnifiedText;
 @property (strong, nonatomic) NSString *textToMagnify;
-@property (nonatomic, retain)   NSTimer                 *playbackTimer;
+@property (nonatomic, retain)   NSTimer *playbackTimer;
 @property (nonatomic, retain) NSString *timeType;
 
 - (void) updateTime;

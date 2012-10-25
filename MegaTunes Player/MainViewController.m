@@ -13,7 +13,6 @@
 #import "AppDelegate.h"
 
 
-
 #pragma mark Audio session callbacks_______________________
 
 // Audio session callback function for responding to audio route changes. If playing
@@ -94,6 +93,7 @@ void audioRouteChangeListenerCallback (
 
 @synthesize userMediaItemCollection;	// the media item collection created by the user, using the media item picker
 @synthesize musicPlayer;				// the music player, which plays media items from the iPod library
+
 @synthesize navigationBar;				// the application's Navigation bar
 @synthesize nowPlayingLabel;			// descriptive text shown on the main screen about the now-playing media item
 //@synthesize autoScrollLabel;
@@ -103,6 +103,7 @@ void audioRouteChangeListenerCallback (
 @synthesize playedMusicOnce;			// A flag indicating if the user has played iPod library music at least one time since application launch.
 @synthesize playing;					// An application that responds to interruptions must keep track of its playing not-playing state.
 @synthesize playbackTimer;
+@synthesize nowPlayingInfoCenter;
 
 //these lines came from player view controller
 
@@ -113,8 +114,9 @@ void audioRouteChangeListenerCallback (
 @synthesize previousButton;
 @synthesize playPauseButton;
 @synthesize nextButton;
+@synthesize nextLabel;
 @synthesize nextSongLabel;
-@synthesize playlist;
+@synthesize collectionItem;
 
 
 #pragma mark Music control________________________________
@@ -154,11 +156,34 @@ void audioRouteChangeListenerCallback (
     
     [musicPlayer play];
     [self updateTime];
-    playbackTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
-                                                     target:self
-                                                   selector:@selector(updateTime)
-                                                   userInfo:nil
-                                                    repeats:YES];
+    
+    Class playingInfoCenter = NSClassFromString(@"MPNowPlayingInfoCenter");
+    
+    if (playingInfoCenter) {
+        
+        
+//        NSMutableDictionary *songInfo = [[NSMutableDictionary alloc] init];
+//        
+//        MPMediaItemArtwork *albumArt = [[MPMediaItemArtwork alloc] initWithImage: [UIImage imageNamed: @"playIcon.png"]];
+//        
+//        [songInfo setObject:self.nowPlayingLabel.text forKey:MPMediaItemPropertyTitle];
+//        [songInfo setObject:@"Audio Author" forKey:MPMediaItemPropertyArtist];
+//        [songInfo setObject:@"Audio Album" forKey:MPMediaItemPropertyAlbumTitle];
+//        [songInfo setObject:albumArt forKey:MPMediaItemPropertyArtwork];
+//        NSNumber *queueCount = [[NSNumber alloc]  initWithInteger: userMediaItemCollection.count];
+//        [songInfo setObject: queueCount forKey:MPNowPlayingInfoPropertyPlaybackQueueCount];
+//        NSNumber *queueIndex  = [[NSNumber alloc]  initWithInteger: [musicPlayer indexOfNowPlayingItem]];
+//        [songInfo setObject: queueIndex forKey:MPNowPlayingInfoPropertyPlaybackQueueIndex];
+//
+//        [[MPNowPlayingInfoCenter defaultCenter] setNowPlayingInfo:songInfo];
+        
+        NSMutableDictionary *showSongInfo = [[NSMutableDictionary alloc]
+                                initWithDictionary: [[MPNowPlayingInfoCenter defaultCenter] nowPlayingInfo]];
+
+        NSLog (@"Audio Title %@", [showSongInfo objectForKey: MPMediaItemPropertyTitle]);
+        NSLog (@"Playback Queue Count %d",[[showSongInfo objectForKey: MPNowPlayingInfoPropertyPlaybackQueueCount] intValue]);
+        NSLog (@"Playback Queue Index %d",[[showSongInfo objectForKey: MPNowPlayingInfoPropertyPlaybackQueueIndex] intValue]);
+    }
 }
 
 - (void) updateTime
@@ -166,39 +191,57 @@ void audioRouteChangeListenerCallback (
     long playbackSeconds = musicPlayer.currentPlaybackTime;
     long songDuration = [[self.musicPlayer.nowPlayingItem valueForProperty:MPMediaItemPropertyPlaybackDuration] floatValue];
     
-    long playlistDuration = [self.playlist.duration longValue];
+    long collectionDuration = [self.collectionItem.duration longValue];
         
     long songRemainingSeconds = songDuration - playbackSeconds;
     
-    long playlistElapsed = [[self calculatePlaylistElapsed] longValue] + playbackSeconds;
-    long playlistRemainingSeconds = playlistDuration - playlistElapsed;
+    long collectionElapsed = [[self calculatePlaylistElapsed] longValue] + playbackSeconds;
+    long collectionRemainingSeconds = collectionDuration - collectionElapsed;
     
     NSString *elapsed = [NSString stringWithFormat:@"%02lu:%02lu",playbackSeconds/60,playbackSeconds-(playbackSeconds/60)*60];
     NSString *songRemaining = [NSString stringWithFormat:@"%02lu:%02lu",songRemainingSeconds/60,songRemainingSeconds-(songRemainingSeconds/60)*60];
-    NSString *playlistRemaining = [NSString stringWithFormat:@"%02lu:%02lu",playlistRemainingSeconds/60,playlistRemainingSeconds-(playlistRemainingSeconds/60)*60];
-        
+    
     //Use NSDateFormatter to get seconds and minutes from the time string:
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter.dateFormat = @"m:ss";
     NSDate *elapsedTime = [formatter dateFromString:elapsed];
-    NSDate *songRemainingTime = [formatter dateFromString:songRemaining];
-    NSDate *playlistRemainingTime = [formatter dateFromString:playlistRemaining];
-    
-    self.elapsedTimeLabel.text = [formatter stringFromDate:elapsedTime];
     self.elapsedTimeLabel.textColor = [UIColor whiteColor];
+    self.elapsedTimeLabel.text = [formatter stringFromDate:elapsedTime];
+
+    NSDate *songRemainingTime = [formatter dateFromString:songRemaining];
     self.remainingTimeLabel.text = [NSString stringWithFormat:@"-%@",[formatter stringFromDate:songRemainingTime]];
     self.remainingTimeLabel.textColor = [UIColor whiteColor];
+    NSString *collectionRemaining = [[NSString alloc] init];
+    
+    if (collectionRemainingSeconds >= 3600) {
+        collectionRemaining = [NSString stringWithFormat:@"%lu:%02lu:%02lu",
+                                         collectionRemainingSeconds / 3600,
+                                         (collectionRemainingSeconds % 3600)/60,
+                                         collectionRemainingSeconds % 60];
+        //                                     collectionRemainingSeconds-(collectionRemainingSeconds/60)*60];
+//        NSLog (@" collectionRemaining %@", collectionRemaining);
+        formatter.dateFormat = @"H:mm:ss";
+    } else {
+        collectionRemaining = [NSString stringWithFormat:@"%lu:%02lu",
+                               collectionRemainingSeconds /60,
+                               collectionRemainingSeconds % 60];
+        //                                     collectionRemainingSeconds-(collectionRemainingSeconds/60)*60];
+//        NSLog (@" collectionRemaining %@", collectionRemaining);
+        formatter.dateFormat = @"m:ss";
+    }
+    NSDate *collectionRemainingTime = [formatter dateFromString:collectionRemaining];
+    
+//    NSLog (@"    collectionRemainingTime %@", collectionRemainingTime);
+    
+    if (collectionRemainingTime) {
+        NSString *collectionRemainingLabel = [NSString stringWithFormat:@"-%@",[formatter stringFromDate:collectionRemainingTime]];
+        
 
-    
-    NSString *playlistRemainingLabel = [NSString stringWithFormat:@"-%@",[formatter stringFromDate:playlistRemainingTime]];
-    
-//    NSLog (@" playlistRemaining %@", playlistRemainingLabel);
-
-    UIBarButtonItem *durationButton = [[UIBarButtonItem alloc] initWithTitle:playlistRemainingLabel style:UIBarButtonItemStyleBordered target:self action: @selector(magnify)];
-    
-    self.navigationItem.rightBarButtonItem=durationButton;
-    
+        UIBarButtonItem *durationButton = [[UIBarButtonItem alloc] initWithTitle:collectionRemainingLabel style:UIBarButtonItemStyleBordered target:self action: @selector(magnify)];
+        
+        self.navigationItem.rightBarButtonItem=durationButton;
+    }
     [self actualizeSlider];
 }
 - (void) updatePlaylistRemaining {
@@ -207,12 +250,21 @@ void audioRouteChangeListenerCallback (
 - (NSNumber *)calculatePlaylistElapsed {
         
     NSArray *returnedQueue = [self.userMediaItemCollection items];
-    NSUInteger count = [musicPlayer indexOfNowPlayingItem];
+    
+    // when nowPlayingItem is done, indexOfNowPlayingItem becomes unpredictable, don't perform this calculation
+    NSUInteger count;
+    if ([musicPlayer nowPlayingItem]) {
+        count = [musicPlayer indexOfNowPlayingItem];
+    } else {
+        count = 0;
+    }
     long playlistElapsed = 0;
     
     for (NSUInteger i = 0; i < count; i++) {
 #pragma mark TODO aborts on this line on reload
+
         playlistElapsed = (playlistElapsed + [[[returnedQueue objectAtIndex: i] valueForProperty:MPMediaItemPropertyPlaybackDuration] longValue]);
+
     }
 
     return [NSNumber numberWithLong: playlistElapsed];
@@ -249,7 +301,8 @@ void audioRouteChangeListenerCallback (
 
 // When the now-playing item changes, update the now-playing label and the next label.
 - (void) handle_NowPlayingItemChanged: (id) notification {
-//   LogMethod();    
+//   LogMethod();
+
 	MPMediaItem *currentItem = [musicPlayer nowPlayingItem];
 	
 	// Display the song name for the now-playing media item and next-playing media item with duration
@@ -263,19 +316,27 @@ void audioRouteChangeListenerCallback (
 
     
     NSUInteger nextPlayingIndex = [musicPlayer indexOfNowPlayingItem] + 1;
+//    NSUInteger nextPlayingIndex = [[self.nowPlayingInfoCenter defaultCenter] valueForProperty:
+//                                   MPNowPlayingInfoPropertyPlaybackQueueIndex] + 1;
     
+//    if (nextPlayingIndex >= [[self.nowPlayingInfoCenter defaultCenter] valueForProperty:        MPNowPlayingInfoPropertyPlaybackQueueCount]) {
     if (nextPlayingIndex >= userMediaItemCollection.count) {
-        self.nextSongLabel.text = [NSString stringWithFormat: @"%@",
-                                   NSLocalizedString (@"End of Playlist Instructions", @"Label for Next song title when last song is playing")];
+//        self.nextSongLabel.text = [NSString stringWithFormat: @"%@",
+//                                   NSLocalizedString (@"End of Playlist Instructions", @"Label for Next song title when last song is playing")];
+        self.nextSongLabel.text = [NSString stringWithFormat: @""];
+        self.nextLabel.text = [NSString stringWithFormat:@""];
     } else {
         long nextDuration = [[[[self.userMediaItemCollection items] objectAtIndex: nextPlayingIndex] valueForProperty:MPMediaItemPropertyPlaybackDuration] floatValue];
         NSString *formattedNextDuration = [NSString stringWithFormat:@"%2lu:%02lu",nextDuration/60,nextDuration -(nextDuration/60)*60];
         self.nextSongLabel.text = [NSString stringWithFormat: @"%@  %@",[[[self.userMediaItemCollection items] objectAtIndex: nextPlayingIndex] valueForProperty:  MPMediaItemPropertyTitle], formattedNextDuration];
+        self.nextLabel.text = [NSString stringWithFormat: @"Next:"];
                                    ;
     }
     self.nextSongLabel.textColor = [UIColor whiteColor];
     self.nextSongLabel.font = newFont;
     self.nextSongLabel.textAlignment = NSTextAlignmentLeft;
+    
+
 
 //	if (musicPlayer.playbackState == MPMusicPlaybackStateStopped) {
 //		// Provide a suitable prompt to the user now that their chosen music has
@@ -308,7 +369,6 @@ void audioRouteChangeListenerCallback (
 		// Even though stopped, invoking 'stop' ensures that the music player will play
 		//		its queue from the start.
 		[musicPlayer stop];
-        [playbackTimer invalidate];
         
 	}
 }
@@ -435,7 +495,7 @@ void audioRouteChangeListenerCallback (
 
 // To learn about notifications, see "Notifications" in Cocoa Fundamentals Guide.
 - (void) registerForMediaPlayerNotifications {
-      LogMethod(); 
+//      LogMethod(); 
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     
 	[notificationCenter addObserver: self
@@ -468,7 +528,7 @@ void audioRouteChangeListenerCallback (
 
 // Returns whether or not to use the iPod music player instead of the application music player.
 - (BOOL) useiPodPlayer {
-      LogMethod(); 
+//      LogMethod(); 
 	if ([[NSUserDefaults standardUserDefaults] boolForKey: PLAYER_TYPE_PREF_KEY]) {
 		return YES;
 	} else {
@@ -479,8 +539,11 @@ void audioRouteChangeListenerCallback (
 // Configure the application.
 
 - (void) viewDidLoad {
-      LogMethod();
+//      LogMethod();
     [super viewDidLoad];
+    
+    [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
+
     
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[[AppDelegate instance].colorSwitcher processImageWithName:@"background.png"]]];
 
@@ -528,7 +591,7 @@ void audioRouteChangeListenerCallback (
 //    
     [musicPlayer setQueueWithItemCollection: userMediaItemCollection];
     [self setPlayedMusicOnce: YES];
-    [self playMusic];
+//    [self playMusic];
     
 }
 
@@ -571,12 +634,16 @@ void audioRouteChangeListenerCallback (
 												  object: musicPlayer];
     
 	[musicPlayer endGeneratingPlaybackNotifications];
+
     
 }
 #pragma mark Prepare for Seque
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    LogMethod();
+//    [self.playbackTimer invalidate];
+
     UINavigationController *navigationController = segue.destinationViewController;
 
 	if ([segue.identifier isEqualToString:@"MagnifyRemainingTime"])
@@ -637,10 +704,27 @@ void audioRouteChangeListenerCallback (
 - (void)timeMagnifierViewControllerDidCancel:(TimeMagnifierViewController *)controller
 {
 	[self dismissViewControllerAnimated:YES completion:nil];
+
+}
+- (void)viewWillAppear:(BOOL)animated {
+    //    LogMethod();
+    [super viewWillAppear: animated];
+    self.playbackTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                                          target:self
+                                                        selector:@selector(updateTime)
+                                                        userInfo:nil
+                                                         repeats:YES];
+    
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+//    LogMethod();
+    [super viewWillDisappear: animated];
+    [self.playbackTimer invalidate];
 
+}
 - (void)viewDidUnload {
+    [self setNextLabel:nil];
     [super viewDidUnload];
 }
 @end

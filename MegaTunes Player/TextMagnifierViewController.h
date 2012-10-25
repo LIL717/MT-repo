@@ -6,8 +6,7 @@
 //
 //
 @class TextMagnifierViewController;
-#import "AutoScrollLabel.h"
-
+//@class ScrollLabel;
 
 @protocol TextMagnifierViewControllerDelegate <NSObject>
 
@@ -15,16 +14,17 @@
 
 @end
 
-@interface TextMagnifierViewController : UIViewController <UIGestureRecognizerDelegate>
-
+@interface TextMagnifierViewController : UIViewController <UIGestureRecognizerDelegate, UIScrollViewDelegate>
 
 @property (nonatomic, weak) id <TextMagnifierViewControllerDelegate> delegate;
 
-@property (strong, nonatomic) IBOutlet UIButton *magnifiedText;
+@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic) NSString *textToMagnify;
-@property (nonatomic, strong) IBOutlet AutoScrollLabel	*scrollingLabel;
+//@property (nonatomic, strong) IBOutlet ScrollLabel *magnifiedLabel;
+@property (strong, nonatomic) IBOutlet UILabel *magnifiedLabel;
 
+- (IBAction)tapDetected:(UITapGestureRecognizer *)sender;
+- (IBAction)swipeDetected:(UIPanGestureRecognizer *)sender;
 
-- (IBAction)cancel:(id)sender;
 
 @end

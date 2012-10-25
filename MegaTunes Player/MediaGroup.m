@@ -11,10 +11,10 @@
 @implementation MediaGroup
 
 @synthesize name;
-@synthesize groupingType;
+@synthesize queryType;
 
 -(id)initWithName:(NSString*)theName
-    andGroupingType:(MPMediaQuery*)theGroupingType
+    andQueryType:(MPMediaQuery*)theQueryType
 
 {
     
@@ -23,7 +23,7 @@
     if (self)
     {
         self.name = theName;
-        self.groupingType = theGroupingType;
+        self.queryType = theQueryType;
     }
     
     return self;

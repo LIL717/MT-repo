@@ -25,6 +25,7 @@
 
 - (void)viewDidLoad
 {
+    LogMethod();
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[[AppDelegate instance].colorSwitcher processImageWithName:@"background.png"]]];
@@ -33,11 +34,11 @@
     [self.magnifiedText.titleLabel setAdjustsFontSizeToFitWidth: YES];
     
     [self.magnifiedText setTitle: self.textToMagnify forState: UIControlStateNormal];
-    playbackTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
-                                                     target:self
-                                                   selector:@selector(updateTime)
-                                                   userInfo:nil
-                                                    repeats:YES];
+//    self.playbackTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
+//                                                     target:self
+//                                                   selector:@selector(updateTime)
+//                                                   userInfo:nil
+//                                                    repeats:YES];
     
 }
 - (void) updateTime {
@@ -61,12 +62,32 @@
 
 - (void)didReceiveMemoryWarning
 {
+    LogMethod();
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)cancel:(id)sender {
+- (IBAction)cancel:(id)sender
+{
+    LogMethod();
     [self.delegate timeMagnifierViewControllerDidCancel:self];
+
+}
+- (void)viewWillAppear:(BOOL)animated {
+    //    LogMethod();
+    [super viewWillAppear: animated];
+    self.playbackTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                                          target:self
+                                                        selector:@selector(updateTime)
+                                                        userInfo:nil
+                                                         repeats:YES];
+    
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    //    LogMethod();
+    [super viewWillDisappear: animated];
+    [self.playbackTimer invalidate];
     
 }
 @end

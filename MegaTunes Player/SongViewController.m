@@ -1,5 +1,5 @@
 //
-//  CollectionViewController.m
+//  SongViewController.m
 //  MegaTunes Player
 //
 //  Created by Lori Hill on 9/23/12.
@@ -7,14 +7,15 @@
 //
 #import "MainViewController.h"
 #import "NotesViewController.h"
-#import "CollectionViewController.h"
-#import "SonglistCell.h"
+#import "SongViewController.h"
+#import "SongCell.h"
 #import "CollectionItem.h"
+#import "AppDelegate.h"
 
-@implementation CollectionViewController
+@implementation SongViewController
 
 @synthesize itemCollection;
-@synthesize playlist;
+@synthesize collectionItem;
 
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -29,8 +30,10 @@
 
 - (void)viewDidLoad
 {
-    LogMethod();
+//    LogMethod();
     [super viewDidLoad];
+    
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[[AppDelegate instance].colorSwitcher processImageWithName:@"background.png"]]];
 
 //    self.currentQueue = self.mainViewController.userMediaItemCollection;
     
@@ -74,8 +77,8 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	SonglistCell *cell = (SonglistCell *)[tableView
-                                          dequeueReusableCellWithIdentifier:@"SonglistCell"];
+	SongCell *cell = (SongCell *)[tableView
+                                          dequeueReusableCellWithIdentifier:@"SongCell"];
     
     MPMediaItem *song = [[self.itemCollection items] objectAtIndex:indexPath.row];
 
@@ -97,9 +100,17 @@
     return cell;
 }
 #pragma mark - Table view delegate
+
+//	 To conform to the Human Interface Guidelines, selections should not be persistent --
+//	 deselect the row after it has been selected.
+- (void) tableView: (UITableView *) tableView didSelectRowAtIndexPath: (NSIndexPath *) indexPath {
+    
+	[tableView deselectRowAtIndexPath: indexPath animated: YES];
+}
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    LogMethod();
+//    LogMethod();
     
 	if ([segue.identifier isEqualToString:@"ViewNotes"])
 	{
@@ -119,7 +130,7 @@
         MainViewController *mainViewController = segue.destinationViewController;
 
         mainViewController.userMediaItemCollection = self.itemCollection;
-        mainViewController.playlist = self.playlist;
+        mainViewController.collectionItem = self.collectionItem;
     }
 }
 

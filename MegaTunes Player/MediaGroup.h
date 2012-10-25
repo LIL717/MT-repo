@@ -12,9 +12,9 @@
 @interface MediaGroup : NSObject
 
 @property (nonatomic, copy) NSString *name;
-@property (nonatomic, copy) MPMediaQuery *groupingType;
+@property (nonatomic, copy) MPMediaQuery *queryType;
 
 -(id)initWithName:(NSString*)theName
-    andGroupingType:(MPMediaQuery*)theGroupingType;
+    andQueryType:(MPMediaQuery*)theQueryType;
 
 @end

@@ -6,7 +6,7 @@
 //
 //
 
-@interface SonglistCell : UITableViewCell
+@interface SongCell : UITableViewCell
 
 @property (nonatomic, strong) IBOutlet UILabel *nameLabel;
 @property (nonatomic, strong) IBOutlet UILabel *durationLabel;

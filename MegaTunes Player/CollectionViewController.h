@@ -2,15 +2,16 @@
 //  CollectionViewController.h
 //  MegaTunes Player
 //
-//  Created by Lori Hill on 9/23/12.
+//  Created by Lori Hill on 10/1/12.
 //
 //
 @class CollectionItem;
+#import "MediaGroupViewController.h"
 
-@interface CollectionViewController : UITableViewController <MPMediaPickerControllerDelegate, UITableViewDelegate>
+@interface CollectionViewController : UITableViewController <MPMediaPickerControllerDelegate, MediaGroupViewControllerDelegate, UITableViewDelegate>
 
-@property (nonatomic, strong)   MPMediaItemCollection *itemCollection;
-@property (nonatomic, strong)   CollectionItem *playlist;
+@property (nonatomic, strong)   NSArray *collection;
 
+- (NSNumber *) calculatePlaylistDuration: (MPMediaItemCollection *) currentQueue;
 
 @end

@@ -7,7 +7,7 @@
 //
 
 #import "InitialViewController.h"
-#import "MediaGroupsViewController.h"
+#import "CollectionViewController.h"
 #import "AppDelegate.h"
 
 @interface InitialViewController ()
@@ -52,7 +52,7 @@
 	if ([segue.identifier isEqualToString:@"ChoosePlaylist"])
 	{
 		UINavigationController *navigationController = segue.destinationViewController;
-		MediaGroupsViewController *musicTableViewController = [[navigationController viewControllers] objectAtIndex:0];
+		CollectionViewController *musicTableViewController = [[navigationController viewControllers] objectAtIndex:0];
         
 		musicTableViewController.collection = self.playlists;
 	}

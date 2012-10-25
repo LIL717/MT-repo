@@ -6,9 +6,9 @@
 //
 //
 
-#import "SonglistCell.h"
+#import "SongCell.h"
 
-@implementation SonglistCell
+@implementation SongCell
 @synthesize nameLabel;
 @synthesize durationLabel;
 @synthesize artworkImageView;
