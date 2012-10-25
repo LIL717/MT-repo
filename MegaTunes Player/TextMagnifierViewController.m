@@ -44,26 +44,26 @@
     UILabel *newLabel = [[UILabel alloc] initWithFrame: self.magnifiedLabel.frame];
     CGRect frame = newLabel.frame;
 //    frame.origin.x = 0;
-    frame.size.height = CGRectGetHeight(scrollView.bounds);
+//    frame.size.height = CGRectGetHeight(scrollView.bounds);
     frame.size.width = labelSize.width;
     newLabel.frame = frame;
 
     // Recenter label vertically within the scroll view
-    newLabel.center = CGPointMake(newLabel.center.x, roundf(scrollView.center.y - CGRectGetMinY(scrollView.frame)));
+//    newLabel.center = CGPointMake(newLabel.center.x, roundf(scrollView.center.y - CGRectGetMinY(scrollView.frame)));
     
-//    offset += CGRectGetWidth(label.bounds) + _labelSpacing;
+//    offset += CGRectGetWidth(self.magnifiedlabel.bounds);
 
-//    CGSize size;
-//    size.width = CGRectGetWidth(self.magnifiedLabel.bounds) + CGRectGetWidth(scrollView.bounds);
-//    size.height = CGRectGetHeight(scrollView.bounds);
-//    scrollView.contentSize = size;
+    CGSize size;
+    size.width = CGRectGetWidth(newLabel.bounds);
+    size.height = CGRectGetHeight(newLabel.bounds);
+    scrollView.contentSize = size;
 //    scrollView.contentOffset = CGPointZero;
 
 //// If the label is bigger than the space allocated, then it should scroll
 //if (CGRectGetWidth(self.mainLabel.bounds) > CGRectGetWidth(self.bounds))
 //{
 
-    scrollView.contentSize = CGSizeMake(scrollView.contentSize.width,scrollView.frame.size.height);
+//    scrollView.contentSize = CGSizeMake(scrollView.contentSize.width,scrollView.frame.size.height);
     self.magnifiedLabel.frame = newLabel.frame;
 
 

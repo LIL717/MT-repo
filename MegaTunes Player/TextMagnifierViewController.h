@@ -18,9 +18,9 @@
 
 @property (nonatomic, weak) id <TextMagnifierViewControllerDelegate> delegate;
 
-@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic) NSString *textToMagnify;
-//@property (nonatomic, strong) IBOutlet ScrollLabel *magnifiedLabel;
+
+@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic) IBOutlet UILabel *magnifiedLabel;
 
 - (IBAction)tapDetected:(UITapGestureRecognizer *)sender;
