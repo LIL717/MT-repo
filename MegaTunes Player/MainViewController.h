@@ -16,10 +16,9 @@
 #import <AVFoundation/AVFoundation.h>
 #import <AudioToolbox/AudioToolbox.h>
 #import "AutoScrollLabel.h"
-#import <MediaPlayer/MPNowPlayingInfoCenter.h>
 
 
-@interface MainViewController : UIViewController <MPMediaPickerControllerDelegate, AVAudioPlayerDelegate, TimeMagnifierViewControllerDelegate, TextMagnifierViewControllerDelegate> {
+@interface MainViewController : UIViewController <MPMediaPickerControllerDelegate, AVAudioPlayerDelegate, TimeMagnifierViewControllerDelegate, TextMagnifierViewControllerDelegate, NSFetchedResultsControllerDelegate> {
     
 	IBOutlet UINavigationBar	*navigationBar;
 	IBOutlet AutoScrollLabel 	*nowPlayingLabel;
@@ -33,6 +32,10 @@
 	MPMediaItemCollection		*userMediaItemCollection;
     NSTimer                     *playbackTimer;
     MPNowPlayingInfoCenter      *nowPlayingInfoCenter;
+    BOOL                        playNew;
+    MPMediaItem                 *itemToPlay;
+    NSFetchedResultsController  *fetchedResultsController;
+    NSManagedObjectContext      *managedObjectContext;
 }
 @property (nonatomic, strong)	UINavigationBar			*navigationBar;
 @property (nonatomic, strong)	AutoScrollLabel			*nowPlayingLabel;
@@ -46,6 +49,10 @@
 @property (nonatomic, strong)   MPMediaItemCollection   *currentQueue;
 @property (nonatomic, retain)   NSTimer                 *playbackTimer;
 @property (nonatomic, strong)   MPNowPlayingInfoCenter  *nowPlayingInfoCenter;
+@property (readwrite)           BOOL                    playNew;
+@property (nonatomic, strong)   MPMediaItem             *itemToPlay;
+@property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic, retain) NSManagedObjectContext    *managedObjectContext;
 
 @property (strong, nonatomic) IBOutlet UILabel *elapsedTimeLabel;
 @property (strong, nonatomic) IBOutlet UISlider *progressSlider;
@@ -64,7 +71,6 @@
 
 - (void) playMusic;
 - (void) updateTime;
-- (void) updatePlaylistRemaining;
 - (NSNumber *)calculatePlaylistElapsed;
 - (void)actualizeSlider;
 - (void) playMusic;

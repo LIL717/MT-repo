@@ -104,6 +104,10 @@ void audioRouteChangeListenerCallback (
 @synthesize playing;					// An application that responds to interruptions must keep track of its playing not-playing state.
 @synthesize playbackTimer;
 @synthesize nowPlayingInfoCenter;
+@synthesize playNew;                    //Flag set if new song has been selected to play
+@synthesize itemToPlay;
+@synthesize fetchedResultsController;
+@synthesize managedObjectContext;
 
 //these lines came from player view controller
 
@@ -118,13 +122,19 @@ void audioRouteChangeListenerCallback (
 @synthesize nextSongLabel;
 @synthesize collectionItem;
 
-
+//- (void) saveUserMediaItemCollection: (NSArray*) collectionArray {
+//    [[NSUserDefaults standardUserDefaults] setObject: collectionArray forKey:@"CurrentCollection"];
+//}
+//- (NSArray*) retrieveUserMediaItemCollection {
+//   NSArray* collectionArray= [[NSUserDefaults standardUserDefaults] objectForKey:@"CurrentCollection"];
+//    return collectionArray;
+//}
 #pragma mark Music control________________________________
 
 // A toggle control for playing or pausing iPod library music playback, invoked
 //		when the user taps the 'playButton'.
 - (IBAction) playOrPauseMusic: (id)sender {
-   LogMethod();    
+//   LogMethod();    
 	MPMusicPlaybackState playbackState = [musicPlayer playbackState];
     
 	if (playbackState == MPMusicPlaybackStateStopped || playbackState == MPMusicPlaybackStatePaused) {
@@ -149,41 +159,13 @@ void audioRouteChangeListenerCallback (
 }
 
 - (IBAction)moveSlider:(id)sender {
-    LogMethod();
+//    LogMethod();
     [musicPlayer setCurrentPlaybackTime: [self.progressSlider value]];
 }
 - (void) playMusic {
     
     [musicPlayer play];
     [self updateTime];
-    
-    Class playingInfoCenter = NSClassFromString(@"MPNowPlayingInfoCenter");
-    
-    if (playingInfoCenter) {
-        
-        
-//        NSMutableDictionary *songInfo = [[NSMutableDictionary alloc] init];
-//        
-//        MPMediaItemArtwork *albumArt = [[MPMediaItemArtwork alloc] initWithImage: [UIImage imageNamed: @"playIcon.png"]];
-//        
-//        [songInfo setObject:self.nowPlayingLabel.text forKey:MPMediaItemPropertyTitle];
-//        [songInfo setObject:@"Audio Author" forKey:MPMediaItemPropertyArtist];
-//        [songInfo setObject:@"Audio Album" forKey:MPMediaItemPropertyAlbumTitle];
-//        [songInfo setObject:albumArt forKey:MPMediaItemPropertyArtwork];
-//        NSNumber *queueCount = [[NSNumber alloc]  initWithInteger: userMediaItemCollection.count];
-//        [songInfo setObject: queueCount forKey:MPNowPlayingInfoPropertyPlaybackQueueCount];
-//        NSNumber *queueIndex  = [[NSNumber alloc]  initWithInteger: [musicPlayer indexOfNowPlayingItem]];
-//        [songInfo setObject: queueIndex forKey:MPNowPlayingInfoPropertyPlaybackQueueIndex];
-//
-//        [[MPNowPlayingInfoCenter defaultCenter] setNowPlayingInfo:songInfo];
-        
-        NSMutableDictionary *showSongInfo = [[NSMutableDictionary alloc]
-                                initWithDictionary: [[MPNowPlayingInfoCenter defaultCenter] nowPlayingInfo]];
-
-        NSLog (@"Audio Title %@", [showSongInfo objectForKey: MPMediaItemPropertyTitle]);
-        NSLog (@"Playback Queue Count %d",[[showSongInfo objectForKey: MPNowPlayingInfoPropertyPlaybackQueueCount] intValue]);
-        NSLog (@"Playback Queue Index %d",[[showSongInfo objectForKey: MPNowPlayingInfoPropertyPlaybackQueueIndex] intValue]);
-    }
 }
 
 - (void) updateTime
@@ -244,9 +226,7 @@ void audioRouteChangeListenerCallback (
     }
     [self actualizeSlider];
 }
-- (void) updatePlaylistRemaining {
-    
-}
+
 - (NSNumber *)calculatePlaylistElapsed {
         
     NSArray *returnedQueue = [self.userMediaItemCollection items];
@@ -301,28 +281,33 @@ void audioRouteChangeListenerCallback (
 
 // When the now-playing item changes, update the now-playing label and the next label.
 - (void) handle_NowPlayingItemChanged: (id) notification {
-//   LogMethod();
+   LogMethod();
 
 	MPMediaItem *currentItem = [musicPlayer nowPlayingItem];
-	
-	// Display the song name for the now-playing media item and next-playing media item with duration
+    
+    
+    NSArray *returnedQueue = [self.userMediaItemCollection items];
+    
+    for (MPMediaItem *song in returnedQueue) {
+        NSString *songTitle = [song valueForProperty: MPMediaItemPropertyTitle];
+        NSLog (@"\t\t%@", songTitle);
+    }
+    
+    // Display the song name for the now-playing media item and next-playing media item with duration
     // scroll marquee style if too long for field
-
+    
     self.nowPlayingLabel.text = [currentItem valueForProperty:  MPMediaItemPropertyTitle];
     self.nowPlayingLabel.textColor = [UIColor whiteColor];
     UIFont *font = [UIFont systemFontOfSize:12];
     UIFont *newFont = [font fontWithSize:44];
     self.nowPlayingLabel.font = newFont;
-
+    
     
     NSUInteger nextPlayingIndex = [musicPlayer indexOfNowPlayingItem] + 1;
-//    NSUInteger nextPlayingIndex = [[self.nowPlayingInfoCenter defaultCenter] valueForProperty:
-//                                   MPNowPlayingInfoPropertyPlaybackQueueIndex] + 1;
     
-//    if (nextPlayingIndex >= [[self.nowPlayingInfoCenter defaultCenter] valueForProperty:        MPNowPlayingInfoPropertyPlaybackQueueCount]) {
     if (nextPlayingIndex >= userMediaItemCollection.count) {
-//        self.nextSongLabel.text = [NSString stringWithFormat: @"%@",
-//                                   NSLocalizedString (@"End of Playlist Instructions", @"Label for Next song title when last song is playing")];
+        //        self.nextSongLabel.text = [NSString stringWithFormat: @"%@",
+        //                                   NSLocalizedString (@"End of Playlist Instructions", @"Label for Next song title when last song is playing")];
         self.nextSongLabel.text = [NSString stringWithFormat: @""];
         self.nextLabel.text = [NSString stringWithFormat:@""];
     } else {
@@ -330,21 +315,108 @@ void audioRouteChangeListenerCallback (
         NSString *formattedNextDuration = [NSString stringWithFormat:@"%2lu:%02lu",nextDuration/60,nextDuration -(nextDuration/60)*60];
         self.nextSongLabel.text = [NSString stringWithFormat: @"%@  %@",[[[self.userMediaItemCollection items] objectAtIndex: nextPlayingIndex] valueForProperty:  MPMediaItemPropertyTitle], formattedNextDuration];
         self.nextLabel.text = [NSString stringWithFormat: @"Next:"];
-                                   ;
+        ;
     }
     self.nextSongLabel.textColor = [UIColor whiteColor];
     self.nextSongLabel.font = newFont;
     self.nextSongLabel.textAlignment = NSTextAlignmentLeft;
     
+    
+    //  Set nowPlayingInfo
+    //        MPMediaItemPropertyAlbumTitle
+    //        MPMediaItemPropertyAlbumTrackCount
+    //        MPMediaItemPropertyAlbumTrackNumber
+    //        MPMediaItemPropertyArtist
+    //        MPMediaItemPropertyArtwork
+    //        MPMediaItemPropertyComposer
+    //        MPMediaItemPropertyDiscCount
+    //        MPMediaItemPropertyDiscNumber
+    //        MPMediaItemPropertyGenre
+    //        MPMediaItemPropertyPersistentID
+    //        MPMediaItemPropertyPlaybackDuration
+    //        MPMediaItemPropertyTitle
+    
+    Class playingInfoCenter = NSClassFromString(@"MPNowPlayingInfoCenter");
+    
+    if (playingInfoCenter) {
+        
+        NSMutableDictionary *songInfo = [[NSMutableDictionary alloc] init];
+
+        if ([[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyAlbumTitle]) {
+            [songInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyAlbumTitle] forKey:MPMediaItemPropertyAlbumTitle];
+        }
+        if ([[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyAlbumTrackCount]) {
+            [songInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyAlbumTrackCount] forKey:MPMediaItemPropertyAlbumTrackCount];
+        }
+        if ([[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyAlbumTrackNumber]) {
+            [songInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyAlbumTrackNumber] forKey:MPMediaItemPropertyAlbumTrackNumber];
+        }
+        if ([[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyArtist]) {
+            [songInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyArtist] forKey:MPMediaItemPropertyArtist];
+        }
+        if ([[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyArtwork]) {
+                [songInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyArtwork] forKey:MPMediaItemPropertyArtwork];
+        }
+        if ([[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyComposer]) {
+            [songInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyComposer] forKey:MPMediaItemPropertyComposer];
+        }
+        if ([[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyDiscCount]) {
+            [songInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyDiscCount] forKey:MPMediaItemPropertyDiscCount];
+        }
+        if ([[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyDiscNumber]) {
+            [songInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyDiscNumber] forKey:MPMediaItemPropertyDiscNumber];
+        }
+        if ([[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyGenre]) {
+            [songInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyGenre] forKey:MPMediaItemPropertyGenre];
+        }
+        if ([[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyPersistentID]) {
+            [songInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyPersistentID] forKey:MPMediaItemPropertyPersistentID];
+        }
+        if ([[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyPlaybackDuration]) {
+            [songInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyPlaybackDuration] forKey:MPMediaItemPropertyPlaybackDuration];
+        }
+        if ([[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyTitle]) {
+            [songInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyTitle] forKey:MPMediaItemPropertyTitle];
+        }
+//        NSString *const MPNowPlayingInfoPropertyElapsedPlaybackTime
+//        NSString *const MPNowPlayingInfoPropertyPlaybackRate;
+//        NSString *const MPNowPlayingInfoPropertyPlaybackQueueIndex;
+//        NSString *const MPNowPlayingInfoPropertyPlaybackQueueCount;
+//        NSString *const MPNowPlayingInfoPropertyChapterNumber;
+//        NSString *const MPNowPlayingInfoPropertyChapterCount;
+        if ([[musicPlayer nowPlayingItem] valueForProperty: MPNowPlayingInfoPropertyPlaybackRate]) {
+            [songInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPNowPlayingInfoPropertyPlaybackRate] forKey:MPNowPlayingInfoPropertyPlaybackRate];
+        }
+        NSNumber *queueCount = [[NSNumber alloc]  initWithInteger: userMediaItemCollection.count];
+        [songInfo setObject: queueCount forKey:MPNowPlayingInfoPropertyPlaybackQueueCount];
+        NSNumber *queueIndex  = [[NSNumber alloc]  initWithInteger: [musicPlayer indexOfNowPlayingItem]];
+        [songInfo setObject: queueIndex forKey:MPNowPlayingInfoPropertyPlaybackQueueIndex];
+        
+        if ([[musicPlayer nowPlayingItem] valueForProperty: MPNowPlayingInfoPropertyChapterNumber]) {
+            [songInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPNowPlayingInfoPropertyChapterNumber] forKey:MPNowPlayingInfoPropertyChapterNumber];
+        }
+        if ([[musicPlayer nowPlayingItem] valueForProperty: MPNowPlayingInfoPropertyChapterCount]) {
+            [songInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPNowPlayingInfoPropertyChapterCount] forKey:MPNowPlayingInfoPropertyChapterCount];
+        }
+        
+        [[MPNowPlayingInfoCenter defaultCenter] setNowPlayingInfo:songInfo];
+        
+//        NSMutableDictionary *showSongInfo = [[NSMutableDictionary alloc]
+//                                             initWithDictionary: [[MPNowPlayingInfoCenter defaultCenter] nowPlayingInfo]];
+//        
+//        NSLog (@"Audio Title %@", [showSongInfo objectForKey: MPMediaItemPropertyTitle]);
+//        NSLog (@"Playback Queue Count %d",[[showSongInfo objectForKey: MPNowPlayingInfoPropertyPlaybackQueueCount] intValue]);
+//        NSLog (@"Playback Queue Index %d",[[showSongInfo objectForKey: MPNowPlayingInfoPropertyPlaybackQueueIndex] intValue]);
+    }
+	
 
 
 //	if (musicPlayer.playbackState == MPMusicPlaybackStateStopped) {
-//		// Provide a suitable prompt to the user now that their chosen music has
-//		//		finished playing.
-//		[nowPlayingLabel setText: [
-//                                   NSString stringWithFormat: @"%@",
-//                                   NSLocalizedString (@"Music-ended Instructions", @"Label for prompting user to play music again after it has stopped")]];
+//
+//    //device music player pops back to controller from which is was pushed
 //        
+//        //there is a problem when a new song is initiating and the playbackstate is stopped
+//        [self.navigationController popViewControllerAnimated:YES];      
 //	}
 }
 
@@ -368,6 +440,7 @@ void audioRouteChangeListenerCallback (
 		
 		// Even though stopped, invoking 'stop' ensures that the music player will play
 		//		its queue from the start.
+        [self.navigationController popViewControllerAnimated:YES];  
 		[musicPlayer stop];
         
 	}
@@ -522,26 +595,13 @@ void audioRouteChangeListenerCallback (
 	[musicPlayer beginGeneratingPlaybackNotifications];
 }
 
-
-// To learn about the Settings bundle and user preferences, see User Defaults Programming Topics
-//		for Cocoa and "The Settings Bundle" in iPhone Application Programming Guide
-
-// Returns whether or not to use the iPod music player instead of the application music player.
-- (BOOL) useiPodPlayer {
-//      LogMethod(); 
-	if ([[NSUserDefaults standardUserDefaults] boolForKey: PLAYER_TYPE_PREF_KEY]) {
-		return YES;
-	} else {
-		return NO;
-	}
-}
-
 // Configure the application.
 
 - (void) viewDidLoad {
-//      LogMethod();
+      LogMethod();
     [super viewDidLoad];
     
+    //need this to use MPNowPlayingInfoCenter
     [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
 
     
@@ -554,7 +614,9 @@ void audioRouteChangeListenerCallback (
             
         // Instantiate the music player. If you specied the iPod music player in the Settings app,
         //		honor the current state of the built-in iPod app.
-    if ([self useiPodPlayer]) {
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    if ([appDelegate useiPodPlayer]) {
         
         [self setMusicPlayer: [MPMusicPlayerController iPodMusicPlayer]];
         
@@ -567,6 +629,15 @@ void audioRouteChangeListenerCallback (
         [musicPlayer setShuffleMode: MPMusicShuffleModeOff];
         [musicPlayer setRepeatMode: MPMusicRepeatModeNone];
     }
+    
+    if (playNew) {
+        [musicPlayer setQueueWithItemCollection: self.userMediaItemCollection];
+        
+        [musicPlayer setNowPlayingItem: self.itemToPlay];
+        [self playMusic];
+        [self setPlayNew: NO];
+    }
+    
     if ([musicPlayer nowPlayingItem]) {
         
         // Update the UI to reflect the now-playing item.
@@ -577,21 +648,18 @@ void audioRouteChangeListenerCallback (
 //            [nowPlayingLabel setText: NSLocalizedString (@"Instructions", @"Brief instructions to user, shown at launch")];
 
         }
-    }
+    } 
     [self registerForMediaPlayerNotifications];
-    
-//    self.currentQueue = userMediaItemCollection;
-//    
-//    NSArray *returnedQueue = [self.currentQueue items];
+        
+//    NSArray *returnedQueue = [self.userMediaItemCollection items];
 //    
 //    for (MPMediaItem *song in returnedQueue) {
 //        NSString *songTitle = [song valueForProperty: MPMediaItemPropertyTitle];
 //        NSLog (@"\t\t%@", songTitle);
 //    }
-//    
-    [musicPlayer setQueueWithItemCollection: userMediaItemCollection];
+    
     [self setPlayedMusicOnce: YES];
-//    [self playMusic];
+
     
 }
 
@@ -641,7 +709,7 @@ void audioRouteChangeListenerCallback (
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    LogMethod();
+//    LogMethod();
 //    [self.playbackTimer invalidate];
 
     UINavigationController *navigationController = segue.destinationViewController;
@@ -707,8 +775,9 @@ void audioRouteChangeListenerCallback (
 
 }
 - (void)viewWillAppear:(BOOL)animated {
-    //    LogMethod();
+//    LogMethod();
     [super viewWillAppear: animated];
+    
     self.playbackTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
                                                           target:self
                                                         selector:@selector(updateTime)

@@ -11,7 +11,9 @@
 @implementation SongCell
 @synthesize nameLabel;
 @synthesize durationLabel;
-@synthesize artworkImageView;
+@synthesize playingIndicator;
+//@synthesize BPM;
+//@synthesize artworkImageView;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {

@@ -35,7 +35,7 @@
 		707862A31624D16E00871260 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 707862A21624D16E00871260 /* Settings.bundle */; };
 		707862A51626385700871260 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 707862A41626385700871260 /* CoreData.framework */; };
 		707862A81626391600871260 /* MegaTunes Player.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 707862A61626391600871260 /* MegaTunes Player.xcdatamodeld */; };
-		707862AF1626410500871260 /* MediaItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 707862AE1626410500871260 /* MediaItem.m */; };
+		707862AF1626410500871260 /* MediaItemUserData.m in Sources */ = {isa = PBXBuildFile; fileRef = 707862AE1626410500871260 /* MediaItemUserData.m */; };
 		707862B21626631700871260 /* TextMagnifierViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 707862B11626631700871260 /* TextMagnifierViewController.m */; };
 		707862B51626659900871260 /* NotesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 707862B41626659900871260 /* NotesViewController.m */; };
 		707862BC1629F33A00871260 /* AutoScrollLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 707862BB1629F33A00871260 /* AutoScrollLabel.m */; };
@@ -78,6 +78,9 @@
 		70974B941630C3B200A33B7D /* list-background.png in Resources */ = {isa = PBXBuildFile; fileRef = 70974B921630C3B000A33B7D /* list-background.png */; };
 		70974B951630C3B200A33B7D /* list-background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70974B931630C3B100A33B7D /* list-background@2x.png */; };
 		70974B991630CB6100A33B7D /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = 70974B981630CB6000A33B7D /* play.png */; };
+		70984C16163F964600CE7EA9 /* playing.png in Resources */ = {isa = PBXBuildFile; fileRef = 70984C14163F964600CE7EA9 /* playing.png */; };
+		70984C17163F964600CE7EA9 /* playing@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70984C15163F964600CE7EA9 /* playing@2x.png */; };
+		70984C1B16408B0400CE7EA9 /* UserMediaItemCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 70984C1A16408B0400CE7EA9 /* UserMediaItemCollection.m */; };
 		70A13D861631AD8700244866 /* MediaGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70A13D851631AD8700244866 /* MediaGroupViewController.m */; };
 		70A13D8E1631B40300244866 /* MediaGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 70A13D8D1631B40300244866 /* MediaGroup.m */; };
 		70A13D911631BCC100244866 /* MediaGroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 70A13D901631BCC000244866 /* MediaGroupCell.m */; };
@@ -92,6 +95,19 @@
 		70A13DD916334B6D00244866 /* Song.m in Sources */ = {isa = PBXBuildFile; fileRef = 70A13DD816334B6D00244866 /* Song.m */; };
 		70A13DDF1636346000244866 /* DTCustomColoredAccessory.m in Sources */ = {isa = PBXBuildFile; fileRef = 70A13DDE1636345E00244866 /* DTCustomColoredAccessory.m */; };
 		70A13DE2163734D200244866 /* ScrollLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 70A13DE1163734D000244866 /* ScrollLabel.m */; };
+		70A13DE9163A46CD00244866 /* slider-trackGray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70A13DE7163A46CC00244866 /* slider-trackGray@2x.png */; };
+		70A13DEA163A46CD00244866 /* slider-trackGray.png in Resources */ = {isa = PBXBuildFile; fileRef = 70A13DE8163A46CD00244866 /* slider-trackGray.png */; };
+		70A13E09163DD02200244866 /* libbassenc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 70A13DFB163DD02200244866 /* libbassenc.a */; };
+		70A13E0A163DD02200244866 /* libbassflac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 70A13DFD163DD02200244866 /* libbassflac.a */; };
+		70A13E0B163DD02200244866 /* libbassmidi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 70A13DFF163DD02200244866 /* libbassmidi.a */; };
+		70A13E0C163DD02200244866 /* libbassmix.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 70A13E01163DD02200244866 /* libbassmix.a */; };
+		70A13E0D163DD02200244866 /* libbassopus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 70A13E03163DD02200244866 /* libbassopus.a */; };
+		70A13E0E163DD02200244866 /* libbasswv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 70A13E05163DD02200244866 /* libbasswv.a */; };
+		70A13E0F163DD02200244866 /* libbass.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 70A13E06163DD02200244866 /* libbass.a */; };
+		70A13E10163DD02200244866 /* libbass.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 70A13E08163DD02200244866 /* libbass.a */; };
+		70A13E13163DD19100244866 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70A13E12163DD19000244866 /* SystemConfiguration.framework */; };
+		70A13E15163DD1AA00244866 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70A13E14163DD1AA00244866 /* CFNetwork.framework */; };
+		70A13E17163DD1BD00244866 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70A13E16163DD1BC00244866 /* Accelerate.framework */; };
 		70ADDC0C16113CAD00219873 /* sound.caf in Resources */ = {isa = PBXBuildFile; fileRef = 70ADDC0B16113CAD00219873 /* sound.caf */; };
 		70ADDC1F1614178500219873 /* CollectionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 70ADDC1E1614178500219873 /* CollectionItem.m */; };
 		70ADDC30161A4A7700219873 /* CollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70ADDC2F161A4A7700219873 /* CollectionViewController.m */; };
@@ -123,7 +139,7 @@
 		70515C43161120C900D96335 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		70515C451611210000D96335 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		70515C48161126B400D96335 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = ../../../../AddMusic/Resources/en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		7060522714F88D43001A1CDB /* MegaTunes Player.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MegaTunes Player.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7060522714F88D43001A1CDB /* MegaTunes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MegaTunes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7060522B14F88D43001A1CDB /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		7060522D14F88D43001A1CDB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		7060522F14F88D43001A1CDB /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -147,8 +163,8 @@
 		707862A21624D16E00871260 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Settings.bundle; path = ../Settings.bundle; sourceTree = "<group>"; };
 		707862A41626385700871260 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		707862A71626391600871260 /* MegaTunes Player.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "MegaTunes Player.xcdatamodel"; sourceTree = "<group>"; };
-		707862AD1626410500871260 /* MediaItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaItem.h; sourceTree = "<group>"; };
-		707862AE1626410500871260 /* MediaItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaItem.m; sourceTree = "<group>"; };
+		707862AD1626410500871260 /* MediaItemUserData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaItemUserData.h; sourceTree = "<group>"; };
+		707862AE1626410500871260 /* MediaItemUserData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaItemUserData.m; sourceTree = "<group>"; };
 		707862B01626631700871260 /* TextMagnifierViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextMagnifierViewController.h; sourceTree = "<group>"; };
 		707862B11626631700871260 /* TextMagnifierViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextMagnifierViewController.m; sourceTree = "<group>"; };
 		707862B31626659900871260 /* NotesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotesViewController.h; sourceTree = "<group>"; };
@@ -206,6 +222,10 @@
 		70974B921630C3B000A33B7D /* list-background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list-background.png"; sourceTree = "<group>"; };
 		70974B931630C3B100A33B7D /* list-background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list-background@2x.png"; sourceTree = "<group>"; };
 		70974B981630CB6000A33B7D /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = "<group>"; };
+		70984C14163F964600CE7EA9 /* playing.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = playing.png; sourceTree = "<group>"; };
+		70984C15163F964600CE7EA9 /* playing@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "playing@2x.png"; sourceTree = "<group>"; };
+		70984C1916408B0400CE7EA9 /* UserMediaItemCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserMediaItemCollection.h; sourceTree = "<group>"; };
+		70984C1A16408B0400CE7EA9 /* UserMediaItemCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserMediaItemCollection.m; sourceTree = "<group>"; };
 		70A13D841631AD8700244866 /* MediaGroupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaGroupViewController.h; sourceTree = "<group>"; };
 		70A13D851631AD8700244866 /* MediaGroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaGroupViewController.m; sourceTree = "<group>"; };
 		70A13D8C1631B40300244866 /* MediaGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaGroup.h; sourceTree = "<group>"; };
@@ -216,16 +236,30 @@
 		70A13D941632FEEF00244866 /* highlightedPlayIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "highlightedPlayIcon@2x.png"; path = "../highlightedPlayIcon@2x.png"; sourceTree = "<group>"; };
 		70A13D971632FF0100244866 /* playIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = playIcon.png; path = ../playIcon.png; sourceTree = "<group>"; };
 		70A13D981632FF0100244866 /* playIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "playIcon@2x.png"; path = "../playIcon@2x.png"; sourceTree = "<group>"; };
-		70A13DC316330B2800244866 /* redWhitePlay57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redWhitePlay57.png; sourceTree = "<group>"; };
-		70A13DC516330B4500244866 /* redWhitePlay114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redWhitePlay114.png; sourceTree = "<group>"; };
-		70A13DD01633168E00244866 /* redWhiteBlackPlay57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redWhiteBlackPlay57.png; sourceTree = "<group>"; };
-		70A13DD2163316A600244866 /* redWhiteBlackPlay114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redWhiteBlackPlay114.png; sourceTree = "<group>"; };
+		70A13DC316330B2800244866 /* redWhitePlay57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = redWhitePlay57.png; path = ../redWhitePlay57.png; sourceTree = "<group>"; };
+		70A13DC516330B4500244866 /* redWhitePlay114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = redWhitePlay114.png; path = ../redWhitePlay114.png; sourceTree = "<group>"; };
+		70A13DD01633168E00244866 /* redWhiteBlackPlay57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = redWhiteBlackPlay57.png; path = ../redWhiteBlackPlay57.png; sourceTree = "<group>"; };
+		70A13DD2163316A600244866 /* redWhiteBlackPlay114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = redWhiteBlackPlay114.png; path = ../redWhiteBlackPlay114.png; sourceTree = "<group>"; };
 		70A13DD4163322A400244866 /* CollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewController.h; sourceTree = "<group>"; };
 		70A13DD816334B6D00244866 /* Song.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Song.m; sourceTree = "<group>"; };
 		70A13DDD1636345900244866 /* DTCustomColoredAccessory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTCustomColoredAccessory.h; path = ../DTCustomColoredAccessory.h; sourceTree = "<group>"; };
 		70A13DDE1636345E00244866 /* DTCustomColoredAccessory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTCustomColoredAccessory.m; path = ../DTCustomColoredAccessory.m; sourceTree = "<group>"; };
 		70A13DE0163734CE00244866 /* ScrollLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollLabel.h; sourceTree = "<group>"; };
 		70A13DE1163734D000244866 /* ScrollLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScrollLabel.m; sourceTree = "<group>"; };
+		70A13DE7163A46CC00244866 /* slider-trackGray@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider-trackGray@2x.png"; sourceTree = "<group>"; };
+		70A13DE8163A46CD00244866 /* slider-trackGray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider-trackGray.png"; sourceTree = "<group>"; };
+		70A13DFB163DD02200244866 /* libbassenc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libbassenc.a; sourceTree = "<group>"; };
+		70A13DFD163DD02200244866 /* libbassflac.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libbassflac.a; sourceTree = "<group>"; };
+		70A13DFF163DD02200244866 /* libbassmidi.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libbassmidi.a; sourceTree = "<group>"; };
+		70A13E01163DD02200244866 /* libbassmix.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libbassmix.a; sourceTree = "<group>"; };
+		70A13E03163DD02200244866 /* libbassopus.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libbassopus.a; sourceTree = "<group>"; };
+		70A13E05163DD02200244866 /* libbasswv.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libbasswv.a; sourceTree = "<group>"; };
+		70A13E06163DD02200244866 /* libbass.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libbass.a; sourceTree = "<group>"; };
+		70A13E08163DD02200244866 /* libbass.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libbass.a; sourceTree = "<group>"; };
+		70A13E11163DD10500244866 /* bass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bass.h; sourceTree = "<group>"; };
+		70A13E12163DD19000244866 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		70A13E14163DD1AA00244866 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		70A13E16163DD1BC00244866 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		70ADDC0B16113CAD00219873 /* sound.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = sound.caf; path = ../../../../AddMusic/Resources/sound.caf; sourceTree = "<group>"; };
 		70ADDC1D1614178500219873 /* CollectionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionItem.h; sourceTree = "<group>"; };
 		70ADDC1E1614178500219873 /* CollectionItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionItem.m; sourceTree = "<group>"; };
@@ -239,6 +273,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				70A13E17163DD1BD00244866 /* Accelerate.framework in Frameworks */,
+				70A13E15163DD1AA00244866 /* CFNetwork.framework in Frameworks */,
+				70A13E13163DD19100244866 /* SystemConfiguration.framework in Frameworks */,
 				70974B5D1630701200A33B7D /* CoreImage.framework in Frameworks */,
 				707862A51626385700871260 /* CoreData.framework in Frameworks */,
 				70515C461611210100D96335 /* MediaPlayer.framework in Frameworks */,
@@ -247,6 +284,14 @@
 				7060522C14F88D43001A1CDB /* UIKit.framework in Frameworks */,
 				7060522E14F88D43001A1CDB /* Foundation.framework in Frameworks */,
 				7060523014F88D43001A1CDB /* CoreGraphics.framework in Frameworks */,
+				70A13E09163DD02200244866 /* libbassenc.a in Frameworks */,
+				70A13E0A163DD02200244866 /* libbassflac.a in Frameworks */,
+				70A13E0B163DD02200244866 /* libbassmidi.a in Frameworks */,
+				70A13E0C163DD02200244866 /* libbassmix.a in Frameworks */,
+				70A13E0D163DD02200244866 /* libbassopus.a in Frameworks */,
+				70A13E0E163DD02200244866 /* libbasswv.a in Frameworks */,
+				70A13E0F163DD02200244866 /* libbass.a in Frameworks */,
+				70A13E10163DD02200244866 /* libbass.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -266,11 +311,7 @@
 		7060521C14F88D43001A1CDB = {
 			isa = PBXGroup;
 			children = (
-				70A13DD2163316A600244866 /* redWhiteBlackPlay114.png */,
-				70A13DD01633168E00244866 /* redWhiteBlackPlay57.png */,
-				70A13DC516330B4500244866 /* redWhitePlay114.png */,
-				70A13DC316330B2800244866 /* redWhitePlay57.png */,
-				70974B5C1630701200A33B7D /* CoreImage.framework */,
+				70A13DF9163DD02100244866 /* bass24-iphone */,
 				7060523114F88D43001A1CDB /* MegaTunes Player */,
 				7060524F14F88D44001A1CDB /* MegaTunes PlayerTests */,
 				7060522A14F88D43001A1CDB /* Frameworks */,
@@ -281,7 +322,7 @@
 		7060522814F88D43001A1CDB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				7060522714F88D43001A1CDB /* MegaTunes Player.app */,
+				7060522714F88D43001A1CDB /* MegaTunes.app */,
 				7060524814F88D44001A1CDB /* MegaTunes PlayerTests.octest */,
 			);
 			name = Products;
@@ -290,6 +331,10 @@
 		7060522A14F88D43001A1CDB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				70A13E16163DD1BC00244866 /* Accelerate.framework */,
+				70A13E14163DD1AA00244866 /* CFNetwork.framework */,
+				70A13E12163DD19000244866 /* SystemConfiguration.framework */,
+				70974B5C1630701200A33B7D /* CoreImage.framework */,
 				707862A41626385700871260 /* CoreData.framework */,
 				70515C43161120C900D96335 /* AudioToolbox.framework */,
 				70515C451611210000D96335 /* MediaPlayer.framework */,
@@ -553,9 +598,86 @@
 			name = Unused;
 			sourceTree = "<group>";
 		};
+		70A13DF9163DD02100244866 /* bass24-iphone */ = {
+			isa = PBXGroup;
+			children = (
+				70A13E11163DD10500244866 /* bass.h */,
+				70A13DFA163DD02200244866 /* bassenc */,
+				70A13DFC163DD02200244866 /* bassflac */,
+				70A13DFE163DD02200244866 /* bassmidi */,
+				70A13E00163DD02200244866 /* bassmix */,
+				70A13E02163DD02200244866 /* bassopus */,
+				70A13E04163DD02200244866 /* basswv */,
+				70A13E06163DD02200244866 /* libbass.a */,
+				70A13E07163DD02200244866 /* mp3-free */,
+			);
+			path = "bass24-iphone";
+			sourceTree = "<group>";
+		};
+		70A13DFA163DD02200244866 /* bassenc */ = {
+			isa = PBXGroup;
+			children = (
+				70A13DFB163DD02200244866 /* libbassenc.a */,
+			);
+			path = bassenc;
+			sourceTree = "<group>";
+		};
+		70A13DFC163DD02200244866 /* bassflac */ = {
+			isa = PBXGroup;
+			children = (
+				70A13DFD163DD02200244866 /* libbassflac.a */,
+			);
+			path = bassflac;
+			sourceTree = "<group>";
+		};
+		70A13DFE163DD02200244866 /* bassmidi */ = {
+			isa = PBXGroup;
+			children = (
+				70A13DFF163DD02200244866 /* libbassmidi.a */,
+			);
+			path = bassmidi;
+			sourceTree = "<group>";
+		};
+		70A13E00163DD02200244866 /* bassmix */ = {
+			isa = PBXGroup;
+			children = (
+				70A13E01163DD02200244866 /* libbassmix.a */,
+			);
+			path = bassmix;
+			sourceTree = "<group>";
+		};
+		70A13E02163DD02200244866 /* bassopus */ = {
+			isa = PBXGroup;
+			children = (
+				70A13E03163DD02200244866 /* libbassopus.a */,
+			);
+			path = bassopus;
+			sourceTree = "<group>";
+		};
+		70A13E04163DD02200244866 /* basswv */ = {
+			isa = PBXGroup;
+			children = (
+				70A13E05163DD02200244866 /* libbasswv.a */,
+			);
+			path = basswv;
+			sourceTree = "<group>";
+		};
+		70A13E07163DD02200244866 /* mp3-free */ = {
+			isa = PBXGroup;
+			children = (
+				70A13E08163DD02200244866 /* libbass.a */,
+			);
+			path = "mp3-free";
+			sourceTree = "<group>";
+		};
 		70ADDC0E1612245400219873 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				707862A61626391600871260 /* MegaTunes Player.xcdatamodeld */,
+				707862AD1626410500871260 /* MediaItemUserData.h */,
+				707862AE1626410500871260 /* MediaItemUserData.m */,
+				70984C1916408B0400CE7EA9 /* UserMediaItemCollection.h */,
+				70984C1A16408B0400CE7EA9 /* UserMediaItemCollection.m */,
 				70A13D8C1631B40300244866 /* MediaGroup.h */,
 				70A13D8D1631B40300244866 /* MediaGroup.m */,
 				70A13D8F1631BCC000244866 /* MediaGroupCell.h */,
@@ -568,8 +690,6 @@
 				70515C28160F986E00D96335 /* SongCell.m */,
 				70515C1E160CBE7600D96335 /* Song.h */,
 				70A13DD816334B6D00244866 /* Song.m */,
-				707862AD1626410500871260 /* MediaItem.h */,
-				707862AE1626410500871260 /* MediaItem.m */,
 				707862BA1629F33900871260 /* AutoScrollLabel.h */,
 				707862BB1629F33A00871260 /* AutoScrollLabel.m */,
 				70A13DE0163734CE00244866 /* ScrollLabel.h */,
@@ -612,11 +732,17 @@
 		70ADDC11161224BD00219873 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				70A13DD2163316A600244866 /* redWhiteBlackPlay114.png */,
+				70A13DD01633168E00244866 /* redWhiteBlackPlay57.png */,
+				70A13DC516330B4500244866 /* redWhitePlay114.png */,
+				70A13DC316330B2800244866 /* redWhitePlay57.png */,
 				70A13D971632FF0100244866 /* playIcon.png */,
 				70A13D981632FF0100244866 /* playIcon@2x.png */,
 				70A13D931632FEEF00244866 /* highlightedPlayIcon.png */,
 				70A13D941632FEEF00244866 /* highlightedPlayIcon@2x.png */,
 				70974B981630CB6000A33B7D /* play.png */,
+				70984C14163F964600CE7EA9 /* playing.png */,
+				70984C15163F964600CE7EA9 /* playing@2x.png */,
 				70974B921630C3B000A33B7D /* list-background.png */,
 				70974B931630C3B100A33B7D /* list-background@2x.png */,
 				70974B861630AF4400A33B7D /* bigforward.png */,
@@ -629,6 +755,8 @@
 				70974B731630A3A700A33B7D /* background@2x.png */,
 				70974B701630A27200A33B7D /* background.png */,
 				70974B5E163071CE00A33B7D /* slider-fill.png */,
+				70A13DE7163A46CC00244866 /* slider-trackGray@2x.png */,
+				70A13DE8163A46CD00244866 /* slider-trackGray.png */,
 				70974B5F163071CE00A33B7D /* slider-fill@2x.png */,
 				70974B60163071CE00A33B7D /* slider-handle.png */,
 				70974B61163071CE00A33B7D /* slider-handle@2x.png */,
@@ -640,7 +768,6 @@
 				70974B191630565100A33B7D /* back@2x.png */,
 				70974B1C163056B800A33B7D /* menubar-button.png */,
 				70974B1D163056B800A33B7D /* menubar-button@2x.png */,
-				707862A61626391600871260 /* MegaTunes Player.xcdatamodeld */,
 				707862A21624D16E00871260 /* Settings.bundle */,
 				70515C19160C038700D96335 /* Default-568h@2x.png */,
 				70ADDC0B16113CAD00219873 /* sound.caf */,
@@ -666,7 +793,7 @@
 			);
 			name = MegaTunes;
 			productName = "MegaTunes Player";
-			productReference = 7060522714F88D43001A1CDB /* MegaTunes Player.app */;
+			productReference = 7060522714F88D43001A1CDB /* MegaTunes.app */;
 			productType = "com.apple.product-type.application";
 		};
 		7060524714F88D44001A1CDB /* MegaTunes PlayerTests */ = {
@@ -763,6 +890,10 @@
 				70A13DC616330B4500244866 /* redWhitePlay114.png in Resources */,
 				70A13DD11633168E00244866 /* redWhiteBlackPlay57.png in Resources */,
 				70A13DD3163316A600244866 /* redWhiteBlackPlay114.png in Resources */,
+				70A13DE9163A46CD00244866 /* slider-trackGray@2x.png in Resources */,
+				70A13DEA163A46CD00244866 /* slider-trackGray.png in Resources */,
+				70984C16163F964600CE7EA9 /* playing.png in Resources */,
+				70984C17163F964600CE7EA9 /* playing@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -807,7 +938,7 @@
 				70ADDC30161A4A7700219873 /* CollectionViewController.m in Sources */,
 				70ADDC33161AC09C00219873 /* InitialViewController.m in Sources */,
 				707862A81626391600871260 /* MegaTunes Player.xcdatamodeld in Sources */,
-				707862AF1626410500871260 /* MediaItem.m in Sources */,
+				707862AF1626410500871260 /* MediaItemUserData.m in Sources */,
 				707862B21626631700871260 /* TextMagnifierViewController.m in Sources */,
 				707862B51626659900871260 /* NotesViewController.m in Sources */,
 				707862BC1629F33A00871260 /* AutoScrollLabel.m in Sources */,
@@ -829,6 +960,7 @@
 				70A13DD916334B6D00244866 /* Song.m in Sources */,
 				70A13DDF1636346000244866 /* DTCustomColoredAccessory.m in Sources */,
 				70A13DE2163734D200244866 /* ScrollLabel.m in Sources */,
+				70984C1B16408B0400CE7EA9 /* UserMediaItemCollection.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -941,6 +1073,18 @@
 				GCC_PREFIX_HEADER = "MegaTunes Player/MegaTunes Player-Prefix.pch";
 				GCC_VERSION = "";
 				INFOPLIST_FILE = "MegaTunes Player/MegaTunes Player-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/bass24-iphone/bassenc\"",
+					"\"$(SRCROOT)/bass24-iphone/bassflac\"",
+					"\"$(SRCROOT)/bass24-iphone/bassmidi\"",
+					"\"$(SRCROOT)/bass24-iphone/bassmix\"",
+					"\"$(SRCROOT)/bass24-iphone/bassopus\"",
+					"\"$(SRCROOT)/bass24-iphone/basswv\"",
+					"\"$(SRCROOT)/bass24-iphone\"",
+					"\"$(SRCROOT)/bass24-iphone/mp3-free\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -953,6 +1097,18 @@
 				GCC_PREFIX_HEADER = "MegaTunes Player/MegaTunes Player-Prefix.pch";
 				GCC_VERSION = "";
 				INFOPLIST_FILE = "MegaTunes Player/MegaTunes Player-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/bass24-iphone/bassenc\"",
+					"\"$(SRCROOT)/bass24-iphone/bassflac\"",
+					"\"$(SRCROOT)/bass24-iphone/bassmidi\"",
+					"\"$(SRCROOT)/bass24-iphone/bassmix\"",
+					"\"$(SRCROOT)/bass24-iphone/bassopus\"",
+					"\"$(SRCROOT)/bass24-iphone/basswv\"",
+					"\"$(SRCROOT)/bass24-iphone\"",
+					"\"$(SRCROOT)/bass24-iphone/mp3-free\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

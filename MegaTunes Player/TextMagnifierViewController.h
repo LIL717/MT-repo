@@ -24,7 +24,8 @@
 @property (strong, nonatomic) IBOutlet UILabel *magnifiedLabel;
 
 - (IBAction)tapDetected:(UITapGestureRecognizer *)sender;
-- (IBAction)swipeDetected:(UIPanGestureRecognizer *)sender;
+- (IBAction)swipeDownDetected:(UISwipeGestureRecognizer *)sender;
+- (IBAction)swipeUpDetected:(UISwipeGestureRecognizer *)sender;
 
 
 @end

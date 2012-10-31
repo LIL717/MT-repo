@@ -27,6 +27,9 @@
 @synthesize groupingData;
 @synthesize selectedGroup;
 @synthesize musicPlayer;
+//@synthesize fetchedResultsController;
+@synthesize managedObjectContext;
+
 
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -60,9 +63,34 @@
     
     self.groupingData = [NSArray arrayWithObjects:group0, group1, group2, group3, group4, group5, group6, group7, nil];
     
+    return;    
+    
+}
+- (void) viewWillAppear:(BOOL)animated
+{
+//    LogMethod();
+    [super viewDidLoad];
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//    MPMusicPlayerController *musicPlayer = [[MPMusicPlayerController alloc] init];
+    if ([appDelegate useiPodPlayer]) {
+        musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
+    } else {
+        musicPlayer = [MPMusicPlayerController applicationMusicPlayer];
+    }
+    NSString *playingItem = [[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyTitle];
+    //    NSLog (@" nowPlayingItem is ****   %@", playingItem);
+    
+    if (playingItem) {
+        NSString *nowPlayingLabel = @"Now Playing";
+        
+        UIBarButtonItem *nowPlayingButton = [[UIBarButtonItem alloc] initWithTitle:nowPlayingLabel style:UIBarButtonItemStyleBordered target:self action: @selector(viewNowPlaying)];
+        
+        self.navigationItem.rightBarButtonItem= nowPlayingButton;
+    } else {
+        self.navigationItem.rightBarButtonItem= nil;
+    }
     return;
-    
-    
 }
 - (void)viewDidLoad
 {
@@ -86,6 +114,7 @@
 }
 
 #pragma mark - Table view data source
+// Configures the table view.
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -113,45 +142,6 @@
     return cell;
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
 #pragma mark - Table view delegate
 
 //	 To conform to the Human Interface Guidelines, selections should not be persistent --
@@ -160,6 +150,7 @@
 //    LogMethod();
 
 	[tableView deselectRowAtIndexPath: indexPath animated: YES];
+    
     self.selectedGroup = [self.groupingData objectAtIndex:indexPath.row];
     if (selectedGroup.name == @"Songs") {
         [self performSegueWithIdentifier: @"ViewSongCollection" sender: self];
@@ -181,7 +172,8 @@
 	if ([segue.identifier isEqualToString:@"ViewCollections"])
 	{
 		CollectionViewController *collectionViewController = segue.destinationViewController;
-
+        collectionViewController.managedObjectContext = self.managedObjectContext;
+        
         MPMediaQuery *myCollectionQuery = selectedGroup.queryType;
         
         self.collection = [myCollectionQuery collections];
@@ -193,6 +185,8 @@
     if ([segue.identifier isEqualToString:@"ViewSongCollection"])
 	{
         SongViewController *songViewController = segue.destinationViewController;
+        songViewController.managedObjectContext = self.managedObjectContext;
+
         
         MPMediaQuery *myCollectionQuery = selectedGroup.queryType;
         
@@ -222,24 +216,19 @@
         
         songViewController.itemCollection = [MPMediaItemCollection collectionWithItems: songMutableArray];
 	}
-//    if ([segue.identifier isEqualToString:@"ViewNowPlaying"])
-//	{
-//		MainViewController *mainViewController = segue.destinationViewController;
-//        
-////        if ([musicPlayer nowPlayingItem]) {
-//            CollectionItem *collectionItem = [CollectionItem alloc];
-//        NSString *titleIDKey = [self.musicPlayer.nowPlayingItem valueForProperty: MPMediaGroupingTitle];
-//
-//        collectionItem.name = self.musicPlayer.nowPlayingItem titlePropertyForGroupingType: (MPMediaGrouping) groupingType;
-//
-//            collectionItem.duration = [self.musicPlayer.nowPlayingItem valueForProperty:MPMediaItemPropertyPlaybackDuration];
-//            mainViewController.collectionItem = collectionItem;
-//            NSArray *fakeArray = [[NSArray alloc] initWithObjects: [self.musicPlayer nowPlayingItem], nil];
-//            mainViewController.userMediaItemCollection = [MPMediaItemCollection collectionWithItems: fakeArray];
-////            }
-//        }
-//
-}
+   if ([segue.identifier isEqualToString:@"ViewNowPlaying"])
+	{
+		MainViewController *mainViewController = segue.destinationViewController;
+        mainViewController.managedObjectContext = self.managedObjectContext;
 
+        mainViewController.playNew = NO;
+
+    }
+
+}
+- (IBAction)viewNowPlaying {
+    
+    [self performSegueWithIdentifier: @"ViewNowPlaying" sender: self];
+}
 @end
 

@@ -23,7 +23,7 @@
 
 - (void)viewDidLoad
 {
-    LogMethod();
+//    LogMethod();
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[[AppDelegate instance].colorSwitcher processImageWithName:@"background.png"]]];
@@ -45,7 +45,7 @@
     CGRect frame = newLabel.frame;
 //    frame.origin.x = 0;
 //    frame.size.height = CGRectGetHeight(scrollView.bounds);
-    frame.size.width = labelSize.width;
+    frame.size.width = labelSize.width + 35;
     newLabel.frame = frame;
 
     // Recenter label vertically within the scroll view
@@ -57,15 +57,17 @@
     size.width = CGRectGetWidth(newLabel.bounds);
     size.height = CGRectGetHeight(newLabel.bounds);
     scrollView.contentSize = size;
-//    scrollView.contentOffset = CGPointZero;
+    scrollView.contentOffset = CGPointZero;
 
-//// If the label is bigger than the space allocated, then it should scroll
-//if (CGRectGetWidth(self.mainLabel.bounds) > CGRectGetWidth(self.bounds))
-//{
-
-//    scrollView.contentSize = CGSizeMake(scrollView.contentSize.width,scrollView.frame.size.height);
     self.magnifiedLabel.frame = newLabel.frame;
-
+    self.magnifiedLabel.textAlignment = NSTextAlignmentCenter;
+    
+    if (scrollView.contentSize.width>scrollView.frame.size.height) {
+        scrollView.scrollEnabled = YES;
+    }
+    else {
+        scrollView.scrollEnabled = NO;
+    }
 
 }
 - (void)didReceiveMemoryWarning
@@ -82,9 +84,14 @@
     
 }
 
-- (IBAction)swipeDetected:(UIPanGestureRecognizer *)sender {
-    self.magnifiedLabel.text= @"Swipe";
+- (IBAction)swipeDownDetected:(UISwipeGestureRecognizer *)sender {
+    self.magnifiedLabel.text= @"Swipe Down";
+    self.magnifiedLabel.textAlignment = NSTextAlignmentLeft;
+}
 
+- (IBAction)swipeUpDetected:(UISwipeGestureRecognizer *)sender {
+    self.magnifiedLabel.text= @"Swipe Up";
+    self.magnifiedLabel.textAlignment = NSTextAlignmentLeft;
 }
 
 //- (IBAction)pinchDetected:(UIGestureRecognizer *)sender {

@@ -7,6 +7,8 @@
 //
 #import "ColorSwitcher.h"
 
+#define PLAYER_TYPE_PREF_KEY @"player_type_preference"
+
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate> {
 
@@ -28,6 +30,6 @@ NSPersistentStoreCoordinator *persistentStoreCoordinator;
 + (AppDelegate*)instance;
 
 - (void)customizeGlobalTheme;
-
+- (BOOL) useiPodPlayer;
 
 @end

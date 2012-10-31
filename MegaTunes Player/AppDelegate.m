@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "ColorSwitcher.h"
+#import "MediaGroupViewController.h"
 
 
 
@@ -87,6 +88,8 @@
     //Customize the look of the UINavBar for iOS5 devices
 }
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    MediaGroupViewController *mediaGroupViewController = [[MediaGroupViewController alloc] init];
+    mediaGroupViewController.managedObjectContext = self.managedObjectContext;
     
 self.colorSwitcher = [[ColorSwitcher alloc] initWithScheme:@"maroon"];
 //    self.colorSwitcher = [[ColorSwitcher alloc] initWithScheme:@"black"];
@@ -126,7 +129,7 @@ self.colorSwitcher = [[ColorSwitcher alloc] initWithScheme:@"maroon"];
 //    [[UITabBar appearance] setSelectionIndicatorImage:[UIImage tallImageNamed:@"selection-tab.png"]];
     
     UIImage *minImage = [UIImage tallImageNamed:@"slider-fill.png"];
-    UIImage *maxImage = [UIImage tallImageNamed:@"slider-track.png"];
+    UIImage *maxImage = [UIImage tallImageNamed:@"slider-trackGray.png"];
     UIImage *thumbImage = [UIImage tallImageNamed:@"slider-handle.png"];
     
     [[UISlider appearance] setMaximumTrackImage:maxImage
@@ -137,6 +140,15 @@ self.colorSwitcher = [[ColorSwitcher alloc] initWithScheme:@"maroon"];
                                 forState:UIControlStateNormal];
     [[UISlider appearance] setThumbImage:thumbImage
                                 forState:UIControlStateHighlighted];
+}
+// Returns whether or not to use the iPod music player instead of the application music player.
+- (BOOL) useiPodPlayer {
+    //      LogMethod();
+	if ([[NSUserDefaults standardUserDefaults] boolForKey: PLAYER_TYPE_PREF_KEY]) {
+		return YES;
+	} else {
+		return NO;
+	}
 }
 
 

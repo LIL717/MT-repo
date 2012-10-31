@@ -25,7 +25,7 @@
 
 - (void)viewDidLoad
 {
-    LogMethod();
+//    LogMethod();
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[[AppDelegate instance].colorSwitcher processImageWithName:@"background.png"]]];
@@ -62,14 +62,14 @@
 
 - (void)didReceiveMemoryWarning
 {
-    LogMethod();
+//    LogMethod();
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
 - (IBAction)cancel:(id)sender
 {
-    LogMethod();
+//    LogMethod();
     [self.delegate timeMagnifierViewControllerDidCancel:self];
 
 }

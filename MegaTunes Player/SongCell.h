@@ -10,6 +10,10 @@
 
 @property (nonatomic, strong) IBOutlet UILabel *nameLabel;
 @property (nonatomic, strong) IBOutlet UILabel *durationLabel;
-@property (nonatomic, strong) IBOutlet UIImageView *artworkImageView;
+//@property (strong, nonatomic) IBOutlet UILabel *BPM;
+@property (strong, nonatomic) IBOutlet UIImageView *playingIndicator;
+
+//@property (nonatomic, strong) IBOutlet UIImageView *artworkImageView;
+
 
 @end

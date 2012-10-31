@@ -6,8 +6,13 @@
 //
 //
 
-#import <UIKit/UIKit.h>
+@interface NotesViewController : UIViewController <NSFetchedResultsControllerDelegate> {
+    
+    NSFetchedResultsController *fetchedResultsController;
+    NSManagedObjectContext  *managedObjectContext;
+}
 
-@interface NotesViewController : UIViewController
+@property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 
 @end

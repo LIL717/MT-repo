@@ -12,6 +12,7 @@
 #import "SongViewController.h"
 #import "AppDelegate.h"
 #import "DTCustomColoredAccessory.h"
+#import "MainViewController.h"
 
 
 @interface CollectionViewController ()
@@ -21,9 +22,34 @@
 @implementation CollectionViewController
 
 @synthesize collection;
+@synthesize managedObjectContext;
 
-// Configures the table view.
-
+- (void) viewWillAppear:(BOOL)animated
+{
+//    LogMethod();
+    [super viewDidLoad];
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    MPMusicPlayerController *musicPlayer = [[MPMusicPlayerController alloc] init];
+    if ([appDelegate useiPodPlayer]) {
+        musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
+    } else {
+        musicPlayer = [MPMusicPlayerController applicationMusicPlayer];
+    }
+    NSString *playingItem = [[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyTitle];
+    //    NSLog (@" nowPlayingItem is ****   %@", playingItem);
+    
+    if (playingItem) {
+        NSString *nowPlayingLabel = @"Now Playing";
+        
+        UIBarButtonItem *nowPlayingButton = [[UIBarButtonItem alloc] initWithTitle:nowPlayingLabel style:UIBarButtonItemStyleBordered target:self action: @selector(viewNowPlaying)];
+        
+        self.navigationItem.rightBarButtonItem= nowPlayingButton;
+    } else {
+        self.navigationItem.rightBarButtonItem= nil;
+    }
+    return;
+}
 - (void) viewDidLoad {
     
     [super viewDidLoad];
@@ -33,6 +59,7 @@
 }
 
 #pragma mark Table view methods________________________
+// Configures the table view.
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -92,8 +119,6 @@
 }
 - (NSNumber *)calculatePlaylistDuration: (MPMediaItemCollection *) currentQueue {
 
-//    MPMediaItemCollection *currentQueue = [MPMediaItemCollection collectionWithItems: [mediaPlaylist items]];
-
     NSArray *returnedQueue = [currentQueue items];
     
     long playlistDuration = 0;
@@ -120,6 +145,8 @@
 	if ([segue.identifier isEqualToString:@"ViewSongs"])
 	{
         SongViewController *songViewController = segue.destinationViewController;
+        songViewController.managedObjectContext = self.managedObjectContext;
+
 //        MPMediaPlaylist *mediaPlaylist = [self.collection objectAtIndex:indexPath.row];
         
         CollectionItem *collectionItem = [CollectionItem alloc];
@@ -131,8 +158,19 @@
         songViewController.collectionItem = collectionItem;
 
 	}
-}
+    if ([segue.identifier isEqualToString:@"ViewNowPlaying"])
+	{
+		MainViewController *mainViewController = segue.destinationViewController;
+        mainViewController.managedObjectContext = self.managedObjectContext;
 
+        mainViewController.playNew = NO;
+        
+    }
+}
+- (IBAction)viewNowPlaying {
+    
+    [self performSegueWithIdentifier: @"ViewNowPlaying" sender: self];
+}
 #pragma mark Application state management_____________
 // Standard methods for managing application state.
 - (void)didReceiveMemoryWarning {

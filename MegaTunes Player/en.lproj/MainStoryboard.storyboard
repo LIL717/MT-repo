@@ -25,8 +25,12 @@
                                             <rect key="frame" x="0.0" y="0.0" width="480" height="55"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         </imageView>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="bWk-ui-VYG">
+                                            <rect key="frame" x="0.0" y="0.0" width="20" height="52"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        </imageView>
                                         <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Song Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="LLO-eK-etK">
-                                            <rect key="frame" x="64" y="0.0" width="291" height="52"/>
+                                            <rect key="frame" x="20" y="0.0" width="335" height="52"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <accessibility key="accessibilityConfiguration">
                                                 <accessibilityTraits key="traits" none="YES" button="YES" staticText="YES"/>
@@ -43,18 +47,15 @@
                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                             <color key="highlightedColor" red="0.070588238540000001" green="0.1176470667" blue="1" alpha="1" colorSpace="deviceRGB"/>
                                         </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="S0r-ES-FUB">
-                                            <rect key="frame" x="6" y="2" width="50" height="50"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        </imageView>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
                                 <connections>
-                                    <outlet property="artworkImageView" destination="S0r-ES-FUB" id="mq1-j9-neF"/>
                                     <outlet property="durationLabel" destination="Phy-c0-a8J" id="E8Q-5g-nGX"/>
                                     <outlet property="nameLabel" destination="LLO-eK-etK" id="hkp-q4-xrO"/>
+                                    <outlet property="playingIndicator" destination="bWk-ui-VYG" id="R7X-qL-I4U"/>
                                     <segue destination="Ywg-Wn-0wn" kind="push" identifier="ViewNotes" trigger="accessoryAction" id="a7U-Ne-rNp"/>
+                                    <segue destination="SKu-HW-GrJ" kind="push" identifier="PlaySong" id="KTP-yY-zd0"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -63,17 +64,14 @@
                             <outlet property="delegate" destination="gjV-Ax-XfZ" id="Vq1-mT-HTy"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="dhT-yz-i3b">
-                        <barButtonItem key="rightBarButtonItem" image="play.png" id="3Pn-kh-dNd">
-                            <connections>
-                                <segue destination="SKu-HW-GrJ" kind="push" identifier="LaunchPlayer" id="gU9-o3-AVg"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="dhT-yz-i3b"/>
+                    <connections>
+                        <segue destination="SKu-HW-GrJ" kind="push" identifier="ViewNowPlaying" id="meM-wE-Do9"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4hw-eH-OGw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1175" y="-80"/>
+            <point key="canvasLocation" x="509" y="-465"/>
         </scene>
         <!--Main View Controller - Now Playing-->
         <scene sceneID="PLo-C0-SNg">
@@ -312,11 +310,13 @@
                                         <rect key="frame" x="20" y="20" width="480" height="256"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <gestureRecognizers/>
                                         <fontDescription key="fontDescription" type="system" pointSize="144"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
+                                <gestureRecognizers/>
                             </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -324,7 +324,8 @@
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="U9o-U4-qSP" appends="YES" id="lFS-AB-WW7"/>
-                            <outletCollection property="gestureRecognizers" destination="VwD-It-lxh" appends="YES" id="0gh-KN-KHX"/>
+                            <outletCollection property="gestureRecognizers" destination="wyn-s9-NK5" appends="YES" id="ELE-cM-SlR"/>
+                            <outletCollection property="gestureRecognizers" destination="5pS-mG-iAa" appends="YES" id="Cpt-Je-7GA"/>
                         </connections>
                     </view>
                     <navigationItem key="navigationItem" id="kMA-zk-0F8"/>
@@ -339,13 +340,18 @@
                         <action selector="tapDetected:" destination="de3-2B-HN2" id="NyG-4m-XUG"/>
                     </connections>
                 </tapGestureRecognizer>
-                <swipeGestureRecognizer direction="right" id="VwD-It-lxh">
+                <swipeGestureRecognizer direction="up" id="wyn-s9-NK5">
                     <connections>
-                        <action selector="swipeDetected:" destination="de3-2B-HN2" id="AyX-kN-d9k"/>
+                        <action selector="swipeUpDetected:" destination="de3-2B-HN2" id="mR3-Zc-Rdm"/>
+                    </connections>
+                </swipeGestureRecognizer>
+                <swipeGestureRecognizer direction="down" id="5pS-mG-iAa">
+                    <connections>
+                        <action selector="swipeDownDetected:" destination="de3-2B-HN2" id="gg8-NU-S5h"/>
                     </connections>
                 </swipeGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1861" y="-997"/>
+            <point key="canvasLocation" x="1885" y="-1025"/>
         </scene>
         <!--Notes View Controller - Song Title - Notes-->
         <scene sceneID="lX4-NS-eqE">
@@ -377,9 +383,9 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="r8e-d5-CYZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <swipeGestureRecognizer direction="right" id="dVR-uO-zXv"/>
             </objects>
-            <point key="canvasLocation" x="1639" y="-244"/>
+            <point key="canvasLocation" x="1279" y="-436"/>
         </scene>
-        <!--Collection View Controller-->
+        <!--Collection View Controller - Title-->
         <scene sceneID="iGd-8z-avv">
             <objects>
                 <tableViewController id="3mw-Fa-t6y" customClass="CollectionViewController" sceneMemberID="viewController">
@@ -429,11 +435,14 @@
                             <outlet property="delegate" destination="3mw-Fa-t6y" id="JaW-mg-XX4"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="Ayb-bl-N3f"/>
+                    <navigationItem key="navigationItem" title="Title" id="WjX-r5-2ng"/>
+                    <connections>
+                        <segue destination="SKu-HW-GrJ" kind="push" identifier="ViewNowPlaying" id="vV4-lL-xUt"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mrf-ma-Aqo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="721" y="183"/>
+            <point key="canvasLocation" x="-295" y="-1137"/>
         </scene>
         <!--Initial View Controller - Select Music-->
         <scene sceneID="ViE-Kw-rK7">
@@ -470,7 +479,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="chD-Zk-2gz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="862" y="-2161"/>
+            <point key="canvasLocation" x="894" y="-2385"/>
         </scene>
         <!--Media Group View Controller - Select Music-->
         <scene sceneID="bHl-Hx-jEO">
@@ -513,21 +522,16 @@
                             <outlet property="delegate" destination="8Ac-mx-c9L" id="leR-H9-IKT"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Select Music" id="XDm-ZB-8fy">
-                        <barButtonItem key="rightBarButtonItem" title="Now Playing" id="QLM-gE-0FO">
-                            <connections>
-                                <segue destination="SKu-HW-GrJ" kind="push" identifier="SelectNowPlaiying" id="AQf-sm-3bf"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Select Music" id="XDm-ZB-8fy"/>
                     <connections>
                         <segue destination="3mw-Fa-t6y" kind="push" identifier="ViewCollections" id="CjS-oa-CJt"/>
                         <segue destination="gjV-Ax-XfZ" kind="push" identifier="ViewSongCollection" id="H29-Wa-gBT"/>
+                        <segue destination="SKu-HW-GrJ" kind="push" identifier="ViewNowPlaying" id="3qy-a0-s4d"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JTz-1X-4mk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="356" y="-393"/>
+            <point key="canvasLocation" x="-52" y="-1793"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="joY-fm-rHX">
@@ -546,7 +550,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bEm-XX-XrW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="72" y="-2129"/>
+            <point key="canvasLocation" x="356" y="-2393"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="WJB-1M-hqO">
@@ -565,7 +569,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Tpw-bG-EUm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1165" y="-953"/>
+            <point key="canvasLocation" x="1261" y="-1025"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="oUG-3e-BQe">
@@ -584,7 +588,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WQr-Xh-O7m" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1229" y="-1522"/>
+            <point key="canvasLocation" x="1269" y="-1514"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="RAq-bx-yF7">
@@ -603,7 +607,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="S5q-BT-x6p" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-63" y="-393"/>
+            <point key="canvasLocation" x="-551" y="-1809"/>
         </scene>
     </scenes>
     <resources>
@@ -611,97 +615,16 @@
         <image name="bigplay.png" width="128" height="120"/>
         <image name="bigrewind.png" width="64" height="60"/>
         <image name="list-background.png" width="320" height="77"/>
-        <image name="play.png" width="16" height="15"/>
     </resources>
-    <classes>
-        <class className="AutoScrollLabel" superclassName="UIScrollView">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/AutoScrollLabel.h"/>
-        </class>
-        <class className="CollectionItemCell" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/CollectionItemCell.h"/>
-            <relationships>
-                <relationship kind="outlet" name="durationLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="CollectionViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/CollectionViewController.h"/>
-        </class>
-        <class className="InitialViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/InitialViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="choosePlaylist:"/>
-                <relationship kind="outlet" name="choosePlaylist" candidateClass="UIButton"/>
-            </relationships>
-        </class>
-        <class className="MainViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MainViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="moveSlider:"/>
-                <relationship kind="action" name="playOrPauseMusic:"/>
-                <relationship kind="action" name="skipBack:"/>
-                <relationship kind="action" name="skipForward:"/>
-                <relationship kind="outlet" name="elapsedTimeLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="navigationBar" candidateClass="UINavigationBar"/>
-                <relationship kind="outlet" name="nextButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="nextLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="nextSongLabel" candidateClass="AutoScrollLabel"/>
-                <relationship kind="outlet" name="nowPlayingLabel" candidateClass="AutoScrollLabel"/>
-                <relationship kind="outlet" name="playPauseButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="previousButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="progressSlider" candidateClass="UISlider"/>
-                <relationship kind="outlet" name="remainingTimeLabel" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="MediaGroupCell" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MediaGroupCell.h"/>
-            <relationships>
-                <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="MediaGroupViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MediaGroupViewController.h"/>
-        </class>
-        <class className="NotesViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NotesViewController.h"/>
-        </class>
-        <class className="SongCell" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SongCell.h"/>
-            <relationships>
-                <relationship kind="outlet" name="artworkImageView" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="durationLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="SongViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SongViewController.h"/>
-        </class>
-        <class className="TextMagnifierViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/TextMagnifierViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="swipeDetected:" candidateClass="UIPanGestureRecognizer"/>
-                <relationship kind="action" name="tapDetected:" candidateClass="UITapGestureRecognizer"/>
-                <relationship kind="outlet" name="magnifiedLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
-            </relationships>
-        </class>
-        <class className="TimeMagnifierViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/TimeMagnifierViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="cancel:"/>
-                <relationship kind="outlet" name="magnifiedText" candidateClass="UIButton"/>
-            </relationships>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="AZe-Nd-Xxh"/>
-        <segue reference="gU9-o3-AVg"/>
-        <segue reference="H29-Wa-gBT"/>
         <segue reference="foj-kr-5jq"/>
+        <segue reference="3qy-a0-s4d"/>
+        <segue reference="H29-Wa-gBT"/>
+        <segue reference="AZe-Nd-Xxh"/>
     </inferredMetricsTieBreakers>
 </document>

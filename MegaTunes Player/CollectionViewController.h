@@ -8,7 +8,11 @@
 @class CollectionItem;
 #import "MediaGroupViewController.h"
 
-@interface CollectionViewController : UITableViewController <MPMediaPickerControllerDelegate, MediaGroupViewControllerDelegate, UITableViewDelegate>
+@interface CollectionViewController : UITableViewController <MPMediaPickerControllerDelegate, MediaGroupViewControllerDelegate, UITableViewDelegate> {
+    NSManagedObjectContext *managedObjectContext;
+}
+
+@property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 
 @property (nonatomic, strong)   NSArray *collection;
 

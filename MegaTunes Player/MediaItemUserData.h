@@ -1,12 +1,12 @@
 //
-//  MediaItem.h
+//  MediaItemUserData.h
 //  MegaTunes Player
 //
 //  Created by Lori Hill on 10/10/12.
 //
 //
 
-@interface MediaItem : NSManagedObject
+@interface MediaItemUserData : NSManagedObject
 
 @property (nonatomic, retain) NSString *title;
 @property (nonatomic, retain) NSNumber *playbackDuration;
