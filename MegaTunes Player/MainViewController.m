@@ -11,6 +11,7 @@
 #import "TextMagnifierViewController.h"
 #import "TimeMagnifierViewController.h"
 #import "AppDelegate.h"
+#import "ItemCollection.h"
 
 
 #pragma mark Audio session callbacks_______________________
@@ -106,7 +107,7 @@ void audioRouteChangeListenerCallback (
 @synthesize nowPlayingInfoCenter;
 @synthesize playNew;                    //Flag set if new song has been selected to play
 @synthesize itemToPlay;
-@synthesize fetchedResultsController;
+@synthesize fetchedResultsController = fetchedResultsController_;
 @synthesize managedObjectContext;
 
 //these lines came from player view controller
@@ -285,13 +286,21 @@ void audioRouteChangeListenerCallback (
 
 	MPMediaItem *currentItem = [musicPlayer nowPlayingItem];
     
+    ItemCollection *itemCollection = [ItemCollection alloc];
+    itemCollection.managedObjectContext = self.managedObjectContext;
     
-    NSArray *returnedQueue = [self.userMediaItemCollection items];
-    
-    for (MPMediaItem *song in returnedQueue) {
-        NSString *songTitle = [song valueForProperty: MPMediaItemPropertyTitle];
-        NSLog (@"\t\t%@", songTitle);
+    self.userMediaItemCollection = [itemCollection containsItem: [currentItem valueForProperty: MPMediaItemPropertyTitle]];
+    {
+        NSLog (@"song found in queue");
+        //rebuild the queue so we can get next song and duration
     }
+    
+//    NSArray *returnedQueue = [self.userMediaItemCollection items];
+//    
+//    for (MPMediaItem *song in returnedQueue) {
+//        NSString *songTitle = [song valueForProperty: MPMediaItemPropertyTitle];
+//        NSLog (@"\t\t%@", songTitle);
+//    }
     
     // Display the song name for the now-playing media item and next-playing media item with duration
     // scroll marquee style if too long for field
@@ -604,8 +613,8 @@ void audioRouteChangeListenerCallback (
     //need this to use MPNowPlayingInfoCenter
     [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
 
-    
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[[AppDelegate instance].colorSwitcher processImageWithName:@"background.png"]]];
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];    
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[appDelegate.colorSwitcher processImageWithName:@"background.png"]]];
 
     //not sure, but think this is only needed to play sounds not music
 //    [self setupApplicationAudio];
@@ -615,7 +624,7 @@ void audioRouteChangeListenerCallback (
         // Instantiate the music player. If you specied the iPod music player in the Settings app,
         //		honor the current state of the built-in iPod app.
     
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
     if ([appDelegate useiPodPlayer]) {
         
         [self setMusicPlayer: [MPMusicPlayerController iPodMusicPlayer]];
@@ -632,6 +641,14 @@ void audioRouteChangeListenerCallback (
     
     if (playNew) {
         [musicPlayer setQueueWithItemCollection: self.userMediaItemCollection];
+        
+//        NSArray *mediaItemArray = [self.userMediaItemCollection items];
+        
+        ItemCollection *itemCollection = [ItemCollection alloc];
+        itemCollection.managedObjectContext = self.managedObjectContext;
+//        [itemCollection addCollectionToCoreData:mediaItemArray];
+        [itemCollection addCollectionToCoreData:self.userMediaItemCollection];
+
         
         [musicPlayer setNowPlayingItem: self.itemToPlay];
         [self playMusic];
@@ -795,5 +812,56 @@ void audioRouteChangeListenerCallback (
 - (void)viewDidUnload {
     [self setNextLabel:nil];
     [super viewDidUnload];
+}
+
+#pragma mark - Fetched results controller
+
+- (NSFetchedResultsController *)fetchedResultsController
+{
+    
+    if (fetchedResultsController_ != nil)
+    {
+        return fetchedResultsController_;
+    }
+    
+    /*
+     Set up the fetched results controller.
+     */
+    // Create the fetch request for the entity.
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    // Edit the entity name as appropriate.
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"ItemCollection" inManagedObjectContext:self.managedObjectContext];
+    
+    [fetchRequest setEntity:entity];
+    
+    // Set the batch size to a suitable number.
+    [fetchRequest setFetchBatchSize:20];
+    
+    // Edit the sort key as appropriate.
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
+    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
+    
+    [fetchRequest setSortDescriptors:sortDescriptors];
+    
+    // Edit the section name key path and cache name if appropriate.
+    // nil for section name key path means "no sections".
+    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:@"Root"];
+    aFetchedResultsController.delegate = self;
+    self.fetchedResultsController = aFetchedResultsController;
+    
+	NSError *error = nil;
+	if (![self.fetchedResultsController performFetch:&error])
+    {
+        UIAlertView* alertView =
+        [[UIAlertView alloc] initWithTitle:@"Data Management Error"
+                                   message:@"Press the Home button to quit this application."
+                                  delegate:self
+                         cancelButtonTitle:@"OK"
+                         otherButtonTitles: nil];
+        [alertView show];
+
+	}
+    
+    return fetchedResultsController_;
 }
 @end

@@ -12,56 +12,97 @@
 
 
 
-@implementation AppDelegate 
+@implementation AppDelegate
+
+
 @synthesize window = _window;
 @synthesize colorSwitcher;
+@synthesize managedObjectContext = managedObjectContext_;
+@synthesize managedObjectModel = managedObjectModel_;
+@synthesize fetchedResultsController = fetchedResultsController_;
+@synthesize persistentStoreCoordinator = persistentStoreCoordinator_;
 
-+ (AppDelegate *)instance {
-    return [[UIApplication sharedApplication] delegate];
-}
+//+ (AppDelegate *)instance {
+//    return [[UIApplication sharedApplication] delegate];
+//}
 
-//Explicitly write Core Data accessors
-- (NSManagedObjectContext *) managedObjectContext {
-    if (managedObjectContext != nil) {
-        return managedObjectContext;
+#pragma mark - Core Data stack
+
+/**
+ Returns the managed object context for the application.
+ If the context doesn't already exist, it is created and bound to the persistent store coordinator for the application.
+ */
+- (NSManagedObjectContext *)managedObjectContext
+{
+    if (managedObjectContext_ != nil)
+    {
+        return managedObjectContext_;
     }
+    
     NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
-    if (coordinator != nil) {
-        managedObjectContext = [[NSManagedObjectContext alloc] init];
-        [managedObjectContext setPersistentStoreCoordinator: coordinator];
+    if (coordinator != nil)
+    {
+        managedObjectContext_ = [[NSManagedObjectContext alloc] init];
+        [managedObjectContext_ setPersistentStoreCoordinator:coordinator];
     }
-    
-    return managedObjectContext;
+    return managedObjectContext_;
 }
 
-- (NSManagedObjectModel *)managedObjectModel {
-    if (managedObjectModel != nil) {
-        return managedObjectModel;
+/**
+ Returns the managed object model for the application.
+ If the model doesn't already exist, it is created from the application's model.
+ */
+- (NSManagedObjectModel *)managedObjectModel
+{
+    if (managedObjectModel_ != nil)
+    {
+        return managedObjectModel_;
     }
-    managedObjectModel = [NSManagedObjectModel mergedModelFromBundles:nil];
+    //    NSString *modelPath = [[NSBundle mainBundle] pathForResource:@"CroatiaFest" ofType:@"momd"];
+    //    NSURL *modelURL = [NSURL fileURLWithPath:modelPath];
     
-    return managedObjectModel;
+    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"MegaTunes Player" withExtension:@"momd"];
+    managedObjectModel_ = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+    return managedObjectModel_;
 }
 
-- (NSPersistentStoreCoordinator *)persistentStoreCoordinator {
-    if (persistentStoreCoordinator != nil) {
-        return persistentStoreCoordinator;
+/**
+ Returns the persistent store coordinator for the application.
+ If the coordinator doesn't already exist, it is created and the application's store added to it.
+ */
+- (NSPersistentStoreCoordinator *)persistentStoreCoordinator
+{
+    if (persistentStoreCoordinator_ != nil)
+    {
+        return persistentStoreCoordinator_;
     }
-    NSURL *storeUrl = [NSURL fileURLWithPath: [[self applicationDocumentsDirectory]
-                                               stringByAppendingPathComponent: @"<Project Name>.sqlite"]];
+    
+    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"MegaTunes Player.sqlite"];
+    
     NSError *error = nil;
-    persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc]
-                                  initWithManagedObjectModel:[self managedObjectModel]];
-    if(![persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
-                                                 configuration:nil URL:storeUrl options:nil error:&error]) {
-        /*Error for store creation should be handled in here*/
+    persistentStoreCoordinator_ = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
+    if (![persistentStoreCoordinator_ addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error])
+    {
+        UIAlertView* alertView =
+        [[UIAlertView alloc] initWithTitle:@"Pazi!! Data Management Error with Persistent Store Coordinator"
+                                   message:@"Press the Home button to quit this application."
+                                  delegate:self
+                         cancelButtonTitle:@"OK"
+                         otherButtonTitles: nil];
+        [alertView show];
+        
     }
     
-    return persistentStoreCoordinator;
+    return persistentStoreCoordinator_;
 }
+#pragma mark - Application's Documents directory
 
-- (NSString *)applicationDocumentsDirectory {
-    return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+/**
+ Returns the URL to the application's Documents directory.
+ */
+- (NSURL *)applicationDocumentsDirectory
+{
+    return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -88,8 +129,9 @@
     //Customize the look of the UINavBar for iOS5 devices
 }
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    MediaGroupViewController *mediaGroupViewController = [[MediaGroupViewController alloc] init];
-    mediaGroupViewController.managedObjectContext = self.managedObjectContext;
+    UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
+    MediaGroupViewController *controller = (MediaGroupViewController *)navigationController.topViewController;
+    controller.managedObjectContext = self.managedObjectContext;
     
 self.colorSwitcher = [[ColorSwitcher alloc] initWithScheme:@"maroon"];
 //    self.colorSwitcher = [[ColorSwitcher alloc] initWithScheme:@"black"];

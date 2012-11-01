@@ -6,6 +6,7 @@
 //
 //
 @class CollectionItem;
+@class ItemCollection;
 #import "TimeMagnifierViewController.h"
 #import "TextMagnifierViewController.h"
 
@@ -36,6 +37,7 @@
     MPMediaItem                 *itemToPlay;
     NSFetchedResultsController  *fetchedResultsController;
     NSManagedObjectContext      *managedObjectContext;
+//    ItemCollection              *itemCollection;
 }
 @property (nonatomic, strong)	UINavigationBar			*navigationBar;
 @property (nonatomic, strong)	AutoScrollLabel			*nowPlayingLabel;

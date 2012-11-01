@@ -28,7 +28,9 @@
 //    LogMethod();
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[[AppDelegate instance].colorSwitcher processImageWithName:@"background.png"]]];
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[appDelegate.colorSwitcher processImageWithName:@"background.png"]]];
     [self.magnifiedText.titleLabel setNumberOfLines: 1];
     [self.magnifiedText.titleLabel setMinimumFontSize: 144.];
     [self.magnifiedText.titleLabel setAdjustsFontSizeToFitWidth: YES];

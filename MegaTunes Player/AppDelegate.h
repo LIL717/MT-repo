@@ -10,24 +10,25 @@
 #define PLAYER_TYPE_PREF_KEY @"player_type_preference"
 
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate> {
+@interface AppDelegate : UIResponder <UIApplicationDelegate, NSFetchedResultsControllerDelegate> {
 
-NSManagedObjectModel *managedObjectModel;
-NSManagedObjectContext *managedObjectContext;
-NSPersistentStoreCoordinator *persistentStoreCoordinator;
+@private
+    NSManagedObjectContext *managedObjectContext_;
+    NSManagedObjectModel *managedObjectModel_;
 }
 
 @property (strong, nonatomic) UIWindow *window;
-@property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
-@property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+@property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
+@property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic, retain) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
 @property (nonatomic, retain) ColorSwitcher *colorSwitcher;
 
 
-- (NSString *)applicationDocumentsDirectory;
+- (NSURL *)applicationDocumentsDirectory;
 
-+ (AppDelegate*)instance;
+//+ (AppDelegate*)instance;
 
 - (void)customizeGlobalTheme;
 - (BOOL) useiPodPlayer;
