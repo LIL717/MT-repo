@@ -72,14 +72,13 @@
     [super viewDidLoad];
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//    MPMusicPlayerController *musicPlayer = [[MPMusicPlayerController alloc] init];
+
     if ([appDelegate useiPodPlayer]) {
         musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
     } else {
         musicPlayer = [MPMusicPlayerController applicationMusicPlayer];
     }
     NSString *playingItem = [[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyTitle];
-    //    NSLog (@" nowPlayingItem is ****   %@", playingItem);
     
     if (playingItem) {
         NSString *nowPlayingLabel = @"Now Playing";
@@ -162,8 +161,6 @@
         {
             [self performSegueWithIdentifier: @"ViewCollections" sender: self];
     }
-//    NSLog (@"group.name is %@", group.name);
-
 }
 
 
@@ -210,12 +207,11 @@
         CollectionItem *collectionItem = [CollectionItem alloc];
         collectionItem.name = selectedGroup.name;
         collectionItem.duration = [NSNumber numberWithLong: playlistDuration];
-        
+        collectionItem.collection = [MPMediaItemCollection collectionWithItems: songMutableArray];
 
         songViewController.title = collectionItem.name;
         songViewController.collectionItem = collectionItem;
         
-        songViewController.itemCollection = [MPMediaItemCollection collectionWithItems: songMutableArray];
 	}
    if ([segue.identifier isEqualToString:@"ViewNowPlaying"])
 	{

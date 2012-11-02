@@ -13,7 +13,6 @@
 }
 
 @property (nonatomic, retain)   NSManagedObjectContext *managedObjectContext;
-@property (nonatomic, strong)   MPMediaItemCollection *itemCollection;
 @property (nonatomic, strong)   CollectionItem *collectionItem;
 @property (nonatomic, strong)	MPMusicPlayerController	*musicPlayer;
 

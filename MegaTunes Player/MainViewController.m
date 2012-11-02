@@ -173,13 +173,7 @@ void audioRouteChangeListenerCallback (
 {
     long playbackSeconds = musicPlayer.currentPlaybackTime;
     long songDuration = [[self.musicPlayer.nowPlayingItem valueForProperty:MPMediaItemPropertyPlaybackDuration] floatValue];
-    
-    long collectionDuration = [self.collectionItem.duration longValue];
-        
     long songRemainingSeconds = songDuration - playbackSeconds;
-    
-    long collectionElapsed = [[self calculatePlaylistElapsed] longValue] + playbackSeconds;
-    long collectionRemainingSeconds = collectionDuration - collectionElapsed;
     
     NSString *elapsed = [NSString stringWithFormat:@"%02lu:%02lu",playbackSeconds/60,playbackSeconds-(playbackSeconds/60)*60];
     NSString *songRemaining = [NSString stringWithFormat:@"%02lu:%02lu",songRemainingSeconds/60,songRemainingSeconds-(songRemainingSeconds/60)*60];
@@ -191,10 +185,22 @@ void audioRouteChangeListenerCallback (
     NSDate *elapsedTime = [formatter dateFromString:elapsed];
     self.elapsedTimeLabel.textColor = [UIColor whiteColor];
     self.elapsedTimeLabel.text = [formatter stringFromDate:elapsedTime];
-
+    
     NSDate *songRemainingTime = [formatter dateFromString:songRemaining];
     self.remainingTimeLabel.text = [NSString stringWithFormat:@"-%@",[formatter stringFromDate:songRemainingTime]];
     self.remainingTimeLabel.textColor = [UIColor whiteColor];
+    
+    long collectionDuration = [self.collectionItem.duration longValue];
+    long collectionElapsed;
+    long collectionRemainingSeconds;
+    
+    if (collectionDuration > 0) {
+        collectionElapsed = [[self calculatePlaylistElapsed] longValue] + playbackSeconds;
+        collectionRemainingSeconds = collectionDuration - collectionElapsed;
+    } else {
+        collectionRemainingSeconds = 0;
+    }
+    
     NSString *collectionRemaining = [[NSString alloc] init];
     
     if (collectionRemainingSeconds >= 3600) {
@@ -202,30 +208,31 @@ void audioRouteChangeListenerCallback (
                                          collectionRemainingSeconds / 3600,
                                          (collectionRemainingSeconds % 3600)/60,
                                          collectionRemainingSeconds % 60];
-        //                                     collectionRemainingSeconds-(collectionRemainingSeconds/60)*60];
-//        NSLog (@" collectionRemaining %@", collectionRemaining);
+
         formatter.dateFormat = @"H:mm:ss";
     } else {
         collectionRemaining = [NSString stringWithFormat:@"%lu:%02lu",
                                collectionRemainingSeconds /60,
                                collectionRemainingSeconds % 60];
-        //                                     collectionRemainingSeconds-(collectionRemainingSeconds/60)*60];
-//        NSLog (@" collectionRemaining %@", collectionRemaining);
+
         formatter.dateFormat = @"m:ss";
     }
     NSDate *collectionRemainingTime = [formatter dateFromString:collectionRemaining];
-    
-//    NSLog (@"    collectionRemainingTime %@", collectionRemainingTime);
-    
+        
     if (collectionRemainingTime) {
+        if (collectionRemainingSeconds > 0) {
+
         NSString *collectionRemainingLabel = [NSString stringWithFormat:@"-%@",[formatter stringFromDate:collectionRemainingTime]];
         
 
         UIBarButtonItem *durationButton = [[UIBarButtonItem alloc] initWithTitle:collectionRemainingLabel style:UIBarButtonItemStyleBordered target:self action: @selector(magnify)];
         
         self.navigationItem.rightBarButtonItem=durationButton;
-    }
-    [self actualizeSlider];
+        } else {
+            self.navigationItem.rightBarButtonItem=nil;
+        }
+    } 
+    [self positionSlider];
 }
 
 - (NSNumber *)calculatePlaylistElapsed {
@@ -250,7 +257,7 @@ void audioRouteChangeListenerCallback (
 
     return [NSNumber numberWithLong: playlistElapsed];
 }
-- (void)actualizeSlider {
+- (void)positionSlider {
     self.progressSlider.value = musicPlayer.currentPlaybackTime;
     self.progressSlider.minimumValue = 0;
     
@@ -286,21 +293,12 @@ void audioRouteChangeListenerCallback (
 
 	MPMediaItem *currentItem = [musicPlayer nowPlayingItem];
     
+    //check the queue stored in Core Data to see if the nowPlaying song is in that queue
     ItemCollection *itemCollection = [ItemCollection alloc];
     itemCollection.managedObjectContext = self.managedObjectContext;
     
-    self.userMediaItemCollection = [itemCollection containsItem: [currentItem valueForProperty: MPMediaItemPropertyTitle]];
-    {
-        NSLog (@"song found in queue");
-        //rebuild the queue so we can get next song and duration
-    }
-    
-//    NSArray *returnedQueue = [self.userMediaItemCollection items];
-//    
-//    for (MPMediaItem *song in returnedQueue) {
-//        NSString *songTitle = [song valueForProperty: MPMediaItemPropertyTitle];
-//        NSLog (@"\t\t%@", songTitle);
-//    }
+    self.collectionItem = [itemCollection containsItem: [currentItem valueForProperty: MPMediaItemPropertyTitle]];
+    self.userMediaItemCollection = collectionItem.collection;
     
     // Display the song name for the now-playing media item and next-playing media item with duration
     // scroll marquee style if too long for field
@@ -311,12 +309,9 @@ void audioRouteChangeListenerCallback (
     UIFont *newFont = [font fontWithSize:44];
     self.nowPlayingLabel.font = newFont;
     
-    
     NSUInteger nextPlayingIndex = [musicPlayer indexOfNowPlayingItem] + 1;
     
     if (nextPlayingIndex >= userMediaItemCollection.count) {
-        //        self.nextSongLabel.text = [NSString stringWithFormat: @"%@",
-        //                                   NSLocalizedString (@"End of Playlist Instructions", @"Label for Next song title when last song is playing")];
         self.nextSongLabel.text = [NSString stringWithFormat: @""];
         self.nextLabel.text = [NSString stringWithFormat:@""];
     } else {
@@ -330,7 +325,11 @@ void audioRouteChangeListenerCallback (
     self.nextSongLabel.font = newFont;
     self.nextSongLabel.textAlignment = NSTextAlignmentLeft;
     
+    [self updateTime];
+    [self nowPlayingInfo];
     
+}
+- (void) nowPlayingInfo {
     //  Set nowPlayingInfo
     //        MPMediaItemPropertyAlbumTitle
     //        MPMediaItemPropertyAlbumTrackCount
@@ -350,7 +349,7 @@ void audioRouteChangeListenerCallback (
     if (playingInfoCenter) {
         
         NSMutableDictionary *songInfo = [[NSMutableDictionary alloc] init];
-
+        
         if ([[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyAlbumTitle]) {
             [songInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyAlbumTitle] forKey:MPMediaItemPropertyAlbumTitle];
         }
@@ -364,7 +363,7 @@ void audioRouteChangeListenerCallback (
             [songInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyArtist] forKey:MPMediaItemPropertyArtist];
         }
         if ([[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyArtwork]) {
-                [songInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyArtwork] forKey:MPMediaItemPropertyArtwork];
+            [songInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyArtwork] forKey:MPMediaItemPropertyArtwork];
         }
         if ([[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyComposer]) {
             [songInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyComposer] forKey:MPMediaItemPropertyComposer];
@@ -387,12 +386,12 @@ void audioRouteChangeListenerCallback (
         if ([[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyTitle]) {
             [songInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyTitle] forKey:MPMediaItemPropertyTitle];
         }
-//        NSString *const MPNowPlayingInfoPropertyElapsedPlaybackTime
-//        NSString *const MPNowPlayingInfoPropertyPlaybackRate;
-//        NSString *const MPNowPlayingInfoPropertyPlaybackQueueIndex;
-//        NSString *const MPNowPlayingInfoPropertyPlaybackQueueCount;
-//        NSString *const MPNowPlayingInfoPropertyChapterNumber;
-//        NSString *const MPNowPlayingInfoPropertyChapterCount;
+        //        NSString *const MPNowPlayingInfoPropertyElapsedPlaybackTime
+        //        NSString *const MPNowPlayingInfoPropertyPlaybackRate;
+        //        NSString *const MPNowPlayingInfoPropertyPlaybackQueueIndex;
+        //        NSString *const MPNowPlayingInfoPropertyPlaybackQueueCount;
+        //        NSString *const MPNowPlayingInfoPropertyChapterNumber;
+        //        NSString *const MPNowPlayingInfoPropertyChapterCount;
         if ([[musicPlayer nowPlayingItem] valueForProperty: MPNowPlayingInfoPropertyPlaybackRate]) {
             [songInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPNowPlayingInfoPropertyPlaybackRate] forKey:MPNowPlayingInfoPropertyPlaybackRate];
         }
@@ -410,25 +409,15 @@ void audioRouteChangeListenerCallback (
         
         [[MPNowPlayingInfoCenter defaultCenter] setNowPlayingInfo:songInfo];
         
-//        NSMutableDictionary *showSongInfo = [[NSMutableDictionary alloc]
-//                                             initWithDictionary: [[MPNowPlayingInfoCenter defaultCenter] nowPlayingInfo]];
-//        
-//        NSLog (@"Audio Title %@", [showSongInfo objectForKey: MPMediaItemPropertyTitle]);
-//        NSLog (@"Playback Queue Count %d",[[showSongInfo objectForKey: MPNowPlayingInfoPropertyPlaybackQueueCount] intValue]);
-//        NSLog (@"Playback Queue Index %d",[[showSongInfo objectForKey: MPNowPlayingInfoPropertyPlaybackQueueIndex] intValue]);
+        //        NSMutableDictionary *showSongInfo = [[NSMutableDictionary alloc]
+        //                                             initWithDictionary: [[MPNowPlayingInfoCenter defaultCenter] nowPlayingInfo]];
+        //
+        //        NSLog (@"Audio Title %@", [showSongInfo objectForKey: MPMediaItemPropertyTitle]);
+        //        NSLog (@"Playback Queue Count %d",[[showSongInfo objectForKey: MPNowPlayingInfoPropertyPlaybackQueueCount] intValue]);
+        //        NSLog (@"Playback Queue Index %d",[[showSongInfo objectForKey: MPNowPlayingInfoPropertyPlaybackQueueIndex] intValue]);
     }
-	
 
-
-//	if (musicPlayer.playbackState == MPMusicPlaybackStateStopped) {
-//
-//    //device music player pops back to controller from which is was pushed
-//        
-//        //there is a problem when a new song is initiating and the playbackstate is stopped
-//        [self.navigationController popViewControllerAnimated:YES];      
-//	}
 }
-
 // When the playback state changes, set the play/pause button in the Navigation bar
 //		appropriately.
 - (void) handle_PlaybackStateChanged: (id) notification {
@@ -621,10 +610,9 @@ void audioRouteChangeListenerCallback (
     
     [self setPlayedMusicOnce: NO];
             
-        // Instantiate the music player. If you specied the iPod music player in the Settings app,
-        //		honor the current state of the built-in iPod app.
+    // Instantiate the music player. If you specied the iPod music player in the Settings app,
+    //		honor the current state of the built-in iPod app.
     
-
     if ([appDelegate useiPodPlayer]) {
         
         [self setMusicPlayer: [MPMusicPlayerController iPodMusicPlayer]];
@@ -642,30 +630,10 @@ void audioRouteChangeListenerCallback (
     if (playNew) {
         [musicPlayer setQueueWithItemCollection: self.userMediaItemCollection];
         
-//        NSArray *mediaItemArray = [self.userMediaItemCollection items];
-        
-        ItemCollection *itemCollection = [ItemCollection alloc];
-        itemCollection.managedObjectContext = self.managedObjectContext;
-//        [itemCollection addCollectionToCoreData:mediaItemArray];
-        [itemCollection addCollectionToCoreData:self.userMediaItemCollection];
-
-        
         [musicPlayer setNowPlayingItem: self.itemToPlay];
         [self playMusic];
         [self setPlayNew: NO];
     }
-    
-    if ([musicPlayer nowPlayingItem]) {
-        
-        // Update the UI to reflect the now-playing item.
-        [self handle_NowPlayingItemChanged: nil];
-        
-        if ([musicPlayer playbackState] == MPMusicPlaybackStatePaused) {
-            [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
-//            [nowPlayingLabel setText: NSLocalizedString (@"Instructions", @"Brief instructions to user, shown at launch")];
-
-        }
-    } 
     [self registerForMediaPlayerNotifications];
         
 //    NSArray *returnedQueue = [self.userMediaItemCollection items];
@@ -674,7 +642,17 @@ void audioRouteChangeListenerCallback (
 //        NSString *songTitle = [song valueForProperty: MPMediaItemPropertyTitle];
 //        NSLog (@"\t\t%@", songTitle);
 //    }
-    
+    if ([musicPlayer nowPlayingItem]) {
+        
+        // Update the UI to reflect the now-playing item.
+        [self handle_NowPlayingItemChanged: nil];
+        
+        if ([musicPlayer playbackState] == MPMusicPlaybackStatePaused) {
+            [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
+            //            [nowPlayingLabel setText: NSLocalizedString (@"Instructions", @"Brief instructions to user, shown at launch")];
+            
+        }
+    }
     [self setPlayedMusicOnce: YES];
 
     
@@ -727,7 +705,6 @@ void audioRouteChangeListenerCallback (
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
 //    LogMethod();
-//    [self.playbackTimer invalidate];
 
     UINavigationController *navigationController = segue.destinationViewController;
 
@@ -813,55 +790,55 @@ void audioRouteChangeListenerCallback (
     [self setNextLabel:nil];
     [super viewDidUnload];
 }
-
-#pragma mark - Fetched results controller
-
-- (NSFetchedResultsController *)fetchedResultsController
-{
-    
-    if (fetchedResultsController_ != nil)
-    {
-        return fetchedResultsController_;
-    }
-    
-    /*
-     Set up the fetched results controller.
-     */
-    // Create the fetch request for the entity.
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    // Edit the entity name as appropriate.
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"ItemCollection" inManagedObjectContext:self.managedObjectContext];
-    
-    [fetchRequest setEntity:entity];
-    
-    // Set the batch size to a suitable number.
-    [fetchRequest setFetchBatchSize:20];
-    
-    // Edit the sort key as appropriate.
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
-    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
-    
-    [fetchRequest setSortDescriptors:sortDescriptors];
-    
-    // Edit the section name key path and cache name if appropriate.
-    // nil for section name key path means "no sections".
-    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:@"Root"];
-    aFetchedResultsController.delegate = self;
-    self.fetchedResultsController = aFetchedResultsController;
-    
-	NSError *error = nil;
-	if (![self.fetchedResultsController performFetch:&error])
-    {
-        UIAlertView* alertView =
-        [[UIAlertView alloc] initWithTitle:@"Data Management Error"
-                                   message:@"Press the Home button to quit this application."
-                                  delegate:self
-                         cancelButtonTitle:@"OK"
-                         otherButtonTitles: nil];
-        [alertView show];
-
-	}
-    
-    return fetchedResultsController_;
-}
+//
+//#pragma mark - Fetched results controller
+//
+//- (NSFetchedResultsController *)fetchedResultsController
+//{
+//    
+//    if (fetchedResultsController_ != nil)
+//    {
+//        return fetchedResultsController_;
+//    }
+//    
+//    /*
+//     Set up the fetched results controller.
+//     */
+//    // Create the fetch request for the entity.
+//    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+//    // Edit the entity name as appropriate.
+//    NSEntityDescription *entity = [NSEntityDescription entityForName:@"ItemCollection" inManagedObjectContext:self.managedObjectContext];
+//    
+//    [fetchRequest setEntity:entity];
+//    
+//    // Set the batch size to a suitable number.
+//    [fetchRequest setFetchBatchSize:20];
+//    
+//    // Edit the sort key as appropriate.
+//    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
+//    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
+//    
+//    [fetchRequest setSortDescriptors:sortDescriptors];
+//    
+//    // Edit the section name key path and cache name if appropriate.
+//    // nil for section name key path means "no sections".
+//    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:@"Root"];
+//    aFetchedResultsController.delegate = self;
+//    self.fetchedResultsController = aFetchedResultsController;
+//    
+//	NSError *error = nil;
+//	if (![self.fetchedResultsController performFetch:&error])
+//    {
+//        UIAlertView* alertView =
+//        [[UIAlertView alloc] initWithTitle:@"Data Management Error"
+//                                   message:@"Press the Home button to quit this application."
+//                                  delegate:self
+//                         cancelButtonTitle:@"OK"
+//                         otherButtonTitles: nil];
+//        [alertView show];
+//
+//	}
+//    
+//    return fetchedResultsController_;
+//}
 @end

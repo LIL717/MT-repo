@@ -11,11 +11,11 @@
 #import "SongCell.h"
 #import "CollectionItem.h"
 #import "AppDelegate.h"
+#import "ItemCollection.h"
 //#import "bass.h"
 
 @implementation SongViewController
 
-@synthesize itemCollection;
 @synthesize collectionItem;
 @synthesize musicPlayer;
 @synthesize managedObjectContext;
@@ -64,8 +64,6 @@
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[appDelegate.colorSwitcher processImageWithName:@"background.png"]]];
-    
-
 
 //    self.currentQueue = self.mainViewController.userMediaItemCollection;
     
@@ -75,13 +73,7 @@
 //        NSString *songTitle = [song valueForProperty: MPMediaItemPropertyTitle];
 //        NSLog (@"\t\t%@", songTitle);
 //    }
-
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    
+  
 }
 
 - (void)didReceiveMemoryWarning
@@ -102,9 +94,8 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-//    NSLog (@"song count %d", [[self.currentQueue items] count]);
     
-    return [[self.itemCollection items] count];
+    return [[self.collectionItem.collection items] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -112,7 +103,7 @@
 	SongCell *cell = (SongCell *)[tableView
                                           dequeueReusableCellWithIdentifier:@"SongCell"];
     
-    MPMediaItem *song = [[self.itemCollection items] objectAtIndex:indexPath.row];
+    MPMediaItem *song = [[self.collectionItem.collection items] objectAtIndex:indexPath.row];
 
     cell.nameLabel.text = [song valueForProperty:  MPMediaItemPropertyTitle];
     
@@ -202,12 +193,10 @@
         notesViewController.managedObjectContext = self.managedObjectContext;
 
         
-        MPMediaItem *song = [[self.itemCollection items] objectAtIndex:indexPath.row];
+        MPMediaItem *song = [[self.collectionItem.collection items] objectAtIndex:indexPath.row];
         
         NSString *notesTitle = [NSString stringWithFormat: @"%@ - Notes",[song valueForProperty:  MPMediaItemPropertyTitle]];
         notesViewController.title = notesTitle;
-//        long playbackDuration = [[song valueForProperty: MPMediaItemPropertyPlaybackDuration] longValue];
-
 	}
     	if ([segue.identifier isEqualToString:@"PlaySong"])
 	{
@@ -216,10 +205,16 @@
         
         NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
 
-        mainViewController.userMediaItemCollection = self.itemCollection;
-        mainViewController.collectionItem = self.collectionItem;        
+        mainViewController.userMediaItemCollection = self.collectionItem.collection;
         mainViewController.playNew = YES;
-        mainViewController.itemToPlay = [[self.itemCollection items] objectAtIndex:indexPath.row];
+        mainViewController.itemToPlay = [[self.collectionItem.collection items] objectAtIndex:indexPath.row];
+        
+        //save collection in Core Data
+        ItemCollection *itemCollection = [ItemCollection alloc];
+        itemCollection.managedObjectContext = self.managedObjectContext;
+        
+        [itemCollection addCollectionToCoreData: self.collectionItem];
+
     }
     if ([segue.identifier isEqualToString:@"ViewNowPlaying"])
 	{

@@ -37,7 +37,6 @@
     MPMediaItem                 *itemToPlay;
     NSFetchedResultsController  *fetchedResultsController;
     NSManagedObjectContext      *managedObjectContext;
-//    ItemCollection              *itemCollection;
 }
 @property (nonatomic, strong)	UINavigationBar			*navigationBar;
 @property (nonatomic, strong)	AutoScrollLabel			*nowPlayingLabel;
@@ -74,9 +73,9 @@
 - (void) playMusic;
 - (void) updateTime;
 - (NSNumber *)calculatePlaylistElapsed;
-- (void)actualizeSlider;
+- (void) positionSlider;
 - (void) playMusic;
-- (void)timeMagnifierViewControllerDidCancel:(TimeMagnifierViewController *)controller;
-- (void)textMagnifierViewControllerDidCancel:(TextMagnifierViewController *)controller;
+- (void) timeMagnifierViewControllerDidCancel:(TimeMagnifierViewController *)controller;
+- (void) textMagnifierViewControllerDidCancel:(TextMagnifierViewController *)controller;
 
 @end

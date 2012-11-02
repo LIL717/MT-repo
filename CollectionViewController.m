@@ -79,9 +79,6 @@
 	CollectionItemCell *cell = (CollectionItemCell *)[tableView
                                           dequeueReusableCellWithIdentifier:@"CollectionItemCell"];
     
-//    MPMediaPlaylist  *mediaPlaylist = [self.collection objectAtIndex:indexPath.row];
-//    MPMediaItemCollection *currentQueue = [MPMediaItemCollection collectionWithItems: [[self.collection objectAtIndex:indexPath.row] items]];
-    
     MPMediaItemCollection *currentQueue = [MPMediaItemCollection collectionWithItems: [[self.collection objectAtIndex:indexPath.row] items]];    
 
     if (self.title == @"Playlists") {
@@ -103,9 +100,7 @@
     if (self.title == @"Podcasts") {
         cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyPodcastTitle];
     }
-    
 
-//    MPMediaItemCollection *currentQueue = [MPMediaItemCollection collectionWithItems: [[self.collection objectAtIndex:indexPath.row] items]];
     NSNumber *playlistDurationNumber = [self calculatePlaylistDuration: currentQueue];
     long playlistDuration = [playlistDurationNumber longValue];
 
@@ -148,15 +143,13 @@
 	{
         SongViewController *songViewController = segue.destinationViewController;
         songViewController.managedObjectContext = self.managedObjectContext;
-
-//        MPMediaPlaylist *mediaPlaylist = [self.collection objectAtIndex:indexPath.row];
         
         CollectionItem *collectionItem = [CollectionItem alloc];
         collectionItem.name = [[self.collection objectAtIndex:indexPath.row] valueForProperty: MPMediaPlaylistPropertyName];
         collectionItem.duration = [self calculatePlaylistDuration: [self.collection objectAtIndex:indexPath.row]];
+        collectionItem.collection = [MPMediaItemCollection collectionWithItems: [[self.collection objectAtIndex:indexPath.row] items]];
         
         songViewController.title = collectionItem.name;
-        songViewController.itemCollection = [MPMediaItemCollection collectionWithItems: [[self.collection objectAtIndex:indexPath.row] items]];
         songViewController.collectionItem = collectionItem;
 
 	}
