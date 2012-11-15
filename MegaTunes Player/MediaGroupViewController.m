@@ -70,27 +70,100 @@
 {
 //    LogMethod();
     [super viewDidLoad];
+
+    self.title = @"Choose Music";
+    self.navigationItem.titleView = [self customizeTitleView];
+
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
     if ([appDelegate useiPodPlayer]) {
         musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
+        NSLog (@"iPod");
     } else {
         musicPlayer = [MPMusicPlayerController applicationMusicPlayer];
+        NSLog (@"app");
     }
+
     NSString *playingItem = [[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyTitle];
-    
+
     if (playingItem) {
-        NSString *nowPlayingLabel = @"Now Playing";
+        //initWithTitle cannot be nil, must be @""
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                                  style:UIBarButtonItemStyleBordered
+                                                                                 target:self
+                                                                                 action:@selector(viewNowPlaying)];
         
-        UIBarButtonItem *nowPlayingButton = [[UIBarButtonItem alloc] initWithTitle:nowPlayingLabel style:UIBarButtonItemStyleBordered target:self action: @selector(viewNowPlaying)];
-        
-        self.navigationItem.rightBarButtonItem= nowPlayingButton;
+        UIImage *menuBarImage40 = [[UIImage imageNamed:@"Music-App-Icon40.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, -7)];
+        UIImage *menuBarImage54 = [[UIImage imageNamed:@"Music-App-Icon54.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, -3)];
+        [self.navigationItem.rightBarButtonItem setBackgroundImage:menuBarImage40 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+        [self.navigationItem.rightBarButtonItem setBackgroundImage:menuBarImage54 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
     } else {
         self.navigationItem.rightBarButtonItem= nil;
     }
+
     return;
 }
+- (UILabel *) customizeTitleView
+   {
+       CGRect frame = CGRectMake(0, 0, [self.title sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 48);
+       UILabel *label = [[UILabel alloc] initWithFrame:frame];
+       label.backgroundColor = [UIColor clearColor];
+       label.textAlignment = UITextAlignmentCenter;
+       UIFont *font = [UIFont systemFontOfSize:12];
+       UIFont *newFont = [font fontWithSize:44];
+       label.font = newFont;
+       label.textColor = [UIColor yellowColor];
+       label.text = self.title;
+       
+       return label;
+   }
+
+//- (UIView *)customizeTitleView:(NSString *) title {
+//
+////    UIBarMetrics metrics = (self.view.frame.size.height > 40.0) ? UIBarMetricsDefault : UIBarMetricsLandscapePhone;
+////    UIImage *navImage = [self.navigationController.navigationBar backgroundImageForBarMetrics:metrics];
+////    CGSize imageSize = navImage.size;
+////    CGFloat navBarWidth = imageSize.width;
+////    CGFloat navBarHeight = imageSize.height;
+////    NSLog (@"width x height %f x %f", navBarWidth, navBarHeight);
+////    
+////    UIView *containerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, navBarWidth, navBarHeight)];
+//    UIView *containerView = [[UIView alloc] init];
+//
+//    
+//    //make a titleLabel and set the font and text
+//    UILabel *titleLabel = [[UILabel alloc] init];
+//    
+//    titleLabel.textColor = [UIColor yellowColor];
+//    UIFont *font = [UIFont systemFontOfSize:12];
+//    UIFont *newFont = [font fontWithSize:44];
+//    titleLabel.font = newFont;
+//    titleLabel.text = title;
+//    titleLabel.backgroundColor = [UIColor clearColor];
+////    
+////    //calculate the label size with the font and text
+////    CGSize labelSize = [titleLabel.text sizeWithFont:titleLabel.font
+////                                   constrainedToSize:CGSizeMake(CGRectGetWidth(containerView.bounds), CGRectGetHeight(containerView.bounds))
+////                                       lineBreakMode:NSLineBreakByTruncatingTail];
+////    
+////    //make a new label and set its size to exactly fit the text for height and width
+////    UILabel *newLabel = [[UILabel alloc] initWithFrame: CGRectMake(0, 0, labelSize.width, labelSize.height)];
+////    
+////    //set the titleLabel frame to be the size that exactly fits the text
+////    titleLabel.frame = newLabel.frame;
+////    //    NSLog (@" navBarwidth is %f", navBarWidth);
+////    NSLog (@" titleLabel.frame.size.width is %f", titleLabel.frame.size.width);
+////    NSLog (@" titleLabel.origin.X is %f", titleLabel.frame.origin.x);
+//    
+//    //make the container view's frame the same size as the titleLabel's frame so that it will be centered
+//    //    containerView.frame = titleLabel.frame;
+//    
+//    [containerView addSubview:titleLabel];
+//    
+//    return containerView;
+//    
+//}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -99,7 +172,7 @@
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[appDelegate.colorSwitcher processImageWithName:@"background.png"]]];
-
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -178,6 +251,8 @@
 		collectionViewController.collection = self.collection;
         collectionViewController.title = selectedGroup.name;
 
+
+
 	}
     
     if ([segue.identifier isEqualToString:@"ViewSongCollection"])
@@ -227,5 +302,6 @@
     
     [self performSegueWithIdentifier: @"ViewNowPlaying" sender: self];
 }
+
 @end
 

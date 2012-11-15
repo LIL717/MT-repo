@@ -34,6 +34,8 @@
 //    LogMethod();
     [super viewDidLoad];
     
+    self.navigationItem.titleView = [self customizeTitleView];
+
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
     if ([appDelegate useiPodPlayer]) {
@@ -41,15 +43,20 @@
     } else {
         musicPlayer = [MPMusicPlayerController applicationMusicPlayer];
     }
+    
     NSString *playingItem = [[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyTitle];
-//    NSLog (@" nowPlayingItem is ****   %@", playingItem);
     
     if (playingItem) {
-        NSString *nowPlayingLabel = @"Now Playing";
+        //initWithTitle cannot be nil, must be @""
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                                  style:UIBarButtonItemStyleBordered
+                                                                                 target:self
+                                                                                 action:@selector(viewNowPlaying)];
         
-        UIBarButtonItem *nowPlayingButton = [[UIBarButtonItem alloc] initWithTitle:nowPlayingLabel style:UIBarButtonItemStyleBordered target:self action: @selector(viewNowPlaying)];
-        
-        self.navigationItem.rightBarButtonItem= nowPlayingButton;
+        UIImage *menuBarImage40 = [[UIImage imageNamed:@"Music-App-Icon40.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, -7)];
+        UIImage *menuBarImage54 = [[UIImage imageNamed:@"Music-App-Icon54.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, -3)];
+        [self.navigationItem.rightBarButtonItem setBackgroundImage:menuBarImage40 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+        [self.navigationItem.rightBarButtonItem setBackgroundImage:menuBarImage54 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
     } else {
         self.navigationItem.rightBarButtonItem= nil;
     }
@@ -57,6 +64,22 @@
 
     return;
 }
+
+- (UILabel *) customizeTitleView
+{
+    CGRect frame = CGRectMake(0, 0, [self.title sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 48);
+    UILabel *label = [[UILabel alloc] initWithFrame:frame];
+    label.backgroundColor = [UIColor clearColor];
+    label.textAlignment = UITextAlignmentCenter;
+    UIFont *font = [UIFont systemFontOfSize:12];
+    UIFont *newFont = [font fontWithSize:44];
+    label.font = newFont;
+    label.textColor = [UIColor yellowColor];
+    label.text = self.title;
+    
+    return label;
+}
+
 - (void)viewDidLoad
 {
 //    LogMethod();
@@ -64,6 +87,19 @@
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[appDelegate.colorSwitcher processImageWithName:@"background.png"]]];
+
+    self.navigationItem.hidesBackButton = YES; // Important
+    //initWithTitle cannot be nil, must be @""
+	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                             style:UIBarButtonItemStyleBordered
+                                                                            target:self
+                                                                            action:@selector(goBackClick)];
+    
+    UIImage *menuBarImage48 = [[UIImage imageNamed:@"arrow_left_48_white.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    UIImage *menuBarImage58 = [[UIImage imageNamed:@"arrow_left_58_white.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage48 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage58 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
+    
 
 //    self.currentQueue = self.mainViewController.userMediaItemCollection;
     
@@ -226,6 +262,10 @@
 - (IBAction)viewNowPlaying {
     
     [self performSegueWithIdentifier: @"ViewNowPlaying" sender: self];
+}
+- (void)goBackClick
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 - (void)viewDidUnload {
 

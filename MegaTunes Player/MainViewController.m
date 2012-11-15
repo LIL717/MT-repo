@@ -599,6 +599,18 @@ void audioRouteChangeListenerCallback (
       LogMethod();
     [super viewDidLoad];
     
+    self.navigationItem.hidesBackButton = YES; // Important
+    //initWithTitle cannot be nil, must be @""
+	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                             style:UIBarButtonItemStyleBordered
+                                                                            target:self
+                                                                            action:@selector(goBackClick)];
+    
+    UIImage *menuBarImage48 = [[UIImage imageNamed:@"arrow_left_48_white.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    UIImage *menuBarImage58 = [[UIImage imageNamed:@"arrow_left_58_white.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage48 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage58 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
+    
     //need this to use MPNowPlayingInfoCenter
     [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
 
@@ -627,14 +639,7 @@ void audioRouteChangeListenerCallback (
         [musicPlayer setRepeatMode: MPMusicRepeatModeNone];
     }
     
-    if (playNew) {
-        [musicPlayer setQueueWithItemCollection: self.userMediaItemCollection];
-        
-        [musicPlayer setNowPlayingItem: self.itemToPlay];
-        [self playMusic];
-        [self setPlayNew: NO];
-    }
-    [self registerForMediaPlayerNotifications];
+
         
 //    NSArray *returnedQueue = [self.userMediaItemCollection items];
 //    
@@ -653,6 +658,15 @@ void audioRouteChangeListenerCallback (
             
         }
     }
+    if (playNew) {
+        [musicPlayer setQueueWithItemCollection: self.userMediaItemCollection];
+        
+        [musicPlayer setNowPlayingItem: self.itemToPlay];
+        [self playMusic];
+        [self setPlayNew: NO];
+    }
+
+    [self registerForMediaPlayerNotifications];
     [self setPlayedMusicOnce: YES];
 
     
@@ -778,8 +792,26 @@ void audioRouteChangeListenerCallback (
                                                         userInfo:nil
                                                          repeats:YES];
     
+    self.navigationItem.titleView = [self customizeTitleView];
 }
-
+- (UILabel *) customizeTitleView
+{
+    CGRect frame = CGRectMake(0, 0, [self.title sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 48);
+    UILabel *label = [[UILabel alloc] initWithFrame:frame];
+    label.backgroundColor = [UIColor clearColor];
+    label.textAlignment = UITextAlignmentCenter;
+    UIFont *font = [UIFont systemFontOfSize:12];
+    UIFont *newFont = [font fontWithSize:44];
+    label.font = newFont;
+    label.textColor = [UIColor yellowColor];
+    label.text = self.title;
+    
+    return label;
+}
+- (void)goBackClick
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
 - (void)viewWillDisappear:(BOOL)animated {
 //    LogMethod();
     [super viewWillDisappear: animated];

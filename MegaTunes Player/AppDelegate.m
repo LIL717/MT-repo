@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "ColorSwitcher.h"
 #import "MediaGroupViewController.h"
+#import "CustomNavigationBar.h"
 
 
 
@@ -21,6 +22,9 @@
 @synthesize managedObjectModel = managedObjectModel_;
 @synthesize fetchedResultsController = fetchedResultsController_;
 @synthesize persistentStoreCoordinator = persistentStoreCoordinator_;
+
+static const NSUInteger kNavigationBarHeight = 60;
+
 
 //+ (AppDelegate *)instance {
 //    return [[UIApplication sharedApplication] delegate];
@@ -84,7 +88,7 @@
     if (![persistentStoreCoordinator_ addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error])
     {
         UIAlertView* alertView =
-        [[UIAlertView alloc] initWithTitle:@"Pazi!! Data Management Error with Persistent Store Coordinator"
+        [[UIAlertView alloc] initWithTitle:@"Data Management Error with Persistent Store Coordinator"
                                    message:@"Press the Home button to quit this application."
                                   delegate:self
                          cancelButtonTitle:@"OK"
@@ -127,14 +131,43 @@
      Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
      */
     //Customize the look of the UINavBar for iOS5 devices
+
 }
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
-    MediaGroupViewController *controller = (MediaGroupViewController *)navigationController.topViewController;
-    controller.managedObjectContext = self.managedObjectContext;
     
-self.colorSwitcher = [[ColorSwitcher alloc] initWithScheme:@"maroon"];
-//    self.colorSwitcher = [[ColorSwitcher alloc] initWithScheme:@"black"];
+    UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
+    
+    MediaGroupViewController *mediaGroupViewController = (MediaGroupViewController *)navigationController.topViewController;
+    mediaGroupViewController.managedObjectContext = self.managedObjectContext;
+
+//    UINavigationController *newNavigationController = [self customizeNavigationController: navigationController];
+//
+//    MediaGroupViewController *mediaGroupViewController = (MediaGroupViewController *)newNavigationController.topViewController;
+//    mediaGroupViewController.managedObjectContext = self.managedObjectContext;
+    
+//    [navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+//                                                [UIFont systemFontOfSize:22], UITextAttributeFont,
+//                                                   [UIColor yellowColor], UITextAttributeTextColor,
+//                                                   [UIColor grayColor], UITextAttributeTextShadowColor,
+//                                                   [NSValue valueWithUIOffset:UIOffsetMake(0.0f, 1.0f)], UITextAttributeTextShadowOffset,
+//                                                   nil]];
+    
+//    [navigationController.navigationBar setTitleVerticalPositionAdjustment: 0 forBarMetrics: UIBarMetricsDefault];
+    [navigationController.navigationBar setTitleVerticalPositionAdjustment: 4 forBarMetrics: UIBarMetricsLandscapePhone];
+    
+    
+//    [[UIBarButtonItem appearance] setBackButtonBackgroundVerticalPositionAdjustment: 7.0f
+//                                                                      forBarMetrics:UIBarMetricsLandscapePhone];
+//    const CGFloat TextOffset = 0.0f;
+//    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(TextOffset, 0)
+//     forBarMetrics:UIBarMetricsDefault];
+//
+//    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(TextOffset, 0)
+//     forBarMetrics:UIBarMetricsLandscapePhone];
+
+    
+    self.colorSwitcher = [[ColorSwitcher alloc] initWithScheme:@"maroon"];
+    //    self.colorSwitcher = [[ColorSwitcher alloc] initWithScheme:@"black"];
     
     [self customizeGlobalTheme];
     
@@ -144,25 +177,89 @@ self.colorSwitcher = [[ColorSwitcher alloc] initWithScheme:@"maroon"];
 //        [self iPadInit];
 //    }
 
+
     return YES;
 }
+
+//- (UINavigationController *)customizeNavigationController: navController
+//{
+////    UINavigationController *navController = (UINavigationController *)self.window.rootViewController;
+//    
+//    // Ensure the UINavigationBar is created so that it can be archived. If we do not access the
+//    // navigation bar then it will not be allocated, and thus, it will not be archived by the
+//    // NSKeyedArchvier.
+//    [navController navigationBar];
+//    
+//    // Archive the navigation controller.
+//    NSMutableData *data = [NSMutableData data];
+//    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
+//    [archiver encodeObject:navController forKey:@"root"];
+//    [archiver finishEncoding];
+//    
+//    // Unarchive the navigation controller and ensure that our UINavigationBar subclass is used.
+//    NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
+//    [unarchiver setClass:[CustomNavigationBar class] forClassName:@"UINavigationBar"];
+//    UINavigationController *customizedNavController = [unarchiver decodeObjectForKey:@"root"];
+//    [unarchiver finishDecoding];
+//    
+//    // Modify the navigation bar to have a background image.
+//    CustomNavigationBar *navBar = (CustomNavigationBar *)[customizedNavController navigationBar];
+//    
+//    CGRect frame = navBar.frame;
+//    frame.size.height = kNavigationBarHeight;
+//    navBar.frame = frame;
+//    
+//    [navBar setBackgroundImage:[UIImage imageNamed:@"megaMenu-bar.png"] forBarMetrics:UIBarMetricsDefault];
+//    [navBar setBackgroundImage:[UIImage imageNamed:@"megaMenu-bar-landscape.png"] forBarMetrics:
+//     UIBarMetricsLandscapePhone];
+//    [navBar setTitleVerticalPositionAdjustment: 5 forBarMetrics: UIBarMetricsDefault];
+//    [navBar setTitleVerticalPositionAdjustment: 10 forBarMetrics: UIBarMetricsLandscapePhone];
+//    
+//    
+//    //    //this does not fit in the titleview "space"
+//    [navBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+//                                                [UIFont systemFontOfSize:44], UITextAttributeFont,
+//                                                   [UIColor yellowColor], UITextAttributeTextColor,
+//                                                   [UIColor grayColor], UITextAttributeTextShadowColor,
+//                                                   [NSValue valueWithUIOffset:UIOffsetMake(0.0f, 1.0f)], UITextAttributeTextShadowOffset,
+//                                                   nil]];
+//
+////    self.colorSwitcher = [[ColorSwitcher alloc] initWithScheme:@"maroon"];
+//    
+//    return customizedNavController;
+//}
 - (void)customizeGlobalTheme {
-    UIImage *navBarImage = [colorSwitcher processImageWithName:@"menu-bar.png"];
     
-    [[UINavigationBar appearance] setBackgroundImage:navBarImage
-                                       forBarMetrics:UIBarMetricsDefault];
+    UIImage *navBarDefaultImage = [colorSwitcher processImageWithName:@"megaMenu-bar.png"];
+    [[UINavigationBar appearance] setBackgroundImage:navBarDefaultImage forBarMetrics:UIBarMetricsDefault];
     
+//    UIImage *navBarLandscapeImage = [colorSwitcher processImageWithName:@"megaMenu-bar-landscape.png"];
+    UIImage *navBarLandscapeImage = [colorSwitcher processImageWithName:@"megaMenu-bar@2x.png"];
+    [[UINavigationBar appearance] setBackgroundImage:navBarLandscapeImage forBarMetrics:UIBarMetricsLandscapePhone];
     
-    UIImage* barbuttonImage = [UIImage tallImageNamed:@"menubar-button.png"];
-    UIImage *barButton = [barbuttonImage resizableImageWithCapInsets:UIEdgeInsetsMake(0, 5, 0, 5)];
-    
-    [[UIBarButtonItem appearance] setBackgroundImage:barButton forState:UIControlStateNormal
-                                          barMetrics:UIBarMetricsDefault];
-    
-    UIImage *backButton = [[UIImage tallImageNamed:@"back.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 5)];
-    
-    [[UIBarButtonItem appearance] setBackButtonBackgroundImage:backButton forState:UIControlStateNormal
-                                                    barMetrics:UIBarMetricsDefault];
+//    UIImage* barButtonImage = [UIImage tallImageNamed:@"menubar-button.png"];
+//    
+//    [[UIBarButtonItem appearance] setBackgroundImage:barButtonImage forState:UIControlStateNormal
+//                                          barMetrics:UIBarMetricsDefault];
+//    
+//    UIImage* barButtonLandscapeImage = [UIImage tallImageNamed:@"menubar-button@2x.png"];
+//    
+//    [[UIBarButtonItem appearance] setBackgroundImage:barButtonLandscapeImage forState:UIControlStateNormal
+//                                          barMetrics:UIBarMetricsLandscapePhone];
+//    
+////    UIImage *backButton = [UIImage tallImageNamed:@"back.png"];
+//    UIImage *backButton = [UIImage tallImageNamed:@"arrow_left_48.png"];
+//
+//
+//    [[UIBarButtonItem appearance] setBackButtonBackgroundImage:backButton forState:UIControlStateNormal
+//                                                    barMetrics:UIBarMetricsDefault];
+//    
+////    UIImage *backButtonLandscape = [UIImage tallImageNamed:@"back.png"];
+//    UIImage *backButtonLandscape = [UIImage tallImageNamed:@"arrow_left_48.png"];
+//    
+//    [[UIBarButtonItem appearance] setBackButtonBackgroundImage:backButtonLandscape forState:UIControlStateNormal
+//                                                    barMetrics:UIBarMetricsLandscapePhone];
+
     
 //    UIImage* tabBarBackground = [colorSwitcher processImageWithName:@"tabbar.png"];
 //    [[UITabBar appearance] setBackgroundImage:tabBarBackground];
@@ -192,7 +289,6 @@ self.colorSwitcher = [[ColorSwitcher alloc] initWithScheme:@"maroon"];
 		return NO;
 	}
 }
-
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
