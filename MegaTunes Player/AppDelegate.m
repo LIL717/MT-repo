@@ -262,11 +262,11 @@ static const NSUInteger kNavigationBarHeight = 60;
 //                                                    barMetrics:UIBarMetricsLandscapePhone];
 
     
-//    UIImage* tabBarBackground = [colorSwitcher processImageWithName:@"tabbar.png"];
-//    [[UITabBar appearance] setBackgroundImage:tabBarBackground];
-//    
-//    
-//    [[UITabBar appearance] setSelectionIndicatorImage:[UIImage tallImageNamed:@"selection-tab.png"]];
+    UIImage* tabBarBackground = [colorSwitcher processImageWithName:@"tabbar.png"];
+    [[UITabBar appearance] setBackgroundImage:tabBarBackground];
+    
+    
+    [[UITabBar appearance] setSelectionIndicatorImage:[UIImage tallImageNamed:@"selection-tab.png"]];
     
     UIImage *minImage = [UIImage tallImageNamed:@"slider-fill.png"];
     UIImage *maxImage = [UIImage tallImageNamed:@"slider-trackGray.png"];

@@ -17,25 +17,18 @@
 
 @synthesize fetchedResultsController;
 @synthesize managedObjectContext;
+@synthesize musicPlayer;
 
-//- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-//{
-//    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-//    if (self) {
-//        // Custom initialization
-//    }
-//    return self;
-//}
 
 - (void)viewDidLoad
 {
+    //    LogMethod();
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-
+    
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[appDelegate.colorSwitcher processImageWithName:@"background.png"]]];
+    
 }
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

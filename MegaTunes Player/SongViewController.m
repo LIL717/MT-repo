@@ -6,12 +6,13 @@
 //
 //
 #import "MainViewController.h"
-#import "NotesViewController.h"
+#import "NotesTabBarController.h"
 #import "SongViewController.h"
 #import "SongCell.h"
 #import "CollectionItem.h"
 #import "AppDelegate.h"
 #import "ItemCollection.h"
+#import "SongInfo.h"
 //#import "bass.h"
 
 @implementation SongViewController
@@ -232,14 +233,25 @@
 	{
         NSIndexPath *indexPath = [self.songTableView indexPathForCell:sender];
 
-        NotesViewController *notesViewController = segue.destinationViewController;
-        notesViewController.managedObjectContext = self.managedObjectContext;
+        NotesTabBarController *notesTabBarController = segue.destinationViewController;
+        notesTabBarController.managedObjectContext = self.managedObjectContext;
 
-        
+
         MPMediaItem *song = [[self.collectionItem.collection items] objectAtIndex:indexPath.row];
         
-        NSString *notesTitle = [NSString stringWithFormat: @"%@ - Notes",[song valueForProperty:  MPMediaItemPropertyTitle]];
-        notesViewController.title = notesTitle;
+//        NSString *notesTitle = [NSString stringWithFormat: @"%@ - Notes",[song valueForProperty:  MPMediaItemPropertyTitle]];
+//        notesTabBarController.title = notesTitle;
+        notesTabBarController.title = @"Info";
+
+        
+        SongInfo *songInfo = [[SongInfo alloc] init];
+        songInfo.songName = [song valueForProperty:  MPMediaItemPropertyTitle];
+        songInfo.album = [song valueForProperty:  MPMediaItemPropertyAlbumTitle];
+        songInfo.artist = [song valueForProperty:  MPMediaItemPropertyArtist];
+        MPMediaItemArtwork *artWork = [song valueForProperty:MPMediaItemPropertyArtwork];
+        songInfo.albumImage.image = [artWork imageWithSize:CGSizeMake(200, 200)];
+        notesTabBarController.songInfo = songInfo;
+        
 	}
     	if ([segue.identifier isEqualToString:@"PlaySong"])
 	{
