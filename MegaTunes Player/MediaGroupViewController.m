@@ -22,25 +22,14 @@
 
 @implementation MediaGroupViewController
 
-@synthesize delegate;
+@synthesize groupTableView;
+//@synthesize delegate;
 @synthesize collection;
 @synthesize groupingData;
 @synthesize selectedGroup;
 @synthesize musicPlayer;
 //@synthesize fetchedResultsController;
 @synthesize managedObjectContext;
-
-
-
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-
-    }
-    return self;
-}
 
 -(void) loadGroupingData
 {
@@ -70,6 +59,7 @@
 {
 //    LogMethod();
     [super viewDidLoad];
+
 
     self.title = @"Choose Music";
     self.navigationItem.titleView = [self customizeTitleView];
@@ -101,7 +91,6 @@
     } else {
         self.navigationItem.rightBarButtonItem= nil;
     }
-
     return;
 }
 - (UILabel *) customizeTitleView
@@ -173,13 +162,29 @@
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[appDelegate.colorSwitcher processImageWithName:@"background.png"]]];
     
+    [self updateLayoutForNewOrientation: self.interfaceOrientation];
+
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
+- (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
+    
+    [self updateLayoutForNewOrientation: orientation];
 
+}
+- (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
+
+    if (UIInterfaceOrientationIsPortrait(orientation)) {
+        [self.groupTableView setContentInset:UIEdgeInsetsMake(11,0,0,0)];
+    } else {
+        [self.groupTableView setContentInset:UIEdgeInsetsMake(23,0,0,0)];
+        [self.groupTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+    }
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

@@ -21,6 +21,7 @@
 
 @implementation CollectionViewController
 
+@synthesize collectionTableView;
 @synthesize collection;
 @synthesize managedObjectContext;
 
@@ -98,7 +99,28 @@
     [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage48 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage58 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
     
-
+    [self updateLayoutForNewOrientation: self.interfaceOrientation];
+    
+    
+    // Uncomment the following line to preserve selection between presentations.
+    // self.clearsSelectionOnViewWillAppear = NO;
+    
+    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+- (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
+    
+    [self updateLayoutForNewOrientation: orientation];
+    
+}
+- (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
+    
+    if (UIInterfaceOrientationIsPortrait(orientation)) {
+        [self.collectionTableView setContentInset:UIEdgeInsetsMake(11,0,0,0)];
+    } else {
+        [self.collectionTableView setContentInset:UIEdgeInsetsMake(23,0,0,0)];
+        [self.collectionTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+    }
 }
 - (void)goBackClick
 {
@@ -181,7 +203,7 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
 //    LogMethod();
-    NSIndexPath *indexPath = [ self.tableView indexPathForCell:sender];
+    NSIndexPath *indexPath = [ self.collectionTableView indexPathForCell:sender];
     
 	if ([segue.identifier isEqualToString:@"ViewSongs"])
 	{
@@ -223,6 +245,7 @@
 }
 
 - (void)viewDidUnload {
+    [self setCollectionTableView:nil];
     
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;

@@ -16,19 +16,11 @@
 
 @implementation SongViewController
 
+@synthesize songTableView;
 @synthesize collectionItem;
 @synthesize musicPlayer;
 @synthesize managedObjectContext;
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    LogMethod();
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 - (void) viewWillAppear:(BOOL)animated
 {
 //    LogMethod();
@@ -60,7 +52,7 @@
     } else {
         self.navigationItem.rightBarButtonItem= nil;
     }
-    [self.tableView reloadData];
+    [self.songTableView reloadData];
 
     return;
 }
@@ -109,7 +101,22 @@
 //        NSString *songTitle = [song valueForProperty: MPMediaItemPropertyTitle];
 //        NSLog (@"\t\t%@", songTitle);
 //    }
-  
+    [self updateLayoutForNewOrientation: self.interfaceOrientation];
+    
+}
+- (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
+    
+    [self updateLayoutForNewOrientation: orientation];
+    
+}
+- (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
+    
+    if (UIInterfaceOrientationIsPortrait(orientation)) {
+        [self.songTableView setContentInset:UIEdgeInsetsMake(11,0,0,0)];
+    } else {
+        [self.songTableView setContentInset:UIEdgeInsetsMake(23,0,0,0)];
+        [self.songTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -223,7 +230,7 @@
     
 	if ([segue.identifier isEqualToString:@"ViewNotes"])
 	{
-        NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
+        NSIndexPath *indexPath = [self.songTableView indexPathForCell:sender];
 
         NotesViewController *notesViewController = segue.destinationViewController;
         notesViewController.managedObjectContext = self.managedObjectContext;
@@ -239,7 +246,7 @@
         MainViewController *mainViewController = segue.destinationViewController;
         mainViewController.managedObjectContext = self.managedObjectContext;
         
-        NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
+        NSIndexPath *indexPath = [self.songTableView indexPathForCell:sender];
 
         mainViewController.userMediaItemCollection = self.collectionItem.collection;
         mainViewController.playNew = YES;
@@ -269,6 +276,7 @@
 }
 - (void)viewDidUnload {
 
+    [self setSongTableView:nil];
     [super viewDidUnload];
 }
 

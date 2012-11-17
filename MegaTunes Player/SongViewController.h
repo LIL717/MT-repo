@@ -7,11 +7,12 @@
 //
 @class CollectionItem;
 
-@interface SongViewController : UITableViewController <MPMediaPickerControllerDelegate, UITableViewDelegate> {
+@interface SongViewController : UIViewController <UITableViewDelegate, UITableViewDataSource,MPMediaPickerControllerDelegate> {
     NSManagedObjectContext *managedObjectContext;
 
 }
 
+@property (strong, nonatomic) IBOutlet UITableView *songTableView;
 @property (nonatomic, retain)   NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong)   CollectionItem *collectionItem;
 @property (nonatomic, strong)	MPMusicPlayerController	*musicPlayer;

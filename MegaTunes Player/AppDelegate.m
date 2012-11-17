@@ -140,6 +140,7 @@ static const NSUInteger kNavigationBarHeight = 60;
     MediaGroupViewController *mediaGroupViewController = (MediaGroupViewController *)navigationController.topViewController;
     mediaGroupViewController.managedObjectContext = self.managedObjectContext;
 
+
 //    UINavigationController *newNavigationController = [self customizeNavigationController: navigationController];
 //
 //    MediaGroupViewController *mediaGroupViewController = (MediaGroupViewController *)newNavigationController.topViewController;
