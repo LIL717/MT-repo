@@ -37,6 +37,7 @@
     MPMediaItem                 *itemToPlay;
     NSFetchedResultsController  *fetchedResultsController;
     NSManagedObjectContext      *managedObjectContext;
+//    AutoScrollLabel             *autoScrollLabel;
 }
 @property (nonatomic, strong)	UINavigationBar			*navigationBar;
 @property (nonatomic, strong)	AutoScrollLabel			*nowPlayingLabel;
@@ -54,6 +55,7 @@
 @property (nonatomic, strong)   MPMediaItem             *itemToPlay;
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, retain) NSManagedObjectContext    *managedObjectContext;
+//@property (nonatomic, strong)   AutoScrollLabel         *autoScrollLabel;
 
 @property (strong, nonatomic) IBOutlet UILabel *elapsedTimeLabel;
 @property (strong, nonatomic) IBOutlet UISlider *progressSlider;

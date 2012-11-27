@@ -11,6 +11,7 @@
 #import "MainViewController.h"
 #import "SongInfo.h"
 #import "SongInfoViewController.h"
+#import "NotesViewController.h"
 
 @interface NotesTabBarController ()
 
@@ -21,6 +22,8 @@
 @synthesize managedObjectContext;
 @synthesize musicPlayer;
 @synthesize songInfo;
+@synthesize songInfoViewController;
+@synthesize notesViewController;
 
 
 - (void) viewWillAppear:(BOOL)animated
@@ -93,10 +96,15 @@
     [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage48 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage58 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
     
-    [self updateLayoutForNewOrientation: self.interfaceOrientation];
+    self.songInfoViewController = [[self viewControllers] objectAtIndex:0];
+    self.songInfoViewController.songInfo = self.songInfo;
+    [self.songInfoViewController.navigationController.navigationItem setTitle:@"Info"];
     
-    SongInfoViewController *songInfoViewController = [[self viewControllers] objectAtIndex:0];
-    songInfoViewController.songInfo = self.songInfo;
+    self.notesViewController = [[self viewControllers] objectAtIndex:1];
+    self.notesViewController.songInfo = self.songInfo;
+    [self.notesViewController.navigationController.navigationItem setTitle:@"Notes"];
+    
+//    [self updateLayoutForNewOrientation: self.interfaceOrientation];
 
     
 }
@@ -107,12 +115,16 @@
 }
 - (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
     
-    //    if (UIInterfaceOrientationIsPortrait(orientation)) {
-    //        [self.songTableView setContentInset:UIEdgeInsetsMake(11,0,0,0)];
-    //    } else {
-    //        [self.songTableView setContentInset:UIEdgeInsetsMake(23,0,0,0)];
-    //        [self.songTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-    //    }
+    if (UIInterfaceOrientationIsPortrait(orientation)) {
+        NSLog (@"portrait");
+        [self.songInfoViewController.infoTableView setContentInset:UIEdgeInsetsMake(11,0,0,0)];
+//        [self.songInfoViewController.infoTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+
+    } else {
+        NSLog (@"landscape");
+        [self.songInfoViewController.infoTableView setContentInset:UIEdgeInsetsMake(23,0,0,0)];
+        [self.songInfoViewController.infoTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+    }
 }
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {

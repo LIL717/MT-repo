@@ -8,12 +8,13 @@
 
 @interface SongInfo : NSObject
 
-@property (nonatomic, strong) IBOutlet UILabel *songName;
-@property (nonatomic, strong) IBOutlet UILabel *album;
-@property (nonatomic, strong) IBOutlet UILabel *artist;
-@property (nonatomic, strong) IBOutlet UIImageView *albumImage;
+@property (nonatomic, copy) NSString *songName;
+@property (nonatomic, copy) NSString *album;
+@property (nonatomic, copy) NSString *artist;
+@property (nonatomic, copy) UIImage *albumImage;
 
-//@property (nonatomic, strong) IBOutlet UILabel *duration;
-//@property (strong, nonatomic) IBOutlet UILabel *BPM;
+
+//@property (nonatomic, copy) NSNumber *duration;
+//@property (nonatomic, copy) NSNumber *BPM;
 
 @end

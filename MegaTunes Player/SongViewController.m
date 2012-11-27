@@ -249,7 +249,7 @@
         songInfo.album = [song valueForProperty:  MPMediaItemPropertyAlbumTitle];
         songInfo.artist = [song valueForProperty:  MPMediaItemPropertyArtist];
         MPMediaItemArtwork *artWork = [song valueForProperty:MPMediaItemPropertyArtwork];
-        songInfo.albumImage.image = [artWork imageWithSize:CGSizeMake(200, 200)];
+        songInfo.albumImage = [artWork imageWithSize:CGSizeMake(200, 200)];
         notesTabBarController.songInfo = songInfo;
         
 	}

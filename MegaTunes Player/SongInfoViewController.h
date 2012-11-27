@@ -7,18 +7,21 @@
 //
 @class SongInfo;
 
-@interface SongInfoViewController : UIViewController  <MPMediaPickerControllerDelegate> {
+@interface SongInfoViewController : UIViewController  < UITableViewDelegate, UITableViewDataSource, MPMediaPickerControllerDelegate> {
     NSManagedObjectContext *managedObjectContext;
+    IBOutlet UIScrollView *scrollView;
     
 }
 @property (nonatomic, retain)   NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong)	MPMusicPlayerController	*musicPlayer;
 @property (nonatomic, strong)   SongInfo *songInfo;
 
-@property (strong, nonatomic) IBOutlet UILabel *artist;
-@property (strong, nonatomic) IBOutlet UILabel *songName;
-@property (strong, nonatomic) IBOutlet UILabel *album;
-@property (strong, nonatomic) IBOutlet UIImageView *albumImage;
+@property (nonatomic, retain) UIView *scrollView;
+@property (strong, nonatomic) IBOutlet UITableView *infoTableView;
+
+@property (nonatomic, strong)   NSArray *songInfoData;
+//@property (nonatomic, weak)   CGFloat tableWidth;
+
 
 
 @end

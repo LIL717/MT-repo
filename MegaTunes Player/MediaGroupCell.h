@@ -6,8 +6,6 @@
 //
 //
 
-#import <UIKit/UIKit.h>
-
 @interface MediaGroupCell : UITableViewCell
 
 @property (nonatomic, strong) IBOutlet UILabel *nameLabel;

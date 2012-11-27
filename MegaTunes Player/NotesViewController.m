@@ -18,6 +18,8 @@
 @synthesize fetchedResultsController;
 @synthesize managedObjectContext;
 @synthesize musicPlayer;
+@synthesize songInfo;
+
 
 
 - (void)viewDidLoad
@@ -27,6 +29,7 @@
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[appDelegate.colorSwitcher processImageWithName:@"background.png"]]];
+    
     
 }
 - (void)didReceiveMemoryWarning

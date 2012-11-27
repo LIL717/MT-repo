@@ -304,6 +304,7 @@ void audioRouteChangeListenerCallback (
     // scroll marquee style if too long for field
     
     self.nowPlayingLabel.text = [currentItem valueForProperty:  MPMediaItemPropertyTitle];
+    NSLog (@"nowPlayingLabel.text is %@", self.nowPlayingLabel.text);
     self.nowPlayingLabel.textColor = [UIColor whiteColor];
     UIFont *font = [UIFont systemFontOfSize:12];
     UIFont *newFont = [font fontWithSize:44];
@@ -311,7 +312,7 @@ void audioRouteChangeListenerCallback (
     
     NSUInteger nextPlayingIndex = [musicPlayer indexOfNowPlayingItem] + 1;
     
-    if (nextPlayingIndex >= userMediaItemCollection.count) {
+    if (nextPlayingIndex >= self.userMediaItemCollection.count) {
         self.nextSongLabel.text = [NSString stringWithFormat: @""];
         self.nextLabel.text = [NSString stringWithFormat:@""];
     } else {
@@ -647,7 +648,13 @@ void audioRouteChangeListenerCallback (
 //        NSString *songTitle = [song valueForProperty: MPMediaItemPropertyTitle];
 //        NSLog (@"\t\t%@", songTitle);
 //    }
-    if ([musicPlayer nowPlayingItem]) {
+    if (playNew) {
+        [musicPlayer setQueueWithItemCollection: self.userMediaItemCollection];
+        
+        [musicPlayer setNowPlayingItem: self.itemToPlay];
+        [self playMusic];
+        [self setPlayNew: NO];
+    } else if ([musicPlayer nowPlayingItem]) {
         
         // Update the UI to reflect the now-playing item.
         [self handle_NowPlayingItemChanged: nil];
@@ -658,20 +665,18 @@ void audioRouteChangeListenerCallback (
             
         }
     }
-    if (playNew) {
-        [musicPlayer setQueueWithItemCollection: self.userMediaItemCollection];
-        
-        [musicPlayer setNowPlayingItem: self.itemToPlay];
-        [self playMusic];
-        [self setPlayNew: NO];
-    }
 
     [self registerForMediaPlayerNotifications];
     [self setPlayedMusicOnce: YES];
 
     
 }
-
+- (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
+    
+    [nowPlayingLabel  refreshLabels];
+    [nextSongLabel    refreshLabels];
+    
+}
 #pragma mark Application state management_____________
 
 - (void) didReceiveMemoryWarning {
