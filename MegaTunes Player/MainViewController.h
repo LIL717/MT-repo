@@ -11,6 +11,7 @@
 #import "TextMagnifierViewController.h"
 
 
+
 #define PLAYER_TYPE_PREF_KEY @"player_type_preference"
 #define AUDIO_TYPE_PREF_KEY @"audio_technology_preference"
 
@@ -60,17 +61,18 @@
 @property (strong, nonatomic) IBOutlet UILabel *elapsedTimeLabel;
 @property (strong, nonatomic) IBOutlet UISlider *progressSlider;
 @property (strong, nonatomic) IBOutlet UILabel *remainingTimeLabel;
-@property (strong, nonatomic) IBOutlet UIButton *previousButton;
-@property (strong, nonatomic) IBOutlet UIButton *playPauseButton;
-@property (strong, nonatomic) IBOutlet UIButton *nextButton;
+@property (strong, nonatomic) IBOutlet MPVolumeView *volumeSlider;
+
 @property (strong, nonatomic) IBOutlet UILabel *nextLabel;
 @property (strong, nonatomic) IBOutlet AutoScrollLabel *nextSongLabel;
 @property (strong, nonatomic) CollectionItem *collectionItem;
+@property (strong, nonatomic) IBOutlet UISegmentedControl *playerButtons;
+@property (strong, nonatomic) IBOutlet UISegmentedControl *repeatShuffleButtons;
 
-- (IBAction)playOrPauseMusic:(id)sender;
-- (IBAction)skipBack:(id)sender;
-- (IBAction)skipForward:(id)sender;
 - (IBAction)moveSlider:(id)sender;
+
+- (IBAction)playerButtonsChanged:(id)sender;
+- (IBAction)repeatShuffleButtonsChanged:(id)sender;
 
 - (void) playMusic;
 - (void) updateTime;
@@ -80,4 +82,6 @@
 - (void) timeMagnifierViewControllerDidCancel:(TimeMagnifierViewController *)controller;
 - (void) textMagnifierViewControllerDidCancel:(TextMagnifierViewController *)controller;
 
+
 @end
+

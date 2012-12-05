@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2843" systemVersion="12C60" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="1j9-19-lml">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2844" systemVersion="12C60" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="1j9-19-lml">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1929"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1930"/>
     </dependencies>
     <scenes>
         <!--Song View Controller-->
@@ -9,7 +9,7 @@
             <objects>
                 <viewController id="mNb-57-5Xm" customClass="SongViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="55" sectionHeaderHeight="22" sectionFooterHeight="22" id="EmK-pd-wau">
-                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="separatorColor" white="0.80000000000000004" alpha="1" colorSpace="deviceWhite"/>
@@ -93,7 +93,7 @@
             <objects>
                 <viewController title="Now Playing" wantsFullScreenLayout="YES" id="SKu-HW-GrJ" customClass="MainViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="1ht-Bf-15S">
-                        <rect key="frame" x="0.0" y="64" width="480" height="256"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hvR-vh-6Bp" customClass="AutoScrollLabel">
@@ -103,28 +103,17 @@
                             </scrollView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="0:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jp7-Ow-fVH">
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="122" type="user" id="Uzd-GB-7Z1"/>
+                                    <constraint firstAttribute="height" constant="43" type="user" id="0We-In-lM5"/>
+                                    <constraint firstAttribute="width" constant="126" type="user" id="yWZ-35-AQY"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="44"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mHb-Fg-rq7">
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" title="elapsed">
-                                    <color key="titleColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <state key="highlighted">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <segue destination="ItR-S9-GSa" kind="modal" identifier="MagnifyElapsedTime" modalTransitionStyle="crossDissolve" id="QFY-Jh-96I"/>
-                                </connections>
-                            </button>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="vBs-Pg-YLN">
                                 <constraints>
                                     <constraint firstAttribute="width" constant="160" type="user" id="OUB-yb-lG0"/>
+                                    <constraint firstAttribute="height" constant="23" type="user" id="rGt-3F-w2X"/>
                                 </constraints>
                                 <connections>
                                     <action selector="moveSlider:" destination="SKu-HW-GrJ" eventType="valueChanged" id="uJ3-HH-lua"/>
@@ -135,75 +124,13 @@
                                     <accessibilityTraits key="traits" none="YES" button="YES" staticText="YES"/>
                                 </accessibility>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="133" type="user" id="e8S-ah-lMe"/>
+                                    <constraint firstAttribute="height" constant="43" type="user" id="LuG-Ou-2EX"/>
+                                    <constraint firstAttribute="width" constant="126" type="user" id="dyJ-Vm-WRD"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="44"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5BX-uR-902">
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" title="remaining">
-                                    <color key="titleColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <state key="highlighted">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <segue destination="ItR-S9-GSa" kind="modal" identifier="MagnifyRemainingTime" modalTransitionStyle="crossDissolve" id="nuJ-IH-QbX"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I3H-tf-jUO">
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="75" type="user" id="b2r-IO-kXu"/>
-                                    <constraint firstAttribute="width" constant="75" type="user" id="eNk-5c-52a"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" image="bigrewind.png">
-                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <state key="highlighted">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="skipBack:" destination="SKu-HW-GrJ" eventType="touchUpInside" id="UqU-8s-Uis"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aLG-xz-xA6">
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="72" type="user" id="U9p-9V-2FX"/>
-                                    <constraint firstAttribute="height" constant="75" type="user" id="tCF-Rp-OMv"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" title="Play/Pause" image="bigplay.png">
-                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <state key="highlighted">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="playOrPauseMusic:" destination="SKu-HW-GrJ" eventType="touchUpInside" id="Pd8-IQ-1tt"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Azn-bC-AQG">
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="75" type="user" id="35Q-f7-5KA"/>
-                                    <constraint firstAttribute="width" constant="75" type="user" id="vaC-xE-63w"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" image="bigforward.png">
-                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                </state>
-                                <state key="highlighted">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="skipForward:" destination="SKu-HW-GrJ" eventType="touchUpInside" id="Yog-IE-pen"/>
-                                </connections>
-                            </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Next:" lineBreakMode="tailTruncation" minimumFontSize="10" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pNh-na-wBJ">
                                 <constraints>
                                     <constraint firstAttribute="height" constant="42" type="user" id="5Hh-oa-Tsw"/>
@@ -212,44 +139,79 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="UXV-Pt-1xE" customClass="AutoScrollLabel"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="UXV-Pt-1xE" customClass="AutoScrollLabel">
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="52" type="user" id="3hC-yj-PL4"/>
+                                </constraints>
+                            </scrollView>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" minimumValueImage="volume_down_48.png" maximumValueImage="volume_up_48.png" translatesAutoresizingMaskIntoConstraints="NO" id="338-x9-JrC" customClass="MPVolumeSlider">
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" type="user" id="BBN-Xn-fLI"/>
+                                </constraints>
+                            </slider>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="YDf-lh-8mD">
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="66" type="user" id="Tgr-mh-UYF"/>
+                                </constraints>
+                                <segments>
+                                    <segment title="" image="bigrewind.png"/>
+                                    <segment title="" image="bigplay.png"/>
+                                    <segment title="" image="bigforward.png"/>
+                                </segments>
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <action selector="playerButtonsChanged:" destination="SKu-HW-GrJ" eventType="valueChanged" id="2ER-h7-Cbt"/>
+                                </connections>
+                            </segmentedControl>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="bcD-5J-vrI">
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="66" type="user" id="qEh-5q-V9j"/>
+                                </constraints>
+                                <segments>
+                                    <segment title="" image="bigrepeat.png"/>
+                                    <segment title="" image="bigshuffle.png"/>
+                                </segments>
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <action selector="repeatShuffleButtonsChanged:" destination="SKu-HW-GrJ" eventType="valueChanged" id="3El-Wn-UAz"/>
+                                </connections>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="hvR-vh-6Bp" firstAttribute="leading" secondItem="1ht-Bf-15S" secondAttribute="leading" type="default" id="2Zx-UH-2nT"/>
-                            <constraint firstItem="5BX-uR-902" firstAttribute="bottom" secondItem="r00-yo-I0n" secondAttribute="bottom" type="default" id="4k5-PQ-rJ5"/>
-                            <constraint firstItem="hvR-vh-6Bp" firstAttribute="trailing" secondItem="1ht-Bf-15S" secondAttribute="trailing" type="default" id="6Uc-YB-z7z"/>
-                            <constraint firstAttribute="trailing" secondItem="Azn-bC-AQG" secondAttribute="trailing" constant="20" symbolic="YES" type="user" id="6vv-9j-GGE"/>
-                            <constraint firstItem="hvR-vh-6Bp" firstAttribute="top" relation="greaterThanOrEqual" secondItem="1ht-Bf-15S" secondAttribute="top" constant="20" type="user" id="8P9-5S-k3X"/>
+                            <constraint firstItem="hvR-vh-6Bp" firstAttribute="leading" secondItem="1ht-Bf-15S" secondAttribute="leading" type="user" id="2Zx-UH-2nT"/>
+                            <constraint firstItem="hvR-vh-6Bp" firstAttribute="trailing" secondItem="1ht-Bf-15S" secondAttribute="trailing" type="user" id="6Uc-YB-z7z"/>
+                            <constraint firstItem="UXV-Pt-1xE" firstAttribute="top" secondItem="338-x9-JrC" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="7TT-Cn-gSE"/>
+                            <constraint firstItem="hvR-vh-6Bp" firstAttribute="top" secondItem="1ht-Bf-15S" secondAttribute="top" constant="20" type="user" id="8P9-5S-k3X"/>
+                            <constraint firstAttribute="trailing" secondItem="338-x9-JrC" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="ABu-p8-5TS"/>
+                            <constraint firstItem="YDf-lh-8mD" firstAttribute="top" secondItem="jp7-Ow-fVH" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="EEi-iX-g1P"/>
                             <constraint firstItem="hvR-vh-6Bp" firstAttribute="top" secondItem="1ht-Bf-15S" secondAttribute="top" constant="20" symbolic="YES" type="user" id="GZu-UJ-cor"/>
                             <constraint firstItem="UXV-Pt-1xE" firstAttribute="leading" secondItem="pNh-na-wBJ" secondAttribute="trailing" constant="2" type="user" id="HPG-R1-raD"/>
-                            <constraint firstItem="mHb-Fg-rq7" firstAttribute="leading" secondItem="1ht-Bf-15S" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="Hv0-1p-EAA"/>
-                            <constraint firstItem="I3H-tf-jUO" firstAttribute="leading" secondItem="1ht-Bf-15S" secondAttribute="leading" constant="20" symbolic="YES" type="user" id="IUo-zi-zzK"/>
-                            <constraint firstAttribute="bottom" secondItem="pNh-na-wBJ" secondAttribute="bottom" constant="18" type="user" id="JeD-Ei-GUq"/>
-                            <constraint firstItem="jp7-Ow-fVH" firstAttribute="leading" secondItem="1ht-Bf-15S" secondAttribute="leading" constant="20" symbolic="YES" type="user" id="NHP-eu-n7q"/>
-                            <constraint firstItem="I3H-tf-jUO" firstAttribute="centerY" secondItem="1ht-Bf-15S" secondAttribute="centerY" type="user" id="Ob1-Wv-7Sq"/>
+                            <constraint firstAttribute="trailing" secondItem="r00-yo-I0n" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="Orc-Cg-MSb"/>
+                            <constraint firstAttribute="trailing" secondItem="bcD-5J-vrI" secondAttribute="trailing" constant="70" type="user" id="PIk-g8-UsJ"/>
                             <constraint firstItem="UXV-Pt-1xE" firstAttribute="leading" secondItem="1ht-Bf-15S" secondAttribute="leading" constant="109" type="user" id="Q6b-ts-4Wg"/>
-                            <constraint firstItem="5BX-uR-902" firstAttribute="leading" secondItem="r00-yo-I0n" secondAttribute="leading" type="default" id="Rdn-sJ-gJK"/>
+                            <constraint firstItem="bcD-5J-vrI" firstAttribute="leading" secondItem="1ht-Bf-15S" secondAttribute="leading" constant="71" type="user" id="RPf-r9-kGm"/>
+                            <constraint firstItem="YDf-lh-8mD" firstAttribute="leading" secondItem="1ht-Bf-15S" secondAttribute="leading" constant="9" type="user" id="W5Q-gx-zom"/>
+                            <constraint firstItem="jp7-Ow-fVH" firstAttribute="baseline" secondItem="r00-yo-I0n" secondAttribute="baseline" type="user" id="X9A-Se-HLu"/>
                             <constraint firstItem="vBs-Pg-YLN" firstAttribute="centerX" secondItem="hvR-vh-6Bp" secondAttribute="centerX" type="user" id="XJE-pB-EcI"/>
-                            <constraint firstItem="5BX-uR-902" firstAttribute="top" secondItem="r00-yo-I0n" secondAttribute="top" type="default" id="Y8T-qi-LMF"/>
-                            <constraint firstItem="UXV-Pt-1xE" firstAttribute="centerY" secondItem="pNh-na-wBJ" secondAttribute="centerY" type="default" id="Yjg-dg-dZN"/>
-                            <constraint firstAttribute="trailing" secondItem="5BX-uR-902" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="bDo-Qo-vax"/>
-                            <constraint firstItem="mHb-Fg-rq7" firstAttribute="top" secondItem="jp7-Ow-fVH" secondAttribute="top" type="default" id="fDb-uZ-Usp"/>
-                            <constraint firstAttribute="centerY" secondItem="aLG-xz-xA6" secondAttribute="centerY" type="user" id="ftd-vv-vDs"/>
-                            <constraint firstAttribute="centerX" secondItem="aLG-xz-xA6" secondAttribute="centerX" type="user" id="hWZ-sW-cKP"/>
-                            <constraint firstItem="Azn-bC-AQG" firstAttribute="top" secondItem="r00-yo-I0n" secondAttribute="bottom" constant="-19" type="user" id="nqm-pz-SXd"/>
-                            <constraint firstAttribute="trailing" secondItem="r00-yo-I0n" secondAttribute="trailing" constant="20" symbolic="YES" type="user" id="qFI-aR-LRr"/>
-                            <constraint firstItem="mHb-Fg-rq7" firstAttribute="trailing" secondItem="jp7-Ow-fVH" secondAttribute="trailing" type="default" id="qG8-eS-Lif"/>
+                            <constraint firstItem="338-x9-JrC" firstAttribute="leading" secondItem="1ht-Bf-15S" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="bD2-HB-o1y"/>
+                            <constraint firstItem="jp7-Ow-fVH" firstAttribute="top" secondItem="vBs-Pg-YLN" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="enc-Yl-bu3"/>
+                            <constraint firstItem="vBs-Pg-YLN" firstAttribute="top" secondItem="hvR-vh-6Bp" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="fgc-wt-HiV"/>
+                            <constraint firstItem="bcD-5J-vrI" firstAttribute="centerX" secondItem="YDf-lh-8mD" secondAttribute="centerX" type="user" id="g2E-wi-3gA"/>
+                            <constraint firstItem="vBs-Pg-YLN" firstAttribute="top" relation="greaterThanOrEqual" secondItem="hvR-vh-6Bp" secondAttribute="bottom" constant="8" type="user" id="gkQ-v5-ddv"/>
+                            <constraint firstAttribute="bottom" secondItem="bcD-5J-vrI" secondAttribute="bottom" constant="124" id="iBa-bh-iOo"/>
+                            <constraint firstAttribute="bottom" secondItem="UXV-Pt-1xE" secondAttribute="bottom" constant="2" type="user" id="kDE-ac-wbq"/>
+                            <constraint firstItem="jp7-Ow-fVH" firstAttribute="leading" secondItem="1ht-Bf-15S" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="kyB-hH-H79"/>
+                            <constraint firstAttribute="trailing" secondItem="YDf-lh-8mD" secondAttribute="trailing" constant="9" type="user" id="ngk-4i-HgB"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="r00-yo-I0n" secondAttribute="trailing" constant="20" type="user" id="q6B-B1-Yvd"/>
                             <constraint firstItem="pNh-na-wBJ" firstAttribute="leading" secondItem="1ht-Bf-15S" secondAttribute="leading" type="user" id="rc0-5s-uhs"/>
-                            <constraint firstItem="vBs-Pg-YLN" firstAttribute="top" secondItem="hvR-vh-6Bp" secondAttribute="bottom" constant="12" type="user" id="skX-Rk-zQP"/>
-                            <constraint firstAttribute="bottom" secondItem="UXV-Pt-1xE" secondAttribute="bottom" constant="13" type="user" id="tJJ-xz-PeZ"/>
-                            <constraint firstItem="I3H-tf-jUO" firstAttribute="baseline" secondItem="Azn-bC-AQG" secondAttribute="baseline" type="user" id="tL4-ry-vuo"/>
-                            <constraint firstItem="mHb-Fg-rq7" firstAttribute="bottom" secondItem="jp7-Ow-fVH" secondAttribute="bottom" type="user" id="uTu-8n-W5z"/>
-                            <constraint firstItem="r00-yo-I0n" firstAttribute="baseline" secondItem="jp7-Ow-fVH" secondAttribute="baseline" type="user" id="us4-CU-Kgp"/>
-                            <constraint firstAttribute="trailing" secondItem="UXV-Pt-1xE" secondAttribute="trailing" constant="9" id="xmc-EX-Fc4"/>
-                            <constraint firstItem="I3H-tf-jUO" firstAttribute="top" secondItem="jp7-Ow-fVH" secondAttribute="bottom" constant="-19" type="user" id="xsb-8b-898"/>
+                            <constraint firstItem="jp7-Ow-fVH" firstAttribute="top" relation="lessThanOrEqual" secondItem="hvR-vh-6Bp" secondAttribute="bottom" constant="40" type="user" id="ueg-Xq-lvB"/>
+                            <constraint firstAttribute="trailing" secondItem="UXV-Pt-1xE" secondAttribute="trailing" constant="2" type="user" id="xmc-EX-Fc4"/>
+                            <constraint firstItem="jp7-Ow-fVH" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="1ht-Bf-15S" secondAttribute="leading" constant="18" type="user" id="ztu-gs-CaZ"/>
+                            <constraint firstItem="UXV-Pt-1xE" firstAttribute="centerY" secondItem="pNh-na-wBJ" secondAttribute="centerY" type="user" id="zx5-a6-bpu"/>
                         </constraints>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
                     <navigationItem key="navigationItem" title="Now Playing" id="p1X-hF-phx">
                         <barButtonItem key="rightBarButtonItem" id="SYm-aQ-BA8">
@@ -260,17 +222,17 @@
                     </navigationItem>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <nil key="simulatedBottomBarMetrics"/>
-                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <connections>
                         <outlet property="elapsedTimeLabel" destination="jp7-Ow-fVH" id="XRO-tm-sfx"/>
-                        <outlet property="nextButton" destination="Azn-bC-AQG" id="SiV-Ht-jFa"/>
                         <outlet property="nextLabel" destination="pNh-na-wBJ" id="miO-kU-qIM"/>
                         <outlet property="nextSongLabel" destination="UXV-Pt-1xE" id="2wO-C9-pER"/>
                         <outlet property="nowPlayingLabel" destination="hvR-vh-6Bp" id="xdE-lz-O9B"/>
-                        <outlet property="playPauseButton" destination="aLG-xz-xA6" id="up2-2g-UZr"/>
-                        <outlet property="previousButton" destination="I3H-tf-jUO" id="v19-SD-Iuv"/>
+                        <outlet property="playerButtons" destination="YDf-lh-8mD" id="gV6-Cr-sRy"/>
                         <outlet property="progressSlider" destination="vBs-Pg-YLN" id="r3f-gC-8qq"/>
                         <outlet property="remainingTimeLabel" destination="r00-yo-I0n" id="unW-43-0PV"/>
+                        <outlet property="repeatShuffleButtons" destination="bcD-5J-vrI" id="pgC-el-P6P"/>
+                        <outlet property="volumeSlider" destination="338-x9-JrC" id="7MM-lU-S6p"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0Sq-tX-xZh" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -282,7 +244,7 @@
             <objects>
                 <viewController id="u71-mV-nz5" customClass="TimeMagnifierViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="VlT-IA-8D6">
-                        <rect key="frame" x="0.0" y="64" width="480" height="256"/>
+                        <rect key="frame" x="0.0" y="64" width="568" height="256"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <button opaque="NO" multipleTouchEnabled="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="clip" translatesAutoresizingMaskIntoConstraints="NO" id="28X-IN-pRp">
@@ -326,7 +288,7 @@
             <objects>
                 <viewController storyboardIdentifier="TextMagnifierViewController" modalTransitionStyle="crossDissolve" id="de3-2B-HN2" customClass="TextMagnifierViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="wjZ-BW-RcM">
-                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceHorizontal="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Je-TW-a6G">
@@ -396,7 +358,7 @@
             <objects>
                 <viewController id="AeD-XN-WKi" customClass="NotesViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="rwd-qJ-21T">
-                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="455"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="UDF" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gbt-dE-Llw">
@@ -456,7 +418,7 @@
             <objects>
                 <viewController title="Info" id="0BK-h9-5Yl" customClass="SongInfoViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="0sl-LD-F4d">
-                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="455"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kBP-4V-c8x">
@@ -588,7 +550,7 @@
             <objects>
                 <viewController id="DPV-A8-OP5" customClass="CollectionViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="55" sectionHeaderHeight="22" sectionFooterHeight="22" id="tE6-jE-hH7">
-                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="separatorColor" white="0.80000000000000004" alpha="1" colorSpace="deviceWhite"/>
@@ -661,7 +623,7 @@
             <objects>
                 <viewController id="0lI-6V-IX1" customClass="InitialViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="iAz-Gn-dPw">
-                        <rect key="frame" x="0.0" y="64" width="480" height="256"/>
+                        <rect key="frame" x="0.0" y="64" width="568" height="256"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" reversesTitleShadowWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ebm-Dp-INw">
@@ -704,7 +666,7 @@
             <objects>
                 <viewController id="tmU-Ze-HBf" customClass="MediaGroupViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="55" sectionHeaderHeight="22" sectionFooterHeight="22" id="zFq-1a-msn">
-                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="separatorColor" white="0.80000000000000004" alpha="1" colorSpace="deviceWhite"/>
@@ -839,135 +801,23 @@
     </scenes>
     <resources>
         <image name="bigforward.png" width="64" height="60"/>
-        <image name="bigplay.png" width="128" height="120"/>
+        <image name="bigplay.png" width="64" height="60"/>
+        <image name="bigrepeat.png" width="64" height="64"/>
         <image name="bigrewind.png" width="64" height="60"/>
+        <image name="bigshuffle.png" width="62" height="62"/>
         <image name="info_48.png" width="48" height="48"/>
         <image name="list-background.png" width="320" height="77"/>
         <image name="note_48.png" width="48" height="48"/>
+        <image name="volume_down_48.png" width="48" height="48"/>
+        <image name="volume_up_48.png" width="48" height="48"/>
     </resources>
-    <classes>
-        <class className="AutoScrollLabel" superclassName="UIScrollView">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/AutoScrollLabel.h"/>
-        </class>
-        <class className="CollectionItemCell" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/CollectionItemCell.h"/>
-            <relationships>
-                <relationship kind="outlet" name="durationLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="CollectionViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/CollectionViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="collectionTableView" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-        <class className="InitialViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/InitialViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="choosePlaylist:"/>
-                <relationship kind="outlet" name="choosePlaylist" candidateClass="UIButton"/>
-            </relationships>
-        </class>
-        <class className="MainViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MainViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="moveSlider:"/>
-                <relationship kind="action" name="playOrPauseMusic:"/>
-                <relationship kind="action" name="skipBack:"/>
-                <relationship kind="action" name="skipForward:"/>
-                <relationship kind="outlet" name="elapsedTimeLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="navigationBar" candidateClass="UINavigationBar"/>
-                <relationship kind="outlet" name="nextButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="nextLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="nextSongLabel" candidateClass="AutoScrollLabel"/>
-                <relationship kind="outlet" name="nowPlayingLabel" candidateClass="AutoScrollLabel"/>
-                <relationship kind="outlet" name="playPauseButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="previousButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="progressSlider" candidateClass="UISlider"/>
-                <relationship kind="outlet" name="remainingTimeLabel" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="MediaGroupCell" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MediaGroupCell.h"/>
-            <relationships>
-                <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="MediaGroupViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MediaGroupViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="groupTableView" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-        <class className="NSLayoutConstraint" superclassName="NSObject">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
-        </class>
-        <class className="NotesTabBarController" superclassName="UITabBarController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NotesTabBarController.h"/>
-        </class>
-        <class className="NotesViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NotesViewController.h"/>
-        </class>
-        <class className="SongCell" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SongCell.h"/>
-            <relationships>
-                <relationship kind="outlet" name="durationLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="playingIndicator" candidateClass="UIImageView"/>
-            </relationships>
-        </class>
-        <class className="SongImageCell" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SongImageCell.h"/>
-            <relationships>
-                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
-            </relationships>
-        </class>
-        <class className="SongInfoCell" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SongInfoCell.h"/>
-            <relationships>
-                <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="SongInfoViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SongInfoViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="infoTableView" candidateClass="UITableView"/>
-                <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
-            </relationships>
-        </class>
-        <class className="SongViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SongViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="songTableView" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-        <class className="TextMagnifierViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/TextMagnifierViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="swipeDownDetected:" candidateClass="UISwipeGestureRecognizer"/>
-                <relationship kind="action" name="swipeUpDetected:" candidateClass="UISwipeGestureRecognizer"/>
-                <relationship kind="action" name="tapDetected:" candidateClass="UITapGestureRecognizer"/>
-                <relationship kind="outlet" name="magnifiedLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
-            </relationships>
-        </class>
-        <class className="TimeMagnifierViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/TimeMagnifierViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="cancel:"/>
-                <relationship kind="outlet" name="magnifiedText" candidateClass="UIButton"/>
-            </relationships>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="Jfb-Df-W11"/>
         <segue reference="oc8-HG-QrB"/>
-        <segue reference="nuJ-IH-QbX"/>
     </inferredMetricsTieBreakers>
 </document>

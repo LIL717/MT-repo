@@ -268,6 +268,13 @@ static const NSUInteger kNavigationBarHeight = 60;
     
     [[UITabBar appearance] setSelectionIndicatorImage:[UIImage tallImageNamed:@"selection-tab.png"]];
     
+//    UIImage* segmentedControlBackground = [colorSwitcher processImageWithName:@"tabbar.png"];
+//    UIImage* segmentedControlBackground = [colorSwitcher processImageWithName:@"blue-button.png"];
+//
+//    [[UISegmentedControl appearance] setBackgroundImage:segmentedControlBackground
+//                                forState:UIControlStateNormal
+//                              barMetrics:UIBarMetricsDefault];
+    
     UIImage *minImage = [UIImage tallImageNamed:@"slider-fill.png"];
     UIImage *maxImage = [UIImage tallImageNamed:@"slider-trackGray.png"];
     UIImage *thumbImage = [UIImage tallImageNamed:@"slider-handle.png"];
