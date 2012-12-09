@@ -61,17 +61,22 @@
 @property (strong, nonatomic) IBOutlet UILabel *elapsedTimeLabel;
 @property (strong, nonatomic) IBOutlet UISlider *progressSlider;
 @property (strong, nonatomic) IBOutlet UILabel *remainingTimeLabel;
-@property (strong, nonatomic) IBOutlet MPVolumeView *volumeSlider;
+@property (strong, nonatomic) IBOutlet MPVolumeView *volumeView;
+@property (strong, nonatomic) IBOutlet UIButton *playPauseButton;
 
 @property (strong, nonatomic) IBOutlet UILabel *nextLabel;
 @property (strong, nonatomic) IBOutlet AutoScrollLabel *nextSongLabel;
 @property (strong, nonatomic) CollectionItem *collectionItem;
-@property (strong, nonatomic) IBOutlet UISegmentedControl *playerButtons;
+//@property (strong, nonatomic) IBOutlet UISegmentedControl *playerButtons;
 @property (strong, nonatomic) IBOutlet UISegmentedControl *repeatShuffleButtons;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *playerButtonContraint;
 
 - (IBAction)moveSlider:(id)sender;
+- (IBAction)skipBack:(id)sender;
+- (IBAction)playPause:(id)sender;
+- (IBAction)skipForward:(id)sender;
 
-- (IBAction)playerButtonsChanged:(id)sender;
+//- (IBAction)playerButtonsChanged:(id)sender;
 - (IBAction)repeatShuffleButtonsChanged:(id)sender;
 
 - (void) playMusic;

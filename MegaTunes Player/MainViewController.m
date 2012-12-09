@@ -120,12 +120,13 @@ void audioRouteChangeListenerCallback (
 @synthesize progressSlider;
 @synthesize remainingTimeLabel;
 
-@synthesize volumeSlider;
+@synthesize volumeView;
 @synthesize nextLabel;
 @synthesize nextSongLabel;
 @synthesize collectionItem;
-@synthesize playerButtons;
+@synthesize playPauseButton;
 @synthesize repeatShuffleButtons;
+@synthesize playerButtonContraint;
 
 
 
@@ -138,63 +139,63 @@ void audioRouteChangeListenerCallback (
 //}
 #pragma mark Music control________________________________
 
-// A toggle control for playing or pausing iPod library music playback, invoked
-//		when the user taps the 'playButton'.
-//- (IBAction) playOrPauseMusic: (id)sender {
-////   LogMethod();    
-//	MPMusicPlaybackState playbackState = [musicPlayer playbackState];
-//    
-//	if (playbackState == MPMusicPlaybackStateStopped || playbackState == MPMusicPlaybackStatePaused) {
-//        [self playMusic];
-//
-//	} else if (playbackState == MPMusicPlaybackStatePlaying) {
-//		[musicPlayer pause];
-//	}
-//}
-//
-//- (IBAction)skipBack:(id)sender {
-//    if ([musicPlayer currentPlaybackTime] > 5.0) {
-//        [musicPlayer skipToBeginning];
-//    } else {
-//        [musicPlayer skipToPreviousItem];
-//    }
-//}
-//
-//- (IBAction)skipForward:(id)sender {
-//    [musicPlayer skipToNextItem];
-//
-//}
-
 - (IBAction)moveSlider:(id)sender {
-//    LogMethod();
+    //    LogMethod();
     [musicPlayer setCurrentPlaybackTime: [self.progressSlider value]];
 }
 
-- (IBAction)playerButtonsChanged:(id)sender {
-    NSLog (@"playerButtons.selectedSegmentIndex is %d", playerButtons.selectedSegmentIndex);
-    if (playerButtons.selectedSegmentIndex == 0) {
-        playerButtons.selectedSegmentIndex = -1;
-        if ([musicPlayer currentPlaybackTime] > 5.0) {
-            [musicPlayer skipToBeginning];
-        } else {
-            [musicPlayer skipToPreviousItem];
-        }
-    }else if (playerButtons.selectedSegmentIndex == 1){
-        playerButtons.selectedSegmentIndex = -1;
-
-        MPMusicPlaybackState playbackState = [musicPlayer playbackState];
-        
-        if (playbackState == MPMusicPlaybackStateStopped || playbackState == MPMusicPlaybackStatePaused) {
-            [self playMusic];
-            
-        } else if (playbackState == MPMusicPlaybackStatePlaying) {
-            [musicPlayer pause];
-        }
-    }else if (playerButtons.selectedSegmentIndex == 2){
-        playerButtons.selectedSegmentIndex = -1;
-        [musicPlayer skipToNextItem];
+- (IBAction)skipBack:(id)sender {
+    if ([musicPlayer currentPlaybackTime] > 5.0) {
+        [musicPlayer skipToBeginning];
+    } else {
+        [musicPlayer skipToPreviousItem];
     }
 }
+
+- (IBAction)skipForward:(id)sender {
+    [musicPlayer skipToNextItem];
+
+}
+
+- (IBAction)playPause:(id)sender {
+//   LogMethod();
+	MPMusicPlaybackState playbackState = [musicPlayer playbackState];
+
+	if (playbackState == MPMusicPlaybackStateStopped || playbackState == MPMusicPlaybackStatePaused) {
+        [self playMusic];
+
+	} else if (playbackState == MPMusicPlaybackStatePlaying) {
+		[musicPlayer pause];
+	}
+}
+
+//- (IBAction)playerButtonsChanged:(id)sender {
+//#pragma mark TODO could this be a case statement?
+//    NSLog (@"playerButtons.selectedSegmentIndex is %d", playerButtons.selectedSegmentIndex);
+//    if (playerButtons.selectedSegmentIndex == 0) {
+//        playerButtons.selectedSegmentIndex = -1;
+//        if ([musicPlayer currentPlaybackTime] > 5.0) {
+//            [musicPlayer skipToBeginning];
+//        } else {
+//            [musicPlayer skipToPreviousItem];
+//        }
+//    }else if (playerButtons.selectedSegmentIndex == 1){
+//        playerButtons.selectedSegmentIndex = -1;
+//        MPMusicPlaybackState playbackState = [musicPlayer playbackState];
+//        
+//        if (playbackState == MPMusicPlaybackStateStopped || playbackState == MPMusicPlaybackStatePaused) {
+//            [self playMusic];
+//            
+//        } else if (playbackState == MPMusicPlaybackStatePlaying) {
+//            [musicPlayer pause];
+//        }
+//    }else if (playerButtons.selectedSegmentIndex == 2){
+//        playerButtons.selectedSegmentIndex = -1;
+//        [musicPlayer skipToNextItem];
+//    }
+////    [playerButtons setNeedsLayout];
+//
+//}
 
 - (IBAction)repeatShuffleButtonsChanged:(id)sender {
     NSLog (@"repeatShuffleButtons.selectedSegmentIndex is %d", repeatShuffleButtons.selectedSegmentIndex);
@@ -356,7 +357,7 @@ void audioRouteChangeListenerCallback (
 
 // When the now-playing item changes, update the now-playing label and the next label.
 - (void) handle_NowPlayingItemChanged: (id) notification {
-   LogMethod();
+//   LogMethod();
 
 	MPMediaItem *currentItem = [musicPlayer nowPlayingItem];
     
@@ -371,7 +372,7 @@ void audioRouteChangeListenerCallback (
     // scroll marquee style if too long for field
     
     self.nowPlayingLabel.text = [currentItem valueForProperty:  MPMediaItemPropertyTitle];
-    NSLog (@"nowPlayingLabel.text is %@", self.nowPlayingLabel.text);
+//    NSLog (@"nowPlayingLabel.text is %@", self.nowPlayingLabel.text);
     self.nowPlayingLabel.textColor = [UIColor whiteColor];
     UIFont *font = [UIFont systemFontOfSize:12];
     UIFont *newFont = [font fontWithSize:44];
@@ -486,30 +487,28 @@ void audioRouteChangeListenerCallback (
     }
 
 }
-// When the playback state changes, set the play/pause button in the Navigation bar
-//		appropriately.
+// When the playback state changes, set the play/pause button appropriately.
 - (void) handle_PlaybackStateChanged: (id) notification {
-//   LogMethod();    
+   LogMethod();    
 	MPMusicPlaybackState playbackState = [musicPlayer playbackState];
 	
 	if (playbackState == MPMusicPlaybackStatePaused) {
         
-        playerButtons.selectedSegmentIndex = 1;
-
-        [playerButtons setImage:[UIImage imageNamed:@"bigplay.png"] forSegmentAtIndex:1];
-//        [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
+//        playerButtons.selectedSegmentIndex = 1;
+//        [playerButtons setImage:[UIImage imageNamed:@"bigplay.png"] forSegmentAtIndex:1];
+        [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
 		
 	} else if (playbackState == MPMusicPlaybackStatePlaying) {
         
-        [playerButtons setImage:[UIImage imageNamed:@"bigpause.png"] forSegmentAtIndex:1];
+//        [playerButtons setImage:[UIImage imageNamed:@"bigpause.png"] forSegmentAtIndex:1];
 
-//        [playPauseButton setImage: [UIImage imageNamed:@"bigpause.png"] forState:UIControlStateNormal];
+        [playPauseButton setImage: [UIImage imageNamed:@"bigpause.png"] forState:UIControlStateNormal];
         
 	} else if (playbackState == MPMusicPlaybackStateStopped) {
         
-        [playerButtons setImage:[UIImage imageNamed:@"bigplay.png"] forSegmentAtIndex:1];
+//        [playerButtons setImage:[UIImage imageNamed:@"bigplay.png"] forSegmentAtIndex:1];
 
-//        [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
+        [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
 		
 		// Even though stopped, invoking 'stop' ensures that the music player will play
 		//		its queue from the start.
@@ -517,6 +516,7 @@ void audioRouteChangeListenerCallback (
 		[musicPlayer stop];
         
 	}
+
 }
 
 - (void) handle_iPodLibraryChanged: (id) notification {
@@ -713,14 +713,7 @@ void audioRouteChangeListenerCallback (
         [musicPlayer setShuffleMode: MPMusicShuffleModeOff];
         [musicPlayer setRepeatMode: MPMusicRepeatModeNone];
     }
-    if (musicPlayer.shuffleMode == MPMusicShuffleModeOff) {
-        UIImage *coloredImage = [[repeatShuffleButtons imageForSegmentAtIndex: 1] imageWithTint:[UIColor whiteColor]];
-        [repeatShuffleButtons setImage:coloredImage forSegmentAtIndex:1];
-    }
-    if (musicPlayer.repeatMode == MPMusicRepeatModeNone) {
-        UIImage *coloredImage = [[repeatShuffleButtons imageForSegmentAtIndex: 0] imageWithTint:[UIColor whiteColor]];
-        [repeatShuffleButtons setImage:coloredImage forSegmentAtIndex:0];
-    }
+
 //    NSArray *returnedQueue = [self.userMediaItemCollection items];
 //    
 //    for (MPMediaItem *song in returnedQueue) {
@@ -739,41 +732,90 @@ void audioRouteChangeListenerCallback (
         [self handle_NowPlayingItemChanged: nil];
         
         if ([musicPlayer playbackState] == MPMusicPlaybackStatePaused) {
-            [repeatShuffleButtons setImage:[UIImage imageNamed:@"bigplay.png"] forSegmentAtIndex:1];
+//            [playerButtons setImage:[UIImage imageNamed:@"bigplay.png"] forSegmentAtIndex:1];
 
-//            [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
+            [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
             //            [nowPlayingLabel setText: NSLocalizedString (@"Instructions", @"Brief instructions to user, shown at launch")];
             
         }
     }
-    
-    [self registerForMediaPlayerNotifications];
-    [self setPlayedMusicOnce: YES];
+    if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
 
-    
-}
-- (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
+        self.repeatShuffleButtons = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects: [UIImage imageNamed: @"bigrepeat.png" ], [UIImage imageNamed: @"bigshuffle.png" ], nil]];
+        self.repeatShuffleButtons.frame = CGRectMake(35, 240, 250, 60);
+        self.repeatShuffleButtons.segmentedControlStyle = UISegmentedControlStyleBar;
+        self.repeatShuffleButtons.selectedSegmentIndex = 0;
+        self.repeatShuffleButtons.tintColor = [UIColor blackColor];
+        [self.repeatShuffleButtons addTarget:self action:@selector(repeatShuffleButtonsChanged:) forControlEvents: UIControlEventValueChanged];
+        [self.view addSubview: self.repeatShuffleButtons];
+        
+        if (musicPlayer.shuffleMode == MPMusicShuffleModeOff) {
+            UIImage *coloredImage = [[self.repeatShuffleButtons imageForSegmentAtIndex: 1] imageWithTint:[UIColor whiteColor]];
+            [self.repeatShuffleButtons setImage:coloredImage forSegmentAtIndex:1];
+        }
+        if (musicPlayer.repeatMode == MPMusicRepeatModeNone) {
+            UIImage *coloredImage = [[self.repeatShuffleButtons imageForSegmentAtIndex: 0] imageWithTint:[UIColor whiteColor]];
+            [self.repeatShuffleButtons setImage:coloredImage forSegmentAtIndex:0];
+        }
+        self.volumeView = [[MPVolumeView alloc] initWithFrame:CGRectMake(40,320,240,50)];
+        
+
+        [self.volumeView setMinimumVolumeSliderImage:[UIImage imageNamed:@"slider-fill.png"] forState:UIControlStateNormal];
+        [self.volumeView setMaximumVolumeSliderImage:[UIImage imageNamed:@"slider-trackGray.png"] forState:UIControlStateNormal];
+        [self.volumeView setVolumeThumbImage:[UIImage imageNamed:@"volume_down.png"] forState:UIControlStateNormal];
+
+        [self.view addSubview: self.volumeView];
+    } else {
+        [self.view removeConstraint:self.playerButtonContraint];
+
+    }
     
     [nowPlayingLabel  refreshLabels];
     [nextSongLabel    refreshLabels];
+    
+//    [self willAnimateRotationToInterfaceOrientation: self.interfaceOrientation duration: 1];
+    [self registerForMediaPlayerNotifications];
+    [self setPlayedMusicOnce: YES];
+    
+}
+
+- (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
+    LogMethod();
+
+    [nowPlayingLabel  refreshLabels];
+    [nextSongLabel    refreshLabels];
     if (UIInterfaceOrientationIsLandscape(orientation)) {
+        [self.view removeConstraint:self.playerButtonContraint];
         self.repeatShuffleButtons.hidden = YES;
-        self.volumeSlider.hidden = YES;
-        
-        CGRect rect = self.elapsedTimeLabel.frame;
-        rect.origin.y = rect.origin.y - 30;
-        self.elapsedTimeLabel.frame = rect;
-        
-        rect = self.remainingTimeLabel.frame;
-        rect.origin.y = rect.origin.y - 30;
-        self.remainingTimeLabel.frame = rect;
+        self.volumeView.hidden = YES;
         
     } else {
+
+        [self.view addConstraint:self.playerButtonContraint];
         self.repeatShuffleButtons.hidden = NO;
-        self.volumeSlider.hidden = NO;
+        self.volumeView.hidden = NO;
+
+//        CGRect rect = self.progressSlider.frame;
+//        rect.origin.y = rect.origin.y - 12;
+//        self.progressSlider.frame = rect;
+//
+//        rect = self.playerButtons.frame;
+//        rect.origin.y = rect.origin.y + 30;
+//        self.playerButtons.frame = rect;
+//        
+//        rect = self.elapsedTimeLabel.frame;
+//        rect.origin.y = rect.origin.y + 30;
+//        self.elapsedTimeLabel.frame = rect;
+//        
+//        rect = self.remainingTimeLabel.frame;
+//        rect.origin.y = rect.origin.y + 30;
+//        self.remainingTimeLabel.frame = rect;
+
+
     }
 
 }
+
 #pragma mark Application state management_____________
 
 - (void) didReceiveMemoryWarning {
@@ -790,7 +832,7 @@ void audioRouteChangeListenerCallback (
 }
 
 - (void)dealloc {
-       LogMethod();
+//       LogMethod();
     /*
      // This sample doesn't use libray change notifications; this code is here to show how
      //		it's done if you need it.
@@ -919,9 +961,10 @@ void audioRouteChangeListenerCallback (
 }
 - (void)viewDidUnload {
     [self setNextLabel:nil];
-    [self setVolumeSlider:nil];
-    [self setPlayerButtons:nil];
     [self setRepeatShuffleButtons:nil];
+    [self setVolumeView:nil];
+    [self setPlayerButtonContraint:nil];
+    [self setPlayPauseButton:nil];
     [super viewDidUnload];
 }
 //
