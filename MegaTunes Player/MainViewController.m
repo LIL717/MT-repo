@@ -125,8 +125,11 @@ void audioRouteChangeListenerCallback (
 @synthesize nextSongLabel;
 @synthesize collectionItem;
 @synthesize playPauseButton;
-@synthesize repeatShuffleButtons;
+@synthesize repeatButton;
+@synthesize shuffleButton;
+//@synthesize repeatShuffleButtons;
 @synthesize playerButtonContraint;
+@synthesize repeatButtonHeightContraint;
 
 
 
@@ -196,39 +199,67 @@ void audioRouteChangeListenerCallback (
 ////    [playerButtons setNeedsLayout];
 //
 //}
+//
+//- (IBAction)repeatShuffleButtonsChanged:(id)sender {
+//    NSLog (@"repeatShuffleButtons.selectedSegmentIndex is %d", repeatShuffleButtons.selectedSegmentIndex);
+//    if (repeatShuffleButtons.selectedSegmentIndex == 0) {
+//        repeatShuffleButtons.selectedSegmentIndex = -1;
+//        //need to handle MPMusicRepeatModeOne
+//        //    NSLog (@"repeatMode is %d", [musicPlayer repeatMode]);
+//        if (musicPlayer.repeatMode == MPMusicRepeatModeNone) {
+//            [musicPlayer setRepeatMode: MPMusicRepeatModeAll];
+//            [repeatShuffleButtons setImage:[UIImage imageNamed:@"bigrepeat.png"] forSegmentAtIndex:0];
+//
+////            [self.repeatButton setImage: [UIImage imageNamed: @"bigrepeat.png"] forState: UIControlStateNormal];
+//            
+//        } else if (musicPlayer.repeatMode == MPMusicRepeatModeAll) {
+//            [musicPlayer setRepeatMode: MPMusicRepeatModeNone];
+//            UIImage *coloredImage = [[repeatShuffleButtons imageForSegmentAtIndex: 0] imageWithTint:[UIColor grayColor]];
+//            [repeatShuffleButtons setImage:coloredImage forSegmentAtIndex:0];
+//
+////            [self.repeatButton setImage: coloredImage forState: UIControlStateNormal];
+//        }
+//    }else if (repeatShuffleButtons.selectedSegmentIndex == 1){
+//        repeatShuffleButtons.selectedSegmentIndex = -1;
+//        //need to handle MPMusicShuffleModeAlbums
+//        if (musicPlayer.shuffleMode == MPMusicShuffleModeOff) {
+//            [musicPlayer setShuffleMode: MPMusicShuffleModeSongs];
+//            [repeatShuffleButtons setImage:[UIImage imageNamed:@"bigshuffle.png"] forSegmentAtIndex:1];
+//
+////            [self.shuffleButton setImage: [UIImage imageNamed: @"bigshuffle.png"] forState: UIControlStateNormal];
+//        } else if (musicPlayer.shuffleMode == MPMusicShuffleModeSongs) {
+//            [musicPlayer setShuffleMode: MPMusicShuffleModeOff];
+//            UIImage *coloredImage = [[repeatShuffleButtons imageForSegmentAtIndex: 1] imageWithTint:[UIColor grayColor]];
+//            [repeatShuffleButtons setImage:coloredImage forSegmentAtIndex:1];
+//        }
+//    }
+//}
 
-- (IBAction)repeatShuffleButtonsChanged:(id)sender {
-    NSLog (@"repeatShuffleButtons.selectedSegmentIndex is %d", repeatShuffleButtons.selectedSegmentIndex);
-    if (repeatShuffleButtons.selectedSegmentIndex == 0) {
-        repeatShuffleButtons.selectedSegmentIndex = -1;
-        //need to handle MPMusicRepeatModeOne
-        //    NSLog (@"repeatMode is %d", [musicPlayer repeatMode]);
-        if (musicPlayer.repeatMode == MPMusicRepeatModeNone) {
-            [musicPlayer setRepeatMode: MPMusicRepeatModeAll];
-            [repeatShuffleButtons setImage:[UIImage imageNamed:@"bigrepeat.png"] forSegmentAtIndex:0];
+- (IBAction)repeatModeChanged:(id)sender {
+    //need to handle MPMusicRepeatModeOne
+    //    NSLog (@"repeatMode is %d", [musicPlayer repeatMode]);
+    if (musicPlayer.repeatMode == MPMusicRepeatModeNone) {
+        [musicPlayer setRepeatMode: MPMusicRepeatModeAll];
+//        [repeatShuffleButtons setImage:[UIImage imageNamed:@"bigrepeat.png"] forSegmentAtIndex:0];
+        [self.repeatButton setImage: [UIImage imageNamed: @"bigrepeat.png"] forState: UIControlStateNormal];
+        
+    } else if (musicPlayer.repeatMode == MPMusicRepeatModeAll) {
+        [musicPlayer setRepeatMode: MPMusicRepeatModeNone];
+        UIImage *coloredImage = [self.repeatButton.currentImage imageWithTint:[UIColor whiteColor]];
+        [self.repeatButton setImage: coloredImage forState:UIControlStateNormal];
+    }
+}
 
-//            [self.repeatButton setImage: [UIImage imageNamed: @"bigrepeat.png"] forState: UIControlStateNormal];
-            
-        } else if (musicPlayer.repeatMode == MPMusicRepeatModeAll) {
-            [musicPlayer setRepeatMode: MPMusicRepeatModeNone];
-            UIImage *coloredImage = [[repeatShuffleButtons imageForSegmentAtIndex: 0] imageWithTint:[UIColor grayColor]];
-            [repeatShuffleButtons setImage:coloredImage forSegmentAtIndex:0];
-
-//            [self.repeatButton setImage: coloredImage forState: UIControlStateNormal];
-        }
-    }else if (repeatShuffleButtons.selectedSegmentIndex == 1){
-        repeatShuffleButtons.selectedSegmentIndex = -1;
-        //need to handle MPMusicShuffleModeAlbums
-        if (musicPlayer.shuffleMode == MPMusicShuffleModeOff) {
-            [musicPlayer setShuffleMode: MPMusicShuffleModeSongs];
-            [repeatShuffleButtons setImage:[UIImage imageNamed:@"bigshuffle.png"] forSegmentAtIndex:1];
-
-//            [self.shuffleButton setImage: [UIImage imageNamed: @"bigshuffle.png"] forState: UIControlStateNormal];
-        } else if (musicPlayer.shuffleMode == MPMusicShuffleModeSongs) {
-            [musicPlayer setShuffleMode: MPMusicShuffleModeOff];
-            UIImage *coloredImage = [[repeatShuffleButtons imageForSegmentAtIndex: 1] imageWithTint:[UIColor grayColor]];
-            [repeatShuffleButtons setImage:coloredImage forSegmentAtIndex:1];
-        }
+- (IBAction)shuffleModeChanged:(id)sender {
+    //need to handle MPMusicShuffleModeAlbums
+    if (musicPlayer.shuffleMode == MPMusicShuffleModeOff) {
+        [musicPlayer setShuffleMode: MPMusicShuffleModeSongs];
+//        [repeatShuffleButtons setImage:[UIImage imageNamed:@"bigshuffle.png"] forSegmentAtIndex:1];
+        [self.shuffleButton setImage: [UIImage imageNamed: @"bigshuffle.png"] forState: UIControlStateNormal];
+    } else if (musicPlayer.shuffleMode == MPMusicShuffleModeSongs) {
+        [musicPlayer setShuffleMode: MPMusicShuffleModeOff];
+        UIImage *coloredImage = [self.shuffleButton.currentImage imageWithTint:[UIColor whiteColor]];
+        [self.shuffleButton setImage: coloredImage forState:UIControlStateNormal];
     }
 }
 - (void) playMusic {
@@ -741,32 +772,44 @@ void audioRouteChangeListenerCallback (
     }
     if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
 
-        self.repeatShuffleButtons = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects: [UIImage imageNamed: @"bigrepeat.png" ], [UIImage imageNamed: @"bigshuffle.png" ], nil]];
-        self.repeatShuffleButtons.frame = CGRectMake(35, 240, 250, 60);
-        self.repeatShuffleButtons.segmentedControlStyle = UISegmentedControlStyleBar;
-        self.repeatShuffleButtons.selectedSegmentIndex = 0;
-        self.repeatShuffleButtons.tintColor = [UIColor blackColor];
-        [self.repeatShuffleButtons addTarget:self action:@selector(repeatShuffleButtonsChanged:) forControlEvents: UIControlEventValueChanged];
-        [self.view addSubview: self.repeatShuffleButtons];
-        
+//        self.repeatShuffleButtons = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects: [UIImage imageNamed: @"bigrepeat.png" ], [UIImage imageNamed: @"bigshuffle.png" ], nil]];
+//        self.repeatShuffleButtons.frame = CGRectMake(35, 240, 250, 60);
+//        self.repeatShuffleButtons.segmentedControlStyle = UISegmentedControlStyleBar;
+//        self.repeatShuffleButtons.selectedSegmentIndex = 0;
+//        self.repeatShuffleButtons.tintColor = [UIColor blackColor];
+//        [self.repeatShuffleButtons addTarget:self action:@selector(repeatShuffleButtonsChanged:) forControlEvents: UIControlEventValueChanged];
+//        [self.view addSubview: self.repeatShuffleButtons];
+//        
+//        if (musicPlayer.shuffleMode == MPMusicShuffleModeOff) {
+//            UIImage *coloredImage = [[self.repeatShuffleButtons imageForSegmentAtIndex: 1] imageWithTint:[UIColor whiteColor]];
+//            [self.repeatShuffleButtons setImage:coloredImage forSegmentAtIndex:1];
+//        }
+//        if (musicPlayer.repeatMode == MPMusicRepeatModeNone) {
+//            UIImage *coloredImage = [[self.repeatShuffleButtons imageForSegmentAtIndex: 0] imageWithTint:[UIColor whiteColor]];
+//            [self.repeatShuffleButtons setImage:coloredImage forSegmentAtIndex:0];
+//        }
         if (musicPlayer.shuffleMode == MPMusicShuffleModeOff) {
-            UIImage *coloredImage = [[self.repeatShuffleButtons imageForSegmentAtIndex: 1] imageWithTint:[UIColor whiteColor]];
-            [self.repeatShuffleButtons setImage:coloredImage forSegmentAtIndex:1];
+
+            UIImage *coloredImage = [self.shuffleButton.currentImage imageWithTint:[UIColor whiteColor]];
+            [self.shuffleButton setImage: coloredImage forState:UIControlStateNormal];
+
         }
         if (musicPlayer.repeatMode == MPMusicRepeatModeNone) {
-            UIImage *coloredImage = [[self.repeatShuffleButtons imageForSegmentAtIndex: 0] imageWithTint:[UIColor whiteColor]];
-            [self.repeatShuffleButtons setImage:coloredImage forSegmentAtIndex:0];
+            UIImage *coloredImage = [self.repeatButton.currentImage imageWithTint:[UIColor whiteColor]];
+            [self.repeatButton setImage: coloredImage forState:UIControlStateNormal];
         }
-        self.volumeView = [[MPVolumeView alloc] initWithFrame:CGRectMake(40,320,240,50)];
+//        self.volumeView = [[MPVolumeView alloc] initWithFrame:CGRectMake(40,320,240,50)];
         
 
         [self.volumeView setMinimumVolumeSliderImage:[UIImage imageNamed:@"slider-fill.png"] forState:UIControlStateNormal];
         [self.volumeView setMaximumVolumeSliderImage:[UIImage imageNamed:@"slider-trackGray.png"] forState:UIControlStateNormal];
         [self.volumeView setVolumeThumbImage:[UIImage imageNamed:@"volume_down.png"] forState:UIControlStateNormal];
 
-        [self.view addSubview: self.volumeView];
+//        [self.view addSubview: self.volumeView];
     } else {
         [self.view removeConstraint:self.playerButtonContraint];
+        [self.view removeConstraint:self.repeatButtonHeightContraint];
+        [self.view removeConstraint:self.volumeViewHeightConstraint];
 
     }
     
@@ -786,13 +829,25 @@ void audioRouteChangeListenerCallback (
     [nextSongLabel    refreshLabels];
     if (UIInterfaceOrientationIsLandscape(orientation)) {
         [self.view removeConstraint:self.playerButtonContraint];
-        self.repeatShuffleButtons.hidden = YES;
+        [self.view removeConstraint:self.repeatButtonHeightContraint];
+        [self.view removeConstraint:self.volumeViewHeightConstraint];
+
+        
+        self.repeatButton.hidden = YES;
+        self.shuffleButton.hidden = YES;
+//        self.repeatShuffleButtons.hidden = YES;
         self.volumeView.hidden = YES;
         
     } else {
 
         [self.view addConstraint:self.playerButtonContraint];
-        self.repeatShuffleButtons.hidden = NO;
+        [self.view addConstraint:self.repeatButtonHeightContraint];
+        [self.view addConstraint:self.volumeViewHeightConstraint];
+
+
+        self.repeatButton.hidden = NO;
+        self.shuffleButton.hidden = NO;
+//        self.repeatShuffleButtons.hidden = NO;
         self.volumeView.hidden = NO;
 
 //        CGRect rect = self.progressSlider.frame;
@@ -961,10 +1016,14 @@ void audioRouteChangeListenerCallback (
 }
 - (void)viewDidUnload {
     [self setNextLabel:nil];
-    [self setRepeatShuffleButtons:nil];
+//    [self setRepeatShuffleButtons:nil];
     [self setVolumeView:nil];
     [self setPlayerButtonContraint:nil];
     [self setPlayPauseButton:nil];
+    [self setRepeatButtonHeightContraint:nil];
+    [self setRepeatButton:nil];
+    [self setShuffleButton:nil];
+    [self setVolumeViewHeightConstraint:nil];
     [super viewDidUnload];
 }
 //
