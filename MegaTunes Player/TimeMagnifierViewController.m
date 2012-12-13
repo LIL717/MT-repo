@@ -32,7 +32,7 @@
 
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[appDelegate.colorSwitcher processImageWithName:@"background.png"]]];
     [self.magnifiedText.titleLabel setNumberOfLines: 1];
-    [self.magnifiedText.titleLabel setMinimumFontSize: 144.];
+//    [self.magnifiedText.titleLabel setMinimumFontSize: 144.];
     [self.magnifiedText.titleLabel setAdjustsFontSizeToFitWidth: YES];
     
     [self.magnifiedText setTitle: self.textToMagnify forState: UIControlStateNormal];
@@ -43,6 +43,7 @@
 //                                                    repeats:YES];
     
 }
+
 - (void) updateTime {
     MainViewController *mainViewController =( MainViewController *) self.delegate;
     [mainViewController updateTime];

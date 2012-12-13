@@ -119,9 +119,14 @@ void audioRouteChangeListenerCallback (
 @synthesize elapsedTimeLabel;
 @synthesize progressSlider;
 @synthesize remainingTimeLabel;
+@synthesize magnifyRemainingTimeButton;
+@synthesize magnifyElapsedTimeButton;
+@synthesize magnifyNextSong;
+@synthesize magnifyNowPlaying;
 
 @synthesize volumeView;
 @synthesize nextLabel;
+@synthesize nextSongScrollView;
 @synthesize nextSongLabel;
 @synthesize collectionItem;
 @synthesize playPauseButton;
@@ -130,6 +135,7 @@ void audioRouteChangeListenerCallback (
 //@synthesize repeatShuffleButtons;
 @synthesize playerButtonContraint;
 @synthesize repeatButtonHeightContraint;
+@synthesize nextSongLabelWidthConstraint;
 
 
 
@@ -388,7 +394,7 @@ void audioRouteChangeListenerCallback (
 
 // When the now-playing item changes, update the now-playing label and the next label.
 - (void) handle_NowPlayingItemChanged: (id) notification {
-//   LogMethod();
+   LogMethod();
 
 	MPMediaItem *currentItem = [musicPlayer nowPlayingItem];
     
@@ -417,17 +423,79 @@ void audioRouteChangeListenerCallback (
     } else {
         long nextDuration = [[[[self.userMediaItemCollection items] objectAtIndex: nextPlayingIndex] valueForProperty:MPMediaItemPropertyPlaybackDuration] floatValue];
         NSString *formattedNextDuration = [NSString stringWithFormat:@"%2lu:%02lu",nextDuration/60,nextDuration -(nextDuration/60)*60];
+        
+        //set this time so that label can be built to the right size to handle the text
+//        [self scrollNextSongLabel];
+
         self.nextSongLabel.text = [NSString stringWithFormat: @"%@  %@",[[[self.userMediaItemCollection items] objectAtIndex: nextPlayingIndex] valueForProperty:  MPMediaItemPropertyTitle], formattedNextDuration];
+//        NSLog (@" nextSongLabel.text is %@", self.nextSongLabel.text);
+//        self.nextSongLabel.font = newFont;
+//        self.nextSongLabel.lineBreakMode = NSLineBreakByClipping;
+//        self.nextSongLabel.textColor = [UIColor whiteColor];
+//        self.nextSongLabel.textAlignment = NSTextAlignmentLeft;
+        
+        [self scrollNextSongLabel];
+//        NSLog (@"size of nextSongLabel after scroll setup is %f", self.nextSongLabel.frame.size.width);
+
+//        NSLog (@" nextSongLabel.text is %@", self.nextSongLabel.text);
+        
         self.nextLabel.text = [NSString stringWithFormat: @"Next:"];
-        ;
+
     }
-    self.nextSongLabel.textColor = [UIColor whiteColor];
-    self.nextSongLabel.font = newFont;
-    self.nextSongLabel.textAlignment = NSTextAlignmentLeft;
     
     [self updateTime];
     [self nowPlayingInfo];
     
+}
+- (void) scrollNextSongLabel {
+//    LogMethod();
+    
+
+    //calculate the label size to fit the text with the font size
+//    NSLog (@"size of nextSongLabel is %f", self.nextSongLabel.frame.size.width);
+    CGSize labelSize = [self.nextSongLabel.text sizeWithFont:self.nextSongLabel.font
+                                            constrainedToSize:CGSizeMake(INT16_MAX, CGRectGetHeight(nextSongScrollView.bounds))
+                                                lineBreakMode:NSLineBreakByClipping];
+    
+    //build a new label that will hold all the text
+    UILabel *newLabel = [[UILabel alloc] initWithFrame: self.nextSongLabel.frame];
+    CGRect frame = newLabel.frame;
+    //    frame.origin.x = 0;
+    frame.size.height = CGRectGetHeight(nextSongScrollView.bounds);
+    frame.size.width = labelSize.width + 1;
+    newLabel.frame = frame;
+    
+//    NSLog (@"size of newLabel is %f", frame.size.width);
+
+    
+    // Recenter label vertically within the scroll view
+    //    newLabel.center = CGPointMake(newLabel.center.x, roundf(scrollView.center.y - CGRectGetMinY(scrollView.frame)));
+    //    offset += CGRectGetWidth(self.magnifiedlabel.bounds);
+    
+    //calculate the size (w x h) for the scrollview content
+    CGSize size;
+    size.width = CGRectGetWidth(newLabel.bounds);
+    size.height = CGRectGetHeight(newLabel.bounds);
+    nextSongScrollView.contentSize = size;
+    nextSongScrollView.contentOffset = CGPointZero;
+    
+    //set the UIOutlet label's frame to the new sized frame
+    self.nextSongLabel.frame = newLabel.frame;
+    
+//    NSLog (@"size of nextSongScrollView is %f", self.nextSongScrollView.frame.size.width);
+
+    //enable scroll if the content will not fit within the scrollView
+    if (nextSongScrollView.contentSize.width>nextSongScrollView.frame.size.width) {
+        nextSongScrollView.scrollEnabled = YES;
+        [self.view removeConstraint:self.nextSongLabelWidthConstraint];
+//        NSLog (@"scrollEnabled");
+    }
+    else {
+        nextSongScrollView.scrollEnabled = NO;
+        [self.view addConstraint:self.nextSongLabelWidthConstraint];
+//        NSLog (@"scrollDisabled");
+
+    }
 }
 - (void) nowPlayingInfo {
     //  Set nowPlayingInfo
@@ -520,7 +588,13 @@ void audioRouteChangeListenerCallback (
 }
 // When the playback state changes, set the play/pause button appropriately.
 - (void) handle_PlaybackStateChanged: (id) notification {
-   LogMethod();    
+   LogMethod();
+//    //temporary nslogs for debugging
+//    
+//    NSLog (@"size of nextSongLabel is %f, %f", self.nextSongLabel.frame.size.width, self.nextSongLabel.frame.size.height);
+//    NSLog (@"size of nextSongScrollView is %f, %f", self.nextSongScrollView.frame.size.width, self.nextSongScrollView.frame.size.height);
+
+
 	MPMusicPlaybackState playbackState = [musicPlayer playbackState];
 	
 	if (playbackState == MPMusicPlaybackStatePaused) {
@@ -563,16 +637,16 @@ void audioRouteChangeListenerCallback (
 
 // delegate method for the audio route change alert view; follows the protocol specified
 //	in the UIAlertViewDelegate protocol.
-- (void) alertView: routeChangeAlertView clickedButtonAtIndex: buttonIndex {
-    
-	if ((NSInteger) buttonIndex == 1) {
-		[appSoundPlayer play];
-	} else {
-		[appSoundPlayer setCurrentTime: 0];
-	}
-	
-}
-
+//- (void) alertView: routeChangeAlertView clickedButtonAtIndex: buttonIndex {
+//    
+//	if ((NSInteger) buttonIndex == 1) {
+//		[appSoundPlayer play];
+//	} else {
+//		[appSoundPlayer setCurrentTime: 0];
+//	}
+//	
+//}
+//
 
 
 #pragma mark AV Foundation delegate methods____________
@@ -616,58 +690,6 @@ void audioRouteChangeListenerCallback (
 #if TARGET_IPHONE_SIMULATOR
 #warning *** Simulator mode: iPod library access works only when running on a device.
 #endif
-
-//- (void) setupApplicationAudio {
-//	LogMethod();
-//	// Gets the file system path to the sound to play.
-//	NSString *soundFilePath = [[NSBundle mainBundle]	pathForResource:	@"sound"
-//                                                              ofType:				@"caf"];
-//    
-//	// Converts the sound's file path to an NSURL object
-//	NSURL *newURL = [[NSURL alloc] initFileURLWithPath: soundFilePath];
-//	self.soundFileURL = newURL;
-//    
-//	// Registers this class as the delegate of the audio session.
-//	[[AVAudioSession sharedInstance] setDelegate: self];
-//	
-//	// The AmbientSound category allows application audio to mix with Media Player
-//	// audio. The category also indicates that application audio should stop playing
-//	// if the Ring/Siilent switch is set to "silent" or the screen locks.
-//	[[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryAmbient error: nil];
-//    /*
-//     // Use this code instead to allow the app sound to continue to play when the screen is locked.
-//     [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayback error: nil];
-//     
-//     UInt32 doSetProperty = 0;
-//     AudioSessionSetProperty (
-//     kAudioSessionProperty_OverrideCategoryMixWithOthers,
-//     sizeof (doSetProperty),
-//     &doSetProperty
-//     );
-//     */
-//    
-//	// Registers the audio route change listener callback function
-//	AudioSessionAddPropertyListener (
-//                                     kAudioSessionProperty_AudioRouteChange,
-//                                     audioRouteChangeListenerCallback,
-//                                     (__bridge void *)(self)
-//                                     );
-//    
-//	// Activates the audio session.
-//	
-//	NSError *activationError = nil;
-//	[[AVAudioSession sharedInstance] setActive: YES error: &activationError];
-//    
-//	// Instantiates the AVAudioPlayer object, initializing it with the sound
-//	AVAudioPlayer *newPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL: soundFileURL error: nil];
-//	self.appSoundPlayer = newPlayer;
-//	
-//	// "Preparing to play" attaches to the audio hardware and ensures that playback
-//	//		starts quickly when the user taps Play
-//	[appSoundPlayer prepareToPlay];
-//	[appSoundPlayer setVolume: 1.0];
-//	[appSoundPlayer setDelegate: self];
-//}
 
 
 // To learn about notifications, see "Notifications" in Cocoa Fundamentals Guide.
@@ -751,24 +773,37 @@ void audioRouteChangeListenerCallback (
 //        NSString *songTitle = [song valueForProperty: MPMediaItemPropertyTitle];
 //        NSLog (@"\t\t%@", songTitle);
 //    }
+
     if (playNew) {
+        NSLog (@"playNew");
         [musicPlayer setQueueWithItemCollection: self.userMediaItemCollection];
         
         [musicPlayer setNowPlayingItem: self.itemToPlay];
         [self playMusic];
         [self setPlayNew: NO];
+        
     } else if ([musicPlayer nowPlayingItem]) {
+        NSLog (@"something is nowPlaying");
+
         
         // Update the UI to reflect the now-playing item.
         [self handle_NowPlayingItemChanged: nil];
         
         if ([musicPlayer playbackState] == MPMusicPlaybackStatePaused) {
-//            [playerButtons setImage:[UIImage imageNamed:@"bigplay.png"] forSegmentAtIndex:1];
-
             [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
-            //            [nowPlayingLabel setText: NSLocalizedString (@"Instructions", @"Brief instructions to user, shown at launch")];
             
         }
+    }
+    
+    if (musicPlayer.shuffleMode == MPMusicShuffleModeOff) {
+        
+        UIImage *coloredImage = [self.shuffleButton.currentImage imageWithTint:[UIColor whiteColor]];
+        [self.shuffleButton setImage: coloredImage forState:UIControlStateNormal];
+        
+    }
+    if (musicPlayer.repeatMode == MPMusicRepeatModeNone) {
+        UIImage *coloredImage = [self.repeatButton.currentImage imageWithTint:[UIColor whiteColor]];
+        [self.repeatButton setImage: coloredImage forState:UIControlStateNormal];
     }
     if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
 
@@ -779,26 +814,6 @@ void audioRouteChangeListenerCallback (
 //        self.repeatShuffleButtons.tintColor = [UIColor blackColor];
 //        [self.repeatShuffleButtons addTarget:self action:@selector(repeatShuffleButtonsChanged:) forControlEvents: UIControlEventValueChanged];
 //        [self.view addSubview: self.repeatShuffleButtons];
-//        
-//        if (musicPlayer.shuffleMode == MPMusicShuffleModeOff) {
-//            UIImage *coloredImage = [[self.repeatShuffleButtons imageForSegmentAtIndex: 1] imageWithTint:[UIColor whiteColor]];
-//            [self.repeatShuffleButtons setImage:coloredImage forSegmentAtIndex:1];
-//        }
-//        if (musicPlayer.repeatMode == MPMusicRepeatModeNone) {
-//            UIImage *coloredImage = [[self.repeatShuffleButtons imageForSegmentAtIndex: 0] imageWithTint:[UIColor whiteColor]];
-//            [self.repeatShuffleButtons setImage:coloredImage forSegmentAtIndex:0];
-//        }
-        if (musicPlayer.shuffleMode == MPMusicShuffleModeOff) {
-
-            UIImage *coloredImage = [self.shuffleButton.currentImage imageWithTint:[UIColor whiteColor]];
-            [self.shuffleButton setImage: coloredImage forState:UIControlStateNormal];
-
-        }
-        if (musicPlayer.repeatMode == MPMusicRepeatModeNone) {
-            UIImage *coloredImage = [self.repeatButton.currentImage imageWithTint:[UIColor whiteColor]];
-            [self.repeatButton setImage: coloredImage forState:UIControlStateNormal];
-        }
-//        self.volumeView = [[MPVolumeView alloc] initWithFrame:CGRectMake(40,320,240,50)];
         
 
         [self.volumeView setMinimumVolumeSliderImage:[UIImage imageNamed:@"slider-fill.png"] forState:UIControlStateNormal];
@@ -812,11 +827,8 @@ void audioRouteChangeListenerCallback (
         [self.view removeConstraint:self.volumeViewHeightConstraint];
 
     }
-    
-    [nowPlayingLabel  refreshLabels];
-    [nextSongLabel    refreshLabels];
-    
-//    [self willAnimateRotationToInterfaceOrientation: self.interfaceOrientation duration: 1];
+        
+    [self willAnimateRotationToInterfaceOrientation: self.interfaceOrientation duration: 1];
     [self registerForMediaPlayerNotifications];
     [self setPlayedMusicOnce: YES];
     
@@ -826,7 +838,6 @@ void audioRouteChangeListenerCallback (
     LogMethod();
 
     [nowPlayingLabel  refreshLabels];
-    [nextSongLabel    refreshLabels];
     if (UIInterfaceOrientationIsLandscape(orientation)) {
         [self.view removeConstraint:self.playerButtonContraint];
         [self.view removeConstraint:self.repeatButtonHeightContraint];
@@ -849,22 +860,6 @@ void audioRouteChangeListenerCallback (
         self.shuffleButton.hidden = NO;
 //        self.repeatShuffleButtons.hidden = NO;
         self.volumeView.hidden = NO;
-
-//        CGRect rect = self.progressSlider.frame;
-//        rect.origin.y = rect.origin.y - 12;
-//        self.progressSlider.frame = rect;
-//
-//        rect = self.playerButtons.frame;
-//        rect.origin.y = rect.origin.y + 30;
-//        self.playerButtons.frame = rect;
-//        
-//        rect = self.elapsedTimeLabel.frame;
-//        rect.origin.y = rect.origin.y + 30;
-//        self.elapsedTimeLabel.frame = rect;
-//        
-//        rect = self.remainingTimeLabel.frame;
-//        rect.origin.y = rect.origin.y + 30;
-//        self.remainingTimeLabel.frame = rect;
 
 
     }
@@ -1024,6 +1019,13 @@ void audioRouteChangeListenerCallback (
     [self setRepeatButton:nil];
     [self setShuffleButton:nil];
     [self setVolumeViewHeightConstraint:nil];
+    [self setMagnifyRemainingTimeButton:nil];
+    [self setMagnifyElapsedTimeButton:nil];
+    [self setMagnifyNextSong:nil];
+    [self setMagnifyNowPlaying:nil];
+    [self setNextSongScrollView:nil];
+    [self setNextSongLabel:nil];
+    [self setNextSongLabelWidthConstraint:nil];
     [super viewDidUnload];
 }
 //

@@ -64,6 +64,7 @@
     self.magnifiedLabel.frame = newLabel.frame;
     self.magnifiedLabel.textAlignment = NSTextAlignmentCenter;
     
+    //shouldn't it be scrollView.frame.size.width????
     if (scrollView.contentSize.width>scrollView.frame.size.height) {
         scrollView.scrollEnabled = YES;
     }
