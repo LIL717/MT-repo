@@ -9,7 +9,7 @@
 #import "AppDelegate.h"
 #import "ColorSwitcher.h"
 #import "MediaGroupViewController.h"
-#import "CustomNavigationBar.h"
+//#import "CustomNavigationBar.h"
 
 
 
@@ -167,8 +167,8 @@ static const NSUInteger kNavigationBarHeight = 60;
 //     forBarMetrics:UIBarMetricsLandscapePhone];
 
     
-    self.colorSwitcher = [[ColorSwitcher alloc] initWithScheme:@"maroon"];
-    //    self.colorSwitcher = [[ColorSwitcher alloc] initWithScheme:@"black"];
+//    self.colorSwitcher = [[ColorSwitcher alloc] initWithScheme:@"maroon"];
+    self.colorSwitcher = [[ColorSwitcher alloc] initWithScheme:@"black"];
     
     [self customizeGlobalTheme];
     

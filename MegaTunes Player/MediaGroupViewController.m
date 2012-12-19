@@ -80,12 +80,18 @@
     if (playingItem) {
         //initWithTitle cannot be nil, must be @""
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                                  style:UIBarButtonItemStyleBordered
+//                                                                                  style:UIBarButtonItemStyleBordered
+                                                                                  style:UIBarButtonItemStylePlain
                                                                                  target:self
                                                                                  action:@selector(viewNowPlaying)];
         
-        UIImage *menuBarImage40 = [[UIImage imageNamed:@"Music-App-Icon40.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, -7)];
-        UIImage *menuBarImage54 = [[UIImage imageNamed:@"Music-App-Icon54.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, -3)];
+//        UIImage *menuBarImage40 = [[UIImage imageNamed:@"Music-App-Icon40.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, -7)];
+//        UIImage *menuBarImage54 = [[UIImage imageNamed:@"Music-App-Icon54.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, -3)];
+        UIImage *menuBarImage40 = [[UIImage imageNamed:@"redWhiteBlackPlay45.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(15, 0, -15, 0)];
+//        UIImage *menuBarImage54 = [[UIImage imageNamed:@"redWhiteBlackPlay54.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(3, 3, -3, -3)];
+        UIImage *menuBarImage54 = [[UIImage imageNamed:@"redWhiteBlackPlay45.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 0, -10, 0)];
+
+
         [self.navigationItem.rightBarButtonItem setBackgroundImage:menuBarImage40 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
         [self.navigationItem.rightBarButtonItem setBackgroundImage:menuBarImage54 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
     } else {
@@ -98,7 +104,7 @@
        CGRect frame = CGRectMake(0, 0, [self.title sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 48);
        UILabel *label = [[UILabel alloc] initWithFrame:frame];
        label.backgroundColor = [UIColor clearColor];
-       label.textAlignment = UITextAlignmentCenter;
+       label.textAlignment = NSTextAlignmentCenter;
        UIFont *font = [UIFont systemFontOfSize:12];
        UIFont *newFont = [font fontWithSize:44];
        label.font = newFont;

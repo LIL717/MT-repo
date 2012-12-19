@@ -13,6 +13,8 @@
 #import "AppDelegate.h"
 #import "ItemCollection.h"
 #import "UIImage+AdditionalFunctionalities.h"
+//#import "UINavigationBar+AdditionalFunctionalities.h"
+
 
 
 
@@ -100,7 +102,6 @@ void audioRouteChangeListenerCallback (
 
 @synthesize navigationBar;				// the application's Navigation bar
 @synthesize nowPlayingLabel;			// descriptive text shown on the main screen about the now-playing media item
-//@synthesize autoScrollLabel;
 @synthesize appSoundPlayer;				// An AVAudioPlayer object for playing application sound
 @synthesize soundFileURL;				// The path to the application sound
 @synthesize interruptedOnPlayback;		// A flag indicating whether or not the application was interrupted during application audio playback
@@ -119,10 +120,6 @@ void audioRouteChangeListenerCallback (
 @synthesize elapsedTimeLabel;
 @synthesize progressSlider;
 @synthesize remainingTimeLabel;
-@synthesize magnifyRemainingTimeButton;
-@synthesize magnifyElapsedTimeButton;
-@synthesize magnifyNextSong;
-@synthesize magnifyNowPlaying;
 
 @synthesize volumeView;
 @synthesize nextLabel;
@@ -132,7 +129,6 @@ void audioRouteChangeListenerCallback (
 @synthesize playPauseButton;
 @synthesize repeatButton;
 @synthesize shuffleButton;
-//@synthesize repeatShuffleButtons;
 @synthesize playerButtonContraint;
 @synthesize repeatButtonHeightContraint;
 @synthesize nextSongLabelWidthConstraint;
@@ -178,68 +174,25 @@ void audioRouteChangeListenerCallback (
 	}
 }
 
-//- (IBAction)playerButtonsChanged:(id)sender {
-//#pragma mark TODO could this be a case statement?
-//    NSLog (@"playerButtons.selectedSegmentIndex is %d", playerButtons.selectedSegmentIndex);
-//    if (playerButtons.selectedSegmentIndex == 0) {
-//        playerButtons.selectedSegmentIndex = -1;
-//        if ([musicPlayer currentPlaybackTime] > 5.0) {
-//            [musicPlayer skipToBeginning];
-//        } else {
-//            [musicPlayer skipToPreviousItem];
-//        }
-//    }else if (playerButtons.selectedSegmentIndex == 1){
-//        playerButtons.selectedSegmentIndex = -1;
-//        MPMusicPlaybackState playbackState = [musicPlayer playbackState];
-//        
-//        if (playbackState == MPMusicPlaybackStateStopped || playbackState == MPMusicPlaybackStatePaused) {
-//            [self playMusic];
-//            
-//        } else if (playbackState == MPMusicPlaybackStatePlaying) {
-//            [musicPlayer pause];
-//        }
-//    }else if (playerButtons.selectedSegmentIndex == 2){
-//        playerButtons.selectedSegmentIndex = -1;
-//        [musicPlayer skipToNextItem];
-//    }
-////    [playerButtons setNeedsLayout];
-//
-//}
-//
-//- (IBAction)repeatShuffleButtonsChanged:(id)sender {
-//    NSLog (@"repeatShuffleButtons.selectedSegmentIndex is %d", repeatShuffleButtons.selectedSegmentIndex);
-//    if (repeatShuffleButtons.selectedSegmentIndex == 0) {
-//        repeatShuffleButtons.selectedSegmentIndex = -1;
-//        //need to handle MPMusicRepeatModeOne
-//        //    NSLog (@"repeatMode is %d", [musicPlayer repeatMode]);
-//        if (musicPlayer.repeatMode == MPMusicRepeatModeNone) {
-//            [musicPlayer setRepeatMode: MPMusicRepeatModeAll];
-//            [repeatShuffleButtons setImage:[UIImage imageNamed:@"bigrepeat.png"] forSegmentAtIndex:0];
-//
-////            [self.repeatButton setImage: [UIImage imageNamed: @"bigrepeat.png"] forState: UIControlStateNormal];
-//            
-//        } else if (musicPlayer.repeatMode == MPMusicRepeatModeAll) {
-//            [musicPlayer setRepeatMode: MPMusicRepeatModeNone];
-//            UIImage *coloredImage = [[repeatShuffleButtons imageForSegmentAtIndex: 0] imageWithTint:[UIColor grayColor]];
-//            [repeatShuffleButtons setImage:coloredImage forSegmentAtIndex:0];
-//
-////            [self.repeatButton setImage: coloredImage forState: UIControlStateNormal];
-//        }
-//    }else if (repeatShuffleButtons.selectedSegmentIndex == 1){
-//        repeatShuffleButtons.selectedSegmentIndex = -1;
-//        //need to handle MPMusicShuffleModeAlbums
-//        if (musicPlayer.shuffleMode == MPMusicShuffleModeOff) {
-//            [musicPlayer setShuffleMode: MPMusicShuffleModeSongs];
-//            [repeatShuffleButtons setImage:[UIImage imageNamed:@"bigshuffle.png"] forSegmentAtIndex:1];
-//
-////            [self.shuffleButton setImage: [UIImage imageNamed: @"bigshuffle.png"] forState: UIControlStateNormal];
-//        } else if (musicPlayer.shuffleMode == MPMusicShuffleModeSongs) {
-//            [musicPlayer setShuffleMode: MPMusicShuffleModeOff];
-//            UIImage *coloredImage = [[repeatShuffleButtons imageForSegmentAtIndex: 1] imageWithTint:[UIColor grayColor]];
-//            [repeatShuffleButtons setImage:coloredImage forSegmentAtIndex:1];
-//        }
-//    }
-//}
+//    Tap to magnify
+- (IBAction)nowPlayingTapDetected:(UITapGestureRecognizer *)sender {
+    [self performSegueWithIdentifier: @"MagnifyNowPlaying" sender: self];
+    
+}
+//    Tap to magnify
+- (IBAction)nextSongTapDetected:(UITapGestureRecognizer *)sender {
+    [self performSegueWithIdentifier: @"MagnifyNextSong" sender: self];
+    
+}
+
+- (IBAction)magnifyRemainingTime:(id)sender {
+        [self performSegueWithIdentifier: @"MagnifyRemainingTime" sender: self];
+}
+
+- (IBAction)magnifyElapsedTime:(id)sender {
+    [self performSegueWithIdentifier: @"MagnifyElapsedTime" sender: self];
+
+}
 
 - (IBAction)repeatModeChanged:(id)sender {
     //need to handle MPMusicRepeatModeOne
@@ -327,12 +280,35 @@ void audioRouteChangeListenerCallback (
     if (collectionRemainingTime) {
         if (collectionRemainingSeconds > 0) {
 
-        NSString *collectionRemainingLabel = [NSString stringWithFormat:@"-%@",[formatter stringFromDate:collectionRemainingTime]];
-        
+            NSString *collectionRemainingLabel = [NSString stringWithFormat:@"-%@",[formatter stringFromDate:collectionRemainingTime]];
 
-        UIBarButtonItem *durationButton = [[UIBarButtonItem alloc] initWithTitle:collectionRemainingLabel style:UIBarButtonItemStyleBordered target:self action: @selector(magnify)];
-        
-        self.navigationItem.rightBarButtonItem=durationButton;
+//            CGRect frame = CGRectMake(0, 0, [collectionRemainingLabel sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 48);
+            CGRect frame = CGRectMake(0, 0, [collectionRemainingLabel sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 52);
+
+            UIButton *playlistRemainingButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//            UIButton *playlistRemainingButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+
+            [playlistRemainingButton addTarget:self
+                                        action:@selector(magnify)
+                                forControlEvents:UIControlEventTouchDown];
+            playlistRemainingButton.frame = frame;
+            UIFont *font = [UIFont systemFontOfSize:12];
+            UIFont *newFont = [font fontWithSize:44];
+            playlistRemainingButton.titleLabel.font = newFont;
+            playlistRemainingButton.tintColor = [UIColor clearColor];
+            [playlistRemainingButton setTitle: collectionRemainingLabel forState: UIControlStateNormal];
+            [playlistRemainingButton setTitleColor: [UIColor whiteColor] forState: UIControlStateNormal];
+            [playlistRemainingButton addTarget:self action:@selector(magnify) forControlEvents:UIControlEventTouchUpInside];
+
+
+            UIBarButtonItem *durationButton = [[UIBarButtonItem alloc] initWithCustomView: playlistRemainingButton];
+//            const CGFloat TextOffset = 0.0f;
+//            [durationButton setTitlePositionAdjustment: UIOffsetMake(TextOffset, 13.0f) forBarMetrics: UIBarMetricsDefault];
+//            [durationButton setTitlePositionAdjustment: UIOffsetMake(TextOffset, 15.0f) forBarMetrics: UIBarMetricsLandscapePhone];
+            self.navigationItem.rightBarButtonItem=durationButton;
+            self.navigationItem.rightBarButtonItem.title = collectionRemainingLabel;
+ 
+
         } else {
             self.navigationItem.rightBarButtonItem=nil;
         }
@@ -428,11 +404,6 @@ void audioRouteChangeListenerCallback (
 //        [self scrollNextSongLabel];
 
         self.nextSongLabel.text = [NSString stringWithFormat: @"%@  %@",[[[self.userMediaItemCollection items] objectAtIndex: nextPlayingIndex] valueForProperty:  MPMediaItemPropertyTitle], formattedNextDuration];
-//        NSLog (@" nextSongLabel.text is %@", self.nextSongLabel.text);
-//        self.nextSongLabel.font = newFont;
-//        self.nextSongLabel.lineBreakMode = NSLineBreakByClipping;
-//        self.nextSongLabel.textColor = [UIColor whiteColor];
-//        self.nextSongLabel.textAlignment = NSTextAlignmentLeft;
         
         [self scrollNextSongLabel];
 //        NSLog (@"size of nextSongLabel after scroll setup is %f", self.nextSongLabel.frame.size.width);
@@ -460,17 +431,11 @@ void audioRouteChangeListenerCallback (
     //build a new label that will hold all the text
     UILabel *newLabel = [[UILabel alloc] initWithFrame: self.nextSongLabel.frame];
     CGRect frame = newLabel.frame;
-    //    frame.origin.x = 0;
     frame.size.height = CGRectGetHeight(nextSongScrollView.bounds);
     frame.size.width = labelSize.width + 1;
     newLabel.frame = frame;
     
 //    NSLog (@"size of newLabel is %f", frame.size.width);
-
-    
-    // Recenter label vertically within the scroll view
-    //    newLabel.center = CGPointMake(newLabel.center.x, roundf(scrollView.center.y - CGRectGetMinY(scrollView.frame)));
-    //    offset += CGRectGetWidth(self.magnifiedlabel.bounds);
     
     //calculate the size (w x h) for the scrollview content
     CGSize size;
@@ -487,12 +452,10 @@ void audioRouteChangeListenerCallback (
     //enable scroll if the content will not fit within the scrollView
     if (nextSongScrollView.contentSize.width>nextSongScrollView.frame.size.width) {
         nextSongScrollView.scrollEnabled = YES;
-        [self.view removeConstraint:self.nextSongLabelWidthConstraint];
 //        NSLog (@"scrollEnabled");
     }
     else {
         nextSongScrollView.scrollEnabled = NO;
-        [self.view addConstraint:self.nextSongLabelWidthConstraint];
 //        NSLog (@"scrollDisabled");
 
     }
@@ -806,26 +769,15 @@ void audioRouteChangeListenerCallback (
         [self.repeatButton setImage: coloredImage forState:UIControlStateNormal];
     }
     if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
-
-//        self.repeatShuffleButtons = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects: [UIImage imageNamed: @"bigrepeat.png" ], [UIImage imageNamed: @"bigshuffle.png" ], nil]];
-//        self.repeatShuffleButtons.frame = CGRectMake(35, 240, 250, 60);
-//        self.repeatShuffleButtons.segmentedControlStyle = UISegmentedControlStyleBar;
-//        self.repeatShuffleButtons.selectedSegmentIndex = 0;
-//        self.repeatShuffleButtons.tintColor = [UIColor blackColor];
-//        [self.repeatShuffleButtons addTarget:self action:@selector(repeatShuffleButtonsChanged:) forControlEvents: UIControlEventValueChanged];
-//        [self.view addSubview: self.repeatShuffleButtons];
         
-
         [self.volumeView setMinimumVolumeSliderImage:[UIImage imageNamed:@"slider-fill.png"] forState:UIControlStateNormal];
         [self.volumeView setMaximumVolumeSliderImage:[UIImage imageNamed:@"slider-trackGray.png"] forState:UIControlStateNormal];
         [self.volumeView setVolumeThumbImage:[UIImage imageNamed:@"volume_down.png"] forState:UIControlStateNormal];
 
-//        [self.view addSubview: self.volumeView];
     } else {
         [self.view removeConstraint:self.playerButtonContraint];
         [self.view removeConstraint:self.repeatButtonHeightContraint];
         [self.view removeConstraint:self.volumeViewHeightConstraint];
-
     }
         
     [self willAnimateRotationToInterfaceOrientation: self.interfaceOrientation duration: 1];
@@ -843,10 +795,8 @@ void audioRouteChangeListenerCallback (
         [self.view removeConstraint:self.repeatButtonHeightContraint];
         [self.view removeConstraint:self.volumeViewHeightConstraint];
 
-        
         self.repeatButton.hidden = YES;
         self.shuffleButton.hidden = YES;
-//        self.repeatShuffleButtons.hidden = YES;
         self.volumeView.hidden = YES;
         
     } else {
@@ -855,10 +805,8 @@ void audioRouteChangeListenerCallback (
         [self.view addConstraint:self.repeatButtonHeightContraint];
         [self.view addConstraint:self.volumeViewHeightConstraint];
 
-
         self.repeatButton.hidden = NO;
         self.shuffleButton.hidden = NO;
-//        self.repeatShuffleButtons.hidden = NO;
         self.volumeView.hidden = NO;
 
 
@@ -965,12 +913,16 @@ void audioRouteChangeListenerCallback (
 - (void)textMagnifierViewControllerDidCancel:(TextMagnifierViewController *)controller
 {
 	[self dismissViewControllerAnimated:YES completion:nil];
+    [self willAnimateRotationToInterfaceOrientation: self.interfaceOrientation duration: 1];
+
 }
 //#pragma mark - TextMagnifierViewControllerDelegate
 
 - (void)timeMagnifierViewControllerDidCancel:(TimeMagnifierViewController *)controller
 {
 	[self dismissViewControllerAnimated:YES completion:nil];
+    [self willAnimateRotationToInterfaceOrientation: self.interfaceOrientation duration: 1];
+
 
 }
 - (void)viewWillAppear:(BOOL)animated {
@@ -990,11 +942,12 @@ void audioRouteChangeListenerCallback (
     CGRect frame = CGRectMake(0, 0, [self.title sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 48);
     UILabel *label = [[UILabel alloc] initWithFrame:frame];
     label.backgroundColor = [UIColor clearColor];
-    label.textAlignment = UITextAlignmentCenter;
+    label.textAlignment = NSTextAlignmentCenter;
     UIFont *font = [UIFont systemFontOfSize:12];
     UIFont *newFont = [font fontWithSize:44];
     label.font = newFont;
     label.textColor = [UIColor yellowColor];
+    label.lineBreakMode = NSLineBreakByClipping;
     label.text = self.title;
     
     return label;
@@ -1011,7 +964,6 @@ void audioRouteChangeListenerCallback (
 }
 - (void)viewDidUnload {
     [self setNextLabel:nil];
-//    [self setRepeatShuffleButtons:nil];
     [self setVolumeView:nil];
     [self setPlayerButtonContraint:nil];
     [self setPlayPauseButton:nil];
@@ -1019,64 +971,10 @@ void audioRouteChangeListenerCallback (
     [self setRepeatButton:nil];
     [self setShuffleButton:nil];
     [self setVolumeViewHeightConstraint:nil];
-    [self setMagnifyRemainingTimeButton:nil];
-    [self setMagnifyElapsedTimeButton:nil];
-    [self setMagnifyNextSong:nil];
-    [self setMagnifyNowPlaying:nil];
     [self setNextSongScrollView:nil];
     [self setNextSongLabel:nil];
     [self setNextSongLabelWidthConstraint:nil];
     [super viewDidUnload];
 }
-//
-//#pragma mark - Fetched results controller
-//
-//- (NSFetchedResultsController *)fetchedResultsController
-//{
-//    
-//    if (fetchedResultsController_ != nil)
-//    {
-//        return fetchedResultsController_;
-//    }
-//    
-//    /*
-//     Set up the fetched results controller.
-//     */
-//    // Create the fetch request for the entity.
-//    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-//    // Edit the entity name as appropriate.
-//    NSEntityDescription *entity = [NSEntityDescription entityForName:@"ItemCollection" inManagedObjectContext:self.managedObjectContext];
-//    
-//    [fetchRequest setEntity:entity];
-//    
-//    // Set the batch size to a suitable number.
-//    [fetchRequest setFetchBatchSize:20];
-//    
-//    // Edit the sort key as appropriate.
-//    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
-//    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
-//    
-//    [fetchRequest setSortDescriptors:sortDescriptors];
-//    
-//    // Edit the section name key path and cache name if appropriate.
-//    // nil for section name key path means "no sections".
-//    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:@"Root"];
-//    aFetchedResultsController.delegate = self;
-//    self.fetchedResultsController = aFetchedResultsController;
-//    
-//	NSError *error = nil;
-//	if (![self.fetchedResultsController performFetch:&error])
-//    {
-//        UIAlertView* alertView =
-//        [[UIAlertView alloc] initWithTitle:@"Data Management Error"
-//                                   message:@"Press the Home button to quit this application."
-//                                  delegate:self
-//                         cancelButtonTitle:@"OK"
-//                         otherButtonTitles: nil];
-//        [alertView show];
-//
-//	}
-//    
-//    return fetchedResultsController_;
-//}
+
 @end

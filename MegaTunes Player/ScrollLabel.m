@@ -260,7 +260,7 @@ static void each_object(NSArray *objects, void (^block)(id object))
     // calculate the label size
     CGSize labelSize = [self.mainLabel.text sizeWithFont:self.mainLabel.font
                                        constrainedToSize:CGSizeMake(INT16_MAX, CGRectGetHeight(self.bounds))
-                                           lineBreakMode:UILineBreakModeClip];
+                                           lineBreakMode:NSLineBreakByClipping];
     
     each_object(self.labels, ^(UILabel *label) {
         CGRect frame = label.frame;

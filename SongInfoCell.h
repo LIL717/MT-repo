@@ -8,6 +8,7 @@
 
 @interface SongInfoCell : UITableViewCell
 
+@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (nonatomic, strong) IBOutlet UILabel *nameLabel;
 
 

@@ -56,7 +56,6 @@
 @property (nonatomic, strong)   MPMediaItem             *itemToPlay;
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, retain) NSManagedObjectContext    *managedObjectContext;
-//@property (nonatomic, strong)   AutoScrollLabel         *autoScrollLabel;
 
 @property (strong, nonatomic) IBOutlet UILabel *elapsedTimeLabel;
 @property (strong, nonatomic) IBOutlet UISlider *progressSlider;
@@ -67,30 +66,25 @@
 @property (strong, nonatomic) IBOutlet UIButton *shuffleButton;
 
 @property (strong, nonatomic) IBOutlet UILabel *nextLabel;
-//@property (strong, nonatomic) IBOutlet AutoScrollLabel *nextSongLabel;
-//@property (strong, nonatomic) IBOutlet AutoScrollLabel *nextSongLabel;
+
 @property (strong, nonatomic) IBOutlet UIScrollView *nextSongScrollView;
 @property (strong, nonatomic) IBOutlet UILabel *nextSongLabel;
 
 @property (strong, nonatomic) CollectionItem *collectionItem;
-//@property (strong, nonatomic) IBOutlet UISegmentedControl *playerButtons;
-//@property (strong, nonatomic) IBOutlet UISegmentedControl *repeatShuffleButtons;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *playerButtonContraint;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *repeatButtonHeightContraint;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *volumeViewHeightConstraint;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *nextSongLabelWidthConstraint;
-@property (strong, nonatomic) IBOutlet UIButton *magnifyRemainingTimeButton;
-@property (strong, nonatomic) IBOutlet UIButton *magnifyElapsedTimeButton;
-@property (strong, nonatomic) IBOutlet UIButton *magnifyNextSong;
-@property (strong, nonatomic) IBOutlet UIButton *magnifyNowPlaying;
 
 - (IBAction)moveSlider:(id)sender;
 - (IBAction)skipBack:(id)sender;
 - (IBAction)playPause:(id)sender;
 - (IBAction)skipForward:(id)sender;
 
-//- (IBAction)playerButtonsChanged:(id)sender;
-//- (IBAction)repeatShuffleButtonsChanged:(id)sender;
+- (IBAction)nowPlayingTapDetected:(UITapGestureRecognizer *)sender;
+- (IBAction)nextSongTapDetected:(UITapGestureRecognizer *)sender;
+- (IBAction)magnifyRemainingTime:(id)sender;
+- (IBAction)magnifyElapsedTime:(id)sender;
 - (IBAction)repeatModeChanged:(id)sender;
 - (IBAction)shuffleModeChanged:(id)sender;
 
