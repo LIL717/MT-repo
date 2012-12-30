@@ -311,6 +311,8 @@
 }
 - (IBAction)viewNowPlaying {
     
+    LogMethod();
+    
     [self performSegueWithIdentifier: @"ViewNowPlaying" sender: self];
 }
 

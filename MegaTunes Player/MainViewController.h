@@ -18,12 +18,11 @@
 #import <AVFoundation/AVFoundation.h>
 #import <AudioToolbox/AudioToolbox.h>
 #import "AutoScrollLabel.h"
+#import "SongInfo.h"
 
 
 @interface MainViewController : UIViewController <MPMediaPickerControllerDelegate, AVAudioPlayerDelegate, TimeMagnifierViewControllerDelegate, TextMagnifierViewControllerDelegate, NSFetchedResultsControllerDelegate> {
     
-	IBOutlet UINavigationBar	*navigationBar;
-	IBOutlet AutoScrollLabel 	*nowPlayingLabel;
 	BOOL						playedMusicOnce;
     
 	AVAudioPlayer				*appSoundPlayer;
@@ -38,10 +37,8 @@
     MPMediaItem                 *itemToPlay;
     NSFetchedResultsController  *fetchedResultsController;
     NSManagedObjectContext      *managedObjectContext;
-//    AutoScrollLabel             *autoScrollLabel;
 }
 @property (nonatomic, strong)	UINavigationBar			*navigationBar;
-@property (nonatomic, strong)	AutoScrollLabel			*nowPlayingLabel;
 @property (readwrite)			BOOL					playedMusicOnce;
 @property (nonatomic, strong)	MPMediaItemCollection	*userMediaItemCollection;
 @property (nonatomic, strong)	MPMusicPlayerController	*musicPlayer;
@@ -56,7 +53,9 @@
 @property (nonatomic, strong)   MPMediaItem             *itemToPlay;
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, retain) NSManagedObjectContext    *managedObjectContext;
+@property (nonatomic, strong)   SongInfo *songInfo;
 
+@property (strong, nonatomic) IBOutlet AutoScrollLabel	*nowPlayingLabel;
 @property (strong, nonatomic) IBOutlet UILabel *elapsedTimeLabel;
 @property (strong, nonatomic) IBOutlet UISlider *progressSlider;
 @property (strong, nonatomic) IBOutlet UILabel *remainingTimeLabel;
@@ -66,6 +65,7 @@
 @property (strong, nonatomic) IBOutlet UIButton *shuffleButton;
 
 @property (strong, nonatomic) IBOutlet UILabel *nextLabel;
+@property (strong, nonatomic) IBOutlet UIButton *nowPlayingInfoButton;
 
 @property (strong, nonatomic) IBOutlet UIScrollView *nextSongScrollView;
 @property (strong, nonatomic) IBOutlet UILabel *nextSongLabel;
@@ -88,11 +88,7 @@
 - (IBAction)repeatModeChanged:(id)sender;
 - (IBAction)shuffleModeChanged:(id)sender;
 
-- (void) playMusic;
 - (void) updateTime;
-- (NSNumber *)calculatePlaylistElapsed;
-- (void) positionSlider;
-- (void) playMusic;
 - (void) timeMagnifierViewControllerDidCancel:(TimeMagnifierViewController *)controller;
 - (void) textMagnifierViewControllerDidCancel:(TextMagnifierViewController *)controller;
 

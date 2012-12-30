@@ -13,6 +13,9 @@
 #import "AppDelegate.h"
 #import "ItemCollection.h"
 #import "UIImage+AdditionalFunctionalities.h"
+#import "NotesTabBarController.h"
+#import "SongInfo.h"
+
 //#import "UINavigationBar+AdditionalFunctionalities.h"
 
 
@@ -113,6 +116,7 @@ void audioRouteChangeListenerCallback (
 @synthesize itemToPlay;
 @synthesize fetchedResultsController = fetchedResultsController_;
 @synthesize managedObjectContext;
+@synthesize songInfo;
 
 //these lines came from player view controller
 
@@ -132,8 +136,398 @@ void audioRouteChangeListenerCallback (
 @synthesize playerButtonContraint;
 @synthesize repeatButtonHeightContraint;
 @synthesize nextSongLabelWidthConstraint;
+@synthesize nowPlayingInfoButton;
 
+#pragma mark ViewDidLoad________________________________
 
+// Configure the application.
+- (void)viewWillAppear:(BOOL)animated {
+    LogMethod();
+    [super viewWillAppear: animated];
+    
+    self.playbackTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                                          target:self
+                                                        selector:@selector(updateTime)
+                                                        userInfo:nil
+                                                         repeats:YES];
+    
+//    self.navigationItem.titleView = [self customizeTitleView];
+}
+- (UILabel *) customizeTitleView
+{
+    CGRect frame = CGRectMake(0, 0, [self.title sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 48);
+    UILabel *label = [[UILabel alloc] initWithFrame:frame];
+    label.backgroundColor = [UIColor clearColor];
+    label.textAlignment = NSTextAlignmentCenter;
+    UIFont *font = [UIFont systemFontOfSize:12];
+    UIFont *newFont = [font fontWithSize:44];
+    label.font = newFont;
+    label.textColor = [UIColor yellowColor];
+    label.lineBreakMode = NSLineBreakByClipping;
+    label.text = self.title;
+    
+    return label;
+}
+
+- (void) viewDidLoad {
+    LogMethod();
+    [super viewDidLoad];
+    
+    
+    self.navigationItem.hidesBackButton = YES; // Important
+    //initWithTitle cannot be nil, must be @""
+	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                             style:UIBarButtonItemStyleBordered
+                                                                            target:self
+                                                                            action:@selector(goBackClick)];
+    
+    UIImage *menuBarImage48 = [[UIImage imageNamed:@"arrow_left_48_white.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    UIImage *menuBarImage58 = [[UIImage imageNamed:@"arrow_left_58_white.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage48 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage58 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
+    
+    //need this to use MPNowPlayingInfoCenter
+    [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[appDelegate.colorSwitcher processImageWithName:@"background.png"]]];
+    
+    //not sure, but think this is only needed to play sounds not music
+    //    [self setupApplicationAudio];
+    
+    [self setPlayedMusicOnce: NO];
+    
+    // Instantiate the music player. If you specied the iPod music player in the Settings app,
+    //		honor the current state of the built-in iPod app.
+    
+    if ([appDelegate useiPodPlayer]) {
+        
+        [self setMusicPlayer: [MPMusicPlayerController iPodMusicPlayer]];
+        
+    } else {
+        
+        [self setMusicPlayer: [MPMusicPlayerController applicationMusicPlayer]];
+        
+        // By default, an application music player takes on the shuffle and repeat modes
+        //		of the built-in iPod app. Here they are both turned off.
+        [musicPlayer setShuffleMode: MPMusicShuffleModeOff];
+        [musicPlayer setRepeatMode: MPMusicRepeatModeNone];
+    }
+    
+    //    NSArray *returnedQueue = [self.userMediaItemCollection items];
+    //
+    //    for (MPMediaItem *song in returnedQueue) {
+    //        NSString *songTitle = [song valueForProperty: MPMediaItemPropertyTitle];
+    //        NSLog (@"\t\t%@", songTitle);
+    //    }
+    
+    if (playNew) {
+        NSLog (@"playNew");
+        [musicPlayer setQueueWithItemCollection: self.userMediaItemCollection];
+        
+        [musicPlayer setNowPlayingItem: self.itemToPlay];
+        [self playMusic];
+//        [self setPlayNew: NO];  this gets set in viewDidAppear instead
+        
+    } else if ([musicPlayer nowPlayingItem]) {
+        NSLog (@"something is nowPlaying");
+        
+        
+        // Update the UI to reflect the now-playing item. - do this in viewDidAppear for autoScrollLabel to appear properly
+//        [self handle_NowPlayingItemChanged: nil];  
+
+        
+        if ([musicPlayer playbackState] == MPMusicPlaybackStatePaused) {
+            [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
+        } else if ([musicPlayer playbackState] == MPMusicPlaybackStatePlaying) {
+            [playPauseButton setImage: [UIImage imageNamed:@"bigpause.png"] forState:UIControlStateNormal];
+            
+        }
+    }
+    
+    if (musicPlayer.shuffleMode == MPMusicShuffleModeOff) {
+        
+        UIImage *coloredImage = [self.shuffleButton.currentImage imageWithTint:[UIColor whiteColor]];
+        [self.shuffleButton setImage: coloredImage forState:UIControlStateNormal];
+        
+    }
+    if (musicPlayer.repeatMode == MPMusicRepeatModeNone) {
+        UIImage *coloredImage = [self.repeatButton.currentImage imageWithTint:[UIColor whiteColor]];
+        [self.repeatButton setImage: coloredImage forState:UIControlStateNormal];
+    }
+    if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+        
+        [self.volumeView setMinimumVolumeSliderImage:[UIImage imageNamed:@"slider-fill.png"] forState:UIControlStateNormal];
+        [self.volumeView setMaximumVolumeSliderImage:[UIImage imageNamed:@"slider-trackGray.png"] forState:UIControlStateNormal];
+        [self.volumeView setVolumeThumbImage:[UIImage imageNamed:@"volume_down.png"] forState:UIControlStateNormal];
+        self.title = @"";
+        self.navigationItem.titleView = [self customizeTitleView];
+
+        
+    } else {
+        [self.view removeConstraint:self.playerButtonContraint];
+        [self.view removeConstraint:self.repeatButtonHeightContraint];
+        [self.view removeConstraint:self.volumeViewHeightConstraint];
+        self.title = @"Now Playing";
+        self.navigationItem.titleView = [self customizeTitleView];
+    }
+    
+    [self willAnimateRotationToInterfaceOrientation: self.interfaceOrientation duration: 1];
+    [self registerForMediaPlayerNotifications];
+    [self setPlayedMusicOnce: YES];
+    
+}
+
+- (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
+    LogMethod();
+    
+    [nowPlayingLabel  refreshLabels];
+    if (UIInterfaceOrientationIsLandscape(orientation)) {
+        [self.view removeConstraint:self.playerButtonContraint];
+        [self.view removeConstraint:self.repeatButtonHeightContraint];
+        [self.view removeConstraint:self.volumeViewHeightConstraint];
+        
+        self.repeatButton.hidden = YES;
+        self.shuffleButton.hidden = YES;
+        self.volumeView.hidden = YES;
+        
+        self.title = @"Now Playing";
+        self.navigationItem.titleView = [self customizeTitleView];
+        
+    } else {
+        
+        [self.view addConstraint:self.playerButtonContraint];
+        [self.view addConstraint:self.repeatButtonHeightContraint];
+        [self.view addConstraint:self.volumeViewHeightConstraint];
+        
+        self.repeatButton.hidden = NO;
+        self.shuffleButton.hidden = NO;
+        self.volumeView.hidden = NO;
+        
+        self.title = @"";
+        self.navigationItem.titleView = [self customizeTitleView];
+    }
+    
+}
+-(void) viewDidAppear:(BOOL)animated {
+    
+    if (playNew) {
+        [self setPlayNew: NO];
+        
+    } else if ([musicPlayer nowPlayingItem]) {
+        
+        
+        // Update the UI to reflect the now-playing item. This is done here instead of viewDidLoad for autoScrollLabel to appear properly
+        [self handle_NowPlayingItemChanged: nil];
+
+    }
+}
+#pragma mark Music notification handlers__________________
+
+// When the now-playing item changes, update the now-playing label and the next label.
+- (void) handle_NowPlayingItemChanged: (id) notification {
+    LogMethod();
+    
+	MPMediaItem *currentItem = [musicPlayer nowPlayingItem];
+    
+    //check the queue stored in Core Data to see if the nowPlaying song is in that queue
+    ItemCollection *itemCollection = [ItemCollection alloc];
+    itemCollection.managedObjectContext = self.managedObjectContext;
+    
+    self.collectionItem = [itemCollection containsItem: [currentItem valueForProperty: MPMediaItemPropertyTitle]];
+    self.userMediaItemCollection = collectionItem.collection;
+    
+    // Display the song name for the now-playing media item and next-playing media item with duration
+    // scroll marquee style if too long for field
+    
+    [self.nowPlayingLabel setText: [currentItem valueForProperty:  MPMediaItemPropertyTitle]];
+    NSLog (@"nowPlayingLabel.text is %@", self.nowPlayingLabel.text);
+//    [self.nowPlayingLabel setTextColor: [UIColor whiteColor]];
+    UIFont *font = [UIFont systemFontOfSize:12];
+    UIFont *newFont = [font fontWithSize:44];
+    [self.nowPlayingLabel setFont: newFont];
+    
+    // add info button
+    
+    MPMediaItem *song = currentItem;
+    
+    self.songInfo = [[SongInfo alloc] init];
+    self.songInfo.songName = [song valueForProperty:  MPMediaItemPropertyTitle];
+    self.songInfo.album = [song valueForProperty:  MPMediaItemPropertyAlbumTitle];
+    self.songInfo.artist = [song valueForProperty:  MPMediaItemPropertyArtist];
+    MPMediaItemArtwork *artWork = [song valueForProperty:MPMediaItemPropertyArtwork];
+    self.songInfo.albumImage = [artWork imageWithSize:CGSizeMake(200, 200)];
+    //
+    //    UIImage *image = [UIImage imageNamed: @"infoLightButtonImage.png"];
+    //    UIImage *coloredImage = [image imageWithTint:[UIColor blueColor]];
+    //    UIButton *infoButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    //
+    //    CGRect frame = CGRectMake(282, 26, image.size.width, image.size.height);
+    //    infoButton.frame = frame;
+    //    [infoButton setBackgroundImage:image forState:UIControlStateNormal];
+    //    [infoButton setBackgroundImage:coloredImage forState:UIControlStateHighlighted];
+    ////    infoButton.backgroundColor = [UIColor clearColor];
+    //    [infoButton addTarget:self action:@selector(infoButtonTapped:event:) forControlEvents:UIControlEventTouchUpInside];
+    //    [self.view addSubview:infoButton];
+    
+    NSUInteger nextPlayingIndex = [musicPlayer indexOfNowPlayingItem] + 1;
+    
+    if (nextPlayingIndex >= self.userMediaItemCollection.count) {
+        self.nextSongLabel.text = [NSString stringWithFormat: @""];
+        self.nextLabel.text = [NSString stringWithFormat:@""];
+    } else {
+        long nextDuration = [[[[self.userMediaItemCollection items] objectAtIndex: nextPlayingIndex] valueForProperty:MPMediaItemPropertyPlaybackDuration] floatValue];
+        NSString *formattedNextDuration = [NSString stringWithFormat:@"%2lu:%02lu",nextDuration/60,nextDuration -(nextDuration/60)*60];
+        
+        //set this time so that label can be built to the right size to handle the text
+        //        [self scrollNextSongLabel];
+        
+        self.nextSongLabel.text = [NSString stringWithFormat: @"%@  %@",[[[self.userMediaItemCollection items] objectAtIndex: nextPlayingIndex] valueForProperty:  MPMediaItemPropertyTitle], formattedNextDuration];
+        
+        [self scrollNextSongLabel];
+        //        NSLog (@"size of nextSongLabel after scroll setup is %f", self.nextSongLabel.frame.size.width);
+        
+        //        NSLog (@" nextSongLabel.text is %@", self.nextSongLabel.text);
+        
+        self.nextLabel.text = [NSString stringWithFormat: @"Next:"];
+        
+    }
+    
+    [self updateTime];
+    [self nowPlayingInfo];
+    
+}
+- (void) scrollNextSongLabel {
+    //    LogMethod();
+    
+    
+    //calculate the label size to fit the text with the font size
+    //    NSLog (@"size of nextSongLabel is %f", self.nextSongLabel.frame.size.width);
+    CGSize labelSize = [self.nextSongLabel.text sizeWithFont:self.nextSongLabel.font
+                                           constrainedToSize:CGSizeMake(INT16_MAX, CGRectGetHeight(nextSongScrollView.bounds))
+                                               lineBreakMode:NSLineBreakByClipping];
+    
+    //build a new label that will hold all the text
+    UILabel *newLabel = [[UILabel alloc] initWithFrame: self.nextSongLabel.frame];
+    CGRect frame = newLabel.frame;
+    frame.size.height = CGRectGetHeight(nextSongScrollView.bounds);
+    frame.size.width = labelSize.width + 1;
+    newLabel.frame = frame;
+    
+    //    NSLog (@"size of newLabel is %f", frame.size.width);
+    
+    //calculate the size (w x h) for the scrollview content
+    CGSize size;
+    size.width = CGRectGetWidth(newLabel.bounds);
+    size.height = CGRectGetHeight(newLabel.bounds);
+    nextSongScrollView.contentSize = size;
+    nextSongScrollView.contentOffset = CGPointZero;
+    
+    //set the UIOutlet label's frame to the new sized frame
+    self.nextSongLabel.frame = newLabel.frame;
+    
+    //    NSLog (@"size of nextSongScrollView is %f", self.nextSongScrollView.frame.size.width);
+    
+    //enable scroll if the content will not fit within the scrollView
+    if (nextSongScrollView.contentSize.width>nextSongScrollView.frame.size.width) {
+        nextSongScrollView.scrollEnabled = YES;
+        //        NSLog (@"scrollEnabled");
+    }
+    else {
+        nextSongScrollView.scrollEnabled = NO;
+        //        NSLog (@"scrollDisabled");
+        
+    }
+}
+- (void) nowPlayingInfo {
+    //  Set nowPlayingInfo
+    //        MPMediaItemPropertyAlbumTitle
+    //        MPMediaItemPropertyAlbumTrackCount
+    //        MPMediaItemPropertyAlbumTrackNumber
+    //        MPMediaItemPropertyArtist
+    //        MPMediaItemPropertyArtwork
+    //        MPMediaItemPropertyComposer
+    //        MPMediaItemPropertyDiscCount
+    //        MPMediaItemPropertyDiscNumber
+    //        MPMediaItemPropertyGenre
+    //        MPMediaItemPropertyPersistentID
+    //        MPMediaItemPropertyPlaybackDuration
+    //        MPMediaItemPropertyTitle
+    
+    Class playingInfoCenter = NSClassFromString(@"MPNowPlayingInfoCenter");
+    
+    if (playingInfoCenter) {
+        
+        NSMutableDictionary *playingInfo = [[NSMutableDictionary alloc] init];
+        
+        if ([[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyAlbumTitle]) {
+            [playingInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyAlbumTitle] forKey:MPMediaItemPropertyAlbumTitle];
+        }
+        if ([[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyAlbumTrackCount]) {
+            [playingInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyAlbumTrackCount] forKey:MPMediaItemPropertyAlbumTrackCount];
+        }
+        if ([[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyAlbumTrackNumber]) {
+            [playingInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyAlbumTrackNumber] forKey:MPMediaItemPropertyAlbumTrackNumber];
+        }
+        if ([[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyArtist]) {
+            [playingInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyArtist] forKey:MPMediaItemPropertyArtist];
+        }
+        if ([[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyArtwork]) {
+            [playingInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyArtwork] forKey:MPMediaItemPropertyArtwork];
+        }
+        if ([[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyComposer]) {
+            [playingInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyComposer] forKey:MPMediaItemPropertyComposer];
+        }
+        if ([[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyDiscCount]) {
+            [playingInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyDiscCount] forKey:MPMediaItemPropertyDiscCount];
+        }
+        if ([[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyDiscNumber]) {
+            [playingInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyDiscNumber] forKey:MPMediaItemPropertyDiscNumber];
+        }
+        if ([[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyGenre]) {
+            [playingInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyGenre] forKey:MPMediaItemPropertyGenre];
+        }
+        if ([[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyPersistentID]) {
+            [playingInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyPersistentID] forKey:MPMediaItemPropertyPersistentID];
+        }
+        if ([[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyPlaybackDuration]) {
+            [playingInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyPlaybackDuration] forKey:MPMediaItemPropertyPlaybackDuration];
+        }
+        if ([[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyTitle]) {
+            [playingInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyTitle] forKey:MPMediaItemPropertyTitle];
+        }
+        //        NSString *const MPNowPlayingInfoPropertyElapsedPlaybackTime
+        //        NSString *const MPNowPlayingInfoPropertyPlaybackRate;
+        //        NSString *const MPNowPlayingInfoPropertyPlaybackQueueIndex;
+        //        NSString *const MPNowPlayingInfoPropertyPlaybackQueueCount;
+        //        NSString *const MPNowPlayingInfoPropertyChapterNumber;
+        //        NSString *const MPNowPlayingInfoPropertyChapterCount;
+        if ([[musicPlayer nowPlayingItem] valueForProperty: MPNowPlayingInfoPropertyPlaybackRate]) {
+            [playingInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPNowPlayingInfoPropertyPlaybackRate] forKey:MPNowPlayingInfoPropertyPlaybackRate];
+        }
+        NSNumber *queueCount = [[NSNumber alloc]  initWithInteger: userMediaItemCollection.count];
+        [playingInfo setObject: queueCount forKey:MPNowPlayingInfoPropertyPlaybackQueueCount];
+        NSNumber *queueIndex  = [[NSNumber alloc]  initWithInteger: [musicPlayer indexOfNowPlayingItem]];
+        [playingInfo setObject: queueIndex forKey:MPNowPlayingInfoPropertyPlaybackQueueIndex];
+        
+        if ([[musicPlayer nowPlayingItem] valueForProperty: MPNowPlayingInfoPropertyChapterNumber]) {
+            [playingInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPNowPlayingInfoPropertyChapterNumber] forKey:MPNowPlayingInfoPropertyChapterNumber];
+        }
+        if ([[musicPlayer nowPlayingItem] valueForProperty: MPNowPlayingInfoPropertyChapterCount]) {
+            [playingInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPNowPlayingInfoPropertyChapterCount] forKey:MPNowPlayingInfoPropertyChapterCount];
+        }
+        
+        [[MPNowPlayingInfoCenter defaultCenter] setNowPlayingInfo:playingInfo];
+        
+        //        NSMutableDictionary *showSongInfo = [[NSMutableDictionary alloc]
+        //                                             initWithDictionary: [[MPNowPlayingInfoCenter defaultCenter] nowPlayingInfo]];
+        //
+        //        NSLog (@"Audio Title %@", [showSongInfo objectForKey: MPMediaItemPropertyTitle]);
+        //        NSLog (@"Playback Queue Count %d",[[showSongInfo objectForKey: MPNowPlayingInfoPropertyPlaybackQueueCount] intValue]);
+        //        NSLog (@"Playback Queue Index %d",[[showSongInfo objectForKey: MPNowPlayingInfoPropertyPlaybackQueueIndex] intValue]);
+    }
+    
+}
 
 //- (void) saveUserMediaItemCollection: (NSArray*) collectionArray {
 //    [[NSUserDefaults standardUserDefaults] setObject: collectionArray forKey:@"CurrentCollection"];
@@ -221,6 +615,18 @@ void audioRouteChangeListenerCallback (
         [self.shuffleButton setImage: coloredImage forState:UIControlStateNormal];
     }
 }
+- (IBAction)magnify {
+    
+    [self performSegueWithIdentifier: @"MagnifyPlaylistRemaining" sender: self];
+}
+- (void)goBackClick
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+- (IBAction)infoButtonTapped:(id)sender event:(id)event {
+    
+    [self performSegueWithIdentifier: @"ViewInfo" sender: self];
+}
 - (void) playMusic {
     
     [musicPlayer play];
@@ -259,7 +665,7 @@ void audioRouteChangeListenerCallback (
         collectionRemainingSeconds = 0;
     }
     
-    NSString *collectionRemaining = [[NSString alloc] init];
+    NSString *collectionRemaining;
     
     if (collectionRemainingSeconds >= 3600) {
         collectionRemaining = [NSString stringWithFormat:@"%lu:%02lu:%02lu",
@@ -310,6 +716,9 @@ void audioRouteChangeListenerCallback (
  
 
         } else {
+            self.navigationItem.rightBarButtonItem=nil;
+        }
+        if (collectionRemaining == songRemaining) {
             self.navigationItem.rightBarButtonItem=nil;
         }
     } 
@@ -366,189 +775,7 @@ void audioRouteChangeListenerCallback (
     
 }
 
-#pragma mark Music notification handlers__________________
 
-// When the now-playing item changes, update the now-playing label and the next label.
-- (void) handle_NowPlayingItemChanged: (id) notification {
-   LogMethod();
-
-	MPMediaItem *currentItem = [musicPlayer nowPlayingItem];
-    
-    //check the queue stored in Core Data to see if the nowPlaying song is in that queue
-    ItemCollection *itemCollection = [ItemCollection alloc];
-    itemCollection.managedObjectContext = self.managedObjectContext;
-    
-    self.collectionItem = [itemCollection containsItem: [currentItem valueForProperty: MPMediaItemPropertyTitle]];
-    self.userMediaItemCollection = collectionItem.collection;
-    
-    // Display the song name for the now-playing media item and next-playing media item with duration
-    // scroll marquee style if too long for field
-    
-    self.nowPlayingLabel.text = [currentItem valueForProperty:  MPMediaItemPropertyTitle];
-//    NSLog (@"nowPlayingLabel.text is %@", self.nowPlayingLabel.text);
-    self.nowPlayingLabel.textColor = [UIColor whiteColor];
-    UIFont *font = [UIFont systemFontOfSize:12];
-    UIFont *newFont = [font fontWithSize:44];
-    self.nowPlayingLabel.font = newFont;
-    
-    NSUInteger nextPlayingIndex = [musicPlayer indexOfNowPlayingItem] + 1;
-    
-    if (nextPlayingIndex >= self.userMediaItemCollection.count) {
-        self.nextSongLabel.text = [NSString stringWithFormat: @""];
-        self.nextLabel.text = [NSString stringWithFormat:@""];
-    } else {
-        long nextDuration = [[[[self.userMediaItemCollection items] objectAtIndex: nextPlayingIndex] valueForProperty:MPMediaItemPropertyPlaybackDuration] floatValue];
-        NSString *formattedNextDuration = [NSString stringWithFormat:@"%2lu:%02lu",nextDuration/60,nextDuration -(nextDuration/60)*60];
-        
-        //set this time so that label can be built to the right size to handle the text
-//        [self scrollNextSongLabel];
-
-        self.nextSongLabel.text = [NSString stringWithFormat: @"%@  %@",[[[self.userMediaItemCollection items] objectAtIndex: nextPlayingIndex] valueForProperty:  MPMediaItemPropertyTitle], formattedNextDuration];
-        
-        [self scrollNextSongLabel];
-//        NSLog (@"size of nextSongLabel after scroll setup is %f", self.nextSongLabel.frame.size.width);
-
-//        NSLog (@" nextSongLabel.text is %@", self.nextSongLabel.text);
-        
-        self.nextLabel.text = [NSString stringWithFormat: @"Next:"];
-
-    }
-    
-    [self updateTime];
-    [self nowPlayingInfo];
-    
-}
-- (void) scrollNextSongLabel {
-//    LogMethod();
-    
-
-    //calculate the label size to fit the text with the font size
-//    NSLog (@"size of nextSongLabel is %f", self.nextSongLabel.frame.size.width);
-    CGSize labelSize = [self.nextSongLabel.text sizeWithFont:self.nextSongLabel.font
-                                            constrainedToSize:CGSizeMake(INT16_MAX, CGRectGetHeight(nextSongScrollView.bounds))
-                                                lineBreakMode:NSLineBreakByClipping];
-    
-    //build a new label that will hold all the text
-    UILabel *newLabel = [[UILabel alloc] initWithFrame: self.nextSongLabel.frame];
-    CGRect frame = newLabel.frame;
-    frame.size.height = CGRectGetHeight(nextSongScrollView.bounds);
-    frame.size.width = labelSize.width + 1;
-    newLabel.frame = frame;
-    
-//    NSLog (@"size of newLabel is %f", frame.size.width);
-    
-    //calculate the size (w x h) for the scrollview content
-    CGSize size;
-    size.width = CGRectGetWidth(newLabel.bounds);
-    size.height = CGRectGetHeight(newLabel.bounds);
-    nextSongScrollView.contentSize = size;
-    nextSongScrollView.contentOffset = CGPointZero;
-    
-    //set the UIOutlet label's frame to the new sized frame
-    self.nextSongLabel.frame = newLabel.frame;
-    
-//    NSLog (@"size of nextSongScrollView is %f", self.nextSongScrollView.frame.size.width);
-
-    //enable scroll if the content will not fit within the scrollView
-    if (nextSongScrollView.contentSize.width>nextSongScrollView.frame.size.width) {
-        nextSongScrollView.scrollEnabled = YES;
-//        NSLog (@"scrollEnabled");
-    }
-    else {
-        nextSongScrollView.scrollEnabled = NO;
-//        NSLog (@"scrollDisabled");
-
-    }
-}
-- (void) nowPlayingInfo {
-    //  Set nowPlayingInfo
-    //        MPMediaItemPropertyAlbumTitle
-    //        MPMediaItemPropertyAlbumTrackCount
-    //        MPMediaItemPropertyAlbumTrackNumber
-    //        MPMediaItemPropertyArtist
-    //        MPMediaItemPropertyArtwork
-    //        MPMediaItemPropertyComposer
-    //        MPMediaItemPropertyDiscCount
-    //        MPMediaItemPropertyDiscNumber
-    //        MPMediaItemPropertyGenre
-    //        MPMediaItemPropertyPersistentID
-    //        MPMediaItemPropertyPlaybackDuration
-    //        MPMediaItemPropertyTitle
-    
-    Class playingInfoCenter = NSClassFromString(@"MPNowPlayingInfoCenter");
-    
-    if (playingInfoCenter) {
-        
-        NSMutableDictionary *songInfo = [[NSMutableDictionary alloc] init];
-        
-        if ([[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyAlbumTitle]) {
-            [songInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyAlbumTitle] forKey:MPMediaItemPropertyAlbumTitle];
-        }
-        if ([[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyAlbumTrackCount]) {
-            [songInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyAlbumTrackCount] forKey:MPMediaItemPropertyAlbumTrackCount];
-        }
-        if ([[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyAlbumTrackNumber]) {
-            [songInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyAlbumTrackNumber] forKey:MPMediaItemPropertyAlbumTrackNumber];
-        }
-        if ([[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyArtist]) {
-            [songInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyArtist] forKey:MPMediaItemPropertyArtist];
-        }
-        if ([[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyArtwork]) {
-            [songInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyArtwork] forKey:MPMediaItemPropertyArtwork];
-        }
-        if ([[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyComposer]) {
-            [songInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyComposer] forKey:MPMediaItemPropertyComposer];
-        }
-        if ([[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyDiscCount]) {
-            [songInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyDiscCount] forKey:MPMediaItemPropertyDiscCount];
-        }
-        if ([[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyDiscNumber]) {
-            [songInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyDiscNumber] forKey:MPMediaItemPropertyDiscNumber];
-        }
-        if ([[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyGenre]) {
-            [songInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyGenre] forKey:MPMediaItemPropertyGenre];
-        }
-        if ([[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyPersistentID]) {
-            [songInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyPersistentID] forKey:MPMediaItemPropertyPersistentID];
-        }
-        if ([[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyPlaybackDuration]) {
-            [songInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyPlaybackDuration] forKey:MPMediaItemPropertyPlaybackDuration];
-        }
-        if ([[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyTitle]) {
-            [songInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyTitle] forKey:MPMediaItemPropertyTitle];
-        }
-        //        NSString *const MPNowPlayingInfoPropertyElapsedPlaybackTime
-        //        NSString *const MPNowPlayingInfoPropertyPlaybackRate;
-        //        NSString *const MPNowPlayingInfoPropertyPlaybackQueueIndex;
-        //        NSString *const MPNowPlayingInfoPropertyPlaybackQueueCount;
-        //        NSString *const MPNowPlayingInfoPropertyChapterNumber;
-        //        NSString *const MPNowPlayingInfoPropertyChapterCount;
-        if ([[musicPlayer nowPlayingItem] valueForProperty: MPNowPlayingInfoPropertyPlaybackRate]) {
-            [songInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPNowPlayingInfoPropertyPlaybackRate] forKey:MPNowPlayingInfoPropertyPlaybackRate];
-        }
-        NSNumber *queueCount = [[NSNumber alloc]  initWithInteger: userMediaItemCollection.count];
-        [songInfo setObject: queueCount forKey:MPNowPlayingInfoPropertyPlaybackQueueCount];
-        NSNumber *queueIndex  = [[NSNumber alloc]  initWithInteger: [musicPlayer indexOfNowPlayingItem]];
-        [songInfo setObject: queueIndex forKey:MPNowPlayingInfoPropertyPlaybackQueueIndex];
-        
-        if ([[musicPlayer nowPlayingItem] valueForProperty: MPNowPlayingInfoPropertyChapterNumber]) {
-            [songInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPNowPlayingInfoPropertyChapterNumber] forKey:MPNowPlayingInfoPropertyChapterNumber];
-        }
-        if ([[musicPlayer nowPlayingItem] valueForProperty: MPNowPlayingInfoPropertyChapterCount]) {
-            [songInfo setObject:[[musicPlayer nowPlayingItem] valueForProperty: MPNowPlayingInfoPropertyChapterCount] forKey:MPNowPlayingInfoPropertyChapterCount];
-        }
-        
-        [[MPNowPlayingInfoCenter defaultCenter] setNowPlayingInfo:songInfo];
-        
-        //        NSMutableDictionary *showSongInfo = [[NSMutableDictionary alloc]
-        //                                             initWithDictionary: [[MPNowPlayingInfoCenter defaultCenter] nowPlayingInfo]];
-        //
-        //        NSLog (@"Audio Title %@", [showSongInfo objectForKey: MPMediaItemPropertyTitle]);
-        //        NSLog (@"Playback Queue Count %d",[[showSongInfo objectForKey: MPNowPlayingInfoPropertyPlaybackQueueCount] intValue]);
-        //        NSLog (@"Playback Queue Index %d",[[showSongInfo objectForKey: MPNowPlayingInfoPropertyPlaybackQueueIndex] intValue]);
-    }
-
-}
 // When the playback state changes, set the play/pause button appropriately.
 - (void) handle_PlaybackStateChanged: (id) notification {
    LogMethod();
@@ -684,136 +911,6 @@ void audioRouteChangeListenerCallback (
 	[musicPlayer beginGeneratingPlaybackNotifications];
 }
 
-// Configure the application.
-
-- (void) viewDidLoad {
-      LogMethod();
-    [super viewDidLoad];
-    
-    self.navigationItem.hidesBackButton = YES; // Important
-    //initWithTitle cannot be nil, must be @""
-	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                             style:UIBarButtonItemStyleBordered
-                                                                            target:self
-                                                                            action:@selector(goBackClick)];
-    
-    UIImage *menuBarImage48 = [[UIImage imageNamed:@"arrow_left_48_white.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    UIImage *menuBarImage58 = [[UIImage imageNamed:@"arrow_left_58_white.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage48 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage58 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
-    
-    //need this to use MPNowPlayingInfoCenter
-    [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
-
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];    
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[appDelegate.colorSwitcher processImageWithName:@"background.png"]]];
-
-    //not sure, but think this is only needed to play sounds not music
-//    [self setupApplicationAudio];
-    
-    [self setPlayedMusicOnce: NO];
-            
-    // Instantiate the music player. If you specied the iPod music player in the Settings app,
-    //		honor the current state of the built-in iPod app.
-    
-    if ([appDelegate useiPodPlayer]) {
-        
-        [self setMusicPlayer: [MPMusicPlayerController iPodMusicPlayer]];
-        
-    } else {
-        
-        [self setMusicPlayer: [MPMusicPlayerController applicationMusicPlayer]];
-        
-        // By default, an application music player takes on the shuffle and repeat modes
-        //		of the built-in iPod app. Here they are both turned off.
-        [musicPlayer setShuffleMode: MPMusicShuffleModeOff];
-        [musicPlayer setRepeatMode: MPMusicRepeatModeNone];
-    }
-
-//    NSArray *returnedQueue = [self.userMediaItemCollection items];
-//    
-//    for (MPMediaItem *song in returnedQueue) {
-//        NSString *songTitle = [song valueForProperty: MPMediaItemPropertyTitle];
-//        NSLog (@"\t\t%@", songTitle);
-//    }
-
-    if (playNew) {
-        NSLog (@"playNew");
-        [musicPlayer setQueueWithItemCollection: self.userMediaItemCollection];
-        
-        [musicPlayer setNowPlayingItem: self.itemToPlay];
-        [self playMusic];
-        [self setPlayNew: NO];
-        
-    } else if ([musicPlayer nowPlayingItem]) {
-        NSLog (@"something is nowPlaying");
-
-        
-        // Update the UI to reflect the now-playing item.
-        [self handle_NowPlayingItemChanged: nil];
-        
-        if ([musicPlayer playbackState] == MPMusicPlaybackStatePaused) {
-            [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
-            
-        }
-    }
-    
-    if (musicPlayer.shuffleMode == MPMusicShuffleModeOff) {
-        
-        UIImage *coloredImage = [self.shuffleButton.currentImage imageWithTint:[UIColor whiteColor]];
-        [self.shuffleButton setImage: coloredImage forState:UIControlStateNormal];
-        
-    }
-    if (musicPlayer.repeatMode == MPMusicRepeatModeNone) {
-        UIImage *coloredImage = [self.repeatButton.currentImage imageWithTint:[UIColor whiteColor]];
-        [self.repeatButton setImage: coloredImage forState:UIControlStateNormal];
-    }
-    if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
-        
-        [self.volumeView setMinimumVolumeSliderImage:[UIImage imageNamed:@"slider-fill.png"] forState:UIControlStateNormal];
-        [self.volumeView setMaximumVolumeSliderImage:[UIImage imageNamed:@"slider-trackGray.png"] forState:UIControlStateNormal];
-        [self.volumeView setVolumeThumbImage:[UIImage imageNamed:@"volume_down.png"] forState:UIControlStateNormal];
-
-    } else {
-        [self.view removeConstraint:self.playerButtonContraint];
-        [self.view removeConstraint:self.repeatButtonHeightContraint];
-        [self.view removeConstraint:self.volumeViewHeightConstraint];
-    }
-        
-    [self willAnimateRotationToInterfaceOrientation: self.interfaceOrientation duration: 1];
-    [self registerForMediaPlayerNotifications];
-    [self setPlayedMusicOnce: YES];
-    
-}
-
-- (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
-    LogMethod();
-
-    [nowPlayingLabel  refreshLabels];
-    if (UIInterfaceOrientationIsLandscape(orientation)) {
-        [self.view removeConstraint:self.playerButtonContraint];
-        [self.view removeConstraint:self.repeatButtonHeightContraint];
-        [self.view removeConstraint:self.volumeViewHeightConstraint];
-
-        self.repeatButton.hidden = YES;
-        self.shuffleButton.hidden = YES;
-        self.volumeView.hidden = YES;
-        
-    } else {
-
-        [self.view addConstraint:self.playerButtonContraint];
-        [self.view addConstraint:self.repeatButtonHeightContraint];
-        [self.view addConstraint:self.volumeViewHeightConstraint];
-
-        self.repeatButton.hidden = NO;
-        self.shuffleButton.hidden = NO;
-        self.volumeView.hidden = NO;
-
-
-    }
-
-}
-
 #pragma mark Application state management_____________
 
 - (void) didReceiveMemoryWarning {
@@ -900,12 +997,15 @@ void audioRouteChangeListenerCallback (
         textMagnifierViewController.delegate = self;
         textMagnifierViewController.textToMagnify = self.nextSongLabel.text;
 	}
-    
+    if ([segue.identifier isEqualToString:@"ViewInfo"])
+	{
+        NotesTabBarController *notesTabBarController = segue.destinationViewController;
+        notesTabBarController.managedObjectContext = self.managedObjectContext;
+        notesTabBarController.title = @"Info";
+        notesTabBarController.songInfo = self.songInfo;
+        
+	}
 
-}
-- (IBAction)magnify {
-
-    [self performSegueWithIdentifier: @"MagnifyPlaylistRemaining" sender: self];
 }
 
 //#pragma mark - TextMagnifierViewControllerDelegate
@@ -925,37 +1025,7 @@ void audioRouteChangeListenerCallback (
 
 
 }
-- (void)viewWillAppear:(BOOL)animated {
-//    LogMethod();
-    [super viewWillAppear: animated];
-    
-    self.playbackTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
-                                                          target:self
-                                                        selector:@selector(updateTime)
-                                                        userInfo:nil
-                                                         repeats:YES];
-    
-    self.navigationItem.titleView = [self customizeTitleView];
-}
-- (UILabel *) customizeTitleView
-{
-    CGRect frame = CGRectMake(0, 0, [self.title sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 48);
-    UILabel *label = [[UILabel alloc] initWithFrame:frame];
-    label.backgroundColor = [UIColor clearColor];
-    label.textAlignment = NSTextAlignmentCenter;
-    UIFont *font = [UIFont systemFontOfSize:12];
-    UIFont *newFont = [font fontWithSize:44];
-    label.font = newFont;
-    label.textColor = [UIColor yellowColor];
-    label.lineBreakMode = NSLineBreakByClipping;
-    label.text = self.title;
-    
-    return label;
-}
-- (void)goBackClick
-{
-    [self.navigationController popViewControllerAnimated:YES];
-}
+
 - (void)viewWillDisappear:(BOOL)animated {
 //    LogMethod();
     [super viewWillDisappear: animated];

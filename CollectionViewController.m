@@ -34,7 +34,7 @@
     self.navigationItem.titleView = [self customizeTitleView];
   
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    MPMusicPlayerController *musicPlayer = [[MPMusicPlayerController alloc] init];
+    MPMusicPlayerController *musicPlayer;
 
     if ([appDelegate useiPodPlayer]) {
         musicPlayer = [MPMusicPlayerController iPodMusicPlayer];

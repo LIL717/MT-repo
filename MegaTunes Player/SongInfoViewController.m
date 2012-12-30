@@ -10,7 +10,6 @@
 #import "AppDelegate.h"
 #import "SongInfo.h"
 #import "SongInfoCell.h"
-#import "SongImageCell.h"
 
 @interface SongInfoViewController ()
 
@@ -23,24 +22,25 @@
 @synthesize songInfo;
 
 @synthesize infoTableView;
-
+@synthesize albumImageView;
 @synthesize songInfoData;
-CGFloat tableWidth;
 
 
 - (void)viewDidLoad
 {
     //    LogMethod();
     [super viewDidLoad];
-//    self.scrollView.delegate = self;
-//    self.scrollView.contentSize = self.imageView.image.size;
-//    self.imageView.frame = CGRectMake(0, 0, self.imageView.image.size.width, self.imageView.image.size.height);
-    
+
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[appDelegate.colorSwitcher processImageWithName:@"background.png"]]];
+
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 320)];
+    [imageView setImage:self.songInfo.albumImage];
     
-    self.songInfoData = [NSArray arrayWithObjects: self.songInfo.artist, self.songInfo.songName, self.songInfo.album, self.songInfo.albumImage, nil];
+    [self.albumImageView addSubview:imageView];
+    
+    self.songInfoData = [NSArray arrayWithObjects: self.songInfo.artist, self.songInfo.songName, self.songInfo.album, nil];
     
     [self updateLayoutForNewOrientation: self.interfaceOrientation];
     
@@ -49,13 +49,17 @@ CGFloat tableWidth;
     
     if (UIInterfaceOrientationIsPortrait(orientation)) {
         NSLog (@"portrait");
-        [self.infoTableView setContentInset:UIEdgeInsetsMake(11,0,0,0)];
+        [self.infoTableView setContentInset:UIEdgeInsetsMake(11,0,-11,0)];
         [self.infoTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+//        self.infoTableView.contentSize = CGSizeMake(self.infoTableView.frame.size.width, 55 + 55 + 55 + 320);
+
         
     } else {
         NSLog (@"landscape");
         [self.infoTableView setContentInset:UIEdgeInsetsMake(23,0,0,0)];
         [self.infoTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+//        self.infoTableView.contentSize = CGSizeMake(self.infoTableView.frame.size.width, 55 + 55 + 55 + 320);
+
     }
 }
 #pragma mark Table view methods________________________
@@ -73,12 +77,13 @@ CGFloat tableWidth;
 }
 
 - (UITableViewCell *) tableView: (UITableView *) tableView cellForRowAtIndexPath: (NSIndexPath *) indexPath {
+    
     SongInfoCell *cell = (SongInfoCell *)[tableView
                                   dequeueReusableCellWithIdentifier:@"SongInfoCell"];
-    
-    if (indexPath.row < 3) {
+        
         cell.nameLabel.text = [self.songInfoData objectAtIndex:indexPath.row];
-        cell.backgroundView = [[UIImageView alloc] initWithImage:[ [UIImage imageNamed:@"list-background.png"] stretchableImageWithLeftCapWidth:0.0 topCapHeight:5.0] ];
+//        cell.backgroundView = [[UIImageView alloc] initWithImage:[ [UIImage imageNamed:@"list-background.png"] stretchableImageWithLeftCapWidth:0.0 topCapHeight:5.0] ];
+    cell.backgroundColor = [UIColor clearColor];
 
         //calculate the label size to fit the text with the font size
         //    NSLog (@"size of nextSongLabel is %f", self.nextSongLabel.frame.size.width);
@@ -123,55 +128,6 @@ CGFloat tableWidth;
             
         }
         return cell;
-    }
-//    SongImageCell *imageCell = (SongImageCell *)[tableView
-//                                                dequeueReusableCellWithIdentifier:@"SongImageCell"];
-    
-    UITableViewCell *imageCell = (UITableViewCell *)[tableView
-                                  dequeueReusableCellWithIdentifier:@"SongImageCell"];
-
-    if (indexPath.row == 3) {
-//        UIImage *albumImage = [self.songInfoData objectAtIndex: indexPath.row];
-////        UIImageView* albumImageView = [[UIImageView alloc] initWithImage:albumImage];
-////        //calculate the size (w x h) for the albumImageView
-//        SongImageCell *songImageCell = [[SongImageCell alloc] init];
-//        songImageCell.imageView = [[UIImageView alloc] initWithImage:albumImage];
-//
-//        CGSize imageSize;
-//        imageSize.width = imageCell.contentView.bounds.size.width;
-//        imageSize.height = imageCell.contentView.bounds.size.width;
-//        [imageCell.imageView sizeThatFits: imageSize];
-//
-//        //TODO: need better solution
-//        //Eyeballing attempt:
-//        float xPos = albumImage.size.width - 100;
-//        CGRect albumFrame = albumImageView.frame;
-//        albumFrame.origin.x = xPos;
-//        albumImageView.frame = albumFrame;
-////        albumImageView.tag = 9000;
-//        albumImageView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-        
-//        [imageCell.contentView addSubview:albumImageView];
-        
-//        UIEdgeInsets insets = UIEdgeInsetsMake(0, 0, 0, 0);
-//        imageCell.backgroundView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"list-background.png"] resizableImageWithCapInsets: insets]];
-        
-//        albumImageView.center = CGPointMake(imageCell.contentView.bounds.size.width/2,albumImageView.center.y);
-        
-        
-//        UIImageView *newImageView = [[UIImageView alloc] initWithFrame: cell.imageView.frame];
-//        CGRect frame = newImageView.frame;
-//        //    frame.origin.x = 0;
-//        //    frame.size.height = CGRectGetHeight(scrollView.bounds);
-//        frame.size.width = tableWidth;
-//        newImageView.frame = frame;
-//        imageCell.imageView.frame = newImageView.frame;
-        
-//        [imageCell.imageView.image drawInRect:CGRectMake((self.infoTableView.frame.size.width/2) - (imageCell.imageView.frame.size.width/2), imageCell.imageView.frame.origin.y, imageCell.imageView.frame.size.width, imageCell.imageView.frame.size.height)];
-
-        imageCell.imageView.image = [self.songInfoData objectAtIndex: indexPath.row];
-        return imageCell;
-    }
 }
 
 //	 To conform to the Human Interface Guidelines, selections should not be persistent --
@@ -181,7 +137,6 @@ CGFloat tableWidth;
 	[tableView deselectRowAtIndexPath: indexPath animated: YES];
 }
 
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -190,10 +145,8 @@ CGFloat tableWidth;
 
 - (void)viewDidUnload {
 
-//    [self setImageView:nil];
     [self setInfoTableView:nil];
-//    [self setScrollView:nil];
-//    scrollView = nil;
+
     [super viewDidUnload];
 }
 @end

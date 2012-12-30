@@ -13,6 +13,8 @@
 #import "AppDelegate.h"
 #import "ItemCollection.h"
 #import "SongInfo.h"
+#import "UIImage+AdditionalFunctionalities.h"
+
 //#import "bass.h"
 
 @implementation SongViewController
@@ -21,6 +23,7 @@
 @synthesize collectionItem;
 @synthesize musicPlayer;
 @synthesize managedObjectContext;
+@synthesize songInfo;
 
 - (void) viewWillAppear:(BOOL)animated
 {
@@ -151,6 +154,17 @@
 
     cell.nameLabel.text = [song valueForProperty:  MPMediaItemPropertyTitle];
     
+    UIImage *image = [UIImage imageNamed: @"infoLightButtonImage.png"];
+    UIImage *coloredImage = [image imageWithTint:[UIColor blueColor]];
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+
+    CGRect frame = CGRectMake(0.0, 0.0, image.size.width, image.size.height);
+    button.frame = frame;
+    [button setBackgroundImage:image forState:UIControlStateNormal];
+    [button setBackgroundImage:coloredImage forState:UIControlStateHighlighted];
+    [button addTarget:self action:@selector(infoButtonTapped:event:)  forControlEvents:UIControlEventTouchUpInside];
+    cell.accessoryView = button;
+    
     if ([musicPlayer nowPlayingItem] == song) {
         cell.playingIndicator.image = [UIImage imageNamed:@"playing"];
     } else {
@@ -229,27 +243,11 @@
 {
 //    LogMethod();
     
-	if ([segue.identifier isEqualToString:@"ViewNotes"])
+	if ([segue.identifier isEqualToString:@"ViewInfo"])
 	{
-        NSIndexPath *indexPath = [self.songTableView indexPathForCell:sender];
-
         NotesTabBarController *notesTabBarController = segue.destinationViewController;
         notesTabBarController.managedObjectContext = self.managedObjectContext;
-
-
-        MPMediaItem *song = [[self.collectionItem.collection items] objectAtIndex:indexPath.row];
-        
-//        NSString *notesTitle = [NSString stringWithFormat: @"%@ - Notes",[song valueForProperty:  MPMediaItemPropertyTitle]];
-//        notesTabBarController.title = notesTitle;
         notesTabBarController.title = @"Info";
-
-        
-        SongInfo *songInfo = [[SongInfo alloc] init];
-        songInfo.songName = [song valueForProperty:  MPMediaItemPropertyTitle];
-        songInfo.album = [song valueForProperty:  MPMediaItemPropertyAlbumTitle];
-        songInfo.artist = [song valueForProperty:  MPMediaItemPropertyArtist];
-        MPMediaItemArtwork *artWork = [song valueForProperty:MPMediaItemPropertyArtwork];
-        songInfo.albumImage = [artWork imageWithSize:CGSizeMake(200, 200)];
         notesTabBarController.songInfo = songInfo;
         
 	}
@@ -285,6 +283,30 @@
 - (void)goBackClick
 {
     [self.navigationController popViewControllerAnimated:YES];
+}
+- (IBAction)infoButtonTapped:(id)sender event:(id)event {
+    NSSet *touches = [event allTouches];
+    UITouch *touch = [touches anyObject];
+    CGPoint currentTouchPosition = [touch locationInView:self.songTableView];
+    NSIndexPath *indexPath = [self.songTableView indexPathForRowAtPoint: currentTouchPosition];
+    
+    if (indexPath != nil)
+    {
+        [self tableView: self.songTableView accessoryButtonTappedForRowWithIndexPath: indexPath];
+    }
+}
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
+    
+    MPMediaItem *song = [[self.collectionItem.collection items] objectAtIndex:indexPath.row];
+    
+    self.songInfo = [[SongInfo alloc] init];
+    self.songInfo.songName = [song valueForProperty:  MPMediaItemPropertyTitle];
+    self.songInfo.album = [song valueForProperty:  MPMediaItemPropertyAlbumTitle];
+    self.songInfo.artist = [song valueForProperty:  MPMediaItemPropertyArtist];
+    MPMediaItemArtwork *artWork = [song valueForProperty:MPMediaItemPropertyArtwork];
+    self.songInfo.albumImage = [artWork imageWithSize:CGSizeMake(200, 200)];
+    
+    [self performSegueWithIdentifier: @"ViewInfo" sender: self];
 }
 - (void)viewDidUnload {
 

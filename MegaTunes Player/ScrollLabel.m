@@ -50,7 +50,7 @@ static void each_object(NSArray *objects, void (^block)(id object))
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
-//    LogMethod();
+    LogMethod();
     
     if ((self = [super initWithCoder:aDecoder]))
     {
@@ -146,7 +146,7 @@ static void each_object(NSArray *objects, void (^block)(id object))
 
 - (NSString *)text
 {
-//    LogMethod();
+    LogMethod();
 	return self.mainLabel.text;
 }
 

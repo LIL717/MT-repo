@@ -16,6 +16,7 @@
 @property (nonatomic, strong)   SongInfo *songInfo;
 
 @property (strong, nonatomic) IBOutlet UITableView *infoTableView;
+@property (strong, nonatomic) IBOutlet UIImageView *albumImageView;
 @property (nonatomic, strong)   NSArray *songInfoData;
 
 

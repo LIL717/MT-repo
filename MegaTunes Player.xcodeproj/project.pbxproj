@@ -25,6 +25,8 @@
 		702B62C616530D2000A23A70 /* Music-App-Icon40.png in Resources */ = {isa = PBXBuildFile; fileRef = 702B62C516530D2000A23A70 /* Music-App-Icon40.png */; };
 		702B62C81653122900A23A70 /* Music-App-Icon54.png in Resources */ = {isa = PBXBuildFile; fileRef = 702B62C71653122900A23A70 /* Music-App-Icon54.png */; };
 		703E3EA116811FC7004C152C /* UINavigationBar+AdditionalFunctionalities.m in Sources */ = {isa = PBXBuildFile; fileRef = 703E3EA016811FC7004C152C /* UINavigationBar+AdditionalFunctionalities.m */; };
+		703E3EB4168674E7004C152C /* infoLightButtonImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 703E3EB2168674D9004C152C /* infoLightButtonImage.png */; };
+		703E3EB5168674E7004C152C /* infoLightButtonImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 703E3EB3168674DD004C152C /* infoLightButtonImage@2x.png */; };
 		70515C1A160C038700D96335 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70515C19160C038700D96335 /* Default-568h@2x.png */; };
 		70515C29160F986E00D96335 /* SongCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 70515C28160F986E00D96335 /* SongCell.m */; };
 		70515C2C160FD2DC00D96335 /* SongViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70515C2B160FD2DC00D96335 /* SongViewController.m */; };
@@ -185,6 +187,8 @@
 		702B62C71653122900A23A70 /* Music-App-Icon54.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Music-App-Icon54.png"; sourceTree = "<group>"; };
 		703E3E9F16811FC7004C152C /* UINavigationBar+AdditionalFunctionalities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationBar+AdditionalFunctionalities.h"; sourceTree = "<group>"; };
 		703E3EA016811FC7004C152C /* UINavigationBar+AdditionalFunctionalities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationBar+AdditionalFunctionalities.m"; sourceTree = "<group>"; };
+		703E3EB2168674D9004C152C /* infoLightButtonImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = infoLightButtonImage.png; path = ../infoLightButtonImage.png; sourceTree = "<group>"; };
+		703E3EB3168674DD004C152C /* infoLightButtonImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "infoLightButtonImage@2x.png"; path = "../infoLightButtonImage@2x.png"; sourceTree = "<group>"; };
 		70515C19160C038700D96335 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../Default-568h@2x.png"; sourceTree = "<group>"; };
 		70515C1E160CBE7600D96335 /* Song.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Song.h; sourceTree = "<group>"; };
 		70515C27160F986E00D96335 /* SongCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SongCell.h; sourceTree = "<group>"; };
@@ -678,6 +682,8 @@
 		70A13D9216320F6500244866 /* Unused */ = {
 			isa = PBXGroup;
 			children = (
+				709FA3841658B3520082DAE5 /* SongImageCell.h */,
+				709FA3851658B3520082DAE5 /* SongImageCell.m */,
 				70ADDC31161AC09B00219873 /* InitialViewController.h */,
 				70ADDC32161AC09C00219873 /* InitialViewController.m */,
 				7071DF8E164D6D0200942E6A /* CustomNavigationBar.h */,
@@ -794,8 +800,6 @@
 				702B4157165743AB004A9265 /* SongInfo.m */,
 				702B415C16585120004A9265 /* SongInfoCell.h */,
 				702B415D16585120004A9265 /* SongInfoCell.m */,
-				709FA3841658B3520082DAE5 /* SongImageCell.h */,
-				709FA3851658B3520082DAE5 /* SongImageCell.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -861,6 +865,8 @@
 				70BAB4B61668770C00EFF0D3 /* bigshuffle@2x.png */,
 				702B4154165742DC004A9265 /* info_24.png */,
 				702B414E165741C8004A9265 /* info_48.png */,
+				703E3EB2168674D9004C152C /* infoLightButtonImage.png */,
+				703E3EB3168674DD004C152C /* infoLightButtonImage@2x.png */,
 				70974B921630C3B000A33B7D /* list-background.png */,
 				70974B931630C3B100A33B7D /* list-background@2x.png */,
 				702B62B51652DB7B00A23A70 /* megaMenu-bar.png */,
@@ -1050,6 +1056,8 @@
 				70996F6D167ABB640026F77E /* redWhiteBlackPlay40.png in Resources */,
 				70996F6E167ABB640026F77E /* redWhiteBlackPlay54.png in Resources */,
 				70996F70167AE8AF0026F77E /* redWhiteBlackPlay45.png in Resources */,
+				703E3EB4168674E7004C152C /* infoLightButtonImage.png in Resources */,
+				703E3EB5168674E7004C152C /* infoLightButtonImage@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
