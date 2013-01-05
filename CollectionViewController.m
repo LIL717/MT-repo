@@ -53,10 +53,11 @@
                                                                                  target:self
                                                                                  action:@selector(viewNowPlaying)];
         
-        UIImage *menuBarImage40 = [[UIImage imageNamed:@"Music-App-Icon40.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, -7)];
-        UIImage *menuBarImage54 = [[UIImage imageNamed:@"Music-App-Icon54.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, -3)];
-        [self.navigationItem.rightBarButtonItem setBackgroundImage:menuBarImage40 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-        [self.navigationItem.rightBarButtonItem setBackgroundImage:menuBarImage54 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
+        UIImage *menuBarImageDefault = [[UIImage imageNamed:@"redWhitePlay57.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+        UIImage *menuBarImageLandscape = [[UIImage imageNamed:@"redWhitePlay68.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+        
+        [self.navigationItem.rightBarButtonItem setBackgroundImage:menuBarImageDefault forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+        [self.navigationItem.rightBarButtonItem setBackgroundImage:menuBarImageLandscape forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
     } else {
         self.navigationItem.rightBarButtonItem= nil;
     }

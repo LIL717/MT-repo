@@ -262,11 +262,20 @@ static const NSUInteger kNavigationBarHeight = 60;
 //                                                    barMetrics:UIBarMetricsLandscapePhone];
 
     
-    UIImage* tabBarBackground = [colorSwitcher processImageWithName:@"tabbar.png"];
+//    UIImage* tabBarBackground = [colorSwitcher processImageWithName:@"tabbar-stretchable.png"];
+//    UIImage* stretchableTabImage =[tabBarBackground resizableImageWithCapInsets:UIEdgeInsetsMake(0, 4, 0, 4)];
+//    UIImage* stretchableTabImage =[[UIImage imageNamed: @"tabbar-stretchable.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+//    [[UITabBar appearance] setBackgroundImage:stretchableTabImage];
+    
+    UIImage* tabBarBackground = [colorSwitcher processImageWithName:@"tabbar.png"];    
     [[UITabBar appearance] setBackgroundImage:tabBarBackground];
     
-    
+//    UIImage* emptyImage = [UIImage imageNamed:@"infoLightButtonImage.png"];
+//    [[UITabBar appearance] setBackgroundImage:emptyImage];
+
     [[UITabBar appearance] setSelectionIndicatorImage:[UIImage tallImageNamed:@"selection-tab.png"]];
+
+
     
 //    UIImage* segmentedControlBackground = [colorSwitcher processImageWithName:@"tabbar.png"];
 //    UIImage* segmentedControlBackground = [colorSwitcher processImageWithName:@"blue-button.png"];

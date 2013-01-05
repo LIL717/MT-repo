@@ -13,6 +13,7 @@
 #import "SongInfoViewController.h"
 #import "NotesViewController.h"
 
+
 @interface NotesTabBarController ()
 
 @end
@@ -25,14 +26,35 @@
 @synthesize songInfoViewController;
 @synthesize notesViewController;
 
+//- (id)initWithCoder:(NSCoder *)aDecoder
+//{
+//    LogMethod();
+//    
+//    if ((self = [super initWithCoder:aDecoder]))
+//    {
+//    }
+//    return self;
+//}
 
 - (void) viewWillAppear:(BOOL)animated
 {
-    //    LogMethod();
-    [super viewDidLoad];
+    LogMethod();
+    [super viewWillAppear: animated];
+
+//    UIImage* infoImage = [UIImage imageNamed:@"infoLightButtonImage.png"];
+//    UIImage* notesImage = [UIImage imageNamed:@"notesLightButtonImage.png"];
+
+//    [[UITabBar appearance] setSelectionIndicatorImage:emptyImage];
+//    [[self.navigationController.viewControllers objectAtIndex:0] setSelectionIndicatorImage:infoImage];
+//    [[self.navigationController.viewControllers objectAtIndex:1] setSelectionIndicatorImage:notesImage];
+
     
+//    [[self.navigationController.viewControllers objectAtIndex:1] setTitle:@"Blah"];
+//
     self.navigationItem.titleView = [self customizeTitleView];
     
+//    NSLog (@"self.navigationItem.titleview is %@", self.navigationItem.titleView);
+
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     if ([appDelegate useiPodPlayer]) {
@@ -42,7 +64,7 @@
     }
     
     NSString *playingItem = [[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyTitle];
-    NSLog (@"playing Item is *%@*, songInfo.SongName is *%@*", playingItem, self.songInfo.songName);
+//    NSLog (@"playing Item is *%@*, songInfo.SongName is *%@*", playingItem, self.songInfo.songName);
     if (playingItem) {
         //don't display right bar button is playing item is song info item
         if ([playingItem isEqualToString: self.songInfo.songName]) {
@@ -54,15 +76,17 @@
                                                                                      target:self
                                                                                      action:@selector(viewNowPlaying)];
             
-            UIImage *menuBarImage40 = [[UIImage imageNamed:@"Music-App-Icon40.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, -7)];
-            UIImage *menuBarImage54 = [[UIImage imageNamed:@"Music-App-Icon54.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, -3)];
-            [self.navigationItem.rightBarButtonItem setBackgroundImage:menuBarImage40 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-            [self.navigationItem.rightBarButtonItem setBackgroundImage:menuBarImage54 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
+            UIImage *menuBarImageDefault = [[UIImage imageNamed:@"redWhitePlay57.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+            UIImage *menuBarImageLandscape = [[UIImage imageNamed:@"redWhitePlay68.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+            
+            [self.navigationItem.rightBarButtonItem setBackgroundImage:menuBarImageDefault forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+            [self.navigationItem.rightBarButtonItem setBackgroundImage:menuBarImageLandscape forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
         }
     } else {
         self.navigationItem.rightBarButtonItem= nil;
     }
-    
+//    UIImage* emptyImage = [UIImage imageNamed:@"infoLightButtonImage.png"];
+//    [[UITabBar appearance] setSelectionIndicatorImage:emptyImage];
     return;
 }
 
@@ -83,8 +107,12 @@
 
 - (void)viewDidLoad
 {
-    //    LogMethod();
+    LogMethod();
     [super viewDidLoad];
+    
+    self.delegate = self;
+    NSLog (@"self.tabBarController.selectedIndex is %d", self.tabBarController.selectedIndex);
+
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[appDelegate.colorSwitcher processImageWithName:@"background.png"]]];
@@ -103,13 +131,19 @@
     
     self.songInfoViewController = [[self viewControllers] objectAtIndex:0];
     self.songInfoViewController.songInfo = self.songInfo;
-    [self.songInfoViewController.navigationController.navigationItem setTitle:@"Info"];
+//    self.title = @"Info";
+//    self.navigationItem.titleView = [self customizeTitleView];
+//    [self.songInfoViewController.navigationController.navigationItem setTitle:@"Info"];
     
     self.notesViewController = [[self viewControllers] objectAtIndex:1];
     self.notesViewController.songInfo = self.songInfo;
-    [self.notesViewController.navigationController.navigationItem setTitle:@"Notes"];
+    
+//    self.title = @"Notes";
+//    self.navigationItem.titleView = [self customizeTitleView];
+//    [self.notesViewController.navigationController.navigationItem setTitle:@"Notes"];
     
 //    [self updateLayoutForNewOrientation: self.interfaceOrientation];
+
 
     
 }
@@ -129,8 +163,38 @@
         NSLog (@"landscape");
         [self.songInfoViewController.infoTableView setContentInset:UIEdgeInsetsMake(23,0,0,0)];
         [self.songInfoViewController.infoTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+
     }
 }
+//#pragma mark UITabBarController Delegate Method
+//this works to "flip" horizontally between views, but there is a little jump on the 2nd screen, probably because the views are not the same size,  need to put the smaller one in a container view?
+//
+//- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
+//    NSArray *tabViewControllers = tabBarController.viewControllers;
+//    UIView * fromView = tabBarController.selectedViewController.view;
+//    UIView * toView = viewController.view;
+//
+//    if (fromView != toView) {
+//
+//        NSUInteger fromIndex = [tabViewControllers indexOfObject:tabBarController.selectedViewController];
+//        NSUInteger toIndex = [tabViewControllers indexOfObject:viewController];
+//        
+//        [UIView transitionFromView:fromView
+//                            toView:toView
+//                          duration:0.5
+//                           options: toIndex > fromIndex ? UIViewAnimationOptionTransitionFlipFromLeft : UIViewAnimationOptionTransitionFlipFromRight
+////                           options: toIndex > fromIndex ? UIViewAnimationOptionTransitionCurlUp : UIViewAnimationOptionTransitionCurlDown
+//                        completion:^(BOOL finished) {
+//                            if (finished) {
+//                                tabBarController.selectedIndex = toIndex;
+//                            }
+//                        }];
+//
+//    }
+//
+//    return NO;
+//
+//}
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {

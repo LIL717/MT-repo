@@ -10,6 +10,8 @@
 #import "AppDelegate.h"
 #import "SongInfo.h"
 #import "SongInfoCell.h"
+#import "UIImage+AdditionalFunctionalities.h"
+
 
 @interface SongInfoViewController ()
 
@@ -24,12 +26,49 @@
 @synthesize infoTableView;
 @synthesize albumImageView;
 @synthesize songInfoData;
+//@synthesize navItem;
 
+- (void) viewWillAppear:(BOOL)animated
+{
+    LogMethod();
+    [super viewWillAppear: animated];
+
+//    if (self.tabBarController.selectedIndex = 0) {
+//        self.title = @"Info";
+////        self.navigationItem.titleView = [self customizeTitleView];
+//    self.navItem.titleView = [self customizeTitleView];
+//
+//        NSLog (@"self.navigationItem.titleview is %@", self.navigationItem.titleView);
+//    } else {
+//        self.title = @"Notes";
+//        self.navigationItem.titleView = [self customizeTitleView];
+//        NSLog (@"self.navigationItem.titleview is %@", self.navigationItem.titleView);
+//    }
+}
+- (UILabel *) customizeTitleView
+{
+    CGRect frame = CGRectMake(0, 0, [self.title sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 48);
+    UILabel *label = [[UILabel alloc] initWithFrame:frame];
+    label.backgroundColor = [UIColor clearColor];
+    label.textAlignment = NSTextAlignmentCenter;
+    UIFont *font = [UIFont systemFontOfSize:12];
+    UIFont *newFont = [font fontWithSize:44];
+    label.font = newFont;
+    label.textColor = [UIColor yellowColor];
+    label.text = self.title;
+    
+    return label;
+}
 
 - (void)viewDidLoad
 {
-    //    LogMethod();
+    LogMethod();
     [super viewDidLoad];
+    
+//    UIImage* emptyImage = [UIImage imageNamed:@"infoLightButtonImage.png"];
+//    [[UITabBar appearance] setSelectionIndicatorImage:emptyImage];
+
+	// Do any additional setup after loading the view, typically from a nib.
 
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
@@ -41,6 +80,30 @@
     [self.albumImageView addSubview:imageView];
     
     self.songInfoData = [NSArray arrayWithObjects: self.songInfo.artist, self.songInfo.songName, self.songInfo.album, nil];
+    
+    UIImage *unselectedImage0 = [UIImage imageNamed:@"unselectedTabInfoButton.png"];
+    UIImage *selectedImage0 = [UIImage imageNamed:@"selectedTabInfoButton.png"];
+
+
+//    UIImage *selectedImage0 = [unselectedImage0 imageWithTint:[UIColor blueColor]];
+
+    
+//    UIImage *unselectedImage1 = [UIImage imageNamed:@"notesLightButtonImageWhite.png"];
+//    UIImage *unselectedImage1 = [UIImage imageNamed:@"tabButtonBlack.png"];
+    UIImage *unselectedImage1 = [UIImage imageNamed:@"unselectedTabNotesButton.png"];
+    UIImage *selectedImage1 = [UIImage imageNamed:@"selectedTabNotes2Button.png"];
+
+//    UIImage *selectedImage1 = [unselectedImage1 imageWithTint:[UIColor blueColor]];
+
+    
+    UITabBar *tabBar = self.tabBarController.tabBar;
+    UITabBarItem *item0 = [tabBar.items objectAtIndex:0];
+    UITabBarItem *item1 = [tabBar.items objectAtIndex:1];
+    
+    
+    [item0 setFinishedSelectedImage:selectedImage0 withFinishedUnselectedImage:unselectedImage0];
+    [item1 setFinishedSelectedImage:selectedImage1 withFinishedUnselectedImage:unselectedImage1];
+
     
     [self updateLayoutForNewOrientation: self.interfaceOrientation];
     
@@ -62,6 +125,7 @@
 
     }
 }
+
 #pragma mark Table view methods________________________
 // Configures the table view.
 
@@ -82,8 +146,6 @@
                                   dequeueReusableCellWithIdentifier:@"SongInfoCell"];
         
         cell.nameLabel.text = [self.songInfoData objectAtIndex:indexPath.row];
-//        cell.backgroundView = [[UIImageView alloc] initWithImage:[ [UIImage imageNamed:@"list-background.png"] stretchableImageWithLeftCapWidth:0.0 topCapHeight:5.0] ];
-    cell.backgroundColor = [UIColor clearColor];
 
         //calculate the label size to fit the text with the font size
         //    NSLog (@"size of nextSongLabel is %f", self.nextSongLabel.frame.size.width);

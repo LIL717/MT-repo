@@ -151,28 +151,16 @@ void audioRouteChangeListenerCallback (
                                                         userInfo:nil
                                                          repeats:YES];
     
-//    self.navigationItem.titleView = [self customizeTitleView];
-}
-- (UILabel *) customizeTitleView
-{
-    CGRect frame = CGRectMake(0, 0, [self.title sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 48);
-    UILabel *label = [[UILabel alloc] initWithFrame:frame];
-    label.backgroundColor = [UIColor clearColor];
-    label.textAlignment = NSTextAlignmentCenter;
-    UIFont *font = [UIFont systemFontOfSize:12];
-    UIFont *newFont = [font fontWithSize:44];
-    label.font = newFont;
-    label.textColor = [UIColor yellowColor];
-    label.lineBreakMode = NSLineBreakByClipping;
-    label.text = self.title;
-    
-    return label;
 }
 
 - (void) viewDidLoad {
     LogMethod();
     [super viewDidLoad];
     
+    UIImage *backgroundImage = [UIImage imageNamed: @"infoSelectedButtonImage.png"];
+    [self.nowPlayingInfoButton setImage: backgroundImage forState:UIControlStateHighlighted];
+    self.nextLabel.textColor = [UIColor yellowColor];
+
     
     self.navigationItem.hidesBackButton = YES; // Important
     //initWithTitle cannot be nil, must be @""
@@ -309,6 +297,22 @@ void audioRouteChangeListenerCallback (
     }
     
 }
+- (UILabel *) customizeTitleView
+{
+    CGRect frame = CGRectMake(0, 0, [self.title sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 48);
+    UILabel *label = [[UILabel alloc] initWithFrame:frame];
+    label.backgroundColor = [UIColor clearColor];
+    label.textAlignment = NSTextAlignmentCenter;
+    UIFont *font = [UIFont systemFontOfSize:12];
+    UIFont *newFont = [font fontWithSize:44];
+    label.font = newFont;
+    label.textColor = [UIColor yellowColor];
+    label.lineBreakMode = NSLineBreakByClipping;
+    label.text = self.title;
+    
+    return label;
+}
+
 -(void) viewDidAppear:(BOOL)animated {
     
     if (playNew) {
@@ -329,7 +333,7 @@ void audioRouteChangeListenerCallback (
     LogMethod();
     
 	MPMediaItem *currentItem = [musicPlayer nowPlayingItem];
-    
+    NSLog (@" currentItem is %@", [currentItem valueForProperty: MPMediaItemPropertyTitle]);
     //check the queue stored in Core Data to see if the nowPlaying song is in that queue
     ItemCollection *itemCollection = [ItemCollection alloc];
     itemCollection.managedObjectContext = self.managedObjectContext;
@@ -337,7 +341,7 @@ void audioRouteChangeListenerCallback (
     self.collectionItem = [itemCollection containsItem: [currentItem valueForProperty: MPMediaItemPropertyTitle]];
     self.userMediaItemCollection = collectionItem.collection;
     
-    // Display the song name for the now-playing media item and next-playing media item with duration
+    // Display the song name for the now-playing media item 
     // scroll marquee style if too long for field
     
     [self.nowPlayingLabel setText: [currentItem valueForProperty:  MPMediaItemPropertyTitle]];
@@ -347,7 +351,7 @@ void audioRouteChangeListenerCallback (
     UIFont *newFont = [font fontWithSize:44];
     [self.nowPlayingLabel setFont: newFont];
     
-    // add info button
+    // set up data to pass to info page
     
     MPMediaItem *song = currentItem;
     
@@ -370,6 +374,17 @@ void audioRouteChangeListenerCallback (
     //    [infoButton addTarget:self action:@selector(infoButtonTapped:event:) forControlEvents:UIControlEventTouchUpInside];
     //    [self.view addSubview:infoButton];
     
+    self.nextSongLabel.text = [NSString stringWithFormat: @""];
+    self.nextLabel.text = [NSString stringWithFormat:@""];
+    if (musicPlayer.shuffleMode == MPMusicShuffleModeOff) {
+        [self prepareNextSongLabel];
+    }
+    [self updateTime];
+    [self dataForNowPlayingInfoCenter];
+    
+}
+- (void) prepareNextSongLabel {
+    //set up next-playing media item with duration
     NSUInteger nextPlayingIndex = [musicPlayer indexOfNowPlayingItem] + 1;
     
     if (nextPlayingIndex >= self.userMediaItemCollection.count) {
@@ -392,10 +407,6 @@ void audioRouteChangeListenerCallback (
         self.nextLabel.text = [NSString stringWithFormat: @"Next:"];
         
     }
-    
-    [self updateTime];
-    [self nowPlayingInfo];
-    
 }
 - (void) scrollNextSongLabel {
     //    LogMethod();
@@ -439,7 +450,7 @@ void audioRouteChangeListenerCallback (
         
     }
 }
-- (void) nowPlayingInfo {
+- (void) dataForNowPlayingInfoCenter {
     //  Set nowPlayingInfo
     //        MPMediaItemPropertyAlbumTitle
     //        MPMediaItemPropertyAlbumTrackCount
@@ -623,10 +634,10 @@ void audioRouteChangeListenerCallback (
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
-- (IBAction)infoButtonTapped:(id)sender event:(id)event {
-    
-    [self performSegueWithIdentifier: @"ViewInfo" sender: self];
-}
+//- (IBAction)infoButtonTapped:(id)sender event:(id)event {
+//    
+//    [self performSegueWithIdentifier: @"ViewInfo" sender: self];
+//}
 - (void) playMusic {
     
     [musicPlayer play];

@@ -6,7 +6,7 @@
 //
 //
 #import "MainViewController.h"
-#import "NotesTabBarController.h"
+#import "SongInfoViewController.h"
 #import "SongViewController.h"
 #import "SongCell.h"
 #import "CollectionItem.h"
@@ -49,10 +49,11 @@
                                                                                  target:self
                                                                                  action:@selector(viewNowPlaying)];
         
-        UIImage *menuBarImage40 = [[UIImage imageNamed:@"Music-App-Icon40.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, -7)];
-        UIImage *menuBarImage54 = [[UIImage imageNamed:@"Music-App-Icon54.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, -3)];
-        [self.navigationItem.rightBarButtonItem setBackgroundImage:menuBarImage40 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-        [self.navigationItem.rightBarButtonItem setBackgroundImage:menuBarImage54 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
+        UIImage *menuBarImageDefault = [[UIImage imageNamed:@"redWhitePlay57.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+        UIImage *menuBarImageLandscape = [[UIImage imageNamed:@"redWhitePlay68.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+        
+        [self.navigationItem.rightBarButtonItem setBackgroundImage:menuBarImageDefault forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+        [self.navigationItem.rightBarButtonItem setBackgroundImage:menuBarImageLandscape forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
     } else {
         self.navigationItem.rightBarButtonItem= nil;
     }
@@ -155,13 +156,16 @@
     cell.nameLabel.text = [song valueForProperty:  MPMediaItemPropertyTitle];
     
     UIImage *image = [UIImage imageNamed: @"infoLightButtonImage.png"];
-    UIImage *coloredImage = [image imageWithTint:[UIColor blueColor]];
+    UIImage *backgroundImage = [UIImage imageNamed: @"infoSelectedButtonImage.png"];
+
+//    UIImage *coloredImage = [image imageWithTint:[UIColor blueColor]];
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
 
     CGRect frame = CGRectMake(0.0, 0.0, image.size.width, image.size.height);
     button.frame = frame;
     [button setBackgroundImage:image forState:UIControlStateNormal];
-    [button setBackgroundImage:coloredImage forState:UIControlStateHighlighted];
+//    [button setBackgroundImage:coloredImage forState:UIControlStateHighlighted];
+    [button setBackgroundImage: backgroundImage forState:UIControlStateHighlighted];
     [button addTarget:self action:@selector(infoButtonTapped:event:)  forControlEvents:UIControlEventTouchUpInside];
     cell.accessoryView = button;
     
@@ -245,10 +249,10 @@
     
 	if ([segue.identifier isEqualToString:@"ViewInfo"])
 	{
-        NotesTabBarController *notesTabBarController = segue.destinationViewController;
-        notesTabBarController.managedObjectContext = self.managedObjectContext;
-        notesTabBarController.title = @"Info";
-        notesTabBarController.songInfo = songInfo;
+       SongInfoViewController *songInfoViewController = segue.destinationViewController;
+        songInfoViewController.managedObjectContext = self.managedObjectContext;
+        songInfoViewController.title = @"Info";
+        songInfoViewController.songInfo = songInfo;
         
 	}
     	if ([segue.identifier isEqualToString:@"PlaySong"])

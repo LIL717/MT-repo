@@ -14,6 +14,7 @@
 @property (nonatomic, retain)   NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong)	MPMusicPlayerController	*musicPlayer;
 @property (nonatomic, strong)   SongInfo *songInfo;
+//@property (strong, nonatomic) IBOutlet UINavigationItem *navItem;
 
 @property (strong, nonatomic) IBOutlet UITableView *infoTableView;
 @property (strong, nonatomic) IBOutlet UIImageView *albumImageView;
