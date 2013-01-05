@@ -36,11 +36,7 @@
     [self.magnifiedText.titleLabel setAdjustsFontSizeToFitWidth: YES];
     
     [self.magnifiedText setTitle: self.textToMagnify forState: UIControlStateNormal];
-//    self.playbackTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
-//                                                     target:self
-//                                                   selector:@selector(updateTime)
-//                                                   userInfo:nil
-//                                                    repeats:YES];
+
     
 }
 

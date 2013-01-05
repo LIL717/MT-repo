@@ -111,7 +111,6 @@
     [super viewDidLoad];
     
     self.delegate = self;
-    NSLog (@"self.tabBarController.selectedIndex is %d", self.tabBarController.selectedIndex);
 
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -131,6 +130,10 @@
     
     self.songInfoViewController = [[self viewControllers] objectAtIndex:0];
     self.songInfoViewController.songInfo = self.songInfo;
+    
+//    NSLog (@" in NotesTabBar  self.songInfo.songName = %@", self.songInfo.songName);
+//    NSLog (@" in NotesTabBar  self.songInfo.album = %@", self.songInfo.album);
+//    NSLog (@" in NotesTabBar  self.songInfo.artist = %@", self.songInfo.artist);
 //    self.title = @"Info";
 //    self.navigationItem.titleView = [self customizeTitleView];
 //    [self.songInfoViewController.navigationController.navigationItem setTitle:@"Info"];

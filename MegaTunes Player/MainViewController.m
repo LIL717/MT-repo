@@ -150,7 +150,7 @@ void audioRouteChangeListenerCallback (
                                                         selector:@selector(updateTime)
                                                         userInfo:nil
                                                          repeats:YES];
-    
+
 }
 
 - (void) viewDidLoad {
@@ -351,16 +351,23 @@ void audioRouteChangeListenerCallback (
     UIFont *newFont = [font fontWithSize:44];
     [self.nowPlayingLabel setFont: newFont];
     
-    // set up data to pass to info page
+    // set up data to pass to info page if chosen
     
     MPMediaItem *song = currentItem;
     
     self.songInfo = [[SongInfo alloc] init];
     self.songInfo.songName = [song valueForProperty:  MPMediaItemPropertyTitle];
+
     self.songInfo.album = [song valueForProperty:  MPMediaItemPropertyAlbumTitle];
     self.songInfo.artist = [song valueForProperty:  MPMediaItemPropertyArtist];
     MPMediaItemArtwork *artWork = [song valueForProperty:MPMediaItemPropertyArtwork];
     self.songInfo.albumImage = [artWork imageWithSize:CGSizeMake(200, 200)];
+    
+//    NSLog (@" self.songInfo.songName = %@", self.songInfo.songName);
+//    NSLog (@" self.songInfo.album = %@", self.songInfo.album);
+//    NSLog (@" self.songInfo.artist = %@", self.songInfo.artist);
+
+
     //
     //    UIImage *image = [UIImage imageNamed: @"infoLightButtonImage.png"];
     //    UIImage *coloredImage = [image imageWithTint:[UIColor blueColor]];
@@ -393,9 +400,6 @@ void audioRouteChangeListenerCallback (
     } else {
         long nextDuration = [[[[self.userMediaItemCollection items] objectAtIndex: nextPlayingIndex] valueForProperty:MPMediaItemPropertyPlaybackDuration] floatValue];
         NSString *formattedNextDuration = [NSString stringWithFormat:@"%2lu:%02lu",nextDuration/60,nextDuration -(nextDuration/60)*60];
-        
-        //set this time so that label can be built to the right size to handle the text
-        //        [self scrollNextSongLabel];
         
         self.nextSongLabel.text = [NSString stringWithFormat: @"%@  %@",[[[self.userMediaItemCollection items] objectAtIndex: nextPlayingIndex] valueForProperty:  MPMediaItemPropertyTitle], formattedNextDuration];
         
@@ -620,10 +624,15 @@ void audioRouteChangeListenerCallback (
         [musicPlayer setShuffleMode: MPMusicShuffleModeSongs];
 //        [repeatShuffleButtons setImage:[UIImage imageNamed:@"bigshuffle.png"] forSegmentAtIndex:1];
         [self.shuffleButton setImage: [UIImage imageNamed: @"bigshuffle.png"] forState: UIControlStateNormal];
+        self.nextSongLabel.text = [NSString stringWithFormat: @""];
+        self.nextLabel.text = [NSString stringWithFormat:@""];
     } else if (musicPlayer.shuffleMode == MPMusicShuffleModeSongs) {
         [musicPlayer setShuffleMode: MPMusicShuffleModeOff];
         UIImage *coloredImage = [self.shuffleButton.currentImage imageWithTint:[UIColor whiteColor]];
         [self.shuffleButton setImage: coloredImage forState:UIControlStateNormal];
+        //show nextSongLabel when shuffle is off
+        [self prepareNextSongLabel];
+        
     }
 }
 - (IBAction)magnify {
@@ -665,6 +674,33 @@ void audioRouteChangeListenerCallback (
     self.remainingTimeLabel.text = [NSString stringWithFormat:@"-%@",[formatter stringFromDate:songRemainingTime]];
     self.remainingTimeLabel.textColor = [UIColor whiteColor];
     
+    [self positionSlider];
+
+    // only show the collection remaining if shuffle is off and repeat is off
+    if (musicPlayer.shuffleMode == MPMusicShuffleModeOff && musicPlayer.repeatMode == MPMusicRepeatModeNone) {
+        NSString * collectionRemaining = [self calculateCollectionRemaining];
+        // don't show collectionRemaining if it is the same as songRemaining
+        if (collectionRemaining == songRemaining) {
+            self.navigationItem.rightBarButtonItem=nil;
+        }
+    } else {
+        self.navigationItem.rightBarButtonItem=nil;
+    }
+}
+- (void)positionSlider {
+    self.progressSlider.value = musicPlayer.currentPlaybackTime;
+    self.progressSlider.minimumValue = 0;
+    
+    NSNumber *duration = [self.musicPlayer.nowPlayingItem valueForProperty:MPMediaItemPropertyPlaybackDuration];
+    
+    float totalTime = [duration floatValue];
+    
+    self.progressSlider.maximumValue = totalTime;
+}
+
+- (NSString *) calculateCollectionRemaining {
+    
+    long playbackSeconds = musicPlayer.currentPlaybackTime;
     long collectionDuration = [self.collectionItem.duration longValue];
     long collectionElapsed;
     long collectionRemainingSeconds;
@@ -677,37 +713,39 @@ void audioRouteChangeListenerCallback (
     }
     
     NSString *collectionRemaining;
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+
     
     if (collectionRemainingSeconds >= 3600) {
         collectionRemaining = [NSString stringWithFormat:@"%lu:%02lu:%02lu",
-                                         collectionRemainingSeconds / 3600,
-                                         (collectionRemainingSeconds % 3600)/60,
-                                         collectionRemainingSeconds % 60];
-
+                               collectionRemainingSeconds / 3600,
+                               (collectionRemainingSeconds % 3600)/60,
+                               collectionRemainingSeconds % 60];
+        
         formatter.dateFormat = @"H:mm:ss";
     } else {
         collectionRemaining = [NSString stringWithFormat:@"%lu:%02lu",
                                collectionRemainingSeconds /60,
                                collectionRemainingSeconds % 60];
-
+        
         formatter.dateFormat = @"m:ss";
     }
     NSDate *collectionRemainingTime = [formatter dateFromString:collectionRemaining];
-        
+    
     if (collectionRemainingTime) {
         if (collectionRemainingSeconds > 0) {
-
+            
             NSString *collectionRemainingLabel = [NSString stringWithFormat:@"-%@",[formatter stringFromDate:collectionRemainingTime]];
-
-//            CGRect frame = CGRectMake(0, 0, [collectionRemainingLabel sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 48);
+            
+            //            CGRect frame = CGRectMake(0, 0, [collectionRemainingLabel sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 48);
             CGRect frame = CGRectMake(0, 0, [collectionRemainingLabel sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 52);
-
+            
             UIButton *playlistRemainingButton = [UIButton buttonWithType:UIButtonTypeCustom];
-//            UIButton *playlistRemainingButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-
+            //            UIButton *playlistRemainingButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+            
             [playlistRemainingButton addTarget:self
                                         action:@selector(magnify)
-                                forControlEvents:UIControlEventTouchDown];
+                              forControlEvents:UIControlEventTouchDown];
             playlistRemainingButton.frame = frame;
             UIFont *font = [UIFont systemFontOfSize:12];
             UIFont *newFont = [font fontWithSize:44];
@@ -716,26 +754,23 @@ void audioRouteChangeListenerCallback (
             [playlistRemainingButton setTitle: collectionRemainingLabel forState: UIControlStateNormal];
             [playlistRemainingButton setTitleColor: [UIColor whiteColor] forState: UIControlStateNormal];
             [playlistRemainingButton addTarget:self action:@selector(magnify) forControlEvents:UIControlEventTouchUpInside];
-
-
+            
+            
             UIBarButtonItem *durationButton = [[UIBarButtonItem alloc] initWithCustomView: playlistRemainingButton];
-//            const CGFloat TextOffset = 0.0f;
-//            [durationButton setTitlePositionAdjustment: UIOffsetMake(TextOffset, 13.0f) forBarMetrics: UIBarMetricsDefault];
-//            [durationButton setTitlePositionAdjustment: UIOffsetMake(TextOffset, 15.0f) forBarMetrics: UIBarMetricsLandscapePhone];
+            //            const CGFloat TextOffset = 0.0f;
+            //            [durationButton setTitlePositionAdjustment: UIOffsetMake(TextOffset, 13.0f) forBarMetrics: UIBarMetricsDefault];
+            //            [durationButton setTitlePositionAdjustment: UIOffsetMake(TextOffset, 15.0f) forBarMetrics: UIBarMetricsLandscapePhone];
             self.navigationItem.rightBarButtonItem=durationButton;
             self.navigationItem.rightBarButtonItem.title = collectionRemainingLabel;
- 
-
+            
+            
         } else {
             self.navigationItem.rightBarButtonItem=nil;
         }
-        if (collectionRemaining == songRemaining) {
-            self.navigationItem.rightBarButtonItem=nil;
-        }
-    } 
-    [self positionSlider];
-}
 
+    } 
+    return collectionRemaining;
+}
 - (NSNumber *)calculatePlaylistElapsed {
         
     NSArray *returnedQueue = [self.userMediaItemCollection items];
@@ -758,16 +793,7 @@ void audioRouteChangeListenerCallback (
 
     return [NSNumber numberWithLong: playlistElapsed];
 }
-- (void)positionSlider {
-    self.progressSlider.value = musicPlayer.currentPlaybackTime;
-    self.progressSlider.minimumValue = 0;
-    
-    NSNumber *duration = [self.musicPlayer.nowPlayingItem valueForProperty:MPMediaItemPropertyPlaybackDuration];
-    
-    float totalTime = [duration floatValue];
-    
-    self.progressSlider.maximumValue = totalTime;
-}
+
 
 // If the music player was paused, leave it paused. If it was playing, it will continue to
 //		play on its own. The music player state is "stopped" only if the previous list of songs

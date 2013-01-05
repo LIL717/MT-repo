@@ -75,18 +75,31 @@
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[appDelegate.colorSwitcher processImageWithName:@"background.png"]]];
 
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 320)];
-    [imageView setImage:self.songInfo.albumImage];
-    
+    if (!self.songInfo.albumImage) {
+        [imageView setImage:[UIImage imageNamed:@"noAlbumImage320.png"]];
+    } else {
+        [imageView setImage:self.songInfo.albumImage];
+    }
     [self.albumImageView addSubview:imageView];
+    
+//    NSLog (@" in SongInfo  self.songInfo.songName = %@", self.songInfo.songName);
+//    NSLog (@" in SongInfo  self.songInfo.album = %@", self.songInfo.album);
+//    NSLog (@" in SongInfo  self.songInfo.artist = %@", self.songInfo.artist);
+    
+    if (!self.songInfo.artist) {
+        self.songInfo.artist = @"Unknown";
+    }
+    if (!self.songInfo.songName) {
+        self.songInfo.songName = @"Unknown";
+    }
+    if (!self.songInfo.album) {
+        self.songInfo.album = @"Unknown";
+    }
     
     self.songInfoData = [NSArray arrayWithObjects: self.songInfo.artist, self.songInfo.songName, self.songInfo.album, nil];
     
     UIImage *unselectedImage0 = [UIImage imageNamed:@"unselectedTabInfoButton.png"];
     UIImage *selectedImage0 = [UIImage imageNamed:@"selectedTabInfoButton.png"];
-
-
-//    UIImage *selectedImage0 = [unselectedImage0 imageWithTint:[UIColor blueColor]];
-
     
 //    UIImage *unselectedImage1 = [UIImage imageNamed:@"notesLightButtonImageWhite.png"];
 //    UIImage *unselectedImage1 = [UIImage imageNamed:@"tabButtonBlack.png"];
@@ -137,6 +150,7 @@
 
 - (NSInteger) tableView: (UITableView *) table numberOfRowsInSection: (NSInteger)section {
     
+//    NSLog (@"self.songInfoData count is %d", [self.songInfoData count]);
     return [self.songInfoData count];
 }
 
