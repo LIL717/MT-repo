@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		700511F216ADEA7F0085B6F1 /* InCellScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 700511F116ADEA7E0085B6F1 /* InCellScrollView.m */; };
+		700511FA16AF19240085B6F1 /* CustomSongCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 700511F916AF19240085B6F1 /* CustomSongCell.m */; };
+		700511FD16AF1ACF0085B6F1 /* CustomSongViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 700511FC16AF1ACF0085B6F1 /* CustomSongViewController.m */; };
 		702B4149165714E7004A9265 /* NotesTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 702B4148165714E7004A9265 /* NotesTabBarController.m */; };
 		702B414D165715C2004A9265 /* SongInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 702B414C165715C2004A9265 /* SongInfoViewController.m */; };
 		702B414F165741C8004A9265 /* info_48.png in Resources */ = {isa = PBXBuildFile; fileRef = 702B414E165741C8004A9265 /* info_48.png */; };
@@ -183,6 +186,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		700511F016ADEA7E0085B6F1 /* InCellScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InCellScrollView.h; sourceTree = "<group>"; };
+		700511F116ADEA7E0085B6F1 /* InCellScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InCellScrollView.m; sourceTree = "<group>"; };
+		700511F816AF19240085B6F1 /* CustomSongCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomSongCell.h; sourceTree = "<group>"; };
+		700511F916AF19240085B6F1 /* CustomSongCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomSongCell.m; sourceTree = "<group>"; };
+		700511FB16AF1ACF0085B6F1 /* CustomSongViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomSongViewController.h; sourceTree = "<group>"; };
+		700511FC16AF1ACF0085B6F1 /* CustomSongViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomSongViewController.m; sourceTree = "<group>"; };
 		702B4147165714E7004A9265 /* NotesTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotesTabBarController.h; sourceTree = "<group>"; };
 		702B4148165714E7004A9265 /* NotesTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotesTabBarController.m; sourceTree = "<group>"; };
 		702B414B165715C2004A9265 /* SongInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SongInfoViewController.h; sourceTree = "<group>"; };
@@ -722,6 +731,8 @@
 		70A13D9216320F6500244866 /* Unused */ = {
 			isa = PBXGroup;
 			children = (
+				70A13DE0163734CE00244866 /* ScrollLabel.h */,
+				70A13DE1163734D000244866 /* ScrollLabel.m */,
 				709FA3841658B3520082DAE5 /* SongImageCell.h */,
 				709FA3851658B3520082DAE5 /* SongImageCell.m */,
 				70ADDC31161AC09B00219873 /* InitialViewController.h */,
@@ -820,18 +831,20 @@
 				70A13D8D1631B40300244866 /* MediaGroup.m */,
 				70A13D8F1631BCC000244866 /* MediaGroupCell.h */,
 				70A13D901631BCC000244866 /* MediaGroupCell.m */,
+				700511F016ADEA7E0085B6F1 /* InCellScrollView.h */,
+				700511F116ADEA7E0085B6F1 /* InCellScrollView.m */,
 				70515C36161028FE00D96335 /* CollectionItemCell.h */,
 				70515C37161028FE00D96335 /* CollectionItemCell.m */,
 				70ADDC1D1614178500219873 /* CollectionItem.h */,
 				70ADDC1E1614178500219873 /* CollectionItem.m */,
 				70515C27160F986E00D96335 /* SongCell.h */,
 				70515C28160F986E00D96335 /* SongCell.m */,
+				700511F816AF19240085B6F1 /* CustomSongCell.h */,
+				700511F916AF19240085B6F1 /* CustomSongCell.m */,
 				70515C1E160CBE7600D96335 /* Song.h */,
 				70A13DD816334B6D00244866 /* Song.m */,
 				707862BA1629F33900871260 /* AutoScrollLabel.h */,
 				707862BB1629F33A00871260 /* AutoScrollLabel.m */,
-				70A13DE0163734CE00244866 /* ScrollLabel.h */,
-				70A13DE1163734D000244866 /* ScrollLabel.m */,
 				70A13DDD1636345900244866 /* DTCustomColoredAccessory.h */,
 				70A13DDE1636345E00244866 /* DTCustomColoredAccessory.m */,
 				702B4156165743AB004A9265 /* SongInfo.h */,
@@ -859,6 +872,8 @@
 				70ADDC2F161A4A7700219873 /* CollectionViewController.m */,
 				70515C2A160FD2DC00D96335 /* SongViewController.h */,
 				70515C2B160FD2DC00D96335 /* SongViewController.m */,
+				700511FB16AF1ACF0085B6F1 /* CustomSongViewController.h */,
+				700511FC16AF1ACF0085B6F1 /* CustomSongViewController.m */,
 				70515C301610184A00D96335 /* MainViewController.h */,
 				70515C311610184A00D96335 /* MainViewController.m */,
 				707862BD162C729300871260 /* TimeMagnifierViewController.h */,
@@ -1209,6 +1224,9 @@
 				709FA3861658B3520082DAE5 /* SongImageCell.m in Sources */,
 				70C1779E166DB86A00792D8F /* UIImage+AdditionalFunctionalities.m in Sources */,
 				703E3EA116811FC7004C152C /* UINavigationBar+AdditionalFunctionalities.m in Sources */,
+				700511F216ADEA7F0085B6F1 /* InCellScrollView.m in Sources */,
+				700511FA16AF19240085B6F1 /* CustomSongCell.m in Sources */,
+				700511FD16AF1ACF0085B6F1 /* CustomSongViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

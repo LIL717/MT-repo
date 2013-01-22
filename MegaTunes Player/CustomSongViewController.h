@@ -1,16 +1,17 @@
 //
-//  SongViewController.h
+//  CustomSongViewController.h
 //  MegaTunes Player
 //
-//  Created by Lori Hill on 9/23/12.
+//  Created by Lori Hill on 1/22/13.
 //
 //
+
 @class CollectionItem;
 @class SongInfo;
 
-@interface SongViewController : UIViewController <UITableViewDelegate, UITableViewDataSource,MPMediaPickerControllerDelegate> {
+@interface CustomSongViewController : UIViewController <UITableViewDelegate, UITableViewDataSource,MPMediaPickerControllerDelegate> {
     NSManagedObjectContext *managedObjectContext;
-
+    
 }
 
 @property (strong, nonatomic) IBOutlet UITableView *songTableView;

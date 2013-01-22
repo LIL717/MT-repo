@@ -301,9 +301,9 @@ static const NSUInteger kNavigationBarHeight = 60;
 - (BOOL) useiPodPlayer {
     //      LogMethod();
 	if ([[NSUserDefaults standardUserDefaults] boolForKey: PLAYER_TYPE_PREF_KEY]) {
-		return YES;
-	} else {
 		return NO;
+	} else {
+		return YES;
 	}
 }
 

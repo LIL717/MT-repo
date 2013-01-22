@@ -8,6 +8,7 @@
 
 @interface CollectionItemCell : UITableViewCell
 
+@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (nonatomic, strong) IBOutlet UILabel *nameLabel;
 @property (nonatomic, strong) IBOutlet UILabel *durationLabel;
 

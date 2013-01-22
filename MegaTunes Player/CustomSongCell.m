@@ -1,22 +1,14 @@
 //
-//  PlaylistCell.m
+//  CustomSongCell.m
 //  MegaTunes Player
 //
-//  Created by Lori Hill on 9/23/12.
+//  Created by Lori Hill on 1/22/13.
 //
 //
 
-#import "SongCell.h"
+#import "CustomSongCell.h"
 
-@implementation SongCell
-
-@synthesize playingIndicator;
-@synthesize scrollView;
-@synthesize nameLabel;
-@synthesize durationLabel;
-@synthesize infoBackground;
-//@synthesize BPM;
-
+@implementation CustomSongCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {

@@ -6,7 +6,6 @@
 //
 //
 @class TextMagnifierViewController;
-//@class ScrollLabel;
 
 @protocol TextMagnifierViewControllerDelegate <NSObject>
 

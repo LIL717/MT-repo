@@ -24,6 +24,8 @@
 @synthesize collectionTableView;
 @synthesize collection;
 @synthesize managedObjectContext;
+@synthesize collectionItem;
+@synthesize saveIndexPath;
 
 
 - (void) viewWillAppear:(BOOL)animated
@@ -108,10 +110,12 @@
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    
 }
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
     
     [self updateLayoutForNewOrientation: orientation];
+    [self.collectionTableView reloadData];
     
 }
 - (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
@@ -123,6 +127,7 @@
         [self.collectionTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
     }
 }
+
 - (void)goBackClick
 {
     [self.navigationController popViewControllerAnimated:YES];
@@ -168,54 +173,90 @@
         cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyPodcastTitle];
     }
 
+    //get the duration of the the playlist
+    
+    NSNumber *playlistDurationNumber = [self calculatePlaylistDuration: currentQueue];
+    long playlistDuration = [playlistDurationNumber longValue];
+    
+    int playlistMinutes = (playlistDuration / 60);     // Whole minutes
+    int playlistSeconds = (playlistDuration % 60);                        // seconds
+    cell.durationLabel.text = [NSString stringWithFormat:@"%2d:%02d", playlistMinutes, playlistSeconds];
+    
+
+    
+    DTCustomColoredAccessory *accessory = [DTCustomColoredAccessory accessoryWithColor:cell.nameLabel.textColor];
+    accessory.highlightedColor = [UIColor blueColor];
+    cell.accessoryView = accessory;
+    
+    //size of duration Label is set at 138 to match the fixed size that it is set in interface builder
+    // note that cell.durationLabel.frame.size.width) = 0 here
+    //    NSLog (@"************************************width of durationLabel is %f", cell.durationLabel.frame.size.width);
+
+    // if want to make scrollview width flex with width of duration label, need to set it up in code rather than interface builder - not doing that now, but don't see any problem with doing it
+    
+//    CGSize durationLabelSize = [cell.durationLabel.text sizeWithFont:cell.durationLabel.font
+//                                                   constrainedToSize:CGSizeMake(135, CGRectGetHeight(cell.durationLabel.bounds))
+//                                                       lineBreakMode:NSLineBreakByClipping];
+    
+    NSUInteger scrollViewWidth;
+    
+    if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+        scrollViewWidth = (tableView.frame.size.width - cell.accessoryView.frame.size.width);
+    } else {
+//        scrollViewWidth = (tableView.frame.size.width - durationLabelSize.width - cell.accessoryView.frame.size.width);
+        scrollViewWidth = (tableView.frame.size.width - 138 - cell.accessoryView.frame.size.width);
+
+    }
+    
     //calculate the label size to fit the text with the font size
-    //    NSLog (@"size of nextSongLabel is %f", self.nextSongLabel.frame.size.width);
     CGSize labelSize = [cell.nameLabel.text sizeWithFont:cell.nameLabel.font
-                                       constrainedToSize:CGSizeMake(INT16_MAX, CGRectGetHeight(cell.nameLabel.bounds))
+                                       constrainedToSize:CGSizeMake(INT16_MAX, tableView.rowHeight)
                                            lineBreakMode:NSLineBreakByClipping];
     
     //build a new label that will hold all the text
     UILabel *newLabel = [[UILabel alloc] initWithFrame: cell.nameLabel.frame];
     CGRect frame = newLabel.frame;
-    frame.size.height = CGRectGetHeight(cell.nameLabel.bounds);
+    frame.size.height = labelSize.height;
     frame.size.width = labelSize.width + 1;
+    frame.origin = CGPointZero;
     newLabel.frame = frame;
-    
-    //    NSLog (@"size of newLabel is %f", frame.size.width);
+
     
     //calculate the size (w x h) for the scrollview content
     CGSize size;
     size.width = CGRectGetWidth(newLabel.bounds);
     size.height = CGRectGetHeight(newLabel.bounds);
     cell.scrollView.contentSize = size;
-    cell.scrollView.contentOffset = CGPointZero;
     
-    //set the UIOutlet label's frame to the new sized frame
+//    CGRect scrollFrame = cell.scrollView.frame;
+//    scrollFrame.size.width = scrollViewWidth;
+//    cell.scrollView.frame = scrollFrame;
     cell.nameLabel.frame = newLabel.frame;
+//    cell.nameLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+
     
-    //    NSLog (@"size of nextSongScrollView is %f", self.nextSongScrollView.frame.size.width);
-    
+//    NSLog (@"size of newLabel is %f x %f", newLabel.frame.size.width, newLabel.frame.size.height);
+//    NSLog (@"size of scrollViewWidth is %d", scrollViewWidth);
+//    NSLog (@"cell.nameLabel.text is %@", cell.nameLabel.text);
+
     //enable scroll if the content will not fit within the scrollView
-    if (cell.scrollView.contentSize.width>cell.scrollView.frame.size.width) {
+    if (cell.scrollView.contentSize.width>scrollViewWidth) {
         cell.scrollView.scrollEnabled = YES;
-        //        NSLog (@"scrollEnabled");
+//        NSLog (@"scrollEnabled");
     }
     else {
         cell.scrollView.scrollEnabled = NO;
-        //        NSLog (@"scrollDisabled");
-        
+//        NSLog (@"scrollDisabled");
+
     }
-    NSNumber *playlistDurationNumber = [self calculatePlaylistDuration: currentQueue];
-    long playlistDuration = [playlistDurationNumber longValue];
+    //the gesture recognizers for tap in the scrollview was somehow lost, so add it again to whole cell
+    // add tap gesture to whole cell
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
+                                   initWithTarget:self
+                                   action:@selector(tapDetected:)];
 
-    int playlistMinutes = (playlistDuration / 60);     // Whole minutes
-    int playlistSeconds = (playlistDuration % 60);                        // seconds
-    cell.durationLabel.text = [NSString stringWithFormat:@"%2d:%02d", playlistMinutes, playlistSeconds];
+    [cell addGestureRecognizer:tap];
     
-    DTCustomColoredAccessory *accessory = [DTCustomColoredAccessory accessoryWithColor:cell.nameLabel.textColor];
-    accessory.highlightedColor = [UIColor blueColor];
-    cell.accessoryView = accessory;
-
     return cell;
 }
 - (NSNumber *)calculatePlaylistDuration: (MPMediaItemCollection *) currentQueue {
@@ -235,26 +276,31 @@
 //	 deselect the row after it has been selected.
 - (void) tableView: (UITableView *) tableView didSelectRowAtIndexPath: (NSIndexPath *) indexPath {
     
+    LogMethod();
 	[tableView deselectRowAtIndexPath: indexPath animated: YES];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
 //    LogMethod();
-    NSIndexPath *indexPath = [ self.collectionTableView indexPathForCell:sender];
+//    NSIndexPath *indexPath = [ self.collectionTableView indexPathForCell:sender];
     
 	if ([segue.identifier isEqualToString:@"ViewSongs"])
 	{
         SongViewController *songViewController = segue.destinationViewController;
         songViewController.managedObjectContext = self.managedObjectContext;
         
-        CollectionItem *collectionItem = [CollectionItem alloc];
-        collectionItem.name = [[self.collection objectAtIndex:indexPath.row] valueForProperty: MPMediaPlaylistPropertyName];
-        collectionItem.duration = [self calculatePlaylistDuration: [self.collection objectAtIndex:indexPath.row]];
-        collectionItem.collection = [MPMediaItemCollection collectionWithItems: [[self.collection objectAtIndex:indexPath.row] items]];
+        songViewController.title = self.collectionItem.name;
+        NSLog (@"self.collectionItem.name is %@", self.collectionItem.name);
+        songViewController.collectionItem = self.collectionItem;
         
-        songViewController.title = collectionItem.name;
-        songViewController.collectionItem = collectionItem;
+//        CollectionItem *collectionItem = [CollectionItem alloc];
+//        collectionItem.name = [[self.collection objectAtIndex:indexPath.row] valueForProperty: MPMediaPlaylistPropertyName];
+//        collectionItem.duration = [self calculatePlaylistDuration: [self.collection objectAtIndex:indexPath.row]];
+//        collectionItem.collection = [MPMediaItemCollection collectionWithItems: [[self.collection objectAtIndex:indexPath.row] items]];
+//        
+//        songViewController.title = collectionItem.name;
+//        songViewController.collectionItem = collectionItem;
 
 	}
     if ([segue.identifier isEqualToString:@"ViewNowPlaying"])
@@ -271,6 +317,49 @@
     [self performSegueWithIdentifier: @"ViewNowPlaying" sender: self];
 }
 
+// need to handle the tap manually because scrollview lost recognition of tap when sized
+
+-(void)tapDetected:(UITapGestureRecognizer*)tapGesture
+    {
+
+        if (tapGesture.state == UIGestureRecognizerStateEnded)
+        {
+            UITableView* tableView = (UITableView*)self.view;
+            CGPoint touchPoint = [tapGesture locationInView:self.view];
+//            NSIndexPath* indexPath = [tableView indexPathForRowAtPoint:touchPoint];
+            self.saveIndexPath = [tableView indexPathForRowAtPoint:touchPoint];
+
+//            if (indexPath != nil) {
+//                self.collectionItem = [CollectionItem alloc];
+//                self.collectionItem.name = [[self.collection objectAtIndex:indexPath.row] valueForProperty: MPMediaPlaylistPropertyName];
+//                self.collectionItem.duration = [self calculatePlaylistDuration: [self.collection objectAtIndex:indexPath.row]];
+//                self.collectionItem.collection = [MPMediaItemCollection collectionWithItems: [[self.collection objectAtIndex:indexPath.row] items]];
+//                
+            if (saveIndexPath != nil) {
+                
+                CollectionItemCell *cell = (CollectionItemCell *)[tableView cellForRowAtIndexPath:saveIndexPath];
+                cell.nameLabel.highlighted = YES;
+                
+                self.collectionItem = [CollectionItem alloc];
+//                self.collectionItem.name = [[self.collection objectAtIndex:saveIndexPath.row] valueForProperty: MPMediaPlaylistPropertyName];
+                self.collectionItem.name = cell.nameLabel.text;
+                self.collectionItem.duration = [self calculatePlaylistDuration: [self.collection objectAtIndex:saveIndexPath.row]];
+                self.collectionItem.collection = [MPMediaItemCollection collectionWithItems: [[self.collection objectAtIndex:saveIndexPath.row] items]];
+                
+
+                
+                //have to set these manually
+                
+                cell.durationLabel.highlighted = YES;
+                DTCustomColoredAccessory *accessory = [DTCustomColoredAccessory accessoryWithColor:cell.nameLabel.textColor];
+                accessory.highlightedColor = [UIColor blueColor];
+                accessory.highlighted = YES;
+                cell.accessoryView = accessory;
+
+                [self performSegueWithIdentifier: @"ViewSongs" sender: self];
+            }
+        }
+    }
 
 #pragma mark Application state management_____________
 // Standard methods for managing application state.
@@ -288,5 +377,20 @@
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
 }
+// neeed to programmatically unhighlight because highlighting was done programmatically
 
+- (void)viewDidDisappear:(BOOL)animated {
+    //    LogMethod();
+    [super viewDidDisappear: animated];
+
+    if (saveIndexPath != nil) {
+        CollectionItemCell *cell = (CollectionItemCell *)[self.collectionTableView cellForRowAtIndexPath:saveIndexPath];
+        cell.nameLabel.highlighted = NO;
+        cell.durationLabel.highlighted = NO;
+        DTCustomColoredAccessory *accessory = [DTCustomColoredAccessory accessoryWithColor:cell.nameLabel.textColor];
+        accessory.highlightedColor = [UIColor blueColor];
+        accessory.highlighted = NO;
+        cell.accessoryView = accessory;
+    }
+}
 @end

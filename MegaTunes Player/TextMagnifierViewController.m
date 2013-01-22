@@ -8,7 +8,6 @@
 
 #import "TextMagnifierViewController.h"
 #import "AppDelegate.h"
-//#import "ScrollLabel.h"
 
 @interface TextMagnifierViewController ()
 

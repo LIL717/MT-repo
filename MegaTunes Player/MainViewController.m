@@ -441,7 +441,9 @@ void audioRouteChangeListenerCallback (
     //set the UIOutlet label's frame to the new sized frame
     self.nextSongLabel.frame = newLabel.frame;
     
-    //    NSLog (@"size of nextSongScrollView is %f", self.nextSongScrollView.frame.size.width);
+//    NSLog (@"size of self.nextSongLabel.frame.size.width is %f", self.nextSongLabel.frame.size.width);
+//    NSLog (@"size of nextSongScrollView.contentSize.width is %f", self.nextSongScrollView.contentSize.width);
+//    NSLog (@"size of nextSongScrollView.frame.size.width is %f", self.nextSongScrollView.frame.size.width);
     
     //enable scroll if the content will not fit within the scrollView
     if (nextSongScrollView.contentSize.width>nextSongScrollView.frame.size.width) {
