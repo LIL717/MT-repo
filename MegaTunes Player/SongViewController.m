@@ -25,7 +25,7 @@
 @synthesize musicPlayer;
 @synthesize managedObjectContext;
 @synthesize songInfo;
-@synthesize saveIndexPath;
+//@synthesize saveIndexPath;
 @synthesize itemToPlay;
 
 - (void) viewWillAppear:(BOOL)animated
@@ -71,12 +71,12 @@
 
     return;
 }
-- (void) touchesEnded: (NSSet *) touches withEvent: (UIEvent *) event
-{
-    NSLog(@"touch cell in view controller");
-    // If not dragging, send event to next responder
-    [super touchesEnded: touches withEvent: event];
-}
+//- (void) touchesEnded: (NSSet *) touches withEvent: (UIEvent *) event
+//{
+//    NSLog(@"touch cell in view controller");
+//    // If not dragging, send event to next responder
+//    [super touchesEnded: touches withEvent: event];
+//}
 - (UILabel *) customizeTitleView
 {
     CGRect frame = CGRectMake(0, 0, [self.title sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 48);
@@ -164,31 +164,6 @@
     
     return [[self.collectionItem.collection items] count];
 }
-//- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    static NSString *cellIdentifier = @"MediaGroupCell";
-//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-//    if (!cell) {
-//        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-//        UIScrollView *scroller = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 320, 55)];
-//        scroller.showsHorizontalScrollIndicator = NO;
-//        
-//        UILabel *contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 320*4, 55)];
-//        contentLabel.backgroundColor = [UIColor yellowColor];
-//        contentLabel.textColor = [UIColor redColor];
-//        NSMutableString *str = [[NSMutableString alloc] init];
-//        for (NSUInteger i = 0; i < 100; i++) { [str appendFormat:@"%i ", i]; }
-//        contentLabel.text = str;
-//        
-//        [scroller addSubview:contentLabel];
-//        scroller.contentSize = contentLabel.frame.size;
-//        [cell addSubview:scroller];
-//    }
-//    
-//    cell.textLabel.text = [NSString stringWithFormat:@"cell #%i", indexPath.row];
-//    cell.textLabel.textColor = [UIColor whiteColor];
-//    return cell;
-//}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -197,10 +172,7 @@
     
     MPMediaItem *song = [[self.collectionItem.collection items] objectAtIndex:indexPath.row];
     
-//    cell.nameLabel.text = [song valueForProperty:  MPMediaItemPropertyTitle];
-    
 
-    
     
     //make the accessory view into a custom info button
     
@@ -229,53 +201,48 @@
 //    [cell.infoBackground addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[button]|" options:0 metrics: 0 views:viewsDictionary]];
 //    [cell.infoBackground addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[button]|" options:0 metrics: 0 views:viewsDictionary]];
     
-    //set the red arrow on the row if this is the currently playing song
-    if ([musicPlayer nowPlayingItem] == song) {
-        cell.playingIndicator.image = [UIImage imageNamed:@"playing"];
-    } else {
-        cell.playingIndicator.image = nil;
-    }
+
         
-    //BPM   can't get this to work
-//    BASS_SetConfig(BASS_CONFIG_IOS_MIXAUDIO, 0); // Disable mixing. To be called before BASS_Init.
-//    
-//    if (HIWORD(BASS_GetVersion()) != BASSVERSION) {
-//        NSLog(@"An incorrect version of BASS was loaded");
-//    }
-//    
-//    // Initialize default device.
-//    if (!BASS_Init(-1, 44100, 0, NULL, NULL)) {
-//        NSLog(@"Can't initialize device");
-//        
-//    }
-//    
-//    //NSArray *array = [NSArray arrayWithObject:@""
-//    
-//    NSString *respath = cell.nameLabel.text;
-//    
-//    DWORD chan1;
-//    if(!(chan1=BASS_StreamCreateFile(FALSE, [respath UTF8String], 0, 0, BASS_SAMPLE_LOOP))) {
-//        NSLog(@"Can't load stream!");
-//        
-//    }
-//    
-//    HSTREAM mainStream=BASS_StreamCreateFile(FALSE, [respath cStringUsingEncoding:NSUTF8StringEncoding], 0, 0, BASS_SAMPLE_FLOAT|BASS_STREAM_PRESCAN|BASS_STREAM_DECODE);
-//    
-//    float playBackDuration=BASS_ChannelBytes2Seconds(mainStream, BASS_ChannelGetLength(mainStream, BASS_POS_BYTE));
-//    NSLog(@"Play back duration is %f",playBackDuration);
-//    HSTREAM bpmStream=BASS_StreamCreateFile(FALSE, [respath UTF8String], 0, 0, BASS_STREAM_PRESCAN|BASS_SAMPLE_FLOAT|BASS_STREAM_DECODE);
-//    //BASS_ChannelPlay(bpmStream,FALSE);
-//    float BpmValue= BASS_FX_BPM_DecodeGet(bpmStream,0.0,
-//                                    playBackDuration,
-//                                    MAKELONG(45,256),
-//                                    BASS_FX_BPM_MULT2,
-//                                    NULL);
-//    NSLog(@"BPM is %f",BpmValue);
+/*****************************    //BPM   can't get this to work
+    BASS_SetConfig(BASS_CONFIG_IOS_MIXAUDIO, 0); // Disable mixing. To be called before BASS_Init.
     
+    if (HIWORD(BASS_GetVersion()) != BASSVERSION) {
+        NSLog(@"An incorrect version of BASS was loaded");
+    }
+    
+    // Initialize default device.
+    if (!BASS_Init(-1, 44100, 0, NULL, NULL)) {
+        NSLog(@"Can't initialize device");
+        
+    }
+    
+    //NSArray *array = [NSArray arrayWithObject:@""
+    
+    NSString *respath = cell.nameLabel.text;
+    
+    DWORD chan1;
+    if(!(chan1=BASS_StreamCreateFile(FALSE, [respath UTF8String], 0, 0, BASS_SAMPLE_LOOP))) {
+        NSLog(@"Can't load stream!");
+        
+    }
+    
+    HSTREAM mainStream=BASS_StreamCreateFile(FALSE, [respath cStringUsingEncoding:NSUTF8StringEncoding], 0, 0, BASS_SAMPLE_FLOAT|BASS_STREAM_PRESCAN|BASS_STREAM_DECODE);
+    
+    float playBackDuration=BASS_ChannelBytes2Seconds(mainStream, BASS_ChannelGetLength(mainStream, BASS_POS_BYTE));
+    NSLog(@"Play back duration is %f",playBackDuration);
+    HSTREAM bpmStream=BASS_StreamCreateFile(FALSE, [respath UTF8String], 0, 0, BASS_STREAM_PRESCAN|BASS_SAMPLE_FLOAT|BASS_STREAM_DECODE);
+    //BASS_ChannelPlay(bpmStream,FALSE);
+    float BpmValue= BASS_FX_BPM_DecodeGet(bpmStream,0.0,
+                                    playBackDuration,
+                                    MAKELONG(45,256),
+                                    BASS_FX_BPM_MULT2,
+                                    NULL);
+    NSLog(@"BPM is %f",BpmValue);
+
     //this is always null
-//    cell.BPM.text = [[song valueForProperty: MPMediaItemPropertyBeatsPerMinute] stringValue];
-//    NSLog (@"%d", [[song valueForProperty: MPMediaItemPropertyBeatsPerMinute]  intValue]);
-    
+    cell.BPM.text = [[song valueForProperty: MPMediaItemPropertyBeatsPerMinute] stringValue];
+    NSLog (@"%d", [[song valueForProperty: MPMediaItemPropertyBeatsPerMinute]  intValue]);
+*********************************************/
     //playback duration of the song
     
     long playbackDuration = [[song valueForProperty: MPMediaItemPropertyPlaybackDuration] longValue];
@@ -288,73 +255,36 @@
 //    NSNumber *duration = [song valueForProperty: MPMediaItemPropertyPlaybackDuration];
 //    NSLog (@"\t\t%@,%@", songTitle,duration);
     
+    //set the red arrow on the row if this is the currently playing song
+    if ([musicPlayer nowPlayingItem] == song) {
+        cell.playingIndicator.image = [UIImage imageNamed:@"playing"];
+    } else {
+        cell.playingIndicator.image = [UIImage imageNamed:@"notPlaying"];
+    }
     // Display text
-    
-//    cell.nameLabel = [[UILabel alloc] initWithFrame: CGRectMake(0, 0, 320, 55)];
-    cell.nameLabel.textColor = [UIColor whiteColor];
-    cell.nameLabel.backgroundColor = [UIColor clearColor];
-    UIFont *font = [UIFont systemFontOfSize:12];
-    UIFont *newFont = [font fontWithSize:44];
-    cell.nameLabel.font = newFont;
-    cell.nameLabel.text = [song valueForProperty:  MPMediaItemPropertyTitle];
 
-    
+    cell.nameLabel.text = [song valueForProperty:  MPMediaItemPropertyTitle];
 
     //calculate the label size to fit the text with the font size
     CGSize labelSize = [cell.nameLabel.text sizeWithFont:cell.nameLabel.font
                                        constrainedToSize:CGSizeMake(INT16_MAX, tableView.rowHeight)
                                            lineBreakMode:NSLineBreakByClipping];
-    
-    //build a new label that will hold all the text
-//    UILabel *newLabel = [[UILabel alloc] initWithFrame: cell.nameLabel.frame];
-    CGRect newFrame = cell.nameLabel.frame;
-//    CGRect newFrame = newLabel.frame;
-    newFrame.size.height = labelSize.height;
-    newFrame.size.width = labelSize.width;
-    newFrame.origin = CGPointZero;
-    
-//    newLabel.frame = newFrame;
-    
-    //set the text label to the size needed to hold the whole string
-//    cell.nameLabel.frame = newLabel.frame;
-    cell.nameLabel.frame = newFrame;
 
-
-    
-    //calculate the size (w x h) for the actual scrollview
+    //calculate the width of the actual scrollview
     //cell.playingIndicator is 20
     //durationLabelSize.width is 98
     //cell.accessoryView.frame.size.width is 42
     // so scrollViewWidth should be 480-24-98-42 = 316   or 320-28-42= 250
     NSUInteger scrollViewWidth;
-    NSUInteger trailingSpace;
     
     if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
         scrollViewWidth = (tableView.frame.size.width - 28 - cell.accessoryView.frame.size.width);
-        trailingSpace = (tableView.frame.size.width - 28 - scrollViewWidth);
     } else {
         scrollViewWidth = (tableView.frame.size.width - 24 - 98 - cell.accessoryView.frame.size.width);
-        trailingSpace = (tableView.frame.size.width - 24 - scrollViewWidth);
     }
-    //    NSLog (@"tableView: %f  playingIndicator: %f durationLabel: %f  accessoryView: %f", tableView.frame.size.width, cell.playingIndicator.frame.size.width, cell.durationLabel.frame.size.width, cell.accessoryView.frame.size.width);
-    //    NSLog (@"size of scrollViewWidth is %d", scrollViewWidth);
-    //    NSLog (@"**************************");
-    CGRect scrollFrame = cell.nameLabel.frame;
-    scrollFrame.size.width = scrollViewWidth;
-    
-//    cell.scrollView = [[InCellScrollView alloc] initWithFrame:scrollFrame];
-    cell.scrollView.frame = scrollFrame;
 
-    //calculate the size (w x h) for the scrollview CONTENT
-    CGSize contentSize;
-    //    contentSize.width = CGRectGetWidth(newLabel.bounds);
-    //    contentSize.height = CGRectGetHeight(newLabel.bounds);
-    contentSize.width = newFrame.size.width;
-    contentSize.height = newFrame.size.height;
-    cell.scrollView.contentSize = contentSize;
+    if (labelSize.width>scrollViewWidth) {
 
-    //enable scroll if the content will not fit within the scrollView
-    if (cell.scrollView.contentSize.width>scrollViewWidth) {
         cell.scrollView.scrollEnabled = YES;
         //        NSLog (@"scrollEnabled");
     }
@@ -362,7 +292,10 @@
         cell.scrollView.scrollEnabled = NO;
         //        NSLog (@"scrollDisabled");
     }
-        
+    return cell;
+}
+
+//unused code but not ready to delete it altogether yet :)
 //    //need to have scrollView object and label object independent of SongCell to add
 //    
 //    inCellScrollView* myScrollView = [[inCellScrollView alloc] initWithFrame:cell.scrollView.frame];
@@ -420,9 +353,7 @@
 ////    touchBtn.showsTouchWhenHighlighted = YES;
 //    [cell.scrollView addSubview: touchBtn];
     
-    return cell;
 
-}
 // need to handle the tap manually because scrollview lost recognition of tap when sized
 
 //-(void)tapDetected:(UITapGestureRecognizer*)tapGesture
@@ -551,20 +482,5 @@
     [self setSongTableView:nil];
     [super viewDidUnload];
 }
-// neeed to programmatically unhighlight because highlighting was done programmatically
 
-- (void)viewDidDisappear:(BOOL)animated {
-    //    LogMethod();
-    [super viewDidDisappear: animated];
-    
-    if (saveIndexPath != nil) {
-        SongCell *cell = (SongCell *)[self.songTableView cellForRowAtIndexPath:saveIndexPath];
-        cell.nameLabel.highlighted = NO;
-        cell.durationLabel.highlighted = NO;
-//        DTCustomColoredAccessory *accessory = [DTCustomColoredAccessory accessoryWithColor:cell.nameLabel.textColor];
-//        accessory.highlightedColor = [UIColor blueColor];
-//        accessory.highlighted = NO;
-//        cell.accessoryView = accessory;
-    }
-}
 @end

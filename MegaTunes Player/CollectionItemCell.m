@@ -9,7 +9,7 @@
 #import "CollectionItemCell.h"
 
 @implementation CollectionItemCell
-//@synthesize scrollView; 
+@synthesize scrollView; 
 @synthesize nameLabel;
 @synthesize durationLabel;
 

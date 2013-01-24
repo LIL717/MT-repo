@@ -10,37 +10,26 @@
 
 @implementation InCellScrollView
 
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code
-    }
-    return self;
-}
 - (void) touchesEnded: (NSSet *) touches withEvent: (UIEvent *) event
 {
 
     // If not dragging, send event to next responder
     if (!self.dragging) {
-            NSLog(@"touch scroll not dragging");
+//            NSLog(@"touch scroll not dragging");
         [self.nextResponder touchesEnded: touches withEvent:event];
     } else {
         [super touchesEnded: touches withEvent: event];
-            NSLog(@"touch scroll is dragging");
-    }
-    if (self.tracking) {
-        NSLog(@"scrollView tracking");
+//            NSLog(@"touch scroll is dragging");
     }
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
+//OMG need to for nextResponder to handled passed through touchesEnded 
+- (void) touchesBegan: (NSSet *) touches withEvent: (UIEvent *) event
 {
-    // Drawing code
+//        NSLog(@"touchesBegan in scrollview");
+        [self.nextResponder touchesBegan: touches withEvent:event];
+        [super touchesBegan: touches withEvent: event];
 }
-*/
+
 
 @end

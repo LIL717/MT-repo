@@ -10,9 +10,11 @@
 #import "CollectionItemCell.h"
 #import "CollectionItem.h"
 #import "SongViewController.h"
+//#import "CustomSongViewController.h"
 #import "AppDelegate.h"
 #import "DTCustomColoredAccessory.h"
 #import "MainViewController.h"
+#import "InCellScrollView.h"
 
 
 @interface CollectionViewController ()
@@ -24,7 +26,7 @@
 @synthesize collectionTableView;
 @synthesize collection;
 @synthesize managedObjectContext;
-@synthesize collectionItem;
+//@synthesize collectionItem;
 @synthesize saveIndexPath;
 
 
@@ -103,14 +105,7 @@
     [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage58 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
     
     [self updateLayoutForNewOrientation: self.interfaceOrientation];
-    
-    
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    
+
 }
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
     
@@ -172,7 +167,9 @@
     if (self.title == @"Podcasts") {
         cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyPodcastTitle];
     }
-
+    if (cell.nameLabel.text == nil) {
+        cell.nameLabel.text = @"Unknown";
+    }
     //get the duration of the the playlist
     
     NSNumber *playlistDurationNumber = [self calculatePlaylistDuration: currentQueue];
@@ -212,35 +209,8 @@
     CGSize labelSize = [cell.nameLabel.text sizeWithFont:cell.nameLabel.font
                                        constrainedToSize:CGSizeMake(INT16_MAX, tableView.rowHeight)
                                            lineBreakMode:NSLineBreakByClipping];
-    
-    //build a new label that will hold all the text
-    UILabel *newLabel = [[UILabel alloc] initWithFrame: cell.nameLabel.frame];
-    CGRect frame = newLabel.frame;
-    frame.size.height = labelSize.height;
-    frame.size.width = labelSize.width + 1;
-    frame.origin = CGPointZero;
-    newLabel.frame = frame;
 
-    
-    //calculate the size (w x h) for the scrollview content
-    CGSize size;
-    size.width = CGRectGetWidth(newLabel.bounds);
-    size.height = CGRectGetHeight(newLabel.bounds);
-    cell.scrollView.contentSize = size;
-    
-//    CGRect scrollFrame = cell.scrollView.frame;
-//    scrollFrame.size.width = scrollViewWidth;
-//    cell.scrollView.frame = scrollFrame;
-    cell.nameLabel.frame = newLabel.frame;
-//    cell.nameLabel.lineBreakMode = NSLineBreakByTruncatingTail;
-
-    
-//    NSLog (@"size of newLabel is %f x %f", newLabel.frame.size.width, newLabel.frame.size.height);
-//    NSLog (@"size of scrollViewWidth is %d", scrollViewWidth);
-//    NSLog (@"cell.nameLabel.text is %@", cell.nameLabel.text);
-
-    //enable scroll if the content will not fit within the scrollView
-    if (cell.scrollView.contentSize.width>scrollViewWidth) {
+    if (labelSize.width>scrollViewWidth) {
         cell.scrollView.scrollEnabled = YES;
 //        NSLog (@"scrollEnabled");
     }
@@ -249,13 +219,6 @@
 //        NSLog (@"scrollDisabled");
 
     }
-    //the gesture recognizers for tap in the scrollview was somehow lost, so add it again to whole cell
-    // add tap gesture to whole cell
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
-                                   initWithTarget:self
-                                   action:@selector(tapDetected:)];
-
-    [cell addGestureRecognizer:tap];
     
     return cell;
 }
@@ -283,26 +246,41 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
 //    LogMethod();
-//    NSIndexPath *indexPath = [ self.collectionTableView indexPathForCell:sender];
+    NSIndexPath *indexPath = [ self.collectionTableView indexPathForCell:sender];
     
 	if ([segue.identifier isEqualToString:@"ViewSongs"])
 	{
         SongViewController *songViewController = segue.destinationViewController;
         songViewController.managedObjectContext = self.managedObjectContext;
+    
+        CollectionItem *collectionItem = [CollectionItem alloc];
+        collectionItem.name = [[self.collection objectAtIndex:indexPath.row] valueForProperty: MPMediaPlaylistPropertyName];
+        collectionItem.duration = [self calculatePlaylistDuration: [self.collection objectAtIndex:indexPath.row]];
+        collectionItem.collection = [MPMediaItemCollection collectionWithItems: [[self.collection objectAtIndex:indexPath.row] items]];
         
-        songViewController.title = self.collectionItem.name;
-        NSLog (@"self.collectionItem.name is %@", self.collectionItem.name);
-        songViewController.collectionItem = self.collectionItem;
-        
-//        CollectionItem *collectionItem = [CollectionItem alloc];
-//        collectionItem.name = [[self.collection objectAtIndex:indexPath.row] valueForProperty: MPMediaPlaylistPropertyName];
-//        collectionItem.duration = [self calculatePlaylistDuration: [self.collection objectAtIndex:indexPath.row]];
-//        collectionItem.collection = [MPMediaItemCollection collectionWithItems: [[self.collection objectAtIndex:indexPath.row] items]];
-//        
-//        songViewController.title = collectionItem.name;
-//        songViewController.collectionItem = collectionItem;
+        songViewController.title = collectionItem.name;
+        songViewController.collectionItem = collectionItem;
 
 	}
+    //this is temp while I figure out the tap/drag situation using CustomSongViewController remember to delete import of .h above too and reference in tapDetected below
+//    if ([segue.identifier isEqualToString:@"CustomViewSongs"])
+//	{
+//        CustomSongViewController *customSongViewController = segue.destinationViewController;
+//        customSongViewController.managedObjectContext = self.managedObjectContext;
+//        
+//        customSongViewController.title = self.collectionItem.name;
+//        NSLog (@"self.collectionItem.name is %@", self.collectionItem.name);
+//        customSongViewController.collectionItem = self.collectionItem;
+//        
+//        //        CollectionItem *collectionItem = [CollectionItem alloc];
+//        //        collectionItem.name = [[self.collection objectAtIndex:indexPath.row] valueForProperty: MPMediaPlaylistPropertyName];
+//        //        collectionItem.duration = [self calculatePlaylistDuration: [self.collection objectAtIndex:indexPath.row]];
+//        //        collectionItem.collection = [MPMediaItemCollection collectionWithItems: [[self.collection objectAtIndex:indexPath.row] items]];
+//        //
+//        //        songViewController.title = collectionItem.name;
+//        //        songViewController.collectionItem = collectionItem;
+//        
+//	}
     if ([segue.identifier isEqualToString:@"ViewNowPlaying"])
 	{
 		MainViewController *mainViewController = segue.destinationViewController;
@@ -316,50 +294,6 @@
     
     [self performSegueWithIdentifier: @"ViewNowPlaying" sender: self];
 }
-
-// need to handle the tap manually because scrollview lost recognition of tap when sized
-
--(void)tapDetected:(UITapGestureRecognizer*)tapGesture
-    {
-
-        if (tapGesture.state == UIGestureRecognizerStateEnded)
-        {
-            UITableView* tableView = (UITableView*)self.view;
-            CGPoint touchPoint = [tapGesture locationInView:self.view];
-//            NSIndexPath* indexPath = [tableView indexPathForRowAtPoint:touchPoint];
-            self.saveIndexPath = [tableView indexPathForRowAtPoint:touchPoint];
-
-//            if (indexPath != nil) {
-//                self.collectionItem = [CollectionItem alloc];
-//                self.collectionItem.name = [[self.collection objectAtIndex:indexPath.row] valueForProperty: MPMediaPlaylistPropertyName];
-//                self.collectionItem.duration = [self calculatePlaylistDuration: [self.collection objectAtIndex:indexPath.row]];
-//                self.collectionItem.collection = [MPMediaItemCollection collectionWithItems: [[self.collection objectAtIndex:indexPath.row] items]];
-//                
-            if (saveIndexPath != nil) {
-                
-                CollectionItemCell *cell = (CollectionItemCell *)[tableView cellForRowAtIndexPath:saveIndexPath];
-                cell.nameLabel.highlighted = YES;
-                
-                self.collectionItem = [CollectionItem alloc];
-//                self.collectionItem.name = [[self.collection objectAtIndex:saveIndexPath.row] valueForProperty: MPMediaPlaylistPropertyName];
-                self.collectionItem.name = cell.nameLabel.text;
-                self.collectionItem.duration = [self calculatePlaylistDuration: [self.collection objectAtIndex:saveIndexPath.row]];
-                self.collectionItem.collection = [MPMediaItemCollection collectionWithItems: [[self.collection objectAtIndex:saveIndexPath.row] items]];
-                
-
-                
-                //have to set these manually
-                
-                cell.durationLabel.highlighted = YES;
-                DTCustomColoredAccessory *accessory = [DTCustomColoredAccessory accessoryWithColor:cell.nameLabel.textColor];
-                accessory.highlightedColor = [UIColor blueColor];
-                accessory.highlighted = YES;
-                cell.accessoryView = accessory;
-
-                [self performSegueWithIdentifier: @"ViewSongs" sender: self];
-            }
-        }
-    }
 
 #pragma mark Application state management_____________
 // Standard methods for managing application state.
@@ -378,19 +312,10 @@
 	// e.g. self.myOutlet = nil;
 }
 // neeed to programmatically unhighlight because highlighting was done programmatically
-
-- (void)viewDidDisappear:(BOOL)animated {
-    //    LogMethod();
-    [super viewDidDisappear: animated];
-
-    if (saveIndexPath != nil) {
-        CollectionItemCell *cell = (CollectionItemCell *)[self.collectionTableView cellForRowAtIndexPath:saveIndexPath];
-        cell.nameLabel.highlighted = NO;
-        cell.durationLabel.highlighted = NO;
-        DTCustomColoredAccessory *accessory = [DTCustomColoredAccessory accessoryWithColor:cell.nameLabel.textColor];
-        accessory.highlightedColor = [UIColor blueColor];
-        accessory.highlighted = NO;
-        cell.accessoryView = accessory;
-    }
-}
+//
+//- (void)viewDidDisappear:(BOOL)animated {
+//    //    LogMethod();
+//    [super viewDidDisappear: animated];
+//
+//}
 @end

@@ -25,9 +25,14 @@
 
     // Configure the view for the selected state
 }
-- (void) touchesEnded: (NSSet *) touches withEvent: (UIEvent *) event
-{
-    NSLog(@"touch cell");
-    [super touchesEnded: touches withEvent: event];
-}
+//- (void) touchesEnded: (NSSet *) touches withEvent: (UIEvent *) event
+//{
+//    NSLog(@"touchesEnded CustomSongCell");
+//    [super touchesEnded: touches withEvent: event];
+//}
+//- (void) touchesBegan: (NSSet *) touches withEvent: (UIEvent *) event
+//{
+//    NSLog(@"touchesBegan CustomSongCell");
+//    [super touchesBegan: touches withEvent: event];
+//}
 @end

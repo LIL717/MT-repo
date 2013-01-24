@@ -10,6 +10,9 @@
 		700511F216ADEA7F0085B6F1 /* InCellScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 700511F116ADEA7E0085B6F1 /* InCellScrollView.m */; };
 		700511FA16AF19240085B6F1 /* CustomSongCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 700511F916AF19240085B6F1 /* CustomSongCell.m */; };
 		700511FD16AF1ACF0085B6F1 /* CustomSongViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 700511FC16AF1ACF0085B6F1 /* CustomSongViewController.m */; };
+		7005120016AF2A9F0085B6F1 /* TemporaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 700511FF16AF2A9E0085B6F1 /* TemporaryViewController.m */; };
+		7005120316AFC65A0085B6F1 /* notPlaying.png in Resources */ = {isa = PBXBuildFile; fileRef = 7005120116AFC65A0085B6F1 /* notPlaying.png */; };
+		7005120416AFC65A0085B6F1 /* notPlaying@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7005120216AFC65A0085B6F1 /* notPlaying@2x.png */; };
 		702B4149165714E7004A9265 /* NotesTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 702B4148165714E7004A9265 /* NotesTabBarController.m */; };
 		702B414D165715C2004A9265 /* SongInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 702B414C165715C2004A9265 /* SongInfoViewController.m */; };
 		702B414F165741C8004A9265 /* info_48.png in Resources */ = {isa = PBXBuildFile; fileRef = 702B414E165741C8004A9265 /* info_48.png */; };
@@ -192,6 +195,10 @@
 		700511F916AF19240085B6F1 /* CustomSongCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomSongCell.m; sourceTree = "<group>"; };
 		700511FB16AF1ACF0085B6F1 /* CustomSongViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomSongViewController.h; sourceTree = "<group>"; };
 		700511FC16AF1ACF0085B6F1 /* CustomSongViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomSongViewController.m; sourceTree = "<group>"; };
+		700511FE16AF2A9E0085B6F1 /* TemporaryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TemporaryViewController.h; sourceTree = "<group>"; };
+		700511FF16AF2A9E0085B6F1 /* TemporaryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TemporaryViewController.m; sourceTree = "<group>"; };
+		7005120116AFC65A0085B6F1 /* notPlaying.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = notPlaying.png; sourceTree = "<group>"; };
+		7005120216AFC65A0085B6F1 /* notPlaying@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "notPlaying@2x.png"; sourceTree = "<group>"; };
 		702B4147165714E7004A9265 /* NotesTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotesTabBarController.h; sourceTree = "<group>"; };
 		702B4148165714E7004A9265 /* NotesTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotesTabBarController.m; sourceTree = "<group>"; };
 		702B414B165715C2004A9265 /* SongInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SongInfoViewController.h; sourceTree = "<group>"; };
@@ -731,6 +738,12 @@
 		70A13D9216320F6500244866 /* Unused */ = {
 			isa = PBXGroup;
 			children = (
+				700511FE16AF2A9E0085B6F1 /* TemporaryViewController.h */,
+				700511FF16AF2A9E0085B6F1 /* TemporaryViewController.m */,
+				700511F816AF19240085B6F1 /* CustomSongCell.h */,
+				700511F916AF19240085B6F1 /* CustomSongCell.m */,
+				700511FB16AF1ACF0085B6F1 /* CustomSongViewController.h */,
+				700511FC16AF1ACF0085B6F1 /* CustomSongViewController.m */,
 				70A13DE0163734CE00244866 /* ScrollLabel.h */,
 				70A13DE1163734D000244866 /* ScrollLabel.m */,
 				709FA3841658B3520082DAE5 /* SongImageCell.h */,
@@ -839,8 +852,6 @@
 				70ADDC1E1614178500219873 /* CollectionItem.m */,
 				70515C27160F986E00D96335 /* SongCell.h */,
 				70515C28160F986E00D96335 /* SongCell.m */,
-				700511F816AF19240085B6F1 /* CustomSongCell.h */,
-				700511F916AF19240085B6F1 /* CustomSongCell.m */,
 				70515C1E160CBE7600D96335 /* Song.h */,
 				70A13DD816334B6D00244866 /* Song.m */,
 				707862BA1629F33900871260 /* AutoScrollLabel.h */,
@@ -872,8 +883,6 @@
 				70ADDC2F161A4A7700219873 /* CollectionViewController.m */,
 				70515C2A160FD2DC00D96335 /* SongViewController.h */,
 				70515C2B160FD2DC00D96335 /* SongViewController.m */,
-				700511FB16AF1ACF0085B6F1 /* CustomSongViewController.h */,
-				700511FC16AF1ACF0085B6F1 /* CustomSongViewController.m */,
 				70515C301610184A00D96335 /* MainViewController.h */,
 				70515C311610184A00D96335 /* MainViewController.m */,
 				707862BD162C729300871260 /* TimeMagnifierViewController.h */,
@@ -949,6 +958,8 @@
 				70DAEA1B16914C6000479D61 /* notesLightButtonImage.png */,
 				70DAEA1C16914C6000479D61 /* notesLightButtonImage@2x.png */,
 				70DAEA3D1693981C00479D61 /* notesLightButtonImageWhite.png */,
+				7005120116AFC65A0085B6F1 /* notPlaying.png */,
+				7005120216AFC65A0085B6F1 /* notPlaying@2x.png */,
 				70974B981630CB6000A33B7D /* play.png */,
 				70984C14163F964600CE7EA9 /* playing.png */,
 				70984C15163F964600CE7EA9 /* playing@2x.png */,
@@ -1149,6 +1160,8 @@
 				70A4B73F16978C8100C84293 /* redWhitePlay68.png in Resources */,
 				70A4B74116978DAD00C84293 /* redWhitePlay57.png in Resources */,
 				70A4B74F169804D200C84293 /* noAlbumImage320.png in Resources */,
+				7005120316AFC65A0085B6F1 /* notPlaying.png in Resources */,
+				7005120416AFC65A0085B6F1 /* notPlaying@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1227,6 +1240,7 @@
 				700511F216ADEA7F0085B6F1 /* InCellScrollView.m in Sources */,
 				700511FA16AF19240085B6F1 /* CustomSongCell.m in Sources */,
 				700511FD16AF1ACF0085B6F1 /* CustomSongViewController.m in Sources */,
+				7005120016AF2A9F0085B6F1 /* TemporaryViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -46,19 +46,11 @@
                                     constrainedToSize:CGSizeMake(INT16_MAX, CGRectGetHeight(scrollView.bounds))
                                            lineBreakMode:NSLineBreakByClipping];
     
-    //build a new label that will hold all the text
-    UILabel *newLabel = [[UILabel alloc] initWithFrame: self.magnifiedLabel.frame];
-    CGRect frame = newLabel.frame;
-//    frame.origin.x = 0;
-//    frame.size.height = CGRectGetHeight(self.scrollView.bounds);
-    frame.size.height = labelSize.height;
-    frame.size.width = labelSize.width;
-    newLabel.frame = frame;
-    
-    NSLog (@"size of newLabel is %f", frame.size.width);
-    
     //set the UIOutlet label's frame to the new sized frame
-    self.magnifiedLabel.frame = newLabel.frame;
+    CGRect frame = self.magnifiedLabel.frame;
+    frame.size = labelSize;
+    self.magnifiedLabel.frame = frame;
+    
     [self.scrollView addSubview:self.magnifiedLabel];
     
     self.scrollView.translatesAutoresizingMaskIntoConstraints = NO;

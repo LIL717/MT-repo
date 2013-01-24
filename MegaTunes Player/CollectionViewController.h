@@ -10,7 +10,7 @@
 //#import "ViewController.h"
 
 //@interface CollectionViewController : UITableViewController <MPMediaPickerControllerDelegate, MediaGroupViewControllerDelegate, ViewControllerDelegate,UITableViewDelegate> {
-@interface CollectionViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MPMediaPickerControllerDelegate, UIGestureRecognizerDelegate> {
+@interface CollectionViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MPMediaPickerControllerDelegate> {
 
     NSManagedObjectContext *managedObjectContext;
 }
@@ -18,7 +18,7 @@
 @property (strong, nonatomic)   IBOutlet UITableView *collectionTableView;
 @property (nonatomic, retain)   NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong)   NSArray *collection;
-@property (nonatomic, strong)   CollectionItem *collectionItem;
+//@property (nonatomic, strong)   CollectionItem *collectionItem;
 @property (nonatomic, strong)   NSIndexPath* saveIndexPath;
 
 - (NSNumber *) calculatePlaylistDuration: (MPMediaItemCollection *) currentQueue;

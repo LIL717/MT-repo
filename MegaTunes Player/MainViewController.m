@@ -415,44 +415,17 @@ void audioRouteChangeListenerCallback (
 - (void) scrollNextSongLabel {
     //    LogMethod();
     
-    
     //calculate the label size to fit the text with the font size
-    //    NSLog (@"size of nextSongLabel is %f", self.nextSongLabel.frame.size.width);
     CGSize labelSize = [self.nextSongLabel.text sizeWithFont:self.nextSongLabel.font
                                            constrainedToSize:CGSizeMake(INT16_MAX, CGRectGetHeight(nextSongScrollView.bounds))
                                                lineBreakMode:NSLineBreakByClipping];
     
-    //build a new label that will hold all the text
-    UILabel *newLabel = [[UILabel alloc] initWithFrame: self.nextSongLabel.frame];
-    CGRect frame = newLabel.frame;
-    frame.size.height = CGRectGetHeight(nextSongScrollView.bounds);
-    frame.size.width = labelSize.width + 1;
-    newLabel.frame = frame;
-    
-    //    NSLog (@"size of newLabel is %f", frame.size.width);
-    
-    //calculate the size (w x h) for the scrollview content
-    CGSize size;
-    size.width = CGRectGetWidth(newLabel.bounds);
-    size.height = CGRectGetHeight(newLabel.bounds);
-    nextSongScrollView.contentSize = size;
-    nextSongScrollView.contentOffset = CGPointZero;
-    
-    //set the UIOutlet label's frame to the new sized frame
-    self.nextSongLabel.frame = newLabel.frame;
-    
-//    NSLog (@"size of self.nextSongLabel.frame.size.width is %f", self.nextSongLabel.frame.size.width);
-//    NSLog (@"size of nextSongScrollView.contentSize.width is %f", self.nextSongScrollView.contentSize.width);
-//    NSLog (@"size of nextSongScrollView.frame.size.width is %f", self.nextSongScrollView.frame.size.width);
-    
-    //enable scroll if the content will not fit within the scrollView
-    if (nextSongScrollView.contentSize.width>nextSongScrollView.frame.size.width) {
+    //disable scroll if the content fits within the scrollView
+    if (labelSize.width > nextSongScrollView.frame.size.width) {
         nextSongScrollView.scrollEnabled = YES;
-        //        NSLog (@"scrollEnabled");
     }
     else {
         nextSongScrollView.scrollEnabled = NO;
-        //        NSLog (@"scrollDisabled");
         
     }
 }
@@ -756,6 +729,8 @@ void audioRouteChangeListenerCallback (
             [playlistRemainingButton setTitle: collectionRemainingLabel forState: UIControlStateNormal];
             [playlistRemainingButton setTitleColor: [UIColor whiteColor] forState: UIControlStateNormal];
             [playlistRemainingButton addTarget:self action:@selector(magnify) forControlEvents:UIControlEventTouchUpInside];
+            
+//            playlistRemainingButton.imageEdgeInsets = UIEdgeInsetsMake(8, 0, 0, 0);
             
             
             UIBarButtonItem *durationButton = [[UIBarButtonItem alloc] initWithCustomView: playlistRemainingButton];

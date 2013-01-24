@@ -8,9 +8,13 @@
 
 @class CollectionItem;
 @class SongInfo;
+@class InCellScrollView;
+@class CustomSongCell;
 
 @interface CustomSongViewController : UIViewController <UITableViewDelegate, UITableViewDataSource,MPMediaPickerControllerDelegate> {
     NSManagedObjectContext *managedObjectContext;
+//    CustomSongCell *cell;
+    InCellScrollView *scrollView;
     
 }
 
@@ -21,6 +25,9 @@
 @property (nonatomic, strong)   SongInfo *songInfo;
 @property (nonatomic, strong)   NSIndexPath* saveIndexPath;
 @property (nonatomic, strong)   MPMediaItem *itemToPlay;
+//@property (nonatomic, strong)   CustomSongCell *cell;
+//@property (nonatomic, strong)   InCellScrollView *scrollView;
+
 
 
 @end
