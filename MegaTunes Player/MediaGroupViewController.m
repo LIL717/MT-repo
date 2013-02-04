@@ -30,6 +30,8 @@
 @synthesize musicPlayer;
 //@synthesize fetchedResultsController;
 @synthesize managedObjectContext;
+@synthesize iPodLibraryChanged;         //A flag indicating whether the library has been changed due to a sync
+
 
 -(void) loadGroupingData
 {
@@ -47,21 +49,23 @@
     
     MediaGroup* group6 = [[MediaGroup alloc] initWithName:@"Genres" andQueryType: [MPMediaQuery genresQuery]];
     
-    MediaGroup* group7 = [[MediaGroup alloc] initWithName:@"Podcasts" andQueryType: [MPMediaQuery podcastsQuery]];
+//    MediaGroup* group7 = [[MediaGroup alloc] initWithName:@"Podcasts" andQueryType: [MPMediaQuery podcastsQuery]];
 
     
-    self.groupingData = [NSArray arrayWithObjects:group0, group1, group2, group3, group4, group5, group6, group7, nil];
+//    self.groupingData = [NSArray arrayWithObjects:group0, group1, group2, group3, group4, group5, group6, group7, nil];
+    self.groupingData = [NSArray arrayWithObjects:group0, group1, group2, group3, group4, group5, group6, nil];
+
     
     return;    
     
 }
 - (void) viewWillAppear:(BOOL)animated
 {
-//    LogMethod();
-    [super viewDidLoad];
+    LogMethod();
+    [super viewWillAppear: animated];
 
-
-    self.title = @"Choose Music";
+    [self setIPodLibraryChanged: NO];
+    self.title = NSLocalizedString(@"Select Music", nil);
     self.navigationItem.titleView = [self customizeTitleView];
 
     
@@ -157,13 +161,15 @@
 //}
 - (void)viewDidLoad
 {
+    LogMethod();
     [super viewDidLoad];
     
     [self loadGroupingData];
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[appDelegate.colorSwitcher processImageWithName:@"background.png"]]];
-    
+
+    [self registerForMediaPlayerNotifications];
     [self updateLayoutForNewOrientation: self.interfaceOrientation];
 
     
@@ -213,8 +219,7 @@
 	MediaGroupCell *cell = (MediaGroupCell *)[tableView
                                           dequeueReusableCellWithIdentifier:@"MediaGroupCell"];
     MediaGroup *group = [self.groupingData objectAtIndex:indexPath.row];
-    cell.nameLabel.text = group.name;
-    
+    cell.nameLabel.text = NSLocalizedString(group.name, nil);
     DTCustomColoredAccessory *accessory = [DTCustomColoredAccessory accessoryWithColor:cell.nameLabel.textColor];
     accessory.highlightedColor = [UIColor blueColor];
     cell.accessoryView = accessory;
@@ -256,9 +261,9 @@
         
         self.collection = [myCollectionQuery collections];
 		collectionViewController.collection = self.collection;
-        collectionViewController.title = selectedGroup.name;
-
-
+        collectionViewController.collectionType = selectedGroup.name;
+        collectionViewController.title = NSLocalizedString(selectedGroup.name, nil);
+        collectionViewController.iPodLibraryChanged = self.iPodLibraryChanged;
 
 	}
     
@@ -291,8 +296,10 @@
         collectionItem.duration = [NSNumber numberWithLong: playlistDuration];
         collectionItem.collection = [MPMediaItemCollection collectionWithItems: songMutableArray];
 
-        songViewController.title = collectionItem.name;
+        songViewController.title = NSLocalizedString(collectionItem.name, nil);
         songViewController.collectionItem = collectionItem;
+        songViewController.iPodLibraryChanged = self.iPodLibraryChanged;
+
         
 	}
    if ([segue.identifier isEqualToString:@"ViewNowPlaying"])
@@ -301,6 +308,7 @@
         mainViewController.managedObjectContext = self.managedObjectContext;
 
         mainViewController.playNew = NO;
+        mainViewController.iPodLibraryChanged = self.iPodLibraryChanged;
 
     }
 
@@ -312,5 +320,36 @@
     [self performSegueWithIdentifier: @"ViewNowPlaying" sender: self];
 }
 
+- (void) registerForMediaPlayerNotifications {
+    LogMethod();
+    
+	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    
+    [notificationCenter addObserver: self
+                           selector: @selector (handle_iPodLibraryChanged:)
+                               name: MPMediaLibraryDidChangeNotification
+                             object: nil];
+    
+    [[MPMediaLibrary defaultMediaLibrary] beginGeneratingLibraryChangeNotifications];
+    
+}
+- (void) handle_iPodLibraryChanged: (id) changeNotification {
+    LogMethod();
+	// Implement this method to update cached collections of media items when the
+	// user performs a sync while application is running.
+    [self setIPodLibraryChanged: YES];
+    
+}
+
+- (void)dealloc {
+    LogMethod();
+    
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                    name: MPMediaLibraryDidChangeNotification
+                                                  object: nil];
+    
+    [[MPMediaLibrary defaultMediaLibrary] endGeneratingLibraryChangeNotifications];
+    
+}
 @end
 

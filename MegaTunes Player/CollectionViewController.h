@@ -18,8 +18,11 @@
 @property (strong, nonatomic)   IBOutlet UITableView *collectionTableView;
 @property (nonatomic, retain)   NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong)   NSArray *collection;
+@property (nonatomic, strong)   NSString *collectionType;
 //@property (nonatomic, strong)   CollectionItem *collectionItem;
 @property (nonatomic, strong)   NSIndexPath* saveIndexPath;
+@property (readwrite)           BOOL iPodLibraryChanged;
+
 
 - (NSNumber *) calculatePlaylistDuration: (MPMediaItemCollection *) currentQueue;
 

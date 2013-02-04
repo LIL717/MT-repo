@@ -8,6 +8,7 @@
 #import "ColorSwitcher.h"
 
 #define PLAYER_TYPE_PREF_KEY @"player_type_preference"
+#define SHOW_PLAYLIST_REMAINING_KEY @"show_playlist_remaining"
 
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, NSFetchedResultsControllerDelegate> {
@@ -32,6 +33,7 @@
 
 - (void)customizeGlobalTheme;
 - (BOOL) useiPodPlayer;
+- (BOOL) showPlaylistRemaining;
 
 
 @end

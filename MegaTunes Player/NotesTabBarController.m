@@ -25,6 +25,10 @@
 @synthesize songInfo;
 @synthesize songInfoViewController;
 @synthesize notesViewController;
+@synthesize notesDelegate;
+@synthesize iPodLibraryChanged;         //A flag indicating whether the library has been changed due to a sync
+
+
 
 //- (id)initWithCoder:(NSCoder *)aDecoder
 //{
@@ -51,7 +55,7 @@
     
 //    [[self.navigationController.viewControllers objectAtIndex:1] setTitle:@"Blah"];
 //
-    self.navigationItem.titleView = [self customizeTitleView];
+//    self.navigationItem.titleView = [self customizeTitleView];
     
 //    NSLog (@"self.navigationItem.titleview is %@", self.navigationItem.titleView);
 
@@ -110,7 +114,7 @@
     LogMethod();
     [super viewDidLoad];
     
-    self.delegate = self;
+//    self.delegate = self;
 
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -140,6 +144,9 @@
     
     self.notesViewController = [[self viewControllers] objectAtIndex:1];
     self.notesViewController.songInfo = self.songInfo;
+    
+//    [self setIPodLibraryChanged: NO];
+    [self registerForMediaPlayerNotifications];
     
 //    self.title = @"Notes";
 //    self.navigationItem.titleView = [self customizeTitleView];
@@ -208,20 +215,61 @@
 		MainViewController *mainViewController = segue.destinationViewController;
         mainViewController.managedObjectContext = self.managedObjectContext;
         mainViewController.playNew = NO;
+        mainViewController.iPodLibraryChanged = self.iPodLibraryChanged;
+//        if (iPodLibraryChanged) {
+//            mainViewController.iPodLibraryChanged = YES;
+//        }
     }
 }
 - (IBAction)viewNowPlaying {
     
     [self performSegueWithIdentifier: @"ViewNowPlaying" sender: self];
+
 }
 - (void)goBackClick
 {
+    if (iPodLibraryChanged) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    } else {
     [self.navigationController popViewControllerAnimated:YES];
+    [self.notesDelegate notesTabBarControllerDidCancel:self];
+    }
+}
+
+- (void) registerForMediaPlayerNotifications {
+    LogMethod();
+    
+	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+        
+    [notificationCenter addObserver: self
+                           selector: @selector (handle_iPodLibraryChanged:)
+                               name: MPMediaLibraryDidChangeNotification
+                             object: nil];
+    
+    [[MPMediaLibrary defaultMediaLibrary] beginGeneratingLibraryChangeNotifications];
+    
+}
+- (void) handle_iPodLibraryChanged: (id) changeNotification {
+    LogMethod();
+	// Implement this method to update cached collections of media items when the
+	// user performs a sync while application is running.
+    [self setIPodLibraryChanged: YES];
+    
+}
+
+- (void)dealloc {
+    LogMethod();
+    
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                    name: MPMediaLibraryDidChangeNotification
+                                                  object: nil];
+    
+    [[MPMediaLibrary defaultMediaLibrary] endGeneratingLibraryChangeNotifications];
+    
 }
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
 @end

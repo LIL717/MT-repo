@@ -117,7 +117,9 @@ void audioRouteChangeListenerCallback (
 @synthesize fetchedResultsController = fetchedResultsController_;
 @synthesize managedObjectContext;
 @synthesize songInfo;
-
+@synthesize iPodLibraryChanged;         //A flag indicating whether the library has been changed due to a sync
+@synthesize showPlaylistRemaining;      //A flag the captures the user's preference from setting whether to display the amount of time left in playlist
+@synthesize savedNowPlaying;             //for some reason a new song calls the handle_NowPlayingItemChanged: method twice, so this is used to save and compare
 //these lines came from player view controller
 
 @synthesize currentQueue;
@@ -125,6 +127,7 @@ void audioRouteChangeListenerCallback (
 @synthesize progressSlider;
 @synthesize remainingTimeLabel;
 
+@synthesize initialNowPlayingLabel;
 @synthesize volumeView;
 @synthesize nextLabel;
 @synthesize nextSongScrollView;
@@ -141,22 +144,10 @@ void audioRouteChangeListenerCallback (
 #pragma mark ViewDidLoad________________________________
 
 // Configure the application.
-- (void)viewWillAppear:(BOOL)animated {
-    LogMethod();
-    [super viewWillAppear: animated];
-    
-    self.playbackTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
-                                                          target:self
-                                                        selector:@selector(updateTime)
-                                                        userInfo:nil
-                                                         repeats:YES];
-
-}
 
 - (void) viewDidLoad {
     LogMethod();
     [super viewDidLoad];
-    
     UIImage *backgroundImage = [UIImage imageNamed: @"infoSelectedButtonImage.png"];
     [self.nowPlayingInfoButton setImage: backgroundImage forState:UIControlStateHighlighted];
     self.nextLabel.textColor = [UIColor yellowColor];
@@ -201,30 +192,40 @@ void audioRouteChangeListenerCallback (
         [musicPlayer setShuffleMode: MPMusicShuffleModeOff];
         [musicPlayer setRepeatMode: MPMusicRepeatModeNone];
     }
-    
+    // get the user's preference from Settings whether to display Playlist Remaining Time
+    if ([appDelegate showPlaylistRemaining]) {
+        self.showPlaylistRemaining = YES;
+//        NSLog (@"show Playlist Remaining");
+    } else {
+        self.showPlaylistRemaining = NO;
+        //title will only be displayed if playlist remaining is turned off
+        self.title = NSLocalizedString(@"Now Playing", nil);
+        self.navigationItem.titleView = [self customizeTitleView];
+//        NSLog (@"don't show Playlist Remaining");
+
+    }
+//    showTitle = NO;
+
     //    NSArray *returnedQueue = [self.userMediaItemCollection items];
     //
     //    for (MPMediaItem *song in returnedQueue) {
     //        NSString *songTitle = [song valueForProperty: MPMediaItemPropertyTitle];
     //        NSLog (@"\t\t%@", songTitle);
     //    }
-    
+    if (self.itemToPlay == [musicPlayer nowPlayingItem]) {
+        [self setPlayNew: NO];
+    }
     if (playNew) {
-        NSLog (@"playNew");
         [musicPlayer setQueueWithItemCollection: self.userMediaItemCollection];
-        
         [musicPlayer setNowPlayingItem: self.itemToPlay];
         [self playMusic];
 //        [self setPlayNew: NO];  this gets set in viewDidAppear instead
         
     } else if ([musicPlayer nowPlayingItem]) {
-        NSLog (@"something is nowPlaying");
         
-        
-        // Update the UI to reflect the now-playing item. - do this in viewDidAppear for autoScrollLabel to appear properly
-//        [self handle_NowPlayingItemChanged: nil];  
+        // Update the UI to reflect the now-playing item except nowPlayingLabel must be set in viewWillAppear instead of viewDidLoad or it appears from bottom
+        [self prepareAllExceptNowPlaying];
 
-        
         if ([musicPlayer playbackState] == MPMusicPlaybackStatePaused) {
             [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
         } else if ([musicPlayer playbackState] == MPMusicPlaybackStatePlaying) {
@@ -232,7 +233,10 @@ void audioRouteChangeListenerCallback (
             
         }
     }
-    
+    //set the temp initialNowPlayingLabel so something is there when view loads, gets removed from view in viewDidAppear when autoScrollLabel is created
+    self.initialNowPlayingLabel.text = [[musicPlayer nowPlayingItem] valueForProperty:  MPMediaItemPropertyTitle];
+//    self.initialNowPlayingLabel.textColor = [UIColor yellowColor];
+
     if (musicPlayer.shuffleMode == MPMusicShuffleModeOff) {
         
         UIImage *coloredImage = [self.shuffleButton.currentImage imageWithTint:[UIColor whiteColor]];
@@ -248,18 +252,21 @@ void audioRouteChangeListenerCallback (
         [self.volumeView setMinimumVolumeSliderImage:[UIImage imageNamed:@"slider-fill.png"] forState:UIControlStateNormal];
         [self.volumeView setMaximumVolumeSliderImage:[UIImage imageNamed:@"slider-trackGray.png"] forState:UIControlStateNormal];
         [self.volumeView setVolumeThumbImage:[UIImage imageNamed:@"volume_down.png"] forState:UIControlStateNormal];
-        self.title = @"";
-        self.navigationItem.titleView = [self customizeTitleView];
+//        self.title = @"";
+//        self.navigationItem.titleView = [self customizeTitleView];
 
         
     } else {
         [self.view removeConstraint:self.playerButtonContraint];
         [self.view removeConstraint:self.repeatButtonHeightContraint];
         [self.view removeConstraint:self.volumeViewHeightConstraint];
-        self.title = @"Now Playing";
-        self.navigationItem.titleView = [self customizeTitleView];
+//        if (showTitle) {
+//            self.title = @"Now Playing";
+//            self.navigationItem.titleView = [self customizeTitleView];
+//        } else self.Title = @"";
+
     }
-    
+//    [self setIPodLibraryChanged: NO];
     [self willAnimateRotationToInterfaceOrientation: self.interfaceOrientation duration: 1];
     [self registerForMediaPlayerNotifications];
     [self setPlayedMusicOnce: YES];
@@ -279,8 +286,14 @@ void audioRouteChangeListenerCallback (
         self.shuffleButton.hidden = YES;
         self.volumeView.hidden = YES;
         
-        self.title = @"Now Playing";
-        self.navigationItem.titleView = [self customizeTitleView];
+        // could add a button to call the following method to show a floating volume control alert 
+//        MPVolumeSettingsAlertShow();
+        
+//        if (self.showTitle) {
+////            self.title = @"Now Playing";
+////            self.navigationItem.titleView = [self customizeTitleView];
+//        } else self.Title = @"";
+
         
     } else {
         
@@ -292,13 +305,17 @@ void audioRouteChangeListenerCallback (
         self.shuffleButton.hidden = NO;
         self.volumeView.hidden = NO;
         
-        self.title = @"";
-        self.navigationItem.titleView = [self customizeTitleView];
+        [self scrollNextSongLabel];
+
+//        self.title = @"";
+//        self.navigationItem.titleView = [self customizeTitleView];
     }
     
 }
 - (UILabel *) customizeTitleView
 {
+//    LogMethod();
+
     CGRect frame = CGRectMake(0, 0, [self.title sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 48);
     UILabel *label = [[UILabel alloc] initWithFrame:frame];
     label.backgroundColor = [UIColor clearColor];
@@ -312,44 +329,84 @@ void audioRouteChangeListenerCallback (
     
     return label;
 }
+- (void)viewWillAppear:(BOOL)animated {
+    LogMethod();
+    [super viewWillAppear: animated];
+    
+    self.playbackTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                                          target:self
+                                                        selector:@selector(updateTime)
+                                                        userInfo:nil
+                                                         repeats:YES];
+    
+}
 
 -(void) viewDidAppear:(BOOL)animated {
-    
+    LogMethod();
+
     if (playNew) {
         [self setPlayNew: NO];
         
-    } else if ([musicPlayer nowPlayingItem]) {
-        
-        
-        // Update the UI to reflect the now-playing item. This is done here instead of viewDidLoad for autoScrollLabel to appear properly
-        [self handle_NowPlayingItemChanged: nil];
+//    } else if ([musicPlayer nowPlayingItem]) {
+//        [self prepareNowPlayingLabel];
+//        [self.initialNowPlayingLabel removeFromSuperview];
 
     }
+    [self prepareNowPlayingLabel];
+    [self.initialNowPlayingLabel removeFromSuperview];
+//    [self prepareNowPlayingLabel];
+
+    [super viewDidAppear:(BOOL)animated];
+
 }
+
 #pragma mark Music notification handlers__________________
 
 // When the now-playing item changes, update the now-playing label and the next label.
 - (void) handle_NowPlayingItemChanged: (id) notification {
     LogMethod();
-    
-	MPMediaItem *currentItem = [musicPlayer nowPlayingItem];
-    NSLog (@" currentItem is %@", [currentItem valueForProperty: MPMediaItemPropertyTitle]);
+// need to check if this method has already been executed because sometimes the notification gets sent twice for the same nowPlaying item, this workaround seems to solve the problem (check if the nowPlayingItem is the same as previous one)
+    if (self.savedNowPlaying != [musicPlayer nowPlayingItem]) {
+        NSLog (@"actually handling it");
+
+            //the next two methods are separated so that they can be executed separately in viewDidLoad and viewWillAppear the first time the view is loaded, afer that they can be executed together here
+        [self prepareAllExceptNowPlaying];
+        if (!playNew) {
+            //don't do this here if playNew, it will happen in viewWillAppear
+            [self prepareNowPlayingLabel];
+        }
+//        [self.initialNowPlayingLabel removeFromSuperview];
+
+    }
+    self.savedNowPlaying = [musicPlayer nowPlayingItem];
+}
+- (void) refreshNowPlayingLabel:  (id) notification {
+    [nowPlayingLabel  refreshLabels];
+    NSLog (@"nowPlayingLabel refreshed");
+}
+- (void) prepareAllExceptNowPlaying {
+    LogMethod();
+
+    MPMediaItem *currentItem = [musicPlayer nowPlayingItem];
+//    NSLog (@" currentItem is %@", [currentItem valueForProperty: MPMediaItemPropertyTitle]);
     //check the queue stored in Core Data to see if the nowPlaying song is in that queue
     ItemCollection *itemCollection = [ItemCollection alloc];
     itemCollection.managedObjectContext = self.managedObjectContext;
     
-    self.collectionItem = [itemCollection containsItem: [currentItem valueForProperty: MPMediaItemPropertyTitle]];
+//    self.collectionItem = [itemCollection containsItem: [currentItem valueForProperty: MPMediaItemPropertyTitle]];
+    self.collectionItem = [itemCollection containsItem: [currentItem valueForProperty:  MPMediaItemPropertyPersistentID]];
+
     self.userMediaItemCollection = collectionItem.collection;
     
-    // Display the song name for the now-playing media item 
-    // scroll marquee style if too long for field
-    
-    [self.nowPlayingLabel setText: [currentItem valueForProperty:  MPMediaItemPropertyTitle]];
-    NSLog (@"nowPlayingLabel.text is %@", self.nowPlayingLabel.text);
-//    [self.nowPlayingLabel setTextColor: [UIColor whiteColor]];
-    UIFont *font = [UIFont systemFontOfSize:12];
-    UIFont *newFont = [font fontWithSize:44];
-    [self.nowPlayingLabel setFont: newFont];
+//    // Display the song name for the now-playing media item
+//    // scroll marquee style if too long for field
+//    
+//    [self.nowPlayingLabel setText: [currentItem valueForProperty:  MPMediaItemPropertyTitle]];
+//    NSLog (@"nowPlayingLabel.text is %@", self.nowPlayingLabel.text);
+//    //    [self.nowPlayingLabel setTextColor: [UIColor whiteColor]];
+//    UIFont *font = [UIFont systemFontOfSize:12];
+//    UIFont *newFont = [font fontWithSize:44];
+//    [self.nowPlayingLabel setFont: newFont];
     
     // set up data to pass to info page if chosen
     
@@ -357,29 +414,15 @@ void audioRouteChangeListenerCallback (
     
     self.songInfo = [[SongInfo alloc] init];
     self.songInfo.songName = [song valueForProperty:  MPMediaItemPropertyTitle];
-
+    
     self.songInfo.album = [song valueForProperty:  MPMediaItemPropertyAlbumTitle];
     self.songInfo.artist = [song valueForProperty:  MPMediaItemPropertyArtist];
     MPMediaItemArtwork *artWork = [song valueForProperty:MPMediaItemPropertyArtwork];
     self.songInfo.albumImage = [artWork imageWithSize:CGSizeMake(200, 200)];
     
-//    NSLog (@" self.songInfo.songName = %@", self.songInfo.songName);
-//    NSLog (@" self.songInfo.album = %@", self.songInfo.album);
-//    NSLog (@" self.songInfo.artist = %@", self.songInfo.artist);
-
-
-    //
-    //    UIImage *image = [UIImage imageNamed: @"infoLightButtonImage.png"];
-    //    UIImage *coloredImage = [image imageWithTint:[UIColor blueColor]];
-    //    UIButton *infoButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    //
-    //    CGRect frame = CGRectMake(282, 26, image.size.width, image.size.height);
-    //    infoButton.frame = frame;
-    //    [infoButton setBackgroundImage:image forState:UIControlStateNormal];
-    //    [infoButton setBackgroundImage:coloredImage forState:UIControlStateHighlighted];
-    ////    infoButton.backgroundColor = [UIColor clearColor];
-    //    [infoButton addTarget:self action:@selector(infoButtonTapped:event:) forControlEvents:UIControlEventTouchUpInside];
-    //    [self.view addSubview:infoButton];
+    //    NSLog (@" self.songInfo.songName = %@", self.songInfo.songName);
+    //    NSLog (@" self.songInfo.album = %@", self.songInfo.album);
+    //    NSLog (@" self.songInfo.artist = %@", self.songInfo.artist);
     
     self.nextSongLabel.text = [NSString stringWithFormat: @""];
     self.nextLabel.text = [NSString stringWithFormat:@""];
@@ -388,7 +431,19 @@ void audioRouteChangeListenerCallback (
     }
     [self updateTime];
     [self dataForNowPlayingInfoCenter];
+}
+- (void) prepareNowPlayingLabel {
+    LogMethod();
+
+    // Display the song name for the now-playing media item
+    // scroll marquee style if too long for field
     
+    [self.nowPlayingLabel setText: [[musicPlayer nowPlayingItem] valueForProperty:  MPMediaItemPropertyTitle]];
+//    NSLog (@"nowPlayingLabel.text is %@", self.nowPlayingLabel.text);
+    //    [self.nowPlayingLabel setTextColor: [UIColor whiteColor]];
+    UIFont *font = [UIFont systemFontOfSize:12];
+    UIFont *newFont = [font fontWithSize:44];
+    [self.nowPlayingLabel setFont: newFont];
 }
 - (void) prepareNextSongLabel {
     //set up next-playing media item with duration
@@ -408,7 +463,7 @@ void audioRouteChangeListenerCallback (
         
         //        NSLog (@" nextSongLabel.text is %@", self.nextSongLabel.text);
         
-        self.nextLabel.text = [NSString stringWithFormat: @"Next:"];
+        self.nextLabel.text = [NSString stringWithFormat: @"%@:", NSLocalizedString(@"Next", nil)];
         
     }
 }
@@ -616,7 +671,11 @@ void audioRouteChangeListenerCallback (
 }
 - (void)goBackClick
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    if (iPodLibraryChanged) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    } else {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 //- (IBAction)infoButtonTapped:(id)sender event:(id)event {
 //    
@@ -625,14 +684,26 @@ void audioRouteChangeListenerCallback (
 - (void) playMusic {
     
     [musicPlayer play];
-    [self updateTime];
+//    [self updateTime];
+    [self prepareAllExceptNowPlaying];
 }
 
 - (void) updateTime
 {
+    //   LogMethod();
+
+
     long playbackSeconds = musicPlayer.currentPlaybackTime;
     long songDuration = [[self.musicPlayer.nowPlayingItem valueForProperty:MPMediaItemPropertyPlaybackDuration] floatValue];
     long songRemainingSeconds = songDuration - playbackSeconds;
+    
+    //if the currently playing song has been deleted during a sync then stop playing and pop to rootViewController
+    if (songDuration == 0 && self.iPodLibraryChanged) {
+        [musicPlayer stop];
+        [self.navigationController popToRootViewControllerAnimated:YES];
+        NSLog (@"BOOM");
+        return;
+    }
     
     NSString *elapsed = [NSString stringWithFormat:@"%02lu:%02lu",playbackSeconds/60,playbackSeconds-(playbackSeconds/60)*60];
     NSString *songRemaining = [NSString stringWithFormat:@"%02lu:%02lu",songRemainingSeconds/60,songRemainingSeconds-(songRemainingSeconds/60)*60];
@@ -651,26 +722,29 @@ void audioRouteChangeListenerCallback (
     
     [self positionSlider];
 
-    // only show the collection remaining if shuffle is off and repeat is off
-    if (musicPlayer.shuffleMode == MPMusicShuffleModeOff && musicPlayer.repeatMode == MPMusicRepeatModeNone) {
+    self.navigationItem.rightBarButtonItem = nil;
+    // only show the collection remaining if the setting is on and shuffle is off and repeat is off
+    if (showPlaylistRemaining) {
+        if (musicPlayer.shuffleMode == MPMusicShuffleModeOff && musicPlayer.repeatMode == MPMusicRepeatModeNone) {
         NSString * collectionRemaining = [self calculateCollectionRemaining];
         // don't show collectionRemaining if it is the same as songRemaining
-        if (collectionRemaining == songRemaining) {
-            self.navigationItem.rightBarButtonItem=nil;
+            if (collectionRemaining == songRemaining) {
+                self.navigationItem.rightBarButtonItem=nil;
+            }
         }
-    } else {
-        self.navigationItem.rightBarButtonItem=nil;
     }
+    
 }
 - (void)positionSlider {
-    self.progressSlider.value = musicPlayer.currentPlaybackTime;
+
     self.progressSlider.minimumValue = 0;
     
     NSNumber *duration = [self.musicPlayer.nowPlayingItem valueForProperty:MPMediaItemPropertyPlaybackDuration];
-    
     float totalTime = [duration floatValue];
-    
     self.progressSlider.maximumValue = totalTime;
+    //note to self: setting of value must be after setting of minimum and maximum to show correctly on viewdidload
+    self.progressSlider.value = musicPlayer.currentPlaybackTime;
+//    NSLog (@" currentPlaybackTime is %f", musicPlayer.currentPlaybackTime);
 }
 
 - (NSString *) calculateCollectionRemaining {
@@ -690,19 +764,20 @@ void audioRouteChangeListenerCallback (
     NSString *collectionRemaining;
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
 
-    
     if (collectionRemainingSeconds >= 3600) {
         collectionRemaining = [NSString stringWithFormat:@"%lu:%02lu:%02lu",
                                collectionRemainingSeconds / 3600,
                                (collectionRemainingSeconds % 3600)/60,
                                collectionRemainingSeconds % 60];
-        
         formatter.dateFormat = @"H:mm:ss";
+//        if (self.showPlaylistRemaining) {
+//            self.showTitle = NO;
+//        }
     } else {
+//        self.showTitle = YES;
         collectionRemaining = [NSString stringWithFormat:@"%lu:%02lu",
                                collectionRemainingSeconds /60,
                                collectionRemainingSeconds % 60];
-        
         formatter.dateFormat = @"m:ss";
     }
     NSDate *collectionRemainingTime = [formatter dateFromString:collectionRemaining];
@@ -713,33 +788,64 @@ void audioRouteChangeListenerCallback (
             NSString *collectionRemainingLabel = [NSString stringWithFormat:@"-%@",[formatter stringFromDate:collectionRemainingTime]];
             
             //            CGRect frame = CGRectMake(0, 0, [collectionRemainingLabel sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 48);
-            CGRect frame = CGRectMake(0, 0, [collectionRemainingLabel sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 52);
-            
-            UIButton *playlistRemainingButton = [UIButton buttonWithType:UIButtonTypeCustom];
-            //            UIButton *playlistRemainingButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-            
-            [playlistRemainingButton addTarget:self
-                                        action:@selector(magnify)
-                              forControlEvents:UIControlEventTouchDown];
-            playlistRemainingButton.frame = frame;
-            UIFont *font = [UIFont systemFontOfSize:12];
-            UIFont *newFont = [font fontWithSize:44];
-            playlistRemainingButton.titleLabel.font = newFont;
-            playlistRemainingButton.tintColor = [UIColor clearColor];
-            [playlistRemainingButton setTitle: collectionRemainingLabel forState: UIControlStateNormal];
-            [playlistRemainingButton setTitleColor: [UIColor whiteColor] forState: UIControlStateNormal];
-            [playlistRemainingButton addTarget:self action:@selector(magnify) forControlEvents:UIControlEventTouchUpInside];
-            
+//            CGRect frame = CGRectMake(0, 0, [collectionRemainingLabel sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 52);
+//            
+//            UIButton *playlistRemainingButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//            UIButton *playlistRemainingButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+//
+//            [playlistRemainingButton addTarget:self
+//                                        action:@selector(magnify)
+//                              forControlEvents:UIControlEventTouchDown];
+//            playlistRemainingButton.frame = frame;
+//            UIFont *font = [UIFont systemFontOfSize:12];
+//            UIFont *newFont = [font fontWithSize:44];
+//            playlistRemainingButton.titleLabel.font = newFont;
+//            playlistRemainingButton.tintColor = [UIColor clearColor];
+//            [playlistRemainingButton setTitle: collectionRemainingLabel forState: UIControlStateNormal];
+//            [playlistRemainingButton setTitleColor: [UIColor whiteColor] forState: UIControlStateNormal];
+//            [playlistRemainingButton addTarget:self action:@selector(magnify) forControlEvents:UIControlEventTouchUpInside];
+//            
 //            playlistRemainingButton.imageEdgeInsets = UIEdgeInsetsMake(8, 0, 0, 0);
+//            UIImage *menuBarImageDefault = [[UIImage imageNamed:@"redWhitePlay57.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+//            UIImage *menuBarImageLandscape = [[UIImage imageNamed:@"redWhitePlay68.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+//            [playlistRemainingButton setBackgroundImage: menuBarImageLandscape forState:UIControlStateNormal];
+//            UIBarButtonItem *durationButton = [[UIBarButtonItem alloc] initWithCustomView: playlistRemainingButton];
+            UIBarButtonItem *durationButton = [[UIBarButtonItem alloc] initWithTitle: collectionRemainingLabel
+                                                                               style: UIBarButtonItemStyleBordered
+                                                                              target: self
+                                                                              action: @selector(magnify)];
+            [durationButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [[UIFont systemFontOfSize:12] fontWithSize:44.0], UITextAttributeFont,nil] forState:UIControlStateNormal];
+            [durationButton setBackgroundImage:[UIImage imageNamed:@"rightButtonBackground.png"] forState: UIControlStateNormal barMetrics:UIBarMetricsDefault];
+//            UIImage *coloredImage = [[UIImage imageNamed:@"rightButtonBackgroundforTesting.png"]  imageWithTint:[UIColor redColor]];
+//            [durationButton setBackgroundImage:coloredImage forState: UIControlStateNormal barMetrics:UIBarMetricsDefault];
+//            durationButton.imageInsets = UIEdgeInsetsMake(10, 10, 10, 10);
+//            durationButton.landscapeImagePhoneInsets = UIEdgeInsetsMake(10, 10, 10, 10);
+
+
+
+
+            const CGFloat TextOffset = 10.0f;
+            [durationButton setTitlePositionAdjustment: UIOffsetMake(TextOffset, 5.0f) forBarMetrics: UIBarMetricsDefault];
+            [durationButton setTitlePositionAdjustment: UIOffsetMake(TextOffset, 9.0f) forBarMetrics: UIBarMetricsLandscapePhone];
+
+
+            
+//            self.navigationItem.rightBarButtonItem=durationButton;
             
             
-            UIBarButtonItem *durationButton = [[UIBarButtonItem alloc] initWithCustomView: playlistRemainingButton];
-            //            const CGFloat TextOffset = 0.0f;
-            //            [durationButton setTitlePositionAdjustment: UIOffsetMake(TextOffset, 13.0f) forBarMetrics: UIBarMetricsDefault];
-            //            [durationButton setTitlePositionAdjustment: UIOffsetMake(TextOffset, 15.0f) forBarMetrics: UIBarMetricsLandscapePhone];
-            self.navigationItem.rightBarButtonItem=durationButton;
-            self.navigationItem.rightBarButtonItem.title = collectionRemainingLabel;
+//            self.navigationItem.rightBarButtonItem.imageInsets = UIEdgeInsetsMake(0, -20, 0, 20);
+//            NSLog(@"rightBarButton.width before is %f", self.navigationItem.rightBarButtonItem.customView.frame.size.width);
+//
+//            CGRect frame = self.navigationItem.rightBarButtonItem.customView.frame;
+//            frame.size.width = self.navigationItem.rightBarButtonItem.customView.frame.size.width - 10;
+//            self.navigationItem.rightBarButtonItem.customView.frame = frame;
+//            NSLog(@"rightBarButton.width after is %f", self.navigationItem.rightBarButtonItem.customView.frame.size.width);
+//            self.navigationItem.titleView = [self customizeTitleView];
+            UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+            [negativeSpacer setWidth:-15];
             
+            self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:durationButton,negativeSpacer,nil];
+
             
         } else {
             self.navigationItem.rightBarButtonItem=nil;
@@ -762,10 +868,7 @@ void audioRouteChangeListenerCallback (
     long playlistElapsed = 0;
     
     for (NSUInteger i = 0; i < count; i++) {
-#pragma mark TODO aborts on this line on reload
-
         playlistElapsed = (playlistElapsed + [[[returnedQueue objectAtIndex: i] valueForProperty:MPMediaItemPropertyPlaybackDuration] longValue]);
-
     }
 
     return [NSNumber numberWithLong: playlistElapsed];
@@ -821,18 +924,26 @@ void audioRouteChangeListenerCallback (
 		
 		// Even though stopped, invoking 'stop' ensures that the music player will play
 		//		its queue from the start.
-        [self.navigationController popViewControllerAnimated:YES];  
-		[musicPlayer stop];
+        [musicPlayer stop];
+        if (iPodLibraryChanged) {
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        } else {
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+
         
 	}
 
 }
 
-- (void) handle_iPodLibraryChanged: (id) notification {
+- (void) handle_iPodLibraryChanged: (id) changeNotification {
    LogMethod();    
 	// Implement this method to update cached collections of media items when the
-	// user performs a sync while your application is running. This sample performs
-	// no explicit media queries, so there is nothing to update.
+	// user performs a sync while application is running.
+    [self setIPodLibraryChanged: YES];
+//    [musicPlayer stop];
+//    [self.navigationController popToRootViewControllerAnimated:YES];
+    
 }
 
 
@@ -896,9 +1007,9 @@ void audioRouteChangeListenerCallback (
 #endif
 
 
-// To learn about notifications, see "Notifications" in Cocoa Fundamentals Guide.
 - (void) registerForMediaPlayerNotifications {
-//      LogMethod(); 
+      LogMethod();
+
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     
 	[notificationCenter addObserver: self
@@ -911,16 +1022,17 @@ void audioRouteChangeListenerCallback (
 							   name: MPMusicPlayerControllerPlaybackStateDidChangeNotification
 							 object: musicPlayer];
     
-    /*
-     // This sample doesn't use libray change notifications; this code is here to show how
-     //		it's done if you need it.
-     [notificationCenter addObserver: self
-     selector: @selector (handle_iPodLibraryChanged:)
-     name: MPMediaLibraryDidChangeNotification
-     object: musicPlayer];
-     
-     [[MPMediaLibrary defaultMediaLibrary] beginGeneratingLibraryChangeNotifications];
-     */
+    [notificationCenter addObserver:self
+                           selector:@selector(refreshNowPlayingLabel:)
+                               name:UIApplicationDidBecomeActiveNotification
+                             object:nil];
+
+    [notificationCenter addObserver: self
+                           selector: @selector (handle_iPodLibraryChanged:)
+                               name: MPMediaLibraryDidChangeNotification
+                             object: nil];
+
+    [[MPMediaLibrary defaultMediaLibrary] beginGeneratingLibraryChangeNotifications];
     
 	[musicPlayer beginGeneratingPlaybackNotifications];
 }
@@ -936,22 +1048,24 @@ void audioRouteChangeListenerCallback (
     [self setProgressSlider:nil];
     [self setRemainingTimeLabel:nil];
     [self setNextSongLabel:nil];
+    [self setNextLabel:nil];
+    [self setVolumeView:nil];
+    [self setPlayerButtonContraint:nil];
+    [self setPlayPauseButton:nil];
+    [self setRepeatButtonHeightContraint:nil];
+    [self setRepeatButton:nil];
+    [self setShuffleButton:nil];
+    [self setVolumeViewHeightConstraint:nil];
+    [self setNextSongScrollView:nil];
+    [self setNextSongLabel:nil];
+    [self setNextSongLabelWidthConstraint:nil];
 	
 	// Release any cached data, images, etc that aren't in use.
 }
 
 - (void)dealloc {
-//       LogMethod();
-    /*
-     // This sample doesn't use libray change notifications; this code is here to show how
-     //		it's done if you need it.
-     [[NSNotificationCenter defaultCenter] removeObserver: self
-     name: MPMediaLibraryDidChangeNotification
-     object: musicPlayer];
+       LogMethod();
      
-     [[MPMediaLibrary defaultMediaLibrary] endGeneratingLibraryChangeNotifications];
-     
-     */
 	[[NSNotificationCenter defaultCenter] removeObserver: self
 													name: MPMusicPlayerControllerNowPlayingItemDidChangeNotification
 												  object: musicPlayer];
@@ -960,8 +1074,14 @@ void audioRouteChangeListenerCallback (
 													name: MPMusicPlayerControllerPlaybackStateDidChangeNotification
 												  object: musicPlayer];
     
-	[musicPlayer endGeneratingPlaybackNotifications];
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                    name: MPMediaLibraryDidChangeNotification
+                                                  object: nil];
+    
+    [[MPMediaLibrary defaultMediaLibrary] endGeneratingLibraryChangeNotifications];
 
+	[musicPlayer endGeneratingPlaybackNotifications];
+    
     
 }
 #pragma mark Prepare for Seque
@@ -1015,7 +1135,8 @@ void audioRouteChangeListenerCallback (
 	{
         NotesTabBarController *notesTabBarController = segue.destinationViewController;
         notesTabBarController.managedObjectContext = self.managedObjectContext;
-        notesTabBarController.title = @"Info";
+        notesTabBarController.notesDelegate = self;
+//        notesTabBarController.title = @"Info";
         notesTabBarController.songInfo = self.songInfo;
         
 	}
@@ -1036,29 +1157,21 @@ void audioRouteChangeListenerCallback (
 {
 	[self dismissViewControllerAnimated:YES completion:nil];
     [self willAnimateRotationToInterfaceOrientation: self.interfaceOrientation duration: 1];
-
-
 }
+//#pragma mark - NotesTabBarControllerDelegate
 
+- (void)notesTabBarControllerDidCancel:(NotesTabBarController *)controller
+{
+    [self willAnimateRotationToInterfaceOrientation: self.interfaceOrientation duration: 1];
+}
 - (void)viewWillDisappear:(BOOL)animated {
-//    LogMethod();
+    LogMethod();
     [super viewWillDisappear: animated];
     [self.playbackTimer invalidate];
-
-}
-- (void)viewDidUnload {
-    [self setNextLabel:nil];
-    [self setVolumeView:nil];
-    [self setPlayerButtonContraint:nil];
-    [self setPlayPauseButton:nil];
-    [self setRepeatButtonHeightContraint:nil];
-    [self setRepeatButton:nil];
-    [self setShuffleButton:nil];
-    [self setVolumeViewHeightConstraint:nil];
-    [self setNextSongScrollView:nil];
-    [self setNextSongLabel:nil];
-    [self setNextSongLabelWidthConstraint:nil];
-    [super viewDidUnload];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+													name: UIApplicationDidBecomeActiveNotification
+												  object: nil];
 }
 
 @end

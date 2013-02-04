@@ -12,6 +12,7 @@
 
 @synthesize name;
 @synthesize duration;
+@synthesize lastPlayedDate;
 @synthesize collection;
 
 

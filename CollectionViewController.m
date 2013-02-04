@@ -25,15 +25,17 @@
 
 @synthesize collectionTableView;
 @synthesize collection;
+@synthesize collectionType;
 @synthesize managedObjectContext;
 //@synthesize collectionItem;
 @synthesize saveIndexPath;
+@synthesize iPodLibraryChanged;         //A flag indicating whether the library has been changed due to a sync
 
 
 - (void) viewWillAppear:(BOOL)animated
 {
     //    LogMethod();
-    [super viewDidLoad];
+    [super viewWillAppear: animated];
     
     self.navigationItem.titleView = [self customizeTitleView];
   
@@ -103,7 +105,8 @@
     UIImage *menuBarImage58 = [[UIImage imageNamed:@"arrow_left_58_white.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
     [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage48 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage58 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
-    
+
+    [self registerForMediaPlayerNotifications];
     [self updateLayoutForNewOrientation: self.interfaceOrientation];
 
 }
@@ -123,10 +126,6 @@
     }
 }
 
-- (void)goBackClick
-{
-    [self.navigationController popViewControllerAnimated:YES];
-}
 #pragma mark Table view methods________________________
 // Configures the table view.
 
@@ -148,23 +147,23 @@
     
     MPMediaItemCollection *currentQueue = [MPMediaItemCollection collectionWithItems: [[self.collection objectAtIndex:indexPath.row] items]];    
 
-    if (self.title == @"Playlists") {
+    if (self.collectionType == @"Playlists") {
         MPMediaPlaylist  *mediaPlaylist = [self.collection objectAtIndex:indexPath.row];
         cell.nameLabel.text = [mediaPlaylist valueForProperty: MPMediaPlaylistPropertyName];
     }
-    if (self.title == @"Artists") {
+    if (self.collectionType == @"Artists") {
         cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyArtist];
     }
-    if (self.title == @"Albums") {
+    if (self.collectionType == @"Albums") {
         cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyAlbumTitle];
     }
-    if (self.title == @"Composers") {
+    if (self.collectionType == @"Composers") {
         cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyComposer];
     }
-    if (self.title == @"Genres") {
+    if (self.collectionType == @"Genres") {
         cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyGenre];
     }
-    if (self.title == @"Podcasts") {
+    if (self.collectionType == @"Podcasts") {
         cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyPodcastTitle];
     }
     if (cell.nameLabel.text == nil) {
@@ -209,6 +208,8 @@
     CGSize labelSize = [cell.nameLabel.text sizeWithFont:cell.nameLabel.font
                                        constrainedToSize:CGSizeMake(INT16_MAX, tableView.rowHeight)
                                            lineBreakMode:NSLineBreakByClipping];
+    //Make sure that label is aligned with scrollView
+    [cell.scrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
 
     if (labelSize.width>scrollViewWidth) {
         cell.scrollView.scrollEnabled = YES;
@@ -227,10 +228,21 @@
     NSArray *returnedQueue = [currentQueue items];
     
     long playlistDuration = 0;
+    long songDuration = 0;
 
     for (MPMediaItem *song in returnedQueue) {
-        playlistDuration = (playlistDuration + [[song valueForProperty:MPMediaItemPropertyPlaybackDuration] longValue]);
+        songDuration = [[song valueForProperty:MPMediaItemPropertyPlaybackDuration] longValue];
+        //if the  song has been deleted during a sync then pop to rootViewController
+
+        if (songDuration == 0 && self.iPodLibraryChanged) {
+            [self.navigationController popToRootViewControllerAnimated:YES];
+            NSLog (@"BOOM");
+        }
+//        playlistDuration = (playlistDuration + [[song valueForProperty:MPMediaItemPropertyPlaybackDuration] longValue]);
+        playlistDuration = (playlistDuration + songDuration);
+
     }
+    //if the currently playing song has been deleted during a sync then stop playing and pop to rootViewController
 
     return [NSNumber numberWithLong: playlistDuration];
 }
@@ -239,13 +251,13 @@
 //	 deselect the row after it has been selected.
 - (void) tableView: (UITableView *) tableView didSelectRowAtIndexPath: (NSIndexPath *) indexPath {
     
-    LogMethod();
+//    LogMethod();
 	[tableView deselectRowAtIndexPath: indexPath animated: YES];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-//    LogMethod();
+    LogMethod();
     NSIndexPath *indexPath = [ self.collectionTableView indexPathForCell:sender];
     
 	if ([segue.identifier isEqualToString:@"ViewSongs"])
@@ -256,7 +268,17 @@
         CollectionItem *collectionItem = [CollectionItem alloc];
         collectionItem.name = [[self.collection objectAtIndex:indexPath.row] valueForProperty: MPMediaPlaylistPropertyName];
         collectionItem.duration = [self calculatePlaylistDuration: [self.collection objectAtIndex:indexPath.row]];
+        
+        //crashing on this instruction when playlist has been deleted   if statement crashes too
+//        if (![MPMediaItemCollection collectionWithItems: [[self.collection objectAtIndex:indexPath.row] items]]) {
+//            NSLog (@"Don't crash, just return");
+//            [self.navigationController popToRootViewControllerAnimated:YES];
+//            return;
+//
+//        }
         collectionItem.collection = [MPMediaItemCollection collectionWithItems: [[self.collection objectAtIndex:indexPath.row] items]];
+        songViewController.iPodLibraryChanged = self.iPodLibraryChanged;
+
         
         songViewController.title = collectionItem.name;
         songViewController.collectionItem = collectionItem;
@@ -287,6 +309,8 @@
         mainViewController.managedObjectContext = self.managedObjectContext;
 
         mainViewController.playNew = NO;
+        mainViewController.iPodLibraryChanged = self.iPodLibraryChanged;
+
         
     }
 }
@@ -297,25 +321,54 @@
 
 #pragma mark Application state management_____________
 // Standard methods for managing application state.
+
+- (void)goBackClick
+{
+    //both actually go back to mediaGroupViewController 
+    if (iPodLibraryChanged) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    } else {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+- (void) registerForMediaPlayerNotifications {
+    LogMethod();
+    
+	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    
+    [notificationCenter addObserver: self
+                           selector: @selector (handle_iPodLibraryChanged:)
+                               name: MPMediaLibraryDidChangeNotification
+                             object: nil];
+    
+    [[MPMediaLibrary defaultMediaLibrary] beginGeneratingLibraryChangeNotifications];
+    
+}
+- (void) handle_iPodLibraryChanged: (id) changeNotification {
+    LogMethod();
+	// Implement this method to update cached collections of media items when the
+	// user performs a sync while application is running.
+    [self setIPodLibraryChanged: YES];
+    
+}
+
+- (void)dealloc {
+    LogMethod();
+    
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                    name: MPMediaLibraryDidChangeNotification
+                                                  object: nil];
+    
+    [[MPMediaLibrary defaultMediaLibrary] endGeneratingLibraryChangeNotifications];
+    
+}
 - (void)didReceiveMemoryWarning {
     
 	// Releases the view if it doesn't have a superview.
+    [self setCollectionTableView:nil];
+    
     [super didReceiveMemoryWarning];
 	
 	// Release any cached data, images, etc that aren't in use.
 }
-
-- (void)viewDidUnload {
-    [self setCollectionTableView:nil];
-    
-	// Release any retained subviews of the main view.
-	// e.g. self.myOutlet = nil;
-}
-// neeed to programmatically unhighlight because highlighting was done programmatically
-//
-//- (void)viewDidDisappear:(BOOL)animated {
-//    //    LogMethod();
-//    [super viewDidDisappear: animated];
-//
-//}
 @end

@@ -13,6 +13,7 @@
 
 @dynamic name;
 @dynamic duration;
+@dynamic lastPlayedDate;
 @dynamic collection;
 @synthesize fetchedResultsController = fetchedResultsController_;
 @synthesize managedObjectContext = managedObjectContext_;
@@ -29,6 +30,7 @@
     NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:@"ItemCollection" inManagedObjectContext:self.managedObjectContext];
     [newManagedObject setValue: collectionItem.name forKey:@"name"];
     [newManagedObject setValue: collectionItem.duration forKey: @"duration"];
+    [newManagedObject setValue: collectionItem.lastPlayedDate forKey: @"lastPlayedDate"];
     [newManagedObject setValue: collectionItem.collection forKey: @"collection"];
     
 //    NSArray *collectionArray = [collectionItem.collection items];
@@ -45,7 +47,9 @@
     }
     
 }
-- (CollectionItem *) containsItem: (NSString *) playingSong
+//- (CollectionItem *) containsItem: (NSString *) playingSong
+- (CollectionItem *) containsItem: (NSNumber *) playingSong
+
 
 {
     BOOL itemFound;
@@ -74,7 +78,9 @@
             NSArray *savedQueue = [mediaItemCollection items];
         
             for (MPMediaItem *song in savedQueue) {
-                if ([[song valueForProperty: MPMediaItemPropertyTitle] isEqual: playingSong]) {
+//                if ([[song valueForProperty: MPMediaItemPropertyTitle] isEqual: playingSong]) {
+                if ([[song valueForProperty: MPMediaItemPropertyPersistentID] isEqual: playingSong]) {
+
                     itemFound = YES;
 
                 }
@@ -88,6 +94,7 @@
         CollectionItem *returnEmpty = [CollectionItem alloc];
         returnEmpty.name  = @"";
         returnEmpty.duration = nil;
+        returnEmpty.lastPlayedDate = nil;
         returnEmpty.collection = nil;
         return returnEmpty;
     }

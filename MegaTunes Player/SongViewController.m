@@ -27,11 +27,13 @@
 @synthesize songInfo;
 //@synthesize saveIndexPath;
 @synthesize itemToPlay;
+@synthesize iPodLibraryChanged;         //A flag indicating whether the library has been changed due to a sync
+
 
 - (void) viewWillAppear:(BOOL)animated
 {
 //    LogMethod();
-    [super viewDidLoad];
+    [super viewWillAppear: animated];
     
     //set the navigation bar title
     self.navigationItem.titleView = [self customizeTitleView];
@@ -125,6 +127,7 @@
 //        NSString *songTitle = [song valueForProperty: MPMediaItemPropertyTitle];
 //        NSLog (@"\t\t%@", songTitle);
 //    }
+    [self registerForMediaPlayerNotifications];
     [self updateLayoutForNewOrientation: self.interfaceOrientation];
     
 }
@@ -246,6 +249,12 @@
     //playback duration of the song
     
     long playbackDuration = [[song valueForProperty: MPMediaItemPropertyPlaybackDuration] longValue];
+    
+    //if song has been deleted during a sync then pop to rootViewController
+    if (playbackDuration == 0 && self.iPodLibraryChanged) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+        NSLog (@"BOOM");
+    }
     int playbackHours = (playbackDuration / 3600);                         // returns number of whole hours fitted in totalSecs
     int playbackMinutes = ((playbackDuration / 60) - playbackHours*60);     // Whole minutes
     int playbackSeconds = (playbackDuration % 60);                        // seconds
@@ -282,7 +291,9 @@
     } else {
         scrollViewWidth = (tableView.frame.size.width - 24 - 98 - cell.accessoryView.frame.size.width);
     }
-
+    //Make sure that label is aligned with scrollView
+    [cell.scrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+    
     if (labelSize.width>scrollViewWidth) {
 
         cell.scrollView.scrollEnabled = YES;
@@ -413,7 +424,7 @@
 	{
        SongInfoViewController *songInfoViewController = segue.destinationViewController;
         songInfoViewController.managedObjectContext = self.managedObjectContext;
-        songInfoViewController.title = @"Info";
+//        songInfoViewController.title = @"Info";
         songInfoViewController.songInfo = songInfo;
         
 	}
@@ -429,6 +440,8 @@
 
         mainViewController.userMediaItemCollection = self.collectionItem.collection;
         mainViewController.playNew = YES;
+        mainViewController.iPodLibraryChanged = self.iPodLibraryChanged;
+
         
         //save collection in Core Data
         ItemCollection *itemCollection = [ItemCollection alloc];
@@ -442,6 +455,8 @@
 		MainViewController *mainViewController = segue.destinationViewController;
         mainViewController.managedObjectContext = self.managedObjectContext;
         mainViewController.playNew = NO;
+        mainViewController.iPodLibraryChanged = self.iPodLibraryChanged;
+
     }
 }
 - (IBAction)viewNowPlaying {
@@ -450,7 +465,11 @@
 }
 - (void)goBackClick
 {
+    if (iPodLibraryChanged) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    } else {
     [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 - (IBAction)infoButtonTapped:(id)sender event:(id)event {
     NSSet *touches = [event allTouches];
@@ -482,5 +501,33 @@
     [self setSongTableView:nil];
     [super viewDidUnload];
 }
-
+- (void) registerForMediaPlayerNotifications {
+    LogMethod();
+    
+	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    
+    [notificationCenter addObserver: self
+                           selector: @selector (handle_iPodLibraryChanged:)
+                               name: MPMediaLibraryDidChangeNotification
+                             object: nil];
+    
+    [[MPMediaLibrary defaultMediaLibrary] beginGeneratingLibraryChangeNotifications];
+    
+}
+- (void) handle_iPodLibraryChanged: (id) changeNotification {
+    LogMethod();
+	// Implement this method to update cached collections of media items when the
+	// user performs a sync while application is running.
+    [self setIPodLibraryChanged: YES];
+    
+}
+- (void)dealloc {
+    LogMethod();
+    
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                    name: MPMediaLibraryDidChangeNotification
+                                                  object: nil];
+    
+    [[MPMediaLibrary defaultMediaLibrary] endGeneratingLibraryChangeNotifications];
+}
 @end

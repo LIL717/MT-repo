@@ -12,6 +12,7 @@
 }
 @property (nonatomic, retain) NSString *name;
 @property (nonatomic, retain) NSNumber *duration;
+@property (nonatomic, retain) NSDate *lastPlayedDate;
 @property (nonatomic, retain) MPMediaItemCollection *collection;
 
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;

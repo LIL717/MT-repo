@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "ColorSwitcher.h"
 #import "MediaGroupViewController.h"
+#import "MainViewcontroller.h"
 //#import "CustomNavigationBar.h"
 
 
@@ -22,6 +23,7 @@
 @synthesize managedObjectModel = managedObjectModel_;
 @synthesize fetchedResultsController = fetchedResultsController_;
 @synthesize persistentStoreCoordinator = persistentStoreCoordinator_;
+
 
 static const NSUInteger kNavigationBarHeight = 60;
 
@@ -301,12 +303,20 @@ static const NSUInteger kNavigationBarHeight = 60;
 - (BOOL) useiPodPlayer {
     //      LogMethod();
 	if ([[NSUserDefaults standardUserDefaults] boolForKey: PLAYER_TYPE_PREF_KEY]) {
-		return NO;
-	} else {
 		return YES;
+	} else {
+		return NO;
 	}
 }
-
+// Returns whether to show the playlist remaining time in the player
+- (BOOL) showPlaylistRemaining {
+    //      LogMethod();
+	if ([[NSUserDefaults standardUserDefaults] boolForKey: SHOW_PLAYLIST_REMAINING_KEY]) {
+		return YES;
+	} else {
+		return NO;
+	}
+}
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     /*

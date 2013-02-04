@@ -188,16 +188,16 @@
     //set the UIOutlet label's frame to the new sized frame
     cell.nameLabel.frame = newLabel.frame;
     
-    NSLog (@"cell.scrollView.contentSize.width is %f", cell.scrollView.contentSize.width);
-    NSLog (@"cell.scrollView.frame.size.width is %f", cell.scrollView.frame.size.width);
+//    NSLog (@"cell.scrollView.contentSize.width is %f", cell.scrollView.contentSize.width);
+//    NSLog (@"cell.scrollView.frame.size.width is %f", cell.scrollView.frame.size.width);
     //enable scroll if the content will not fit within the scrollView
     if (cell.scrollView.contentSize.width>cell.scrollView.frame.size.width) {
         cell.scrollView.scrollEnabled = YES;
-        NSLog (@"scrollEnabled");
+//        NSLog (@"scrollEnabled");
     }
     else {
         cell.scrollView.scrollEnabled = NO;
-        NSLog (@"scrollDisabled");
+//        NSLog (@"scrollDisabled");
         
     }
     

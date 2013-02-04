@@ -12,6 +12,7 @@
 
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSNumber *duration;
+@property (nonatomic, copy) NSDate *lastPlayedDate;
 @property (nonatomic, copy) MPMediaItemCollection *collection;
 
 

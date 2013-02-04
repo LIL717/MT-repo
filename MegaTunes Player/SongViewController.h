@@ -20,6 +20,8 @@
 @property (nonatomic, strong)   SongInfo *songInfo;
 //@property (nonatomic, strong)   NSIndexPath* saveIndexPath;
 @property (nonatomic, strong)   MPMediaItem *itemToPlay;
+@property (readwrite)           BOOL iPodLibraryChanged;
+
 
 
 @end

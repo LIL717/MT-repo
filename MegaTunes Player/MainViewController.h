@@ -9,6 +9,8 @@
 @class ItemCollection;
 #import "TimeMagnifierViewController.h"
 #import "TextMagnifierViewController.h"
+#import "NotesTabBarController.h"
+
 
 
 
@@ -17,11 +19,12 @@
 
 #import <AVFoundation/AVFoundation.h>
 #import <AudioToolbox/AudioToolbox.h>
+
 #import "AutoScrollLabel.h"
 #import "SongInfo.h"
 
 
-@interface MainViewController : UIViewController <MPMediaPickerControllerDelegate, AVAudioPlayerDelegate, TimeMagnifierViewControllerDelegate, TextMagnifierViewControllerDelegate, NSFetchedResultsControllerDelegate> {
+@interface MainViewController : UIViewController <MPMediaPickerControllerDelegate, AVAudioPlayerDelegate, TimeMagnifierViewControllerDelegate, TextMagnifierViewControllerDelegate, NotesTabBarControllerDelegate, NSFetchedResultsControllerDelegate> {
     
 	BOOL						playedMusicOnce;
     
@@ -37,6 +40,7 @@
     MPMediaItem                 *itemToPlay;
     NSFetchedResultsController  *fetchedResultsController;
     NSManagedObjectContext      *managedObjectContext;
+    BOOL                        iPodLibraryChanged;
 }
 @property (nonatomic, strong)	UINavigationBar			*navigationBar;
 @property (readwrite)			BOOL					playedMusicOnce;
@@ -53,8 +57,12 @@
 @property (nonatomic, strong)   MPMediaItem             *itemToPlay;
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, retain) NSManagedObjectContext    *managedObjectContext;
-@property (nonatomic, strong)   SongInfo *songInfo;
+@property (nonatomic, strong)   SongInfo                *songInfo;
+@property (readwrite)           BOOL                    iPodLibraryChanged;
+@property (readwrite)           BOOL                    showPlaylistRemaining;
+@property (nonatomic, strong)   MPMediaItem             *savedNowPlaying;
 
+@property (strong, nonatomic) IBOutlet UILabel *initialNowPlayingLabel;
 @property (strong, nonatomic) IBOutlet AutoScrollLabel	*nowPlayingLabel;
 @property (strong, nonatomic) IBOutlet UILabel *elapsedTimeLabel;
 @property (strong, nonatomic) IBOutlet UISlider *progressSlider;
@@ -88,9 +96,14 @@
 - (IBAction)repeatModeChanged:(id)sender;
 - (IBAction)shuffleModeChanged:(id)sender;
 
+- (void) playMusic;
+- (void) prepareAllExceptNowPlaying;
+- (void) prepareNowPlayingLabel;
+- (void) registerForMediaPlayerNotifications;
 - (void) updateTime;
 - (void) timeMagnifierViewControllerDidCancel:(TimeMagnifierViewController *)controller;
 - (void) textMagnifierViewControllerDidCancel:(TextMagnifierViewController *)controller;
+- (void) notesTabBarControllerDidCancel:(NotesTabBarController *)controller;
 
 
 @end

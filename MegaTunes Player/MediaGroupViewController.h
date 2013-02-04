@@ -27,6 +27,8 @@
 @property (nonatomic, strong)   NSArray *groupingData;
 @property (nonatomic, strong)   MediaGroup *selectedGroup;
 @property (nonatomic, strong)	MPMusicPlayerController	*musicPlayer;
+@property (readwrite)           BOOL iPodLibraryChanged;
+
 
 
 @end
