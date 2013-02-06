@@ -20,19 +20,18 @@
 @synthesize musicPlayer;
 @synthesize songInfo;
 
-//- (id)initWithCoder:(NSCoder *)aDecoder
-//{
-//    LogMethod();
-//
-//    if ((self = [super initWithCoder:aDecoder]))
-//    {
-////        self.title = @"Notes";
-////        self.navigationItem.titleView = [self customizeTitleView];
-////        NSLog (@"self.navigationItem.titleview is %@", self.navigationItem.titleView);
 
-//    }
-//    return self;
-//}
+- (void)viewDidLoad
+{
+    LogMethod();
+    [super viewDidLoad];
+    
+    //    UIImage* emptyImage = [UIImage imageNamed:@"notesLightButtonImage.png"];
+    //    [[UITabBar appearance] setSelectionIndicatorImage:emptyImage];
+    
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
+    
+}
 
 - (void) viewWillAppear:(BOOL)animated
 {
@@ -59,19 +58,6 @@
     
     return label;
 }
-- (void)viewDidLoad
-{
-    LogMethod();
-    [super viewDidLoad];
-
-//    UIImage* emptyImage = [UIImage imageNamed:@"notesLightButtonImage.png"];
-//    [[UITabBar appearance] setSelectionIndicatorImage:emptyImage];
-    
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[appDelegate.colorSwitcher processImageWithName:@"background.png"]]];
-}
-
 
 - (void)didReceiveMemoryWarning
 {

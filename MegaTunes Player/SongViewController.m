@@ -25,28 +25,61 @@
 @synthesize musicPlayer;
 @synthesize managedObjectContext;
 @synthesize songInfo;
-//@synthesize saveIndexPath;
 @synthesize itemToPlay;
 @synthesize iPodLibraryChanged;         //A flag indicating whether the library has been changed due to a sync
 
 
-- (void) viewWillAppear:(BOOL)animated
+- (void)viewDidLoad
 {
-//    LogMethod();
-    [super viewWillAppear: animated];
+    LogMethod();
+    [super viewDidLoad];
     
-    //set the navigation bar title
-    self.navigationItem.titleView = [self customizeTitleView];
+    //set the backround image for the view
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
+    
+    //make the back arrow for left bar button item
+    
+    self.navigationItem.hidesBackButton = YES; // Important
+    //initWithTitle cannot be nil, must be @""
+	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                             style:UIBarButtonItemStyleBordered
+                                                                            target:self
+                                                                            action:@selector(goBackClick)];
+    
+    UIImage *menuBarImage48 = [[UIImage imageNamed:@"arrow_left_48_white.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    UIImage *menuBarImage58 = [[UIImage imageNamed:@"arrow_left_58_white.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage48 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage58 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
     
     //ipod or app player
-
+    
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-
+    
     if ([appDelegate useiPodPlayer]) {
         musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
     } else {
         musicPlayer = [MPMusicPlayerController applicationMusicPlayer];
     }
+    
+    //    self.currentQueue = self.mainViewController.userMediaItemCollection;
+    
+    //    NSArray *returnedQueue = [self.currentQueue items];
+    //
+    //    for (MPMediaItem *song in returnedQueue) {
+    //        NSString *songTitle = [song valueForProperty: MPMediaItemPropertyTitle];
+    //        NSLog (@"\t\t%@", songTitle);
+    //    }
+    [self registerForMediaPlayerNotifications];
+    
+}
+
+- (void) viewWillAppear:(BOOL)animated
+{
+    LogMethod();
+    [super viewWillAppear: animated];
+    
+    //set the navigation bar title
+    self.navigationItem.titleView = [self customizeTitleView];
     
     //if there is a currently playing item, add a right button to the nav bar
     
@@ -68,17 +101,11 @@
         self.navigationItem.rightBarButtonItem= nil;
     }
     
-    //can't remember why we do this...
-    [self.songTableView reloadData];
+    [self updateLayoutForNewOrientation: self.interfaceOrientation];
 
     return;
 }
-//- (void) touchesEnded: (NSSet *) touches withEvent: (UIEvent *) event
-//{
-//    NSLog(@"touch cell in view controller");
-//    // If not dragging, send event to next responder
-//    [super touchesEnded: touches withEvent: event];
-//}
+
 - (UILabel *) customizeTitleView
 {
     CGRect frame = CGRectMake(0, 0, [self.title sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 48);
@@ -94,62 +121,33 @@
     return label;
 }
 
-- (void)viewDidLoad
-{
-//    LogMethod();
-    [super viewDidLoad];
-    
-    //set the backround image for the view
-    
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[appDelegate.colorSwitcher processImageWithName:@"background.png"]]];
-
-    //make the back arrow for left bar button item
-    
-    self.navigationItem.hidesBackButton = YES; // Important
-    //initWithTitle cannot be nil, must be @""
-	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                             style:UIBarButtonItemStyleBordered
-                                                                            target:self
-                                                                            action:@selector(goBackClick)];
-    
-    UIImage *menuBarImage48 = [[UIImage imageNamed:@"arrow_left_48_white.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    UIImage *menuBarImage58 = [[UIImage imageNamed:@"arrow_left_58_white.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage48 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage58 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
-    
-
-//    self.currentQueue = self.mainViewController.userMediaItemCollection;
-    
-//    NSArray *returnedQueue = [self.currentQueue items];
-//    
-//    for (MPMediaItem *song in returnedQueue) {
-//        NSString *songTitle = [song valueForProperty: MPMediaItemPropertyTitle];
-//        NSLog (@"\t\t%@", songTitle);
-//    }
-    [self registerForMediaPlayerNotifications];
-    [self updateLayoutForNewOrientation: self.interfaceOrientation];
-    
-}
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
     
     [self updateLayoutForNewOrientation: orientation];
     
 }
 - (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
-    
+    LogMethod();
     if (UIInterfaceOrientationIsPortrait(orientation)) {
         [self.songTableView setContentInset:UIEdgeInsetsMake(11,0,0,0)];
+
     } else {
         [self.songTableView setContentInset:UIEdgeInsetsMake(23,0,0,0)];
-        [self.songTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+        //if rotating to landscape and row 0 will be visible, need to scrollRectToVisible to align it correctly
+        NSArray *indexes = [self.songTableView indexPathsForVisibleRows];
+        for (NSIndexPath *index in indexes) {
+            if (index.row == 0) {
+                [self.songTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+                return;
+            }
+            
+        }
     }
 }
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void) viewWillLayoutSubviews {
+        //need this to pin portrait view to bounds otherwise if start in landscape, push to next view, rotate to portrait then pop back the original view in portrait - it will be too wide and "scroll" horizontally
+    self.songTableView.contentSize = CGSizeMake(self.songTableView.frame.size.width, self.songTableView.contentSize.height);
+    [super viewWillLayoutSubviews];
 }
 
 #pragma mark - Table view data source
@@ -182,13 +180,11 @@
     UIImage *image = [UIImage imageNamed: @"infoLightButtonImage.png"];
     UIImage *backgroundImage = [UIImage imageNamed: @"infoSelectedButtonImage.png"];
 
-//    UIImage *coloredImage = [image imageWithTint:[UIColor blueColor]];
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
 
     CGRect frame = CGRectMake(0.0, 0.0, image.size.width, image.size.height);
     button.frame = frame;
     [button setBackgroundImage:image forState:UIControlStateNormal];
-//    [button setBackgroundImage:coloredImage forState:UIControlStateHighlighted];
     [button setBackgroundImage: backgroundImage forState:UIControlStateHighlighted];
     [button addTarget:self action:@selector(infoButtonTapped:event:)  forControlEvents:UIControlEventTouchUpInside];
     cell.accessoryView = button;
@@ -306,102 +302,6 @@
     return cell;
 }
 
-//unused code but not ready to delete it altogether yet :)
-//    //need to have scrollView object and label object independent of SongCell to add
-//    
-//    inCellScrollView* myScrollView = [[inCellScrollView alloc] initWithFrame:cell.scrollView.frame];
-//    myScrollView.contentSize = cell.scrollView.contentSize;
-//    
-//    UILabel *myLabel = [[UILabel alloc] initWithFrame: cell.nameLabel.frame];
-//    myLabel.textColor = [UIColor whiteColor];
-//    myLabel.backgroundColor = [UIColor clearColor];
-////    UIFont *font = [UIFont systemFontOfSize:12];
-////    UIFont *newFont = [font fontWithSize:44];
-//    myLabel.font = newFont;
-//    myLabel.text = [song valueForProperty:  MPMediaItemPropertyTitle];
-//    
-//    [cell addSubview:myScrollView];
-//    [myScrollView addSubview:myLabel];
-//    
-//    //format cell using VB autolayout
-//    
-//    //Prevent from trying to layout subviews by converting autoresize masks into constraints
-//    [myScrollView setTranslatesAutoresizingMaskIntoConstraints:NO];
-//    [myLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
-//    
-//    //Convenience function to create viewsDictionary
-//    NSDictionary *views = NSDictionaryOfVariableBindings(myScrollView, myLabel);
-//    
-//    //Create our NSNumber variables for our metrics dictionary.
-//
-//    NSNumber *sVW = [NSNumber numberWithInt:scrollViewWidth];
-//    NSNumber *tSpace = [NSNumber numberWithInt:trailingSpace];
-//                    
-//    //Create our metrics dictionary using our NSNumbers and strings
-//    NSDictionary *metrics = [NSDictionary dictionaryWithObjectsAndKeys: sVW, @"sVW", tSpace, @"tSpace", nil];
-//    
-//    //Layout the horizontal scrollView
-////    [[self view] addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-18-[scrollView(==312@500)]-55-|" options:0 metrics:metrics views:views]];
-//    [cell addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-18-[myScrollView(==sVW)]-tSpace-|" options:0 metrics:metrics views:views]];
-//    //layout the vertical scrollView
-//    [cell addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[myScrollView]|" options:0 metrics:metrics views:views]];
-//    
-//    
-//    
-//    
-    
-    
-    //the gesture recognizers for tap in the scrollview was somehow lost, so add it again to whole cell
-    // add tap gesture to whole cell
-//    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
-//                                   initWithTarget:self
-//                                   action:@selector(tapDetected:)];
-//    
-//    [cell addGestureRecognizer:tap];
-//
-//    UIButton *touchBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, cell.scrollView.frame.size.width, cell.scrollView.frame.size.height)];
-//    [touchBtn addTarget:self action:@selector(tapDetected: event:) forControlEvents:UIControlEventTouchUpInside];
-////    touchBtn.showsTouchWhenHighlighted = YES;
-//    [cell.scrollView addSubview: touchBtn];
-    
-
-// need to handle the tap manually because scrollview lost recognition of tap when sized
-
-//-(void)tapDetected:(UITapGestureRecognizer*)tapGesture
-//- (void) tapDetected:(id) sender {
-//- (void)tapDetected:(id)sender event:(id)event {
-//    
-//    //    if (tapGesture.state == UIGestureRecognizerStateEnded)
-//    //    {
-//    NSSet *touches = [event allTouches];
-//    UITouch *touch = [touches anyObject];
-//    CGPoint currentTouchPosition = [touch locationInView:self.songTableView];
-//    self.saveIndexPath = [self.songTableView indexPathForRowAtPoint: currentTouchPosition];
-//    
-//    UITableView* tableView = (UITableView*)self.view;
-//    //        CGPoint touchPoint = [sender locationInView:self.view];
-//    //        self.saveIndexPath = [tableView indexPathForRowAtPoint:touchPoint];
-//    if (self.saveIndexPath != nil) {
-//        
-//        SongCell *cell = (SongCell *)[tableView cellForRowAtIndexPath:self.saveIndexPath];
-//        cell.nameLabel.highlighted = YES;
-//        cell.durationLabel.highlighted = YES;
-//        //this didn't do anything
-//            cell.nameLabel.textColor = [UIColor blueColor];
-//            cell.durationLabel.textColor = [UIColor blueColor];
-//            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 0.2 * NSEC_PER_SEC);
-//            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-//                cell.nameLabel.highlighted = NO;
-//                cell.nameLabel.textColor = [UIColor whiteColor];
-//                cell.durationLabel.highlighted = NO;
-//                cell.durationLabel.textColor = [UIColor whiteColor];
-//            });
-//        self.itemToPlay = [[self.collectionItem.collection items] objectAtIndex:saveIndexPath.row];
-//        
-//        [self performSegueWithIdentifier: @"PlaySong" sender: self];
-//    }
-//    //    }
-//}
 
 #pragma mark - Table view delegate
 
@@ -432,11 +332,9 @@
 	{
         MainViewController *mainViewController = segue.destinationViewController;
         mainViewController.managedObjectContext = self.managedObjectContext;
-        //these two lines if no method directly calls prepareForSegue
         NSIndexPath *indexPath = [self.songTableView indexPathForCell:sender];
         mainViewController.itemToPlay = [[self.collectionItem.collection items] objectAtIndex:indexPath.row];
-//        //this line if another method is setting self.itemToPlay;
-//        mainViewController.itemToPlay = self.itemToPlay;
+
 
         mainViewController.userMediaItemCollection = self.collectionItem.collection;
         mainViewController.playNew = YES;
@@ -496,15 +394,20 @@
     [self performSegueWithIdentifier: @"ViewInfo" sender: self];
 }
 
-- (void)viewDidUnload {
-
-    [self setSongTableView:nil];
-    [super viewDidUnload];
-}
 - (void) registerForMediaPlayerNotifications {
-    LogMethod();
+//    LogMethod();
     
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    
+    [notificationCenter addObserver: self
+						   selector: @selector (handle_NowPlayingItemChanged:)
+							   name: MPMusicPlayerControllerNowPlayingItemDidChangeNotification
+							 object: musicPlayer];
+    
+    [notificationCenter addObserver: self
+						   selector: @selector (handle_PlaybackStateChanged:)
+							   name: MPMusicPlayerControllerPlaybackStateDidChangeNotification
+							 object: musicPlayer];
     
     [notificationCenter addObserver: self
                            selector: @selector (handle_iPodLibraryChanged:)
@@ -512,22 +415,56 @@
                              object: nil];
     
     [[MPMediaLibrary defaultMediaLibrary] beginGeneratingLibraryChangeNotifications];
+    [musicPlayer beginGeneratingPlaybackNotifications];
+
     
 }
 - (void) handle_iPodLibraryChanged: (id) changeNotification {
-    LogMethod();
+//    LogMethod();
 	// Implement this method to update cached collections of media items when the
 	// user performs a sync while application is running.
     [self setIPodLibraryChanged: YES];
     
 }
-- (void)dealloc {
+// When the playback state changes, if stopped remove nowplaying button
+- (void) handle_PlaybackStateChanged: (id) notification {
     LogMethod();
+
+	MPMusicPlaybackState playbackState = [musicPlayer playbackState];
+	
+    if (playbackState == MPMusicPlaybackStateStopped) {
+        self.navigationItem.rightBarButtonItem= nil;
+	}
+    
+}
+// When the now-playing item changes, update the now-playing indicator and reload table
+- (void) handle_NowPlayingItemChanged: (id) notification {
+//    LogMethod();
+
+    [self.songTableView reloadData];
+}
+- (void)dealloc {
+//    LogMethod();
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                name: MPMusicPlayerControllerNowPlayingItemDidChangeNotification
+												  object: musicPlayer];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+													name: MPMusicPlayerControllerPlaybackStateDidChangeNotification
+												  object: musicPlayer];
     
     [[NSNotificationCenter defaultCenter] removeObserver: self
                                                     name: MPMediaLibraryDidChangeNotification
                                                   object: nil];
     
     [[MPMediaLibrary defaultMediaLibrary] endGeneratingLibraryChangeNotifications];
+    [musicPlayer endGeneratingPlaybackNotifications];
+
 }
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+}
+
 @end

@@ -26,8 +26,65 @@
 @synthesize infoTableView;
 @synthesize albumImageView;
 @synthesize songInfoData;
-//@synthesize navItem;
 
+- (void)viewDidLoad
+{
+    LogMethod();
+    [super viewDidLoad];
+    
+    //    UIImage* emptyImage = [UIImage imageNamed:@"infoLightButtonImage.png"];
+    //    [[UITabBar appearance] setSelectionIndicatorImage:emptyImage];
+    
+	// Do any additional setup after loading the view, typically from a nib.
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
+    
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 320)];
+    if (!self.songInfo.albumImage) {
+        [imageView setImage:[UIImage imageNamed:@"noAlbumImage320.png"]];
+    } else {
+        [imageView setImage:self.songInfo.albumImage];
+    }
+    [self.albumImageView addSubview:imageView];
+    
+    //    NSLog (@" in SongInfo  self.songInfo.songName = %@", self.songInfo.songName);
+    //    NSLog (@" in SongInfo  self.songInfo.album = %@", self.songInfo.album);
+    //    NSLog (@" in SongInfo  self.songInfo.artist = %@", self.songInfo.artist);
+    
+    if (!self.songInfo.artist) {
+        self.songInfo.artist = @"Unknown";
+    }
+    if (!self.songInfo.songName) {
+        self.songInfo.songName = @"Unknown";
+    }
+    if (!self.songInfo.album) {
+        self.songInfo.album = @"Unknown";
+    }
+    
+    self.songInfoData = [NSArray arrayWithObjects: self.songInfo.artist, self.songInfo.songName, self.songInfo.album, nil];
+    
+    UIImage *unselectedImage0 = [UIImage imageNamed:@"unselectedTabInfoButton.png"];
+    UIImage *selectedImage0 = [UIImage imageNamed:@"selectedTabInfoButton.png"];
+    
+    //    UIImage *unselectedImage1 = [UIImage imageNamed:@"notesLightButtonImageWhite.png"];
+    //    UIImage *unselectedImage1 = [UIImage imageNamed:@"tabButtonBlack.png"];
+    UIImage *unselectedImage1 = [UIImage imageNamed:@"unselectedTabNotesButton.png"];
+    UIImage *selectedImage1 = [UIImage imageNamed:@"selectedTabNotes2Button.png"];
+    
+    //    UIImage *selectedImage1 = [unselectedImage1 imageWithTint:[UIColor blueColor]];
+    
+    
+    UITabBar *tabBar = self.tabBarController.tabBar;
+    UITabBarItem *item0 = [tabBar.items objectAtIndex:0];
+    UITabBarItem *item1 = [tabBar.items objectAtIndex:1];
+    
+    
+    [item0 setFinishedSelectedImage:selectedImage0 withFinishedUnselectedImage:unselectedImage0];
+    [item1 setFinishedSelectedImage:selectedImage1 withFinishedUnselectedImage:unselectedImage1];
+    
+    
+    [self updateLayoutForNewOrientation: self.interfaceOrientation];
+    
+}
 - (void) viewWillAppear:(BOOL)animated
 {
     LogMethod();
@@ -60,81 +117,18 @@
     return label;
 }
 
-- (void)viewDidLoad
-{
-    LogMethod();
-    [super viewDidLoad];
-    
-//    UIImage* emptyImage = [UIImage imageNamed:@"infoLightButtonImage.png"];
-//    [[UITabBar appearance] setSelectionIndicatorImage:emptyImage];
-
-	// Do any additional setup after loading the view, typically from a nib.
-
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[appDelegate.colorSwitcher processImageWithName:@"background.png"]]];
-
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 320)];
-    if (!self.songInfo.albumImage) {
-        [imageView setImage:[UIImage imageNamed:@"noAlbumImage320.png"]];
-    } else {
-        [imageView setImage:self.songInfo.albumImage];
-    }
-    [self.albumImageView addSubview:imageView];
-    
-//    NSLog (@" in SongInfo  self.songInfo.songName = %@", self.songInfo.songName);
-//    NSLog (@" in SongInfo  self.songInfo.album = %@", self.songInfo.album);
-//    NSLog (@" in SongInfo  self.songInfo.artist = %@", self.songInfo.artist);
-    
-    if (!self.songInfo.artist) {
-        self.songInfo.artist = @"Unknown";
-    }
-    if (!self.songInfo.songName) {
-        self.songInfo.songName = @"Unknown";
-    }
-    if (!self.songInfo.album) {
-        self.songInfo.album = @"Unknown";
-    }
-    
-    self.songInfoData = [NSArray arrayWithObjects: self.songInfo.artist, self.songInfo.songName, self.songInfo.album, nil];
-    
-    UIImage *unselectedImage0 = [UIImage imageNamed:@"unselectedTabInfoButton.png"];
-    UIImage *selectedImage0 = [UIImage imageNamed:@"selectedTabInfoButton.png"];
-    
-//    UIImage *unselectedImage1 = [UIImage imageNamed:@"notesLightButtonImageWhite.png"];
-//    UIImage *unselectedImage1 = [UIImage imageNamed:@"tabButtonBlack.png"];
-    UIImage *unselectedImage1 = [UIImage imageNamed:@"unselectedTabNotesButton.png"];
-    UIImage *selectedImage1 = [UIImage imageNamed:@"selectedTabNotes2Button.png"];
-
-//    UIImage *selectedImage1 = [unselectedImage1 imageWithTint:[UIColor blueColor]];
-
-    
-    UITabBar *tabBar = self.tabBarController.tabBar;
-    UITabBarItem *item0 = [tabBar.items objectAtIndex:0];
-    UITabBarItem *item1 = [tabBar.items objectAtIndex:1];
-    
-    
-    [item0 setFinishedSelectedImage:selectedImage0 withFinishedUnselectedImage:unselectedImage0];
-    [item1 setFinishedSelectedImage:selectedImage1 withFinishedUnselectedImage:unselectedImage1];
-
-    
-    [self updateLayoutForNewOrientation: self.interfaceOrientation];
-    
-}
 - (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
     
     if (UIInterfaceOrientationIsPortrait(orientation)) {
         NSLog (@"portrait");
         [self.infoTableView setContentInset:UIEdgeInsetsMake(11,0,-11,0)];
         [self.infoTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-//        self.infoTableView.contentSize = CGSizeMake(self.infoTableView.frame.size.width, 55 + 55 + 55 + 320);
 
         
     } else {
         NSLog (@"landscape");
         [self.infoTableView setContentInset:UIEdgeInsetsMake(23,0,0,0)];
         [self.infoTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-//        self.infoTableView.contentSize = CGSizeMake(self.infoTableView.frame.size.width, 55 + 55 + 55 + 320);
 
     }
 }
@@ -221,10 +215,4 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)viewDidUnload {
-
-    [self setInfoTableView:nil];
-
-    [super viewDidUnload];
-}
 @end

@@ -10,7 +10,6 @@
 #import "CollectionItemCell.h"
 #import "CollectionItem.h"
 #import "SongViewController.h"
-//#import "CustomSongViewController.h"
 #import "AppDelegate.h"
 #import "DTCustomColoredAccessory.h"
 #import "MainViewController.h"
@@ -27,21 +26,30 @@
 @synthesize collection;
 @synthesize collectionType;
 @synthesize managedObjectContext;
-//@synthesize collectionItem;
 @synthesize saveIndexPath;
 @synthesize iPodLibraryChanged;         //A flag indicating whether the library has been changed due to a sync
+@synthesize musicPlayer;
 
-
-- (void) viewWillAppear:(BOOL)animated
-{
-    //    LogMethod();
-    [super viewWillAppear: animated];
+- (void) viewDidLoad {
     
-    self.navigationItem.titleView = [self customizeTitleView];
-  
+    [super viewDidLoad];
+	
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
+    
+    
+    self.navigationItem.hidesBackButton = YES; // Important
+    //initWithTitle cannot be nil, must be @""
+	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                             style:UIBarButtonItemStyleBordered
+                                                                            target:self
+                                                                            action:@selector(goBackClick)];
+    
+    UIImage *menuBarImage48 = [[UIImage imageNamed:@"arrow_left_48_white.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    UIImage *menuBarImage58 = [[UIImage imageNamed:@"arrow_left_58_white.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage48 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage58 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    MPMusicPlayerController *musicPlayer;
-
+    
     if ([appDelegate useiPodPlayer]) {
         musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
         NSLog (@"iPod");
@@ -50,6 +58,17 @@
         NSLog (@"app");
     }
     
+    [self registerForMediaPlayerNotifications];
+    
+}
+- (void) viewWillAppear:(BOOL)animated
+{
+    //    LogMethod();
+    [super viewWillAppear: animated];
+    
+    self.navigationItem.titleView = [self customizeTitleView];
+  
+
     NSString *playingItem = [[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyTitle];
     
     if (playingItem) {
@@ -67,7 +86,8 @@
     } else {
         self.navigationItem.rightBarButtonItem= nil;
     }
-    
+    [self updateLayoutForNewOrientation: self.interfaceOrientation];
+
     return;
 }
 
@@ -85,36 +105,10 @@
     
     return label;
 }
-- (void) viewDidLoad {
-    
-    [super viewDidLoad];
-	
-//    self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[appDelegate.colorSwitcher processImageWithName:@"background.png"]]];
-    
-    self.navigationItem.hidesBackButton = YES; // Important
-                                                            //initWithTitle cannot be nil, must be @""
-	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                             style:UIBarButtonItemStyleBordered
-                                                                            target:self
-                                                                            action:@selector(goBackClick)];
-    
-    UIImage *menuBarImage48 = [[UIImage imageNamed:@"arrow_left_48_white.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    UIImage *menuBarImage58 = [[UIImage imageNamed:@"arrow_left_58_white.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage48 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage58 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
-
-    [self registerForMediaPlayerNotifications];
-    [self updateLayoutForNewOrientation: self.interfaceOrientation];
-
-}
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
     
-    [self updateLayoutForNewOrientation: orientation];
-    [self.collectionTableView reloadData];
-    
+    [self updateLayoutForNewOrientation: orientation];    
 }
 - (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
     
@@ -122,8 +116,21 @@
         [self.collectionTableView setContentInset:UIEdgeInsetsMake(11,0,0,0)];
     } else {
         [self.collectionTableView setContentInset:UIEdgeInsetsMake(23,0,0,0)];
-        [self.collectionTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+        //if rotating to landscape and row 0 will be visible, need to scrollRectToVisible to align it correctly
+        NSArray *indexes = [self.collectionTableView indexPathsForVisibleRows];
+        for (NSIndexPath *index in indexes) {
+            if (index.row == 0) {
+                [self.collectionTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+                return;
+            }
+            
+        }
     }
+}
+- (void) viewWillLayoutSubviews {
+        //need this to pin portrait view to bounds otherwise if start in landscape, push to next view, rotate to portrait then pop back the original view in portrait - it will be too wide and "scroll" horizontally
+    self.collectionTableView.contentSize = CGSizeMake(self.collectionTableView.frame.size.width, self.collectionTableView.contentSize.height);
+    [super viewWillLayoutSubviews];
 }
 
 #pragma mark Table view methods________________________
@@ -213,11 +220,9 @@
 
     if (labelSize.width>scrollViewWidth) {
         cell.scrollView.scrollEnabled = YES;
-//        NSLog (@"scrollEnabled");
     }
     else {
         cell.scrollView.scrollEnabled = NO;
-//        NSLog (@"scrollDisabled");
 
     }
     
@@ -242,8 +247,6 @@
         playlistDuration = (playlistDuration + songDuration);
 
     }
-    //if the currently playing song has been deleted during a sync then stop playing and pop to rootViewController
-
     return [NSNumber numberWithLong: playlistDuration];
 }
 
@@ -257,52 +260,31 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    LogMethod();
+//    LogMethod();
     NSIndexPath *indexPath = [ self.collectionTableView indexPathForCell:sender];
     
 	if ([segue.identifier isEqualToString:@"ViewSongs"])
 	{
         SongViewController *songViewController = segue.destinationViewController;
         songViewController.managedObjectContext = self.managedObjectContext;
-    
+
+        CollectionItemCell *cell = (CollectionItemCell*)[self.collectionTableView cellForRowAtIndexPath:indexPath];
+
         CollectionItem *collectionItem = [CollectionItem alloc];
-        collectionItem.name = [[self.collection objectAtIndex:indexPath.row] valueForProperty: MPMediaPlaylistPropertyName];
+        collectionItem.name = cell.nameLabel.text;
         collectionItem.duration = [self calculatePlaylistDuration: [self.collection objectAtIndex:indexPath.row]];
         
-        //crashing on this instruction when playlist has been deleted   if statement crashes too
-//        if (![MPMediaItemCollection collectionWithItems: [[self.collection objectAtIndex:indexPath.row] items]]) {
-//            NSLog (@"Don't crash, just return");
-//            [self.navigationController popToRootViewControllerAnimated:YES];
-//            return;
-//
-//        }
         collectionItem.collection = [MPMediaItemCollection collectionWithItems: [[self.collection objectAtIndex:indexPath.row] items]];
         songViewController.iPodLibraryChanged = self.iPodLibraryChanged;
 
         
         songViewController.title = collectionItem.name;
+        NSLog (@"collectionItem.name is %@", collectionItem.name);
+
         songViewController.collectionItem = collectionItem;
 
 	}
-    //this is temp while I figure out the tap/drag situation using CustomSongViewController remember to delete import of .h above too and reference in tapDetected below
-//    if ([segue.identifier isEqualToString:@"CustomViewSongs"])
-//	{
-//        CustomSongViewController *customSongViewController = segue.destinationViewController;
-//        customSongViewController.managedObjectContext = self.managedObjectContext;
-//        
-//        customSongViewController.title = self.collectionItem.name;
-//        NSLog (@"self.collectionItem.name is %@", self.collectionItem.name);
-//        customSongViewController.collectionItem = self.collectionItem;
-//        
-//        //        CollectionItem *collectionItem = [CollectionItem alloc];
-//        //        collectionItem.name = [[self.collection objectAtIndex:indexPath.row] valueForProperty: MPMediaPlaylistPropertyName];
-//        //        collectionItem.duration = [self calculatePlaylistDuration: [self.collection objectAtIndex:indexPath.row]];
-//        //        collectionItem.collection = [MPMediaItemCollection collectionWithItems: [[self.collection objectAtIndex:indexPath.row] items]];
-//        //
-//        //        songViewController.title = collectionItem.name;
-//        //        songViewController.collectionItem = collectionItem;
-//        
-//	}
+
     if ([segue.identifier isEqualToString:@"ViewNowPlaying"])
 	{
 		MainViewController *mainViewController = segue.destinationViewController;
@@ -332,9 +314,14 @@
     }
 }
 - (void) registerForMediaPlayerNotifications {
-    LogMethod();
+//    LogMethod();
     
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    
+    [notificationCenter addObserver: self
+						   selector: @selector (handle_PlaybackStateChanged:)
+							   name: MPMusicPlayerControllerPlaybackStateDidChangeNotification
+							 object: musicPlayer];
     
     [notificationCenter addObserver: self
                            selector: @selector (handle_iPodLibraryChanged:)
@@ -342,33 +329,45 @@
                              object: nil];
     
     [[MPMediaLibrary defaultMediaLibrary] beginGeneratingLibraryChangeNotifications];
-    
+    [musicPlayer beginGeneratingPlaybackNotifications];
+
 }
 - (void) handle_iPodLibraryChanged: (id) changeNotification {
-    LogMethod();
+//    LogMethod();
 	// Implement this method to update cached collections of media items when the
 	// user performs a sync while application is running.
     [self setIPodLibraryChanged: YES];
     
 }
-
-- (void)dealloc {
+// When the playback state changes, if stopped remove nowplaying button
+- (void) handle_PlaybackStateChanged: (id) notification {
     LogMethod();
+    
+	MPMusicPlaybackState playbackState = [musicPlayer playbackState];
+	
+    if (playbackState == MPMusicPlaybackStateStopped) {
+        self.navigationItem.rightBarButtonItem= nil;
+	}
+    
+}
+- (void)dealloc {
+//    LogMethod();
     
     [[NSNotificationCenter defaultCenter] removeObserver: self
                                                     name: MPMediaLibraryDidChangeNotification
                                                   object: nil];
     
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+													name: MPMusicPlayerControllerPlaybackStateDidChangeNotification
+												  object: musicPlayer];
     [[MPMediaLibrary defaultMediaLibrary] endGeneratingLibraryChangeNotifications];
-    
+    [musicPlayer endGeneratingPlaybackNotifications];
+
 }
 - (void)didReceiveMemoryWarning {
-    
-	// Releases the view if it doesn't have a superview.
-    [self setCollectionTableView:nil];
-    
+        
     [super didReceiveMemoryWarning];
 	
-	// Release any cached data, images, etc that aren't in use.
+
 }
 @end

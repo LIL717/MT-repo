@@ -23,16 +23,34 @@
 @implementation MediaGroupViewController
 
 @synthesize groupTableView;
-//@synthesize delegate;
 @synthesize collection;
 @synthesize groupingData;
 @synthesize selectedGroup;
 @synthesize musicPlayer;
-//@synthesize fetchedResultsController;
 @synthesize managedObjectContext;
 @synthesize iPodLibraryChanged;         //A flag indicating whether the library has been changed due to a sync
 
+- (void)viewDidLoad
+{
+    //    LogMethod();
+    [super viewDidLoad];
+    
+    [self loadGroupingData];
 
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    if ([appDelegate useiPodPlayer]) {
+        musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
+        NSLog (@"iPod");
+    } else {
+        musicPlayer = [MPMusicPlayerController applicationMusicPlayer];
+        NSLog (@"app");
+    }
+    
+    [self registerForMediaPlayerNotifications];
+}
 -(void) loadGroupingData
 {
     MediaGroup* group0 = [[MediaGroup alloc] initWithName:@"Playlists" andQueryType: [MPMediaQuery playlistsQuery]];
@@ -61,23 +79,13 @@
 }
 - (void) viewWillAppear:(BOOL)animated
 {
-    LogMethod();
+//    LogMethod();
     [super viewWillAppear: animated];
 
     [self setIPodLibraryChanged: NO];
     self.title = NSLocalizedString(@"Select Music", nil);
     self.navigationItem.titleView = [self customizeTitleView];
 
-    
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-
-    if ([appDelegate useiPodPlayer]) {
-        musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
-        NSLog (@"iPod");
-    } else {
-        musicPlayer = [MPMusicPlayerController applicationMusicPlayer];
-        NSLog (@"app");
-    }
 
     NSString *playingItem = [[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyTitle];
 
@@ -97,6 +105,8 @@
     } else {
         self.navigationItem.rightBarButtonItem= nil;
     }
+    [self updateLayoutForNewOrientation: self.interfaceOrientation];
+
     return;
 }
 - (UILabel *) customizeTitleView
@@ -114,71 +124,7 @@
        return label;
    }
 
-//- (UIView *)customizeTitleView:(NSString *) title {
-//
-////    UIBarMetrics metrics = (self.view.frame.size.height > 40.0) ? UIBarMetricsDefault : UIBarMetricsLandscapePhone;
-////    UIImage *navImage = [self.navigationController.navigationBar backgroundImageForBarMetrics:metrics];
-////    CGSize imageSize = navImage.size;
-////    CGFloat navBarWidth = imageSize.width;
-////    CGFloat navBarHeight = imageSize.height;
-////    NSLog (@"width x height %f x %f", navBarWidth, navBarHeight);
-////    
-////    UIView *containerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, navBarWidth, navBarHeight)];
-//    UIView *containerView = [[UIView alloc] init];
-//
-//    
-//    //make a titleLabel and set the font and text
-//    UILabel *titleLabel = [[UILabel alloc] init];
-//    
-//    titleLabel.textColor = [UIColor yellowColor];
-//    UIFont *font = [UIFont systemFontOfSize:12];
-//    UIFont *newFont = [font fontWithSize:44];
-//    titleLabel.font = newFont;
-//    titleLabel.text = title;
-//    titleLabel.backgroundColor = [UIColor clearColor];
-////    
-////    //calculate the label size with the font and text
-////    CGSize labelSize = [titleLabel.text sizeWithFont:titleLabel.font
-////                                   constrainedToSize:CGSizeMake(CGRectGetWidth(containerView.bounds), CGRectGetHeight(containerView.bounds))
-////                                       lineBreakMode:NSLineBreakByTruncatingTail];
-////    
-////    //make a new label and set its size to exactly fit the text for height and width
-////    UILabel *newLabel = [[UILabel alloc] initWithFrame: CGRectMake(0, 0, labelSize.width, labelSize.height)];
-////    
-////    //set the titleLabel frame to be the size that exactly fits the text
-////    titleLabel.frame = newLabel.frame;
-////    //    NSLog (@" navBarwidth is %f", navBarWidth);
-////    NSLog (@" titleLabel.frame.size.width is %f", titleLabel.frame.size.width);
-////    NSLog (@" titleLabel.origin.X is %f", titleLabel.frame.origin.x);
-//    
-//    //make the container view's frame the same size as the titleLabel's frame so that it will be centered
-//    //    containerView.frame = titleLabel.frame;
-//    
-//    [containerView addSubview:titleLabel];
-//    
-//    return containerView;
-//    
-//}
-- (void)viewDidLoad
-{
-    LogMethod();
-    [super viewDidLoad];
-    
-    [self loadGroupingData];
-    
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[appDelegate.colorSwitcher processImageWithName:@"background.png"]]];
 
-    [self registerForMediaPlayerNotifications];
-    [self updateLayoutForNewOrientation: self.interfaceOrientation];
-
-    
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-}
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
     
     [self updateLayoutForNewOrientation: orientation];
@@ -193,10 +139,11 @@
         [self.groupTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
     }
 }
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void) viewWillLayoutSubviews {
+
+    //need this to pin portrait view to bounds otherwise if start in landscape, push to next view, rotate to portrait then pop back the original view in portrait - it will be too wide and "scroll" horizontally
+    self.groupTableView.contentSize = CGSizeMake(self.groupTableView.frame.size.width, self.groupTableView.contentSize.height);
+    [super viewWillLayoutSubviews];
 }
 
 #pragma mark - Table view data source
@@ -315,15 +262,20 @@
 }
 - (IBAction)viewNowPlaying {
     
-    LogMethod();
+//    LogMethod();
     
     [self performSegueWithIdentifier: @"ViewNowPlaying" sender: self];
 }
 
 - (void) registerForMediaPlayerNotifications {
-    LogMethod();
+//    LogMethod();
     
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    
+    [notificationCenter addObserver: self
+						   selector: @selector (handle_PlaybackStateChanged:)
+							   name: MPMusicPlayerControllerPlaybackStateDidChangeNotification
+							 object: musicPlayer];
     
     [notificationCenter addObserver: self
                            selector: @selector (handle_iPodLibraryChanged:)
@@ -331,25 +283,45 @@
                              object: nil];
     
     [[MPMediaLibrary defaultMediaLibrary] beginGeneratingLibraryChangeNotifications];
-    
+    [musicPlayer beginGeneratingPlaybackNotifications];
+
 }
 - (void) handle_iPodLibraryChanged: (id) changeNotification {
-    LogMethod();
+//    LogMethod();
 	// Implement this method to update cached collections of media items when the
 	// user performs a sync while application is running.
     [self setIPodLibraryChanged: YES];
     
 }
-
-- (void)dealloc {
+// When the playback state changes, if stopped remove nowplaying button
+- (void) handle_PlaybackStateChanged: (id) notification {
     LogMethod();
+    
+	MPMusicPlaybackState playbackState = [musicPlayer playbackState];
+	
+    if (playbackState == MPMusicPlaybackStateStopped) {
+        self.navigationItem.rightBarButtonItem= nil;
+	}
+    
+}
+- (void)dealloc {
+//    LogMethod();
     
     [[NSNotificationCenter defaultCenter] removeObserver: self
                                                     name: MPMediaLibraryDidChangeNotification
                                                   object: nil];
     
-    [[MPMediaLibrary defaultMediaLibrary] endGeneratingLibraryChangeNotifications];
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+													name: MPMusicPlayerControllerPlaybackStateDidChangeNotification
+												  object: musicPlayer];
     
+    [[MPMediaLibrary defaultMediaLibrary] endGeneratingLibraryChangeNotifications];
+    [musicPlayer endGeneratingPlaybackNotifications];
+
+}
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
 }
 @end
 

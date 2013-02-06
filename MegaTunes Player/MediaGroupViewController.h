@@ -8,17 +8,10 @@
 
 #import "MediaGroup.h"
 
-//@protocol MediaGroupViewControllerDelegate <NSObject>
-//
-//- (NSNumber *)calculatePlaylistDuration: (MPMediaPlaylist *) mediaPlaylist;
-//
-//@end
-
 @interface MediaGroupViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MPMediaPickerControllerDelegate> {
 
     NSManagedObjectContext  *managedObjectContext;
 }
-//@property (nonatomic, weak) id <MediaGroupViewControllerDelegate> delegate;
 
 @property (strong, nonatomic)   IBOutlet UITableView *groupTableView;
 @property (nonatomic, retain)   NSManagedObjectContext *managedObjectContext;

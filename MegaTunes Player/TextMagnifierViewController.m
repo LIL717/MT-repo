@@ -18,7 +18,6 @@
 @synthesize scrollView;
 @synthesize textToMagnify;
 @synthesize magnifiedLabel;
-//@synthesize labelWidth;
 @synthesize delegate;
 
 - (void)viewDidLoad
@@ -26,9 +25,8 @@
     LogMethod();
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
 
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[appDelegate.colorSwitcher processImageWithName:@"background.png"]]];
 
     // Display text
     
@@ -69,13 +67,6 @@
 
 }
 
-- (void)didReceiveMemoryWarning
-{
-    LogMethod();
-
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 //    Tap to cancel
 - (IBAction)tapDetected:(UITapGestureRecognizer *)sender {
@@ -84,17 +75,17 @@
 }
 
 - (IBAction)swipeDownDetected:(UISwipeGestureRecognizer *)sender {
-    self.magnifiedLabel.text= @"Swipe Down";
-    NSLog (@"size of magnifiedLabel is %f, %f", self.magnifiedLabel.frame.size.width, self.magnifiedLabel.frame.size.height);
-    NSLog (@"size of scrollView is %f, %f", self.scrollView.frame.size.width, self.scrollView.frame.size.height);
-    self.magnifiedLabel.textAlignment = NSTextAlignmentLeft;
+//    self.magnifiedLabel.text= @"Swipe Down";
+//    NSLog (@"size of magnifiedLabel is %f, %f", self.magnifiedLabel.frame.size.width, self.magnifiedLabel.frame.size.height);
+//    NSLog (@"size of scrollView is %f, %f", self.scrollView.frame.size.width, self.scrollView.frame.size.height);
+//    self.magnifiedLabel.textAlignment = NSTextAlignmentLeft;
 }
 
 - (IBAction)swipeUpDetected:(UISwipeGestureRecognizer *)sender {
-    self.magnifiedLabel.text= @"Swipe Up";
-    NSLog (@"size of magnifiedLabel is %f, %f", self.magnifiedLabel.frame.size.width, self.magnifiedLabel.frame.size.height);
-    NSLog (@"size of scrollView is %f, %f", self.scrollView.frame.size.width, self.scrollView.frame.size.height);
-    self.magnifiedLabel.textAlignment = NSTextAlignmentLeft;
+//    self.magnifiedLabel.text= @"Swipe Up";
+//    NSLog (@"size of magnifiedLabel is %f, %f", self.magnifiedLabel.frame.size.width, self.magnifiedLabel.frame.size.height);
+//    NSLog (@"size of scrollView is %f, %f", self.scrollView.frame.size.width, self.scrollView.frame.size.height);
+//    self.magnifiedLabel.textAlignment = NSTextAlignmentLeft;
 }
 
 //- (IBAction)pinchDetected:(UIGestureRecognizer *)sender {
@@ -125,12 +116,20 @@
 //- (IBAction)longPressDetected:(UIGestureRecognizer *)sender {
 //    self.label.text = @"Long Press";
 //}
-- (void)viewDidUnload {
+//- (void)viewDidUnload {
+//
+//    [self setScrollView:nil];
+//    [self setMagnifiedLabel:nil];
+////    [self setLabelWidth:nil];
+//    [super viewDidUnload];
+//}
 
-    [self setScrollView:nil];
-    [self setMagnifiedLabel:nil];
-//    [self setLabelWidth:nil];
-    [super viewDidUnload];
+- (void)didReceiveMemoryWarning
+{
+    LogMethod();
+    
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 
 @end

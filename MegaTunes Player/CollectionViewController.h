@@ -6,10 +6,7 @@
 //
 //
 @class CollectionItem;
-//#import "MediaGroupViewController.h"
-//#import "ViewController.h"
 
-//@interface CollectionViewController : UITableViewController <MPMediaPickerControllerDelegate, MediaGroupViewControllerDelegate, ViewControllerDelegate,UITableViewDelegate> {
 @interface CollectionViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MPMediaPickerControllerDelegate> {
 
     NSManagedObjectContext *managedObjectContext;
@@ -19,10 +16,9 @@
 @property (nonatomic, retain)   NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong)   NSArray *collection;
 @property (nonatomic, strong)   NSString *collectionType;
-//@property (nonatomic, strong)   CollectionItem *collectionItem;
 @property (nonatomic, strong)   NSIndexPath* saveIndexPath;
 @property (readwrite)           BOOL iPodLibraryChanged;
-
+@property (nonatomic, strong)	MPMusicPlayerController	*musicPlayer;
 
 - (NSNumber *) calculatePlaylistDuration: (MPMediaItemCollection *) currentQueue;
 

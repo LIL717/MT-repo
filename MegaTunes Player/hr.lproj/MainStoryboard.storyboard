@@ -170,7 +170,7 @@
                                     <outletCollection property="gestureRecognizers" destination="SYu-hr-is0" appends="YES" id="5No-YA-VoZ"/>
                                 </connections>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Next:" lineBreakMode="tailTruncation" minimumFontSize="10" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pNh-na-wBJ">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="clip" minimumFontSize="10" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pNh-na-wBJ">
                                 <constraints>
                                     <constraint firstAttribute="height" constant="42" type="user" id="5Hh-oa-Tsw"/>
                                     <constraint firstAttribute="width" constant="106" type="user" id="eFr-hE-fzH"/>

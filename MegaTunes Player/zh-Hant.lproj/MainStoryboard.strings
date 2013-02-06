@@ -1,0 +1,45 @@
+
+/* Class = "IBUIViewController"; title = "Info"; ObjectID = "0BK-h9-5Yl"; */
+"0BK-h9-5Yl.title" = "Info";
+
+/* Class = "IBUITextView"; text = "User Notes"; ObjectID = "6kj-Uf-e6Y"; */
+"6kj-Uf-e6Y.text" = "User Notes";
+
+/* Class = "IBUILabel"; text = "0:00"; ObjectID = "9Je-hu-yhg"; */
+"9Je-hu-yhg.text" = "0:00";
+
+/* Class = "IBUIViewController"; title = "Notes"; ObjectID = "AeD-XN-WKi"; */
+"AeD-XN-WKi.title" = "Notes";
+
+/* Class = "IBUIButton"; normalTitle = "Choose a Playlist"; ObjectID = "Ebm-Dp-INw"; */
+"Ebm-Dp-INw.normalTitle" = "Choose a Playlist";
+
+/* Class = "IBUILabel"; text = "UDF"; ObjectID = "Gbt-dE-Llw"; */
+"Gbt-dE-Llw.text" = "UDF";
+
+/* Class = "IBUILabel"; text = "BPM"; ObjectID = "HQX-Jy-J3y"; */
+"HQX-Jy-J3y.text" = "BPM";
+
+/* Class = "IBUILabel"; text = "Collection Title"; ObjectID = "Ka0-Cb-Mfz"; */
+"Ka0-Cb-Mfz.text" = "Collection Title";
+
+/* Class = "IBUINavigationItem"; title = "Select Music"; ObjectID = "N9C-1n-EMx"; */
+"N9C-1n-EMx.title" = "Select Music";
+
+/* Class = "IBUILabel"; text = "Group"; ObjectID = "Ohl-C1-tHe"; */
+"Ohl-C1-tHe.text" = "Group";
+
+/* Class = "IBUINavigationItem"; title = "Notes"; ObjectID = "OnD-a5-Sr4"; */
+"OnD-a5-Sr4.title" = "Notes";
+
+/* Class = "IBUIViewController"; title = "Now Playing"; ObjectID = "SKu-HW-GrJ"; */
+"SKu-HW-GrJ.title" = "Now Playing";
+
+/* Class = "IBUITabBarController"; title = "Song Info"; ObjectID = "h0z-UX-YEa"; */
+"h0z-UX-YEa.title" = "Song Info";
+
+/* Class = "IBUILabel"; text = "000:00"; ObjectID = "jfz-Q5-l6V"; */
+"jfz-Q5-l6V.text" = "000:00";
+
+/* Class = "IBUINavigationItem"; title = "Info"; ObjectID = "xx4-kE-ulF"; */
+"xx4-kE-ulF.title" = "Info";

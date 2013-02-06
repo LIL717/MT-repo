@@ -29,17 +29,55 @@
 @synthesize iPodLibraryChanged;         //A flag indicating whether the library has been changed due to a sync
 
 
-
-//- (id)initWithCoder:(NSCoder *)aDecoder
-//{
-//    LogMethod();
-//    
-//    if ((self = [super initWithCoder:aDecoder]))
-//    {
-//    }
-//    return self;
-//}
-
+- (void)viewDidLoad
+{
+    LogMethod();
+    [super viewDidLoad];
+    
+    //    self.delegate = self;
+    
+    
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
+    
+    self.navigationItem.hidesBackButton = YES; // Important
+    //initWithTitle cannot be nil, must be @""
+	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                             style:UIBarButtonItemStyleBordered
+                                                                            target:self
+                                                                            action:@selector(goBackClick)];
+    
+    UIImage *menuBarImage48 = [[UIImage imageNamed:@"arrow_left_48_white.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    UIImage *menuBarImage58 = [[UIImage imageNamed:@"arrow_left_58_white.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage48 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage58 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
+    
+    self.songInfoViewController = [[self viewControllers] objectAtIndex:0];
+    self.songInfoViewController.songInfo = self.songInfo;
+    
+    //    NSLog (@" in NotesTabBar  self.songInfo.songName = %@", self.songInfo.songName);
+    //    NSLog (@" in NotesTabBar  self.songInfo.album = %@", self.songInfo.album);
+    //    NSLog (@" in NotesTabBar  self.songInfo.artist = %@", self.songInfo.artist);
+    //    self.title = @"Info";
+    //    self.navigationItem.titleView = [self customizeTitleView];
+    //    [self.songInfoViewController.navigationController.navigationItem setTitle:@"Info"];
+    
+    self.notesViewController = [[self viewControllers] objectAtIndex:1];
+    self.notesViewController.songInfo = self.songInfo;
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    if ([appDelegate useiPodPlayer]) {
+        musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
+    } else {
+        musicPlayer = [MPMusicPlayerController applicationMusicPlayer];
+    }
+    [self registerForMediaPlayerNotifications];
+    
+    //    self.title = @"Notes";
+    //    self.navigationItem.titleView = [self customizeTitleView];
+    //    [self.notesViewController.navigationController.navigationItem setTitle:@"Notes"];
+        
+}
 - (void) viewWillAppear:(BOOL)animated
 {
     LogMethod();
@@ -59,13 +97,6 @@
     
 //    NSLog (@"self.navigationItem.titleview is %@", self.navigationItem.titleView);
 
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-    if ([appDelegate useiPodPlayer]) {
-        musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
-    } else {
-        musicPlayer = [MPMusicPlayerController applicationMusicPlayer];
-    }
     
     NSString *playingItem = [[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyTitle];
 //    NSLog (@"playing Item is *%@*, songInfo.SongName is *%@*", playingItem, self.songInfo.songName);
@@ -109,54 +140,6 @@
     return label;
 }
 
-- (void)viewDidLoad
-{
-    LogMethod();
-    [super viewDidLoad];
-    
-//    self.delegate = self;
-
-    
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[appDelegate.colorSwitcher processImageWithName:@"background.png"]]];
-    
-    self.navigationItem.hidesBackButton = YES; // Important
-    //initWithTitle cannot be nil, must be @""
-	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                             style:UIBarButtonItemStyleBordered
-                                                                            target:self
-                                                                            action:@selector(goBackClick)];
-    
-    UIImage *menuBarImage48 = [[UIImage imageNamed:@"arrow_left_48_white.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    UIImage *menuBarImage58 = [[UIImage imageNamed:@"arrow_left_58_white.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage48 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage58 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
-    
-    self.songInfoViewController = [[self viewControllers] objectAtIndex:0];
-    self.songInfoViewController.songInfo = self.songInfo;
-    
-//    NSLog (@" in NotesTabBar  self.songInfo.songName = %@", self.songInfo.songName);
-//    NSLog (@" in NotesTabBar  self.songInfo.album = %@", self.songInfo.album);
-//    NSLog (@" in NotesTabBar  self.songInfo.artist = %@", self.songInfo.artist);
-//    self.title = @"Info";
-//    self.navigationItem.titleView = [self customizeTitleView];
-//    [self.songInfoViewController.navigationController.navigationItem setTitle:@"Info"];
-    
-    self.notesViewController = [[self viewControllers] objectAtIndex:1];
-    self.notesViewController.songInfo = self.songInfo;
-    
-//    [self setIPodLibraryChanged: NO];
-    [self registerForMediaPlayerNotifications];
-    
-//    self.title = @"Notes";
-//    self.navigationItem.titleView = [self customizeTitleView];
-//    [self.notesViewController.navigationController.navigationItem setTitle:@"Notes"];
-    
-//    [self updateLayoutForNewOrientation: self.interfaceOrientation];
-
-
-    
-}
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
     
     [self updateLayoutForNewOrientation: orientation];
@@ -237,16 +220,22 @@
 }
 
 - (void) registerForMediaPlayerNotifications {
-    LogMethod();
+    //    LogMethod();
     
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-        
+    
+    [notificationCenter addObserver: self
+						   selector: @selector (handle_PlaybackStateChanged:)
+							   name: MPMusicPlayerControllerPlaybackStateDidChangeNotification
+							 object: musicPlayer];
+    
     [notificationCenter addObserver: self
                            selector: @selector (handle_iPodLibraryChanged:)
                                name: MPMediaLibraryDidChangeNotification
                              object: nil];
     
     [[MPMediaLibrary defaultMediaLibrary] beginGeneratingLibraryChangeNotifications];
+    [musicPlayer beginGeneratingPlaybackNotifications];
     
 }
 - (void) handle_iPodLibraryChanged: (id) changeNotification {
@@ -256,15 +245,30 @@
     [self setIPodLibraryChanged: YES];
     
 }
+// When the playback state changes, if stopped remove nowplaying button
+- (void) handle_PlaybackStateChanged: (id) notification {
+    LogMethod();
+    
+	MPMusicPlaybackState playbackState = [musicPlayer playbackState];
+	
+    if (playbackState == MPMusicPlaybackStateStopped) {
+        self.navigationItem.rightBarButtonItem= nil;
+	}
+    
+}
 
 - (void)dealloc {
-    LogMethod();
+    //    LogMethod();
     
     [[NSNotificationCenter defaultCenter] removeObserver: self
                                                     name: MPMediaLibraryDidChangeNotification
                                                   object: nil];
     
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+													name: MPMusicPlayerControllerPlaybackStateDidChangeNotification
+												  object: musicPlayer];
     [[MPMediaLibrary defaultMediaLibrary] endGeneratingLibraryChangeNotifications];
+    [musicPlayer endGeneratingPlaybackNotifications];
     
 }
 - (void)didReceiveMemoryWarning

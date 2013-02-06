@@ -11,9 +11,6 @@
 #import "TextMagnifierViewController.h"
 #import "NotesTabBarController.h"
 
-
-
-
 #define PLAYER_TYPE_PREF_KEY @"player_type_preference"
 #define AUDIO_TYPE_PREF_KEY @"audio_technology_preference"
 
@@ -104,7 +101,6 @@
 - (void) timeMagnifierViewControllerDidCancel:(TimeMagnifierViewController *)controller;
 - (void) textMagnifierViewControllerDidCancel:(TextMagnifierViewController *)controller;
 - (void) notesTabBarControllerDidCancel:(NotesTabBarController *)controller;
-
 
 @end
 

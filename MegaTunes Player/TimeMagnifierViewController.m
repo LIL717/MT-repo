@@ -28,11 +28,9 @@
 //    LogMethod();
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
 
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[appDelegate.colorSwitcher processImageWithName:@"background.png"]]];
     [self.magnifiedText.titleLabel setNumberOfLines: 1];
-//    [self.magnifiedText.titleLabel setMinimumFontSize: 144.];
     [self.magnifiedText.titleLabel setAdjustsFontSizeToFitWidth: YES];
     
     [self.magnifiedText setTitle: self.textToMagnify forState: UIControlStateNormal];
@@ -59,19 +57,6 @@
 
 }
 
-- (void)didReceiveMemoryWarning
-{
-//    LogMethod();
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (IBAction)cancel:(id)sender
-{
-//    LogMethod();
-    [self.delegate timeMagnifierViewControllerDidCancel:self];
-
-}
 - (void)viewWillAppear:(BOOL)animated {
     //    LogMethod();
     [super viewWillAppear: animated];
@@ -83,10 +68,23 @@
     
 }
 
+- (IBAction)cancel:(id)sender
+{
+    //    LogMethod();
+    [self.delegate timeMagnifierViewControllerDidCancel:self];
+    
+}
 - (void)viewWillDisappear:(BOOL)animated {
     //    LogMethod();
     [super viewWillDisappear: animated];
     [self.playbackTimer invalidate];
     
+}
+
+- (void)didReceiveMemoryWarning
+{
+    //    LogMethod();
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 @end

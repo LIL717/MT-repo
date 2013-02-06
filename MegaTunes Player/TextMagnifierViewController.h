@@ -21,7 +21,6 @@
 
 @property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic) IBOutlet UILabel *magnifiedLabel;
-//@property (strong, nonatomic) IBOutlet NSLayoutConstraint *labelWidth;
 
 - (IBAction)tapDetected:(UITapGestureRecognizer *)sender;
 - (IBAction)swipeDownDetected:(UISwipeGestureRecognizer *)sender;

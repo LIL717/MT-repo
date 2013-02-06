@@ -30,9 +30,6 @@
 @property (nonatomic, strong)   NotesViewController *notesViewController;
 @property (readwrite)           BOOL                    iPodLibraryChanged;
 
-
-
-
 - (UILabel *) customizeTitleView;
 
 @end
