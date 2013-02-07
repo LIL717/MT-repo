@@ -58,7 +58,6 @@
 		707862A31624D16E00871260 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 707862A21624D16E00871260 /* Settings.bundle */; };
 		707862A51626385700871260 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 707862A41626385700871260 /* CoreData.framework */; };
 		707862A81626391600871260 /* MegaTunes Player.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 707862A61626391600871260 /* MegaTunes Player.xcdatamodeld */; };
-		707862AF1626410500871260 /* MediaItemUserData.m in Sources */ = {isa = PBXBuildFile; fileRef = 707862AE1626410500871260 /* MediaItemUserData.m */; };
 		707862B21626631700871260 /* TextMagnifierViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 707862B11626631700871260 /* TextMagnifierViewController.m */; };
 		707862B51626659900871260 /* NotesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 707862B41626659900871260 /* NotesViewController.m */; };
 		707862BC1629F33A00871260 /* AutoScrollLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 707862BB1629F33A00871260 /* AutoScrollLabel.m */; };
@@ -104,6 +103,10 @@
 		70984C16163F964600CE7EA9 /* playing.png in Resources */ = {isa = PBXBuildFile; fileRef = 70984C14163F964600CE7EA9 /* playing.png */; };
 		70984C17163F964600CE7EA9 /* playing@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70984C15163F964600CE7EA9 /* playing@2x.png */; };
 		70984C221640C07A00CE7EA9 /* ItemCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 70984C211640C07A00CE7EA9 /* ItemCollection.m */; };
+		709F238A16C329C000521158 /* MediaItemUserData.m in Sources */ = {isa = PBXBuildFile; fileRef = 709F238916C329C000521158 /* MediaItemUserData.m */; };
+		709F239016C3525400521158 /* bass_fx.chm in Resources */ = {isa = PBXBuildFile; fileRef = 709F238C16C3525400521158 /* bass_fx.chm */; };
+		709F239116C3525400521158 /* bass_fx.txt in Resources */ = {isa = PBXBuildFile; fileRef = 709F238E16C3525400521158 /* bass_fx.txt */; };
+		709F239216C3525400521158 /* libbass_fx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 709F238F16C3525400521158 /* libbass_fx.a */; };
 		709FA3861658B3520082DAE5 /* SongImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 709FA3851658B3520082DAE5 /* SongImageCell.m */; };
 		70A13D861631AD8700244866 /* MediaGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70A13D851631AD8700244866 /* MediaGroupViewController.m */; };
 		70A13D8E1631B40300244866 /* MediaGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 70A13D8D1631B40300244866 /* MediaGroup.m */; };
@@ -122,7 +125,6 @@
 		70A13E0D163DD02200244866 /* libbassopus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 70A13E03163DD02200244866 /* libbassopus.a */; };
 		70A13E0E163DD02200244866 /* libbasswv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 70A13E05163DD02200244866 /* libbasswv.a */; };
 		70A13E0F163DD02200244866 /* libbass.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 70A13E06163DD02200244866 /* libbass.a */; };
-		70A13E10163DD02200244866 /* libbass.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 70A13E08163DD02200244866 /* libbass.a */; };
 		70A13E13163DD19100244866 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70A13E12163DD19000244866 /* SystemConfiguration.framework */; };
 		70A13E15163DD1AA00244866 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70A13E14163DD1AA00244866 /* CFNetwork.framework */; };
 		70A13E17163DD1BD00244866 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70A13E16163DD1BC00244866 /* Accelerate.framework */; };
@@ -260,8 +262,6 @@
 		707862A21624D16E00871260 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Settings.bundle; path = ../Settings.bundle; sourceTree = "<group>"; };
 		707862A41626385700871260 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		707862A71626391600871260 /* MegaTunes Player.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "MegaTunes Player.xcdatamodel"; sourceTree = "<group>"; };
-		707862AD1626410500871260 /* MediaItemUserData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaItemUserData.h; sourceTree = "<group>"; };
-		707862AE1626410500871260 /* MediaItemUserData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaItemUserData.m; sourceTree = "<group>"; };
 		707862B01626631700871260 /* TextMagnifierViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextMagnifierViewController.h; sourceTree = "<group>"; };
 		707862B11626631700871260 /* TextMagnifierViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextMagnifierViewController.m; sourceTree = "<group>"; };
 		707862B31626659900871260 /* NotesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotesViewController.h; sourceTree = "<group>"; };
@@ -340,6 +340,12 @@
 		70984C15163F964600CE7EA9 /* playing@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "playing@2x.png"; sourceTree = "<group>"; };
 		70984C201640C07A00CE7EA9 /* ItemCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemCollection.h; sourceTree = "<group>"; };
 		70984C211640C07A00CE7EA9 /* ItemCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemCollection.m; sourceTree = "<group>"; };
+		709F238816C329C000521158 /* MediaItemUserData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaItemUserData.h; sourceTree = "<group>"; };
+		709F238916C329C000521158 /* MediaItemUserData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaItemUserData.m; sourceTree = "<group>"; };
+		709F238C16C3525400521158 /* bass_fx.chm */ = {isa = PBXFileReference; lastKnownFileType = file; path = bass_fx.chm; sourceTree = "<group>"; };
+		709F238D16C3525400521158 /* bass_fx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bass_fx.h; sourceTree = "<group>"; };
+		709F238E16C3525400521158 /* bass_fx.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = bass_fx.txt; sourceTree = "<group>"; };
+		709F238F16C3525400521158 /* libbass_fx.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libbass_fx.a; sourceTree = "<group>"; };
 		709FA3841658B3520082DAE5 /* SongImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SongImageCell.h; sourceTree = "<group>"; };
 		709FA3851658B3520082DAE5 /* SongImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SongImageCell.m; sourceTree = "<group>"; };
 		70A13D841631AD8700244866 /* MediaGroupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaGroupViewController.h; sourceTree = "<group>"; };
@@ -495,7 +501,7 @@
 				70A13E0D163DD02200244866 /* libbassopus.a in Frameworks */,
 				70A13E0E163DD02200244866 /* libbasswv.a in Frameworks */,
 				70A13E0F163DD02200244866 /* libbass.a in Frameworks */,
-				70A13E10163DD02200244866 /* libbass.a in Frameworks */,
+				709F239216C3525400521158 /* libbass_fx.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -798,6 +804,17 @@
 			path = ThemeList;
 			sourceTree = "<group>";
 		};
+		709F238B16C3525400521158 /* bass_fx24-iphone */ = {
+			isa = PBXGroup;
+			children = (
+				709F238C16C3525400521158 /* bass_fx.chm */,
+				709F238D16C3525400521158 /* bass_fx.h */,
+				709F238E16C3525400521158 /* bass_fx.txt */,
+				709F238F16C3525400521158 /* libbass_fx.a */,
+			);
+			path = "bass_fx24-iphone";
+			sourceTree = "<group>";
+		};
 		70A13D9216320F6500244866 /* Unused */ = {
 			isa = PBXGroup;
 			children = (
@@ -824,6 +841,7 @@
 		70A13DF9163DD02100244866 /* bass24-iphone */ = {
 			isa = PBXGroup;
 			children = (
+				709F238B16C3525400521158 /* bass_fx24-iphone */,
 				70A13E11163DD10500244866 /* bass.h */,
 				70A13DFA163DD02200244866 /* bassenc */,
 				70A13DFC163DD02200244866 /* bassflac */,
@@ -897,8 +915,8 @@
 			isa = PBXGroup;
 			children = (
 				707862A61626391600871260 /* MegaTunes Player.xcdatamodeld */,
-				707862AD1626410500871260 /* MediaItemUserData.h */,
-				707862AE1626410500871260 /* MediaItemUserData.m */,
+				709F238816C329C000521158 /* MediaItemUserData.h */,
+				709F238916C329C000521158 /* MediaItemUserData.m */,
 				70984C201640C07A00CE7EA9 /* ItemCollection.h */,
 				70984C211640C07A00CE7EA9 /* ItemCollection.m */,
 				70A13D8C1631B40300244866 /* MediaGroup.h */,
@@ -1247,6 +1265,8 @@
 				7020E1DB16B218D000BAB41E /* rightButtonBackground.png in Resources */,
 				7020E1DC16B218D000BAB41E /* rightButtonBackground@2x.png in Resources */,
 				7020E1DF16B2305600BAB41E /* rightButtonBackgroundforTesting.png in Resources */,
+				709F239016C3525400521158 /* bass_fx.chm in Resources */,
+				709F239116C3525400521158 /* bass_fx.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1291,7 +1311,6 @@
 				70ADDC30161A4A7700219873 /* CollectionViewController.m in Sources */,
 				70ADDC33161AC09C00219873 /* InitialViewController.m in Sources */,
 				707862A81626391600871260 /* MegaTunes Player.xcdatamodeld in Sources */,
-				707862AF1626410500871260 /* MediaItemUserData.m in Sources */,
 				707862B21626631700871260 /* TextMagnifierViewController.m in Sources */,
 				707862B51626659900871260 /* NotesViewController.m in Sources */,
 				707862BC1629F33A00871260 /* AutoScrollLabel.m in Sources */,
@@ -1325,6 +1344,7 @@
 				700511F216ADEA7F0085B6F1 /* InCellScrollView.m in Sources */,
 				700511FA16AF19240085B6F1 /* CustomSongCell.m in Sources */,
 				7005120016AF2A9F0085B6F1 /* TemporaryViewController.m in Sources */,
+				709F238A16C329C000521158 /* MediaItemUserData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1462,7 +1482,7 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 			};
@@ -1482,7 +1502,7 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
@@ -1497,7 +1517,7 @@
 				GCC_PREFIX_HEADER = "MegaTunes Player/MegaTunes Player-Prefix.pch";
 				GCC_VERSION = "";
 				INFOPLIST_FILE = "MegaTunes Player/MegaTunes Player-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -1509,6 +1529,7 @@
 					"\"$(SRCROOT)/bass24-iphone/basswv\"",
 					"\"$(SRCROOT)/bass24-iphone\"",
 					"\"$(SRCROOT)/bass24-iphone/mp3-free\"",
+					"\"$(SRCROOT)/bass24-iphone/bass_fx24-iphone\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -1522,7 +1543,7 @@
 				GCC_PREFIX_HEADER = "MegaTunes Player/MegaTunes Player-Prefix.pch";
 				GCC_VERSION = "";
 				INFOPLIST_FILE = "MegaTunes Player/MegaTunes Player-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -1534,6 +1555,7 @@
 					"\"$(SRCROOT)/bass24-iphone/basswv\"",
 					"\"$(SRCROOT)/bass24-iphone\"",
 					"\"$(SRCROOT)/bass24-iphone/mp3-free\"",
+					"\"$(SRCROOT)/bass24-iphone/bass_fx24-iphone\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;

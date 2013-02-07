@@ -19,5 +19,9 @@
 @property (nonatomic, strong)   SongInfo *songInfo;
 
 
+@property (strong, nonatomic) IBOutlet UILabel *bpm;
+@property (strong, nonatomic) IBOutlet UILabel *userClassification;
+@property (strong, nonatomic) IBOutlet UITextView *userNotes;
+
 
 @end

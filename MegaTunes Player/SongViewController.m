@@ -16,8 +16,6 @@
 #import "SongInfo.h"
 #import "UIImage+AdditionalFunctionalities.h"
 
-//#import "bass.h"
-
 @implementation SongViewController
 
 @synthesize songTableView;
@@ -199,49 +197,7 @@
 //    
 //    [cell.infoBackground addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[button]|" options:0 metrics: 0 views:viewsDictionary]];
 //    [cell.infoBackground addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[button]|" options:0 metrics: 0 views:viewsDictionary]];
-    
 
-        
-/*****************************    //BPM   can't get this to work
-    BASS_SetConfig(BASS_CONFIG_IOS_MIXAUDIO, 0); // Disable mixing. To be called before BASS_Init.
-    
-    if (HIWORD(BASS_GetVersion()) != BASSVERSION) {
-        NSLog(@"An incorrect version of BASS was loaded");
-    }
-    
-    // Initialize default device.
-    if (!BASS_Init(-1, 44100, 0, NULL, NULL)) {
-        NSLog(@"Can't initialize device");
-        
-    }
-    
-    //NSArray *array = [NSArray arrayWithObject:@""
-    
-    NSString *respath = cell.nameLabel.text;
-    
-    DWORD chan1;
-    if(!(chan1=BASS_StreamCreateFile(FALSE, [respath UTF8String], 0, 0, BASS_SAMPLE_LOOP))) {
-        NSLog(@"Can't load stream!");
-        
-    }
-    
-    HSTREAM mainStream=BASS_StreamCreateFile(FALSE, [respath cStringUsingEncoding:NSUTF8StringEncoding], 0, 0, BASS_SAMPLE_FLOAT|BASS_STREAM_PRESCAN|BASS_STREAM_DECODE);
-    
-    float playBackDuration=BASS_ChannelBytes2Seconds(mainStream, BASS_ChannelGetLength(mainStream, BASS_POS_BYTE));
-    NSLog(@"Play back duration is %f",playBackDuration);
-    HSTREAM bpmStream=BASS_StreamCreateFile(FALSE, [respath UTF8String], 0, 0, BASS_STREAM_PRESCAN|BASS_SAMPLE_FLOAT|BASS_STREAM_DECODE);
-    //BASS_ChannelPlay(bpmStream,FALSE);
-    float BpmValue= BASS_FX_BPM_DecodeGet(bpmStream,0.0,
-                                    playBackDuration,
-                                    MAKELONG(45,256),
-                                    BASS_FX_BPM_MULT2,
-                                    NULL);
-    NSLog(@"BPM is %f",BpmValue);
-
-    //this is always null
-    cell.BPM.text = [[song valueForProperty: MPMediaItemPropertyBeatsPerMinute] stringValue];
-    NSLog (@"%d", [[song valueForProperty: MPMediaItemPropertyBeatsPerMinute]  intValue]);
-*********************************************/
     //playback duration of the song
     
     long playbackDuration = [[song valueForProperty: MPMediaItemPropertyPlaybackDuration] longValue];

@@ -8,7 +8,8 @@
 @class CollectionItem;
 @class SongInfo;
 
-@interface SongViewController : UIViewController <UITableViewDelegate, UITableViewDataSource,MPMediaPickerControllerDelegate> {
+@interface SongViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MPMediaPickerControllerDelegate> {
+  
     NSManagedObjectContext *managedObjectContext;
 
 }

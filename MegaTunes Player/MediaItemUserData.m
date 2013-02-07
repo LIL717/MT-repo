@@ -2,17 +2,20 @@
 //  MediaItemUserData.m
 //  MegaTunes Player
 //
-//  Created by Lori Hill on 10/10/12.
+//  Created by Lori Hill on 2/6/13.
 //
 //
 
 #import "MediaItemUserData.h"
 
+
 @implementation MediaItemUserData
 
 @dynamic title;
-@dynamic playbackDuration;
 @dynamic userClassification;
 @dynamic userNotes;
+@dynamic persistentID;
+@dynamic lastPlayedDate;
+@dynamic bpm;
 
 @end
