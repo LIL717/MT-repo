@@ -11,15 +11,12 @@
 #import "TextMagnifierViewController.h"
 #import "NotesTabBarController.h"
 
-#define PLAYER_TYPE_PREF_KEY @"player_type_preference"
-#define AUDIO_TYPE_PREF_KEY @"audio_technology_preference"
+//#define AUDIO_TYPE_PREF_KEY @"audio_technology_preference"
 
 #import <AVFoundation/AVFoundation.h>
 #import <AudioToolbox/AudioToolbox.h>
 
 #import "AutoScrollLabel.h"
-#import "SongInfo.h"
-
 
 @interface MainViewController : UIViewController <MPMediaPickerControllerDelegate, AVAudioPlayerDelegate, TimeMagnifierViewControllerDelegate, TextMagnifierViewControllerDelegate, NotesTabBarControllerDelegate, NSFetchedResultsControllerDelegate> {
     
@@ -54,7 +51,7 @@
 @property (nonatomic, strong)   MPMediaItem             *itemToPlay;
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, retain) NSManagedObjectContext    *managedObjectContext;
-@property (nonatomic, strong)   SongInfo                *songInfo;
+@property (nonatomic, strong)   MPMediaItem             *mediaItemForInfo;
 @property (readwrite)           BOOL                    iPodLibraryChanged;
 @property (readwrite)           BOOL                    showPlaylistRemaining;
 @property (nonatomic, strong)   MPMediaItem             *savedNowPlaying;

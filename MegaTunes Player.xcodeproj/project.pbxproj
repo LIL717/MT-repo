@@ -21,7 +21,7 @@
 		702B4151165741E0004A9265 /* note_48.png in Resources */ = {isa = PBXBuildFile; fileRef = 702B4150165741E0004A9265 /* note_48.png */; };
 		702B4153165742BF004A9265 /* note_24.png in Resources */ = {isa = PBXBuildFile; fileRef = 702B4152165742BF004A9265 /* note_24.png */; };
 		702B4155165742DC004A9265 /* info_24.png in Resources */ = {isa = PBXBuildFile; fileRef = 702B4154165742DC004A9265 /* info_24.png */; };
-		702B4158165743AB004A9265 /* SongInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 702B4157165743AB004A9265 /* SongInfo.m */; };
+		702B4158165743AB004A9265 /* UserDataForMediaItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 702B4157165743AB004A9265 /* UserDataForMediaItem.m */; };
 		702B415E16585120004A9265 /* SongInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 702B415D16585120004A9265 /* SongInfoCell.m */; };
 		702B62B81652DB7B00A23A70 /* megaMenu-bar.png in Resources */ = {isa = PBXBuildFile; fileRef = 702B62B51652DB7B00A23A70 /* megaMenu-bar.png */; };
 		702B62B91652DB7B00A23A70 /* megaMenu-bar-landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 702B62B61652DB7B00A23A70 /* megaMenu-bar-landscape.png */; };
@@ -140,8 +140,6 @@
 		70A4B73116974D2400C84293 /* bigshuffle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70A4B72D16974D2400C84293 /* bigshuffle@2x.png */; };
 		70A4B73416974E9B00C84293 /* arrow_left_48_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 70A4B73216974E9B00C84293 /* arrow_left_48_white.png */; };
 		70A4B73516974E9B00C84293 /* arrow_left_58_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 70A4B73316974E9B00C84293 /* arrow_left_58_white.png */; };
-		70A4B73816974F5100C84293 /* arrow_left_48_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 70A4B73616974F5100C84293 /* arrow_left_48_white.png */; };
-		70A4B73916974F5100C84293 /* arrow_left_58_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 70A4B73716974F5100C84293 /* arrow_left_58_white.png */; };
 		70A4B73F16978C8100C84293 /* redWhitePlay68.png in Resources */ = {isa = PBXBuildFile; fileRef = 70A4B73E16978C8100C84293 /* redWhitePlay68.png */; };
 		70A4B74116978DAD00C84293 /* redWhitePlay57.png in Resources */ = {isa = PBXBuildFile; fileRef = 70A4B74016978DAD00C84293 /* redWhitePlay57.png */; };
 		70A4B74F169804D200C84293 /* noAlbumImage320.png in Resources */ = {isa = PBXBuildFile; fileRef = 70A4B74E169804D200C84293 /* noAlbumImage320.png */; };
@@ -212,8 +210,8 @@
 		702B4150165741E0004A9265 /* note_48.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = note_48.png; sourceTree = "<group>"; };
 		702B4152165742BF004A9265 /* note_24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = note_24.png; sourceTree = "<group>"; };
 		702B4154165742DC004A9265 /* info_24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = info_24.png; sourceTree = "<group>"; };
-		702B4156165743AB004A9265 /* SongInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SongInfo.h; sourceTree = "<group>"; };
-		702B4157165743AB004A9265 /* SongInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SongInfo.m; sourceTree = "<group>"; };
+		702B4156165743AB004A9265 /* UserDataForMediaItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserDataForMediaItem.h; sourceTree = "<group>"; };
+		702B4157165743AB004A9265 /* UserDataForMediaItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserDataForMediaItem.m; sourceTree = "<group>"; };
 		702B415C16585120004A9265 /* SongInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SongInfoCell.h; path = ../SongInfoCell.h; sourceTree = "<group>"; };
 		702B415D16585120004A9265 /* SongInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SongInfoCell.m; path = ../SongInfoCell.m; sourceTree = "<group>"; };
 		702B62B51652DB7B00A23A70 /* megaMenu-bar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "megaMenu-bar.png"; path = "../megaMenu-bar.png"; sourceTree = "<group>"; };
@@ -937,10 +935,10 @@
 				707862BB1629F33A00871260 /* AutoScrollLabel.m */,
 				70A13DDD1636345900244866 /* DTCustomColoredAccessory.h */,
 				70A13DDE1636345E00244866 /* DTCustomColoredAccessory.m */,
-				702B4156165743AB004A9265 /* SongInfo.h */,
-				702B4157165743AB004A9265 /* SongInfo.m */,
 				702B415C16585120004A9265 /* SongInfoCell.h */,
 				702B415D16585120004A9265 /* SongInfoCell.m */,
+				702B4156165743AB004A9265 /* UserDataForMediaItem.h */,
+				702B4157165743AB004A9265 /* UserDataForMediaItem.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1120,7 +1118,7 @@
 		7060521E14F88D43001A1CDB /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0450;
+				LastUpgradeCheck = 0460;
 			};
 			buildConfigurationList = 7060522114F88D43001A1CDB /* Build configuration list for PBXProject "MegaTunes Player" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1255,8 +1253,6 @@
 				70A4B73116974D2400C84293 /* bigshuffle@2x.png in Resources */,
 				70A4B73416974E9B00C84293 /* arrow_left_48_white.png in Resources */,
 				70A4B73516974E9B00C84293 /* arrow_left_58_white.png in Resources */,
-				70A4B73816974F5100C84293 /* arrow_left_48_white.png in Resources */,
-				70A4B73916974F5100C84293 /* arrow_left_58_white.png in Resources */,
 				70A4B73F16978C8100C84293 /* redWhitePlay68.png in Resources */,
 				70A4B74116978DAD00C84293 /* redWhitePlay57.png in Resources */,
 				70A4B74F169804D200C84293 /* noAlbumImage320.png in Resources */,
@@ -1336,7 +1332,7 @@
 				7071DF90164D6D0200942E6A /* CustomNavigationBar.m in Sources */,
 				702B4149165714E7004A9265 /* NotesTabBarController.m in Sources */,
 				702B414D165715C2004A9265 /* SongInfoViewController.m in Sources */,
-				702B4158165743AB004A9265 /* SongInfo.m in Sources */,
+				702B4158165743AB004A9265 /* UserDataForMediaItem.m in Sources */,
 				702B415E16585120004A9265 /* SongInfoCell.m in Sources */,
 				709FA3861658B3520082DAE5 /* SongImageCell.m in Sources */,
 				70C1779E166DB86A00792D8F /* UIImage+AdditionalFunctionalities.m in Sources */,
@@ -1468,6 +1464,10 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1481,6 +1481,7 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PROVISIONING_PROFILE = "";
@@ -1494,6 +1495,10 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
@@ -1501,6 +1506,7 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
@@ -1517,7 +1523,7 @@
 				GCC_PREFIX_HEADER = "MegaTunes Player/MegaTunes Player-Prefix.pch";
 				GCC_VERSION = "";
 				INFOPLIST_FILE = "MegaTunes Player/MegaTunes Player-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -1531,6 +1537,8 @@
 					"\"$(SRCROOT)/bass24-iphone/mp3-free\"",
 					"\"$(SRCROOT)/bass24-iphone/bass_fx24-iphone\"",
 				);
+				LINK_WITH_STANDARD_LIBRARIES = YES;
+				OTHER_LDFLAGS = "-lstdc++";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1543,7 +1551,7 @@
 				GCC_PREFIX_HEADER = "MegaTunes Player/MegaTunes Player-Prefix.pch";
 				GCC_VERSION = "";
 				INFOPLIST_FILE = "MegaTunes Player/MegaTunes Player-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -1557,6 +1565,8 @@
 					"\"$(SRCROOT)/bass24-iphone/mp3-free\"",
 					"\"$(SRCROOT)/bass24-iphone/bass_fx24-iphone\"",
 				);
+				LINK_WITH_STANDARD_LIBRARIES = YES;
+				OTHER_LDFLAGS = "-lstdc++";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

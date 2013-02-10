@@ -6,7 +6,6 @@
 //
 //
 @class CollectionItem;
-@class SongInfo;
 
 @interface SongViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MPMediaPickerControllerDelegate> {
   
@@ -18,7 +17,7 @@
 @property (nonatomic, retain)   NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong)   CollectionItem *collectionItem;
 @property (nonatomic, strong)	MPMusicPlayerController	*musicPlayer;
-@property (nonatomic, strong)   SongInfo *songInfo;
+@property (nonatomic, strong)   MPMediaItem *mediaItemForInfo;
 @property (nonatomic, strong)   MPMediaItem *itemToPlay;
 @property (readwrite)           BOOL iPodLibraryChanged;
 

@@ -8,7 +8,6 @@
 
 #import "SongInfoViewController.h"
 #import "AppDelegate.h"
-#import "SongInfo.h"
 #import "SongInfoCell.h"
 #import "UIImage+AdditionalFunctionalities.h"
 
@@ -21,11 +20,15 @@
 
 @synthesize managedObjectContext;
 @synthesize musicPlayer;
-@synthesize songInfo;
+@synthesize mediaItemForInfo;
 
 @synthesize infoTableView;
 @synthesize albumImageView;
 @synthesize songInfoData;
+@synthesize songName;
+@synthesize album;
+@synthesize artist;
+@synthesize albumImage;
 
 - (void)viewDidLoad
 {
@@ -38,29 +41,33 @@
 	// Do any additional setup after loading the view, typically from a nib.
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
     
+    //get the specific info from the 
+    
+    self.songName = [self.mediaItemForInfo valueForProperty:  MPMediaItemPropertyTitle];
+    self.album = [self.mediaItemForInfo valueForProperty:  MPMediaItemPropertyAlbumTitle];
+    self.artist = [self.mediaItemForInfo valueForProperty:  MPMediaItemPropertyArtist];
+    MPMediaItemArtwork *artWork = [self.mediaItemForInfo valueForProperty:MPMediaItemPropertyArtwork];
+    self.albumImage = [artWork imageWithSize:CGSizeMake(200, 200)];
+    
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 320)];
-    if (!self.songInfo.albumImage) {
+    if (!self.albumImage) {
         [imageView setImage:[UIImage imageNamed:@"noAlbumImage320.png"]];
     } else {
-        [imageView setImage:self.songInfo.albumImage];
+        [imageView setImage:self.albumImage];
     }
     [self.albumImageView addSubview:imageView];
     
-    //    NSLog (@" in SongInfo  self.songInfo.songName = %@", self.songInfo.songName);
-    //    NSLog (@" in SongInfo  self.songInfo.album = %@", self.songInfo.album);
-    //    NSLog (@" in SongInfo  self.songInfo.artist = %@", self.songInfo.artist);
-    
-    if (!self.songInfo.artist) {
-        self.songInfo.artist = @"Unknown";
+    if (!self.artist) {
+        self.artist = @"Unknown";
     }
-    if (!self.songInfo.songName) {
-        self.songInfo.songName = @"Unknown";
+    if (!self.songName) {
+        self.songName = @"Unknown";
     }
-    if (!self.songInfo.album) {
-        self.songInfo.album = @"Unknown";
+    if (!self.album) {
+        self.album = @"Unknown";
     }
     
-    self.songInfoData = [NSArray arrayWithObjects: self.songInfo.artist, self.songInfo.songName, self.songInfo.album, nil];
+    self.songInfoData = [NSArray arrayWithObjects: self.artist, self.songName, self.album, nil];
     
     UIImage *unselectedImage0 = [UIImage imageNamed:@"unselectedTabInfoButton.png"];
     UIImage *selectedImage0 = [UIImage imageNamed:@"selectedTabInfoButton.png"];

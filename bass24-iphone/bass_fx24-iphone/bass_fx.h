@@ -349,6 +349,8 @@ enum {
 
 typedef void (CALLBACK BPMPROCESSPROC)(DWORD chan, float percent, void *user);
 typedef void (CALLBACK BPMPROC)(DWORD chan, float bpm, void *user);
+      
+
 
 float BASS_FXDEF(BASS_FX_BPM_DecodeGet)(DWORD chan, double startSec, double endSec, DWORD minMaxBPM, DWORD flags, BPMPROCESSPROC *proc, void *user);
 BOOL BASS_FXDEF(BASS_FX_BPM_CallbackSet)(DWORD handle, BPMPROC *proc, double period, DWORD minMaxBPM, DWORD flags, void *user);

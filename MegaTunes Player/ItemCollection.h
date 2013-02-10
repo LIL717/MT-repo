@@ -8,6 +8,7 @@
 @class CollectionItem;
 
 @interface ItemCollection : NSManagedObject <NSFetchedResultsControllerDelegate> {
+   
     NSManagedObjectContext *managedObjectContext_;
 }
 @property (nonatomic, retain) NSString *name;
@@ -19,7 +20,7 @@
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 
 - (void)addCollectionToCoreData:(CollectionItem *) collectionItem;
-- (CollectionItem *) containsItem: (NSString *) playingSong;
+- (CollectionItem *) containsItem: (NSNumber *) playingSong;
 - (void)removeCollectionFromCoreData;
 
 @end

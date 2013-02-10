@@ -8,11 +8,14 @@
 
 #import "NotesViewController.h"
 #import "AppDelegate.h"
-#import "SongInfo.h"
+#import "MediaItemUserData.h"
+#import "UserDataForMediaItem.h"
 
 
 #import "bass.h"
 #import "bass_fx.h" 
+#import <AudioToolbox/AudioToolbox.h> // for the core audio constants
+
 
 @interface NotesViewController ()
 
@@ -23,11 +26,13 @@
 @synthesize fetchedResultsController;
 @synthesize managedObjectContext;
 @synthesize musicPlayer;
-@synthesize songInfo;
+@synthesize mediaItemForInfo;
 
+@synthesize userDataForMediaItem;
 @synthesize bpm;
 @synthesize userClassification;
 @synthesize userNotes;
+@synthesize lastPlayedDate;
 
 
 - (void)viewDidLoad
@@ -39,60 +44,52 @@
     //    [[UITabBar appearance] setSelectionIndicatorImage:emptyImage];
     
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
-    [self determineBPM];
     
-}
-- (void) determineBPM {
-    //****************************    //BPM   can't get this to work
-    BASS_SetConfig(BASS_CONFIG_IOS_MIXAUDIO, 0); // Disable mixing. To be called before BASS_Init.
+    musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
     
-    if (HIWORD(BASS_GetVersion()) != BASSVERSION) {
-        NSLog(@"An incorrect version of BASS was loaded");
+    //check to see if there is user data for this media item
+    MediaItemUserData *mediaItemUserData = [MediaItemUserData alloc];
+    mediaItemUserData.managedObjectContext = self.managedObjectContext;
+    
+    self.userDataForMediaItem = [mediaItemUserData containsItem: [mediaItemForInfo valueForProperty: MPMediaItemPropertyPersistentID]];
+    
+    //if there is an MPMediaItemPropertyBeatsPerMinute value, use that, otherwise see if one has been stored in User Data and if not, then calculate one (will be stored in user data when this view is deallocated)
+    if ([[self.mediaItemForInfo valueForProperty: MPMediaItemPropertyBeatsPerMinute]  intValue] > 0) {
+        //save this value in userDataForMediaItem in Core Data
+        self.userDataForMediaItem.bpm = [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyBeatsPerMinute];
+        NSLog (@"Apple's BPM %d", [[self.mediaItemForInfo valueForProperty: MPMediaItemPropertyBeatsPerMinute]  intValue]);
+    } else {
+        if (self.userDataForMediaItem.bpm > 0) {
+            NSLog (@"User's BPM %d", [self.userDataForMediaItem.bpm intValue]);
+        } else {
+            [self calculateBPM];
+            //self.userDataForMediaItem.bpm is set when it is calculated
+        }
     }
+    self.bpm.text = [[NSString alloc] initWithFormat:@"%2@ BPM", self.userDataForMediaItem.bpm];
+    self.userClassification.text = self.userDataForMediaItem.userClassification;
+    self.userNotes.text = self.userDataForMediaItem.userNotes;
     
-    // Initialize default device.
-    if (!BASS_Init(-1, 44100, 0, NULL, NULL)) {
-        NSLog(@"Can't initialize device");
-        
-    }
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateStyle:NSDateFormatterShortStyle];
+    [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
     
-    //NSArray *array = [NSArray arrayWithObject:@""
+    NSDate *date = self.userDataForMediaItem.lastPlayedDate;
     
-    NSString *respath = self.songInfo.songName;
-    
-    DWORD chan1;
-    if(!(chan1=BASS_StreamCreateFile(FALSE, [respath UTF8String], 0, 0, BASS_SAMPLE_LOOP))) {
-        NSLog(@"Can't load stream!");
-        
-    }
-    
-    HSTREAM mainStream=BASS_StreamCreateFile(FALSE, [respath cStringUsingEncoding:NSUTF8StringEncoding], 0, 0, BASS_SAMPLE_FLOAT|BASS_STREAM_PRESCAN|BASS_STREAM_DECODE);
-    
-    float playBackDuration=BASS_ChannelBytes2Seconds(mainStream, BASS_ChannelGetLength(mainStream, BASS_POS_BYTE));
-    NSLog(@"Play back duration is %f",playBackDuration);
-    HSTREAM bpmStream=BASS_StreamCreateFile(FALSE, [respath UTF8String], 0, 0, BASS_STREAM_PRESCAN|BASS_SAMPLE_FLOAT|BASS_STREAM_DECODE);
-    BASS_ChannelPlay(bpmStream,FALSE);
-    float BpmValue= BASS_FX_BPM_DecodeGet(bpmStream,0.0,
-                                          playBackDuration,
-                                          MAKELONG(45,256),
-                                          BASS_FX_BPM_MULT2,
-                                          NULL);
-    NSLog(@"BPM is %f",BpmValue);
-    
-    //this is a user-Entered field - so would need to pass MediaItem to use it, maybe display this if its available or the calculated one if not.
-//    self.bmp.text = [[song valueForProperty: MPMediaItemPropertyBeatsPerMinute] stringValue];
-//    NSLog (@"%d", [[song valueForProperty: MPMediaItemPropertyBeatsPerMinute]  intValue]);
-    //     *********************************************/
+    NSString *formattedDateString = [dateFormatter stringFromDate:date];
+    NSLog(@"formattedDateString: %@", formattedDateString);
+    // Output for locale en_US: "formattedDateString: 10/31/13".
+    self.lastPlayedDate.text = formattedDateString;
 }
 - (void) viewWillAppear:(BOOL)animated
 {
     LogMethod();
     [super viewWillAppear: animated];
-
-//    NSLog (@"tabBarItem.title is %@", self.tabBarItem.title);
-//    self.title = @"Notes";
-//    self.navigationItem.titleView = [self customizeTitleView];
-//    NSLog (@"self.navigationItem.titleview is %@", self.navigationItem.titleView);
+    
+    //    NSLog (@"tabBarItem.title is %@", self.tabBarItem.title);
+    //    self.title = @"Notes";
+    //    self.navigationItem.titleView = [self customizeTitleView];
+    //    NSLog (@"self.navigationItem.titleview is %@", self.navigationItem.titleView);
     
 }
 - (UILabel *) customizeTitleView
@@ -110,13 +107,150 @@
     return label;
 }
 
+-(void) calculateBPM {
+    LogMethod();
+    
+    NSURL *url = [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyAssetURL];
+    
+    AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL: url options:nil];
+
+    AVAssetExportSession *exporter = [[AVAssetExportSession alloc] initWithAsset: songAsset
+                                                                      presetName: AVAssetExportPresetPassthrough];
+//                                                                      presetName: AVAssetExportPresetAppleM4A];
+    NSLog (@"created exporter. supportedFileTypes: %@", exporter.supportedFileTypes);
+
+    exporter.outputFileType = @"com.apple.m4a-audio";
+    
+    NSString *exportFile = [myDocumentsDirectory() stringByAppendingPathComponent:
+                            @"exported.m4a"];
+   
+    myDeleteFile(exportFile);
+
+    NSURL *exportURL = [NSURL fileURLWithPath:exportFile];
+    
+
+    exporter.outputURL = exportURL;
+    
+   
+    // do the export
+    [exporter exportAsynchronouslyWithCompletionHandler:^{
+        int exportStatus = exporter.status;
+        switch (exportStatus) {
+            case AVAssetExportSessionStatusFailed: {
+                NSError *exportError = exporter.error;
+                NSLog (@"AVAssetExportSessionStatusFailed: %@",exportError);
+                break;
+            }
+            case AVAssetExportSessionStatusCompleted: {
+                NSLog (@"AVAssetExportSessionStatusCompleted");
+                [self continueCalculatingBPM];
+                break;
+            }
+            case AVAssetExportSessionStatusUnknown: {
+                NSLog (@"AVAssetExportSessionStatusUnknown"); break;}
+            case AVAssetExportSessionStatusExporting: {
+                NSLog (@"AVAssetExportSessionStatusExporting"); break;}
+            case AVAssetExportSessionStatusCancelled: {
+                NSLog (@"AVAssetExportSessionStatusCancelled"); break;}
+            case AVAssetExportSessionStatusWaiting: {
+                NSLog (@"AVAssetExportSessionStatusWaiting"); break;}
+            default: { NSLog (@"didn't get export status"); break;}
+        }
+    }];
+    return;
+}
+#pragma mark conveniences
+NSString* myDocumentsDirectory() {
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	return [paths objectAtIndex:0];;
+}
+void myDeleteFile (NSString* path) {
+	if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
+		NSError *deleteErr = nil;
+		[[NSFileManager defaultManager] removeItemAtPath:path error:&deleteErr];
+		if (deleteErr) {
+			NSLog (@"Can't delete %@: %@", path, deleteErr);
+		}
+	}
+}
+- (void) continueCalculatingBPM {
+    LogMethod();
+
+    BASS_SetConfig(BASS_CONFIG_IOS_MIXAUDIO, 0); // Disable mixing. To be called before BASS_Init.
+    
+    if (HIWORD(BASS_GetVersion()) != BASSVERSION) {
+        NSLog(@"An incorrect version of BASS was loaded");
+    }
+    
+    // Initialize default device.
+    if (!BASS_Init(-1, 44100, 0, NULL, NULL)) {
+        NSLog(@"Can't initialize device");
+        
+    }
+    
+    NSString *respath = [myDocumentsDirectory() stringByAppendingPathComponent: @"exported.m4a"];
+    NSError *error = nil;
+    NSString *str = [NSString stringWithContentsOfFile:respath encoding:NSUTF8StringEncoding error:&error];
+    if (error != nil) {
+        NSLog(@"There was an error: %@", [error description]);
+    } else {
+        NSLog(@"respath file data: %@", str);
+    }
+//    NSLog (@" respath is %@", respath);
+    
+    DWORD chan1;
+    if(!(chan1=BASS_StreamCreateFile(FALSE, [respath UTF8String], 0, 0, BASS_SAMPLE_LOOP))) {
+        NSLog(@"Can't load stream!");
+    }
+    
+    HSTREAM mainStream=BASS_StreamCreateFile(FALSE, [respath cStringUsingEncoding:NSUTF8StringEncoding], 0, 0, BASS_SAMPLE_FLOAT|BASS_STREAM_PRESCAN|BASS_STREAM_DECODE);
+    
+    float playBackDuration=BASS_ChannelBytes2Seconds(mainStream, BASS_ChannelGetLength(mainStream, BASS_POS_BYTE));
+    NSLog(@"Play back duration is %f",playBackDuration);
+    HSTREAM bpmStream=BASS_StreamCreateFile(FALSE, [respath UTF8String], 0, 0, BASS_STREAM_PRESCAN|BASS_SAMPLE_FLOAT|BASS_STREAM_DECODE);
+    BASS_ChannelPlay(bpmStream,FALSE);
+    //    BPMPROCESSPROC *proc = (bpmStream, 1.0, NULL);
+    float BpmValue= BASS_FX_BPM_DecodeGet(bpmStream,
+                                          0.0,
+                                          playBackDuration,
+                                          MAKELONG(45,256),
+                                          BASS_FX_BPM_MULT2,
+                                          NULL,
+                                          NULL);
+    if (BpmValue > 0) {
+        self.bpm.text = [[NSString alloc] initWithFormat:@"%02.0f BPM", BpmValue];
+    }
+    //fill in bpm for Core Data - if we went through here there was neither a bpm existing on the mediaItem or a previously calculated bpm
+    userDataForMediaItem.bpm = [NSNumber numberWithFloat: BpmValue];
+    NSLog(@"BPM is %f",BpmValue);
+    
+}
+- (void)viewWillDisappear:(BOOL)animated {
+    
+    //should this be on dealloc instead??
+    LogMethod();
+    [super viewWillDisappear: animated];
+    
+
+}
+- (void)dealloc {
+    LogMethod();
+    //update or add object to Core Data
+    MediaItemUserData *mediaItemUserData = [MediaItemUserData alloc];
+    mediaItemUserData.managedObjectContext = self.managedObjectContext;
+    
+    self.userDataForMediaItem.title = [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyTitle];
+    self.userDataForMediaItem.persistentID = [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyPersistentID];
+    self.userDataForMediaItem.userClassification = self.userClassification.text;
+    self.userDataForMediaItem.userNotes = self.userNotes.text;
+    [mediaItemUserData addMediaItemToCoreData: self.userDataForMediaItem];
+    
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-
-
 
 @end

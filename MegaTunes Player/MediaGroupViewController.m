@@ -8,7 +8,6 @@
 
 #import "MediaGroupViewController.h"
 #import "CollectionViewController.h"
-#import "AppDelegate.h"
 #import "MediaGroup.h"
 #import "MediaGroupCell.h"
 #import "SongViewController.h"
@@ -39,16 +38,8 @@
 
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
     
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-    if ([appDelegate useiPodPlayer]) {
-        musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
-        NSLog (@"iPod");
-    } else {
-        musicPlayer = [MPMusicPlayerController applicationMusicPlayer];
-        NSLog (@"app");
-    }
-    
+    musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
+
     [self registerForMediaPlayerNotifications];
 }
 -(void) loadGroupingData
@@ -184,10 +175,10 @@
 	[tableView deselectRowAtIndexPath: indexPath animated: YES];
     
     self.selectedGroup = [self.groupingData objectAtIndex:indexPath.row];
-    if (selectedGroup.name == @"Songs") {
+    if ([selectedGroup.name isEqualToString: @"Songs"]) {
         [self performSegueWithIdentifier: @"ViewSongCollection" sender: self];
     } else
-        if (selectedGroup.name == @"Compilations") {
+        if ([selectedGroup.name isEqualToString: @"Compilations"]) {
             [self performSegueWithIdentifier: @"ViewSongCollection" sender: self];
         } else
         {

@@ -299,15 +299,15 @@ static const NSUInteger kNavigationBarHeight = 60;
     [[UISlider appearance] setThumbImage:thumbImage
                                 forState:UIControlStateHighlighted];
 }
-// Returns whether or not to use the iPod music player instead of the application music player.
-- (BOOL) useiPodPlayer {
-    //      LogMethod();
-	if ([[NSUserDefaults standardUserDefaults] boolForKey: PLAYER_TYPE_PREF_KEY]) {
-		return YES;
-	} else {
-		return NO;
-	}
-}
+//// Returns whether or not to use the iPod music player instead of the application music player.
+//- (BOOL) useiPodPlayer {
+//    //      LogMethod();
+//	if ([[NSUserDefaults standardUserDefaults] boolForKey: PLAYER_TYPE_PREF_KEY]) {
+//		return YES;
+//	} else {
+//		return NO;
+//	}
+//}
 // Returns whether to show the playlist remaining time in the player
 - (BOOL) showPlaylistRemaining {
     //      LogMethod();

@@ -11,9 +11,7 @@
 #import "SongCell.h"
 #import "inCellScrollView.h"
 #import "CollectionItem.h"
-#import "AppDelegate.h"
 #import "ItemCollection.h"
-#import "SongInfo.h"
 #import "UIImage+AdditionalFunctionalities.h"
 
 @implementation SongViewController
@@ -22,7 +20,7 @@
 @synthesize collectionItem;
 @synthesize musicPlayer;
 @synthesize managedObjectContext;
-@synthesize songInfo;
+@synthesize mediaItemForInfo;
 @synthesize itemToPlay;
 @synthesize iPodLibraryChanged;         //A flag indicating whether the library has been changed due to a sync
 
@@ -49,16 +47,9 @@
     [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage48 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage58 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
     
-    //ipod or app player
-    
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-    if ([appDelegate useiPodPlayer]) {
-        musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
-    } else {
-        musicPlayer = [MPMusicPlayerController applicationMusicPlayer];
-    }
-    
+
+    musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
+
     //    self.currentQueue = self.mainViewController.userMediaItemCollection;
     
     //    NSArray *returnedQueue = [self.currentQueue items];
@@ -281,7 +272,7 @@
        SongInfoViewController *songInfoViewController = segue.destinationViewController;
         songInfoViewController.managedObjectContext = self.managedObjectContext;
 //        songInfoViewController.title = @"Info";
-        songInfoViewController.songInfo = songInfo;
+        songInfoViewController.mediaItemForInfo = self.mediaItemForInfo;
         
 	}
     	if ([segue.identifier isEqualToString:@"PlaySong"])
@@ -340,12 +331,7 @@
     
     MPMediaItem *song = [[self.collectionItem.collection items] objectAtIndex:indexPath.row];
     
-    self.songInfo = [[SongInfo alloc] init];
-    self.songInfo.songName = [song valueForProperty:  MPMediaItemPropertyTitle];
-    self.songInfo.album = [song valueForProperty:  MPMediaItemPropertyAlbumTitle];
-    self.songInfo.artist = [song valueForProperty:  MPMediaItemPropertyArtist];
-    MPMediaItemArtwork *artWork = [song valueForProperty:MPMediaItemPropertyArtwork];
-    self.songInfo.albumImage = [artWork imageWithSize:CGSizeMake(200, 200)];
+    self.mediaItemForInfo = song;
     
     [self performSegueWithIdentifier: @"ViewInfo" sender: self];
 }

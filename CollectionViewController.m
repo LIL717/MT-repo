@@ -10,7 +10,6 @@
 #import "CollectionItemCell.h"
 #import "CollectionItem.h"
 #import "SongViewController.h"
-#import "AppDelegate.h"
 #import "DTCustomColoredAccessory.h"
 #import "MainViewController.h"
 #import "InCellScrollView.h"
@@ -48,15 +47,8 @@
     UIImage *menuBarImage58 = [[UIImage imageNamed:@"arrow_left_58_white.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
     [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage48 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage58 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-    if ([appDelegate useiPodPlayer]) {
-        musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
-        NSLog (@"iPod");
-    } else {
-        musicPlayer = [MPMusicPlayerController applicationMusicPlayer];
-        NSLog (@"app");
-    }
+
+    musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
     
     [self registerForMediaPlayerNotifications];
     
@@ -68,7 +60,6 @@
     
     self.navigationItem.titleView = [self customizeTitleView];
   
-
     NSString *playingItem = [[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyTitle];
     
     if (playingItem) {
@@ -154,23 +145,23 @@
     
     MPMediaItemCollection *currentQueue = [MPMediaItemCollection collectionWithItems: [[self.collection objectAtIndex:indexPath.row] items]];    
 
-    if (self.collectionType == @"Playlists") {
+    if ([self.collectionType isEqualToString: @"Playlists"]) {
         MPMediaPlaylist  *mediaPlaylist = [self.collection objectAtIndex:indexPath.row];
         cell.nameLabel.text = [mediaPlaylist valueForProperty: MPMediaPlaylistPropertyName];
     }
-    if (self.collectionType == @"Artists") {
+    if ([self.collectionType isEqualToString: @"Artists"]) {
         cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyArtist];
     }
-    if (self.collectionType == @"Albums") {
+    if ([self.collectionType isEqualToString: @"Albums"]) {
         cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyAlbumTitle];
     }
-    if (self.collectionType == @"Composers") {
+    if ([self.collectionType isEqualToString: @"Composers"]) {
         cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyComposer];
     }
-    if (self.collectionType == @"Genres") {
+    if ([self.collectionType isEqualToString: @"Genres"]) {
         cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyGenre];
     }
-    if (self.collectionType == @"Podcasts") {
+    if ([self.collectionType isEqualToString: @"Podcasts"]) {
         cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyPodcastTitle];
     }
     if (cell.nameLabel.text == nil) {
@@ -360,6 +351,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver: self
 													name: MPMusicPlayerControllerPlaybackStateDidChangeNotification
 												  object: musicPlayer];
+
     [[MPMediaLibrary defaultMediaLibrary] endGeneratingLibraryChangeNotifications];
     [musicPlayer endGeneratingPlaybackNotifications];
 

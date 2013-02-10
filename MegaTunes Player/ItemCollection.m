@@ -47,9 +47,7 @@
     }
     
 }
-//- (CollectionItem *) containsItem: (NSString *) playingSong
 - (CollectionItem *) containsItem: (NSNumber *) playingSong
-
 
 {
     BOOL itemFound;
@@ -86,18 +84,9 @@
                 }
             }
     }
-    //if the item wasn't found, need to delete the queue because a different collection is playing
-    if (itemFound) {
+
         return [fetchedObjects objectAtIndex:0];
-    } else {
-        [self removeCollectionFromCoreData];
-        CollectionItem *returnEmpty = [CollectionItem alloc];
-        returnEmpty.name  = @"";
-        returnEmpty.duration = nil;
-        returnEmpty.lastPlayedDate = nil;
-        returnEmpty.collection = nil;
-        return returnEmpty;
-    }
+
 }
 
 - (void)removeCollectionFromCoreData {

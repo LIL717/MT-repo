@@ -9,7 +9,6 @@
 #import "NotesTabBarController.h"
 #import "Appdelegate.h"
 #import "MainViewController.h"
-#import "SongInfo.h"
 #import "SongInfoViewController.h"
 #import "NotesViewController.h"
 
@@ -22,12 +21,11 @@
 
 @synthesize managedObjectContext;
 @synthesize musicPlayer;
-@synthesize songInfo;
 @synthesize songInfoViewController;
 @synthesize notesViewController;
 @synthesize notesDelegate;
 @synthesize iPodLibraryChanged;         //A flag indicating whether the library has been changed due to a sync
-
+@synthesize mediaItemForInfo;
 
 - (void)viewDidLoad
 {
@@ -52,7 +50,7 @@
     [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage58 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
     
     self.songInfoViewController = [[self viewControllers] objectAtIndex:0];
-    self.songInfoViewController.songInfo = self.songInfo;
+    self.songInfoViewController.mediaItemForInfo = self.mediaItemForInfo;
     
     //    NSLog (@" in NotesTabBar  self.songInfo.songName = %@", self.songInfo.songName);
     //    NSLog (@" in NotesTabBar  self.songInfo.album = %@", self.songInfo.album);
@@ -62,15 +60,10 @@
     //    [self.songInfoViewController.navigationController.navigationItem setTitle:@"Info"];
     
     self.notesViewController = [[self viewControllers] objectAtIndex:1];
-    self.notesViewController.songInfo = self.songInfo;
-    
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-    if ([appDelegate useiPodPlayer]) {
-        musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
-    } else {
-        musicPlayer = [MPMusicPlayerController applicationMusicPlayer];
-    }
+    self.notesViewController.mediaItemForInfo = self.mediaItemForInfo;
+
+    musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
+
     [self registerForMediaPlayerNotifications];
     
     //    self.title = @"Notes";
@@ -102,7 +95,7 @@
 //    NSLog (@"playing Item is *%@*, songInfo.SongName is *%@*", playingItem, self.songInfo.songName);
     if (playingItem) {
         //don't display right bar button is playing item is song info item
-        if ([playingItem isEqualToString: self.songInfo.songName]) {
+        if ([playingItem isEqualToString: [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyTitle]]) {
             self.navigationItem.rightBarButtonItem = nil;
         } else {
             //initWithTitle cannot be nil, must be @""

@@ -7,7 +7,7 @@
 //
 #import "ColorSwitcher.h"
 
-#define PLAYER_TYPE_PREF_KEY @"player_type_preference"
+//#define PLAYER_TYPE_PREF_KEY @"player_type_preference"
 #define SHOW_PLAYLIST_REMAINING_KEY @"show_playlist_remaining"
 
 
@@ -32,7 +32,7 @@
 //+ (AppDelegate*)instance;
 
 - (void)customizeGlobalTheme;
-- (BOOL) useiPodPlayer;
+//- (BOOL) useiPodPlayer;
 - (BOOL) showPlaylistRemaining;
 
 

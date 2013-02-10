@@ -14,7 +14,6 @@
 #import "ItemCollection.h"
 #import "UIImage+AdditionalFunctionalities.h"
 #import "NotesTabBarController.h"
-#import "SongInfo.h"
 
 //#import "UINavigationBar+AdditionalFunctionalities.h"
 
@@ -116,7 +115,7 @@ void audioRouteChangeListenerCallback (
 @synthesize itemToPlay;
 @synthesize fetchedResultsController = fetchedResultsController_;
 @synthesize managedObjectContext;
-@synthesize songInfo;
+@synthesize mediaItemForInfo;           // mediaItem which gets passed to info view controllers
 @synthesize iPodLibraryChanged;         //A flag indicating whether the library has been changed due to a sync
 @synthesize showPlaylistRemaining;      //A flag the captures the user's preference from setting whether to display the amount of time left in playlist
 @synthesize savedNowPlaying;             //for some reason a new song calls the handle_NowPlayingItemChanged: method twice, so this is used to save and compare
@@ -174,25 +173,11 @@ void audioRouteChangeListenerCallback (
     //    [self setupApplicationAudio];
     
     [self setPlayedMusicOnce: NO];
-    
-    // Instantiate the music player. If you specied the iPod music player in the Settings app,
-    //		honor the current state of the built-in iPod app.
+
+    [self setMusicPlayer: [MPMusicPlayerController iPodMusicPlayer]];
 
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-
-    if ([appDelegate useiPodPlayer]) {
-        
-        [self setMusicPlayer: [MPMusicPlayerController iPodMusicPlayer]];
-        
-    } else {
-        
-        [self setMusicPlayer: [MPMusicPlayerController applicationMusicPlayer]];
-        
-        // By default, an application music player takes on the shuffle and repeat modes
-        //		of the built-in iPod app. Here they are both turned off.
-        [musicPlayer setShuffleMode: MPMusicShuffleModeOff];
-        [musicPlayer setRepeatMode: MPMusicRepeatModeNone];
-    }
+ 
     // get the user's preference from Settings whether to display Playlist Remaining Time
     if ([appDelegate showPlaylistRemaining]) {
         self.showPlaylistRemaining = YES;
@@ -397,19 +382,7 @@ void audioRouteChangeListenerCallback (
     
     // set up data to pass to info page if chosen
     
-    MPMediaItem *song = currentItem;
-    
-    self.songInfo = [[SongInfo alloc] init];
-    self.songInfo.songName = [song valueForProperty:  MPMediaItemPropertyTitle];
-    
-    self.songInfo.album = [song valueForProperty:  MPMediaItemPropertyAlbumTitle];
-    self.songInfo.artist = [song valueForProperty:  MPMediaItemPropertyArtist];
-    MPMediaItemArtwork *artWork = [song valueForProperty:MPMediaItemPropertyArtwork];
-    self.songInfo.albumImage = [artWork imageWithSize:CGSizeMake(200, 200)];
-    
-    //    NSLog (@" self.songInfo.songName = %@", self.songInfo.songName);
-    //    NSLog (@" self.songInfo.album = %@", self.songInfo.album);
-    //    NSLog (@" self.songInfo.artist = %@", self.songInfo.artist);
+    self.mediaItemForInfo = currentItem;
     
     self.nextSongLabel.text = [NSString stringWithFormat: @""];
     self.nextLabel.text = [NSString stringWithFormat:@""];
@@ -757,7 +730,7 @@ void audioRouteChangeListenerCallback (
         notesTabBarController.managedObjectContext = self.managedObjectContext;
         notesTabBarController.notesDelegate = self;
 //        notesTabBarController.title = @"Info";
-        notesTabBarController.songInfo = self.songInfo;
+        notesTabBarController.mediaItemForInfo = self.mediaItemForInfo;
         
 	}
 
