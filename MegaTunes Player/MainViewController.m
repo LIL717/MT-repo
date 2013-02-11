@@ -14,6 +14,7 @@
 #import "ItemCollection.h"
 #import "UIImage+AdditionalFunctionalities.h"
 #import "NotesTabBarController.h"
+#import "MediaItemUserData.h"
 
 //#import "UINavigationBar+AdditionalFunctionalities.h"
 
@@ -350,7 +351,6 @@ void audioRouteChangeListenerCallback (
 // need to check if this method has already been executed because sometimes the notification gets sent twice for the same nowPlaying item, this workaround seems to solve the problem (check if the nowPlayingItem is the same as previous one)
     if (self.savedNowPlaying != [musicPlayer nowPlayingItem]) {
 //        NSLog (@"actually handling it");
-
             //the next two methods are separated so that they can be executed separately in viewDidLoad and viewWillAppear the first time the view is loaded, afer that they can be executed together here
         [self prepareAllExceptNowPlaying];
         if (!playNew) {
@@ -379,6 +379,12 @@ void audioRouteChangeListenerCallback (
     self.collectionItem = [itemCollection containsItem: [currentItem valueForProperty:  MPMediaItemPropertyPersistentID]];
 
     self.userMediaItemCollection = collectionItem.collection;
+    
+    //update or add object to Core Data to save the lastPlayedDate
+    MediaItemUserData *mediaItemUserData = [MediaItemUserData alloc];
+    mediaItemUserData.managedObjectContext = self.managedObjectContext;
+    
+    [mediaItemUserData updateLastPlayedDateForItem:[currentItem valueForProperty:  MPMediaItemPropertyPersistentID]];
     
     // set up data to pass to info page if chosen
     

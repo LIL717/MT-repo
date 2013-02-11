@@ -6,7 +6,7 @@
 //
 //
 #import "MainViewController.h"
-#import "SongInfoViewController.h"
+#import "NotesTabBarController.h"
 #import "SongViewController.h"
 #import "SongCell.h"
 #import "inCellScrollView.h"
@@ -269,10 +269,15 @@
     
 	if ([segue.identifier isEqualToString:@"ViewInfo"])
 	{
-       SongInfoViewController *songInfoViewController = segue.destinationViewController;
-        songInfoViewController.managedObjectContext = self.managedObjectContext;
-//        songInfoViewController.title = @"Info";
-        songInfoViewController.mediaItemForInfo = self.mediaItemForInfo;
+//       SongInfoViewController *songInfoViewController = segue.destinationViewController;
+//        songInfoViewController.managedObjectContext = self.managedObjectContext;
+////        songInfoViewController.title = @"Info";
+//        songInfoViewController.mediaItemForInfo = self.mediaItemForInfo;
+        NotesTabBarController *notesTabBarController = segue.destinationViewController;
+        notesTabBarController.managedObjectContext = self.managedObjectContext;
+        notesTabBarController.notesDelegate = self;
+        //        notesTabBarController.title = @"Info";
+        notesTabBarController.mediaItemForInfo = self.mediaItemForInfo;
         
 	}
     	if ([segue.identifier isEqualToString:@"PlaySong"])
@@ -384,6 +389,12 @@
 //    LogMethod();
 
     [self.songTableView reloadData];
+}
+//#pragma mark - NotesTabBarControllerDelegate
+
+- (void)notesTabBarControllerDidCancel:(NotesTabBarController *)controller
+{
+    [self willAnimateRotationToInterfaceOrientation: self.interfaceOrientation duration: 1];
 }
 - (void)dealloc {
 //    LogMethod();

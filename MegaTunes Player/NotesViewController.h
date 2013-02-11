@@ -15,16 +15,17 @@
     NSManagedObjectContext  *managedObjectContext;
 }
 
-@property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
-@property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
-@property (nonatomic, strong)	MPMusicPlayerController	*musicPlayer;
-@property (nonatomic, strong)   MPMediaItem *mediaItemForInfo;
+@property (nonatomic, retain) NSFetchedResultsController    *fetchedResultsController;
+@property (nonatomic, retain) NSManagedObjectContext        *managedObjectContext;
+@property (nonatomic, strong)	MPMusicPlayerController     *musicPlayer;
+@property (nonatomic, strong)   MPMediaItem                 *mediaItemForInfo;
 
 @property (strong, nonatomic)  UserDataForMediaItem *userDataForMediaItem;
-@property (strong, nonatomic) IBOutlet UILabel *bpm;
-@property (strong, nonatomic) IBOutlet UITextField *userClassification;
-@property (strong, nonatomic) IBOutlet UITextView *userNotes;
-@property (strong, nonatomic) IBOutlet UILabel *lastPlayedDate;
+@property (strong, nonatomic) IBOutlet UILabel      *bpm;
+@property (strong, nonatomic) IBOutlet UITextField  *userClassification;
+@property (strong, nonatomic) IBOutlet UITextView   *userNotes;
+@property (strong, nonatomic) IBOutlet UILabel      *lastPlayedDate;
 
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceToTop;
 
 @end

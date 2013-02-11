@@ -61,6 +61,7 @@
     
     self.notesViewController = [[self viewControllers] objectAtIndex:1];
     self.notesViewController.mediaItemForInfo = self.mediaItemForInfo;
+    self.notesViewController.managedObjectContext = self.managedObjectContext;
 
     musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
 

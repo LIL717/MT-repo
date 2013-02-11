@@ -66,7 +66,12 @@
             //self.userDataForMediaItem.bpm is set when it is calculated
         }
     }
-    self.bpm.text = [[NSString alloc] initWithFormat:@"%2@ BPM", self.userDataForMediaItem.bpm];
+    if (self.userDataForMediaItem.bpm > 0) {
+        self.bpm.text = [[NSString alloc] initWithFormat:@"%2dBPM", [self.userDataForMediaItem.bpm intValue]];
+
+    }
+//    self.bpm.text = [[NSString alloc] initWithFormat:@"%2@ BPM", self.userDataForMediaItem.bpm];
+
     self.userClassification.text = self.userDataForMediaItem.userClassification;
     self.userNotes.text = self.userDataForMediaItem.userNotes;
     
@@ -80,7 +85,21 @@
     NSLog(@"formattedDateString: %@", formattedDateString);
     // Output for locale en_US: "formattedDateString: 10/31/13".
     self.lastPlayedDate.text = formattedDateString;
+    
+    [self updateLayoutForNewOrientation: self.interfaceOrientation];
+
 }
+- (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
+    
+    if (UIInterfaceOrientationIsPortrait(orientation)) {
+        NSLog (@"portrait");
+        
+    } else {
+        NSLog (@"landscape");
+
+    }
+}
+
 - (void) viewWillAppear:(BOOL)animated
 {
     LogMethod();
@@ -218,7 +237,7 @@ void myDeleteFile (NSString* path) {
                                           NULL,
                                           NULL);
     if (BpmValue > 0) {
-        self.bpm.text = [[NSString alloc] initWithFormat:@"%02.0f BPM", BpmValue];
+        self.bpm.text = [[NSString alloc] initWithFormat:@"%02.0fBPM", BpmValue];
     }
     //fill in bpm for Core Data - if we went through here there was neither a bpm existing on the mediaItem or a previously calculated bpm
     userDataForMediaItem.bpm = [NSNumber numberWithFloat: BpmValue];
@@ -239,10 +258,24 @@ void myDeleteFile (NSString* path) {
     MediaItemUserData *mediaItemUserData = [MediaItemUserData alloc];
     mediaItemUserData.managedObjectContext = self.managedObjectContext;
     
+    NSNumber *saveBpm = self.userDataForMediaItem.bpm;
+    self.userDataForMediaItem = [[UserDataForMediaItem alloc] init];
     self.userDataForMediaItem.title = [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyTitle];
     self.userDataForMediaItem.persistentID = [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyPersistentID];
     self.userDataForMediaItem.userClassification = self.userClassification.text;
     self.userDataForMediaItem.userNotes = self.userNotes.text;
+    self.userDataForMediaItem.bpm = saveBpm;
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    // this is imporant - we set our input date format to match our input string
+    // if format doesn't match you'll get nil from your string, so be careful
+    [dateFormatter setDateStyle:NSDateFormatterShortStyle];
+    [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
+    NSDate *dateFromString = [[NSDate alloc] init];
+    // voila!
+    dateFromString = [dateFormatter dateFromString:self.lastPlayedDate.text];
+
+    self.userDataForMediaItem.lastPlayedDate = dateFromString;
     [mediaItemUserData addMediaItemToCoreData: self.userDataForMediaItem];
     
 }

@@ -21,6 +21,8 @@
 @synthesize fetchedResultsController = fetchedResultsController_;
 @synthesize managedObjectContext = managedObjectContext_;
 
+@synthesize fetchedObjects;
+
 - (void)addMediaItemToCoreData:(UserDataForMediaItem *) mediaItem {
 
     //LogMethod();
@@ -45,38 +47,64 @@
     }
     
 }
+
 - (UserDataForMediaItem *) containsItem: (NSNumber *) currentItem {
 
-    BOOL itemFound;
+//    BOOL itemFound;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"MediaItemUserData"
                                               inManagedObjectContext:self.managedObjectContext];
     [fetchRequest setEntity:entity];
     
     NSString *persistentIDString = [currentItem stringValue];
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"persistentId == %@", persistentIDString];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"persistentID == %@", persistentIDString];
     [fetchRequest setPredicate:pred];
     
     NSLog(@"entity retrieved is %@", entity);
 
     NSError *error = nil;
-    NSArray *fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    self.fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
 
-    if (fetchedObjects == nil) {
+    if (self.fetchedObjects == nil) {
         // Handle the error
         NSLog (@"fetch error");
     }
     
-    itemFound = NO;
-    if ([fetchedObjects count] == 0) {
+//    itemFound = NO;
+    if ([self.fetchedObjects count] == 0) {
         NSLog (@"no objects fetched");
-        itemFound = NO;
+//        itemFound = NO;
+        return nil;
     } else {
         // if there is an object, need to return it
-        itemFound = YES;
+//        itemFound = YES;
+        NSLog(@" fetchedObject is %@", [self.fetchedObjects objectAtIndex:0]);
+        return [self.fetchedObjects objectAtIndex:0];
+        
+        //for nslog
+        UserDataForMediaItem *userDataForMediaItem = [self.fetchedObjects objectAtIndex:0];
+        NSLog(@"persistentID fetched from Core Data %@", userDataForMediaItem.persistentID);
+
     }
-    
-    return [fetchedObjects objectAtIndex:0];
-    
 }
+- (void) updateLastPlayedDateForItem: (NSNumber *) currentItem {
+    
+    if ([self containsItem: currentItem]) {
+        [[self.fetchedObjects objectAtIndex:0] setValue: [NSDate date] forKey: @"lastPlayedDate"];
+
+        NSError * error = nil;
+        if (![self.managedObjectContext save:&error]) {
+            NSLog(@"%s: Problem saving: %@", __PRETTY_FUNCTION__, error);
+        }
+            NSLog(@" updatedManagedObject is %@", [self.fetchedObjects objectAtIndex:0]);
+    } else {
+        UserDataForMediaItem *userDataForMediaItem = [[UserDataForMediaItem alloc] init];
+        userDataForMediaItem.persistentID = currentItem;
+        userDataForMediaItem.lastPlayedDate = [NSDate date];
+        [self addMediaItemToCoreData:userDataForMediaItem];
+        
+        NSLog(@"persistnentID inserted into Core Data %@", userDataForMediaItem.persistentID);
+    }
+}
+
 @end

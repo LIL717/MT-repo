@@ -21,8 +21,11 @@
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 
+@property (nonatomic, retain) NSArray *fetchedObjects;
+
 - (void)addMediaItemToCoreData:(UserDataForMediaItem *) mediaItem;
 - (UserDataForMediaItem *) containsItem: (NSNumber *) currentItem;
+- (void) updateLastPlayedDateForItem: (NSNumber *) currentItem;
 //- (void)removeMediaItemFromCoreData;
 
 @end

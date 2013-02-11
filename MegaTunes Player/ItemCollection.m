@@ -69,7 +69,6 @@
     //if there are no objects, set itemFound to NO
     if ([fetchedObjects count] == 0) {
         NSLog (@"no objects fetched");
-        itemFound = NO;
     } else {
             // if there is an object, need to see if song is in the list
             MPMediaItemCollection *mediaItemCollection = [[fetchedObjects objectAtIndex:0] valueForKey: @"collection"];
@@ -78,15 +77,15 @@
             for (MPMediaItem *song in savedQueue) {
 //                if ([[song valueForProperty: MPMediaItemPropertyTitle] isEqual: playingSong]) {
                 if ([[song valueForProperty: MPMediaItemPropertyPersistentID] isEqual: playingSong]) {
-
                     itemFound = YES;
-
                 }
             }
     }
-
+    if (itemFound) {
         return [fetchedObjects objectAtIndex:0];
-
+    } else {
+        return nil;
+    }
 }
 
 - (void)removeCollectionFromCoreData {
