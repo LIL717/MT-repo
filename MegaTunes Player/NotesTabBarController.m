@@ -145,11 +145,18 @@
         NSLog (@"portrait");
         [self.songInfoViewController.infoTableView setContentInset:UIEdgeInsetsMake(11,0,0,0)];
         [self.songInfoViewController.infoTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+        
+        [self.notesViewController.view addConstraint:self.notesViewController.verticalSpaceToTop];
 
     } else {
         NSLog (@"landscape");
         [self.songInfoViewController.infoTableView setContentInset:UIEdgeInsetsMake(23,0,0,0)];
         [self.songInfoViewController.infoTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+        
+        
+        // Set top row spacing to superview top
+        [self.notesViewController.view removeConstraint:self.notesViewController.verticalSpaceToTop];
+        [self.notesViewController.view addConstraint:[NSLayoutConstraint constraintWithItem:self.notesViewController.userClassification attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.notesViewController.view attribute:NSLayoutAttributeTop multiplier:1.0 constant:28]];
 
     }
 }

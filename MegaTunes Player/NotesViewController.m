@@ -34,6 +34,7 @@
 @synthesize userNotes;
 @synthesize lastPlayedDate;
 
+@synthesize verticalSpaceToTop;
 
 - (void)viewDidLoad
 {
@@ -89,13 +90,20 @@
     [self updateLayoutForNewOrientation: self.interfaceOrientation];
 
 }
+
 - (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
     
     if (UIInterfaceOrientationIsPortrait(orientation)) {
         NSLog (@"portrait");
         
+        [self.view addConstraint:self.verticalSpaceToTop];
+
     } else {
         NSLog (@"landscape");
+        [self.view removeConstraint:self.verticalSpaceToTop];
+
+        // Set top row spacing to superview top 
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.userClassification attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1.0 constant:28]];
 
     }
 }

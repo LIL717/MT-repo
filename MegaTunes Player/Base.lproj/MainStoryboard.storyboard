@@ -509,10 +509,10 @@
                         <rect key="frame" x="0.0" y="64" width="480" height="207"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="WWW" borderStyle="roundedRect" minimumFontSize="44" translatesAutoresizingMaskIntoConstraints="NO" id="LIV-6u-JTK">
-                                <color key="backgroundColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="911" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="WWW" borderStyle="roundedRect" minimumFontSize="44" translatesAutoresizingMaskIntoConstraints="NO" id="LIV-6u-JTK">
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="139" type="user" id="0x4-KO-nnV"/>
+                                    <constraint firstAttribute="width" constant="124" type="user" id="0x4-KO-nnV"/>
                                     <constraint firstAttribute="height" constant="52" type="user" id="Gpa-sg-du2"/>
                                 </constraints>
                                 <color key="textColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -532,11 +532,11 @@
                                 <color key="textColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="highlightedColor" red="0.070588238540000001" green="0.1176470667" blue="1" alpha="1" colorSpace="deviceRGB"/>
                             </label>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.80000000000000004" contentMode="scaleToFill" text="User Notes" translatesAutoresizingMaskIntoConstraints="NO" id="6kj-Uf-e6Y">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="User Notes" translatesAutoresizingMaskIntoConstraints="NO" id="6kj-Uf-e6Y">
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="textColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="44"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" enablesReturnKeyAutomatically="YES"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                             </textView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="00/00/00" lineBreakMode="clip" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Yl-vu-0jr">
                                 <constraints>
@@ -551,11 +551,10 @@
                         <constraints>
                             <constraint firstItem="LIV-6u-JTK" firstAttribute="top" secondItem="rwd-qJ-21T" secondAttribute="top" constant="20" symbolic="YES" type="user" id="0NM-Uc-NpV"/>
                             <constraint firstItem="LIV-6u-JTK" firstAttribute="leading" secondItem="rwd-qJ-21T" secondAttribute="leading" constant="2" type="user" id="BGs-yl-x82"/>
-                            <constraint firstItem="6kj-Uf-e6Y" firstAttribute="leading" secondItem="rwd-qJ-21T" secondAttribute="leading" constant="8" type="user" id="Hwq-fe-Pd4"/>
+                            <constraint firstItem="6kj-Uf-e6Y" firstAttribute="leading" secondItem="rwd-qJ-21T" secondAttribute="leading" constant="2" type="user" id="Hwq-fe-Pd4"/>
                             <constraint firstItem="LIV-6u-JTK" firstAttribute="centerY" secondItem="5Yl-vu-0jr" secondAttribute="centerY" type="user" id="KTu-NV-NY6"/>
-                            <constraint firstAttribute="trailing" secondItem="6kj-Uf-e6Y" secondAttribute="trailing" constant="8" type="user" id="KfO-4T-Jfv"/>
+                            <constraint firstAttribute="trailing" secondItem="6kj-Uf-e6Y" secondAttribute="trailing" constant="2" type="user" id="KfO-4T-Jfv"/>
                             <constraint firstItem="HQX-Jy-J3y" firstAttribute="top" secondItem="rwd-qJ-21T" secondAttribute="top" constant="20" symbolic="YES" type="default" id="OiP-st-P0I"/>
-                            <constraint firstItem="6kj-Uf-e6Y" firstAttribute="centerX" secondItem="rwd-qJ-21T" secondAttribute="centerX" type="user" id="PYt-B0-Qui"/>
                             <constraint firstItem="6kj-Uf-e6Y" firstAttribute="top" secondItem="LIV-6u-JTK" secondAttribute="bottom" constant="8" symbolic="YES" type="user" id="Zm9-ml-5pb"/>
                             <constraint firstAttribute="bottom" secondItem="6kj-Uf-e6Y" secondAttribute="bottom" constant="10" type="user" id="oDW-kF-zik"/>
                             <constraint firstItem="LIV-6u-JTK" firstAttribute="centerY" secondItem="HQX-Jy-J3y" secondAttribute="centerY" type="user" id="qjd-JW-bLM"/>
