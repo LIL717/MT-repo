@@ -59,8 +59,8 @@
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[scrollView]|" options:0 metrics: 0 views:viewsDictionary]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[scrollView]|" options:0 metrics: 0 views:viewsDictionary]];
     [scrollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[magnifiedLabel]|" options: 0 metrics: 0 views:viewsDictionary]];
-    [scrollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[magnifiedLabel]-|" options: NSLayoutAttributeCenterY metrics: 0 views:viewsDictionary]];
-    
+//    [scrollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[magnifiedLabel]-|" options: NSLayoutAttributeCenterY metrics: 0 views:viewsDictionary]];
+    [scrollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[magnifiedLabel]-|" options: NSLayoutFormatAlignAllCenterY metrics: 0 views:viewsDictionary]];
     // Center the label vertically in the window
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:magnifiedLabel attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0]];
 

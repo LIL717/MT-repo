@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2844" systemVersion="12C60" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="1j9-19-lml">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12C60" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="1j9-19-lml">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1930"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
     </dependencies>
     <scenes>
         <!--Song View Controller-->
@@ -563,10 +563,10 @@
             </objects>
             <point key="canvasLocation" x="1532" y="-186"/>
         </scene>
-        <!--Song Info View Controller - Info-->
+        <!--Album Info View Controller - Info-->
         <scene sceneID="ZXh-nv-74T">
             <objects>
-                <viewController title="Info" modalTransitionStyle="partialCurl" id="0BK-h9-5Yl" customClass="SongInfoViewController" sceneMemberID="viewController">
+                <viewController title="Info" modalTransitionStyle="partialCurl" id="0BK-h9-5Yl" customClass="AlbumInfoViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" sectionIndexMinimumDisplayRowCount="3" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="55" sectionHeaderHeight="22" sectionFooterHeight="22" id="Km2-GT-jmW">
                         <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -644,10 +644,10 @@
             </objects>
             <point key="canvasLocation" x="1532" y="-772"/>
         </scene>
-        <!--Notes Tab Bar Controller - Song Info-->
+        <!--Info Tab Bar Controller - Song Info-->
         <scene sceneID="Ceg-xt-BIP">
             <objects>
-                <tabBarController title="Song Info" definesPresentationContext="YES" id="h0z-UX-YEa" customClass="NotesTabBarController" sceneMemberID="viewController">
+                <tabBarController title="Song Info" definesPresentationContext="YES" id="h0z-UX-YEa" customClass="InfoTabBarController" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="8QZ-x7-rE1"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <nil key="simulatedBottomBarMetrics"/>
@@ -1032,9 +1032,6 @@
         <class className="NSLayoutConstraint" superclassName="NSObject">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
         </class>
-        <class className="NotesTabBarController" superclassName="UITabBarController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NotesTabBarController.h"/>
-        </class>
         <class className="NotesViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/NotesViewController.h"/>
         </class>
@@ -1053,13 +1050,6 @@
             <relationships>
                 <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
-            </relationships>
-        </class>
-        <class className="SongInfoViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SongInfoViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="albumImageView" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="infoTableView" candidateClass="UITableView"/>
             </relationships>
         </class>
         <class className="SongViewController" superclassName="UIViewController">

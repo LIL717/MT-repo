@@ -1,12 +1,12 @@
 //
-//  SongInfoViewController.h
+//  AlbumInfoViewController.h
 //  MegaTunes Player
 //
 //  Created by Lori Hill on 11/16/12.
 //
 //
 
-@interface SongInfoViewController : UIViewController  < UITableViewDelegate, UITableViewDataSource, MPMediaPickerControllerDelegate> {
+@interface AlbumInfoViewController : UIViewController  < UITableViewDelegate, UITableViewDataSource, MPMediaPickerControllerDelegate> {
     NSManagedObjectContext *managedObjectContext;
     
 }

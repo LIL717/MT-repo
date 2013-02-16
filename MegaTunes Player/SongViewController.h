@@ -6,10 +6,10 @@
 //
 //
 @class CollectionItem;
-#import "NotesTabBarController.h"
+#import "InfoTabBarController.h"
 
 
-@interface SongViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, NotesTabBarControllerDelegate,MPMediaPickerControllerDelegate> {
+@interface SongViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, InfoTabBarControllerDelegate,MPMediaPickerControllerDelegate> {
   
     NSManagedObjectContext *managedObjectContext;
 
@@ -23,7 +23,7 @@
 @property (nonatomic, strong)   MPMediaItem *itemToPlay;
 @property (readwrite)           BOOL iPodLibraryChanged;
 
-- (void) notesTabBarControllerDidCancel:(NotesTabBarController *)controller;
+- (void) infoTabBarControllerDidCancel:(InfoTabBarController *)controller;
 
 
 @end

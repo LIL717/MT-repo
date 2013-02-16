@@ -20,7 +20,7 @@
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 
 - (void)addCollectionToCoreData:(CollectionItem *) collectionItem;
-- (CollectionItem *) containsItem: (NSNumber *) playingSong;
+- (CollectionItem *) containsItem: (NSNumber *) playingSongPersistentID;
 - (void)removeCollectionFromCoreData;
 
 @end

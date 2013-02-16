@@ -13,7 +13,7 @@
 #import "AppDelegate.h"
 #import "ItemCollection.h"
 #import "UIImage+AdditionalFunctionalities.h"
-#import "NotesTabBarController.h"
+#import "InfoTabBarController.h"
 #import "MediaItemUserData.h"
 
 //#import "UINavigationBar+AdditionalFunctionalities.h"
@@ -380,12 +380,6 @@ void audioRouteChangeListenerCallback (
 
     self.userMediaItemCollection = collectionItem.collection;
     
-    //update or add object to Core Data to save the lastPlayedDate
-    MediaItemUserData *mediaItemUserData = [MediaItemUserData alloc];
-    mediaItemUserData.managedObjectContext = self.managedObjectContext;
-    
-    [mediaItemUserData updateLastPlayedDateForItem:[currentItem valueForProperty:  MPMediaItemPropertyPersistentID]];
-    
     // set up data to pass to info page if chosen
     
     self.mediaItemForInfo = currentItem;
@@ -732,11 +726,11 @@ void audioRouteChangeListenerCallback (
 	}
     if ([segue.identifier isEqualToString:@"ViewInfo"])
 	{
-        NotesTabBarController *notesTabBarController = segue.destinationViewController;
-        notesTabBarController.managedObjectContext = self.managedObjectContext;
-        notesTabBarController.notesDelegate = self;
-//        notesTabBarController.title = @"Info";
-        notesTabBarController.mediaItemForInfo = self.mediaItemForInfo;
+        InfoTabBarController *infoTabBarController = segue.destinationViewController;
+        infoTabBarController.managedObjectContext = self.managedObjectContext;
+        infoTabBarController.infoDelegate = self;
+        infoTabBarController.title = [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyTitle];
+        infoTabBarController.mediaItemForInfo = self.mediaItemForInfo;
         
 	}
 
@@ -1008,7 +1002,7 @@ void audioRouteChangeListenerCallback (
 }
 //#pragma mark - NotesTabBarControllerDelegate
 
-- (void)notesTabBarControllerDidCancel:(NotesTabBarController *)controller
+- (void)infoTabBarControllerDidCancel:(InfoTabBarController *)controller
 {
     [self willAnimateRotationToInterfaceOrientation: self.interfaceOrientation duration: 1];
 }

@@ -9,7 +9,7 @@
 @class ItemCollection;
 #import "TimeMagnifierViewController.h"
 #import "TextMagnifierViewController.h"
-#import "NotesTabBarController.h"
+#import "InfoTabBarController.h"
 
 //#define AUDIO_TYPE_PREF_KEY @"audio_technology_preference"
 
@@ -18,7 +18,7 @@
 
 #import "AutoScrollLabel.h"
 
-@interface MainViewController : UIViewController <MPMediaPickerControllerDelegate, AVAudioPlayerDelegate, TimeMagnifierViewControllerDelegate, TextMagnifierViewControllerDelegate, NotesTabBarControllerDelegate, NSFetchedResultsControllerDelegate> {
+@interface MainViewController : UIViewController <MPMediaPickerControllerDelegate, AVAudioPlayerDelegate, TimeMagnifierViewControllerDelegate, TextMagnifierViewControllerDelegate, InfoTabBarControllerDelegate, NSFetchedResultsControllerDelegate> {
     
 	BOOL						playedMusicOnce;
     
@@ -97,7 +97,7 @@
 - (void) updateTime;
 - (void) timeMagnifierViewControllerDidCancel:(TimeMagnifierViewController *)controller;
 - (void) textMagnifierViewControllerDidCancel:(TextMagnifierViewController *)controller;
-- (void) notesTabBarControllerDidCancel:(NotesTabBarController *)controller;
+- (void) infoTabBarControllerDidCancel:(InfoTabBarController *)controller;
 
 @end
 

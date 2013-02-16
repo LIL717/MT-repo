@@ -1,31 +1,36 @@
 //
-//  NotesTabBarController.m
+//  InfoTabBarController.m
 //  MegaTunes Player
 //
 //  Created by Lori Hill on 11/16/12.
 //
 //
 
-#import "NotesTabBarController.h"
+#import "InfoTabBarController.h"
 #import "Appdelegate.h"
 #import "MainViewController.h"
-#import "SongInfoViewController.h"
-#import "NotesViewController.h"
+#import "AlbumInfoViewController.h"
+#import "ITunesInfoViewController.h"
+#import "ITunesCommentsViewController.h"
+#import "UserInfoViewController.h"
 
 
-@interface NotesTabBarController ()
+@interface InfoTabBarController ()
 
 @end
 
-@implementation NotesTabBarController
+@implementation InfoTabBarController
 
 @synthesize managedObjectContext;
 @synthesize musicPlayer;
-@synthesize songInfoViewController;
-@synthesize notesViewController;
-@synthesize notesDelegate;
+@synthesize albumInfoViewController;
+@synthesize iTunesInfoViewController;
+@synthesize iTunesCommentsViewController;
+@synthesize userInfoViewController;
+@synthesize infoDelegate;
 @synthesize iPodLibraryChanged;         //A flag indicating whether the library has been changed due to a sync
 @synthesize mediaItemForInfo;
+
 
 - (void)viewDidLoad
 {
@@ -49,8 +54,8 @@
     [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage48 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage58 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
     
-    self.songInfoViewController = [[self viewControllers] objectAtIndex:0];
-    self.songInfoViewController.mediaItemForInfo = self.mediaItemForInfo;
+    self.albumInfoViewController = [[self viewControllers] objectAtIndex:0];
+    self.albumInfoViewController.mediaItemForInfo = self.mediaItemForInfo;
     
     //    NSLog (@" in NotesTabBar  self.songInfo.songName = %@", self.songInfo.songName);
     //    NSLog (@" in NotesTabBar  self.songInfo.album = %@", self.songInfo.album);
@@ -59,12 +64,21 @@
     //    self.navigationItem.titleView = [self customizeTitleView];
     //    [self.songInfoViewController.navigationController.navigationItem setTitle:@"Info"];
     
-    self.notesViewController = [[self viewControllers] objectAtIndex:1];
-    self.notesViewController.mediaItemForInfo = self.mediaItemForInfo;
-    self.notesViewController.managedObjectContext = self.managedObjectContext;
+    self.iTunesInfoViewController = [[self viewControllers] objectAtIndex:1];
+    self.iTunesInfoViewController.mediaItemForInfo = self.mediaItemForInfo;
+    self.iTunesInfoViewController.managedObjectContext = self.managedObjectContext;
+    
+    self.iTunesCommentsViewController = [[self viewControllers] objectAtIndex:2];
+    self.iTunesCommentsViewController.mediaItemForInfo = self.mediaItemForInfo;
+//    self.iTunesCommentsViewController.managedObjectContext = self.managedObjectContext;
 
+    
+    self.userInfoViewController = [[self viewControllers] objectAtIndex:3];
+    self.userInfoViewController.mediaItemForInfo = self.mediaItemForInfo;
+    self.userInfoViewController.managedObjectContext = self.managedObjectContext;
+    
     musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
-
+    
     [self registerForMediaPlayerNotifications];
     
     //    self.title = @"Notes";
@@ -87,7 +101,7 @@
     
 //    [[self.navigationController.viewControllers objectAtIndex:1] setTitle:@"Blah"];
 //
-//    self.navigationItem.titleView = [self customizeTitleView];
+    self.navigationItem.titleView = [self customizeTitleView];
     
 //    NSLog (@"self.navigationItem.titleview is %@", self.navigationItem.titleView);
 
@@ -133,7 +147,32 @@
     
     return label;
 }
-
+//
+//- (IBAction)enableEditing:(id)sender {
+//
+//    self.notesViewController.userGrouping.backgroundColor = [UIColor darkGrayColor];
+//    UIFont *font = [UIFont systemFontOfSize:12];
+//    UIFont *newFont = [font fontWithSize:44];
+//    self.notesViewController.userGrouping.font = newFont;
+//    [self.notesViewController.userGrouping isEditing];
+//    
+//    self.notesViewController.comments.backgroundColor = [UIColor darkGrayColor];
+//    self.notesViewController.comments.textColor = [UIColor whiteColor];
+//    [self.notesViewController.comments isEditable];
+//    
+//    self.navigationItem.rightBarButtonItem = self.saveBarButton;
+//}
+//
+//- (void) doneEditing {
+//
+//    self.navigationItem.rightBarButtonItem = self.editBarButton;
+//}
+//
+//- (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
+//    
+//    [self updateLayoutForNewOrientation: orientation];
+//    
+//}
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
     
     [self updateLayoutForNewOrientation: orientation];
@@ -143,21 +182,50 @@
     
     if (UIInterfaceOrientationIsPortrait(orientation)) {
         NSLog (@"portrait");
-        [self.songInfoViewController.infoTableView setContentInset:UIEdgeInsetsMake(11,0,0,0)];
-        [self.songInfoViewController.infoTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+        [self.albumInfoViewController.infoTableView setContentInset:UIEdgeInsetsMake(11,0,0,0)];
+        [self.albumInfoViewController.infoTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
         
-        [self.notesViewController.view addConstraint:self.notesViewController.verticalSpaceToTop];
+        [self.iTunesInfoViewController.infoTableView setContentInset:UIEdgeInsetsMake(11,0,0,0)];
+        [self.iTunesInfoViewController.infoTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+        self.iTunesInfoViewController.lastPlayedDateTitle = @"Played:";
+        self.iTunesInfoViewController.userGroupingTitle = @"Grouping:";
+        [self.iTunesInfoViewController loadTableData];
+        [self.iTunesInfoViewController.infoTableView reloadData];
+        
+        [self.iTunesCommentsViewController.comments setContentInset:UIEdgeInsetsMake(11,0,-11,0)];
+        [self.iTunesCommentsViewController.comments scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+
+        [self.userInfoViewController.view removeConstraint:self.userInfoViewController.verticalSpaceToTop28];
+        [self.userInfoViewController.view addConstraint:self.userInfoViewController.verticalSpaceToTop];
 
     } else {
         NSLog (@"landscape");
-        [self.songInfoViewController.infoTableView setContentInset:UIEdgeInsetsMake(23,0,0,0)];
-        [self.songInfoViewController.infoTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+        [self.albumInfoViewController.infoTableView setContentInset:UIEdgeInsetsMake(23,0,0,0)];
+        [self.albumInfoViewController.infoTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
         
+        [self.iTunesInfoViewController.infoTableView setContentInset:UIEdgeInsetsMake(23,0,0,0)];
+        [self.iTunesInfoViewController.infoTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+        self.iTunesInfoViewController.lastPlayedDateTitle = @"Last Played:";
+        self.iTunesInfoViewController.userGroupingTitle = @"iTunes Grouping:";
+        [self.iTunesInfoViewController loadTableData];
+        [self.iTunesInfoViewController.infoTableView reloadData];
+        
+        [self.iTunesCommentsViewController.comments setContentInset:UIEdgeInsetsMake(23,0,0,0)];
+        [self.iTunesCommentsViewController.comments scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
         
         // Set top row spacing to superview top
-        [self.notesViewController.view removeConstraint:self.notesViewController.verticalSpaceToTop];
-        [self.notesViewController.view addConstraint:[NSLayoutConstraint constraintWithItem:self.notesViewController.userClassification attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.notesViewController.view attribute:NSLayoutAttributeTop multiplier:1.0 constant:28]];
 
+        [self.userInfoViewController.view removeConstraint:self.userInfoViewController.verticalSpaceToTop];
+        
+        self.userInfoViewController.verticalSpaceToTop28 =
+        [NSLayoutConstraint constraintWithItem:self.userInfoViewController.userGrouping
+                                     attribute:NSLayoutAttributeTop
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:self.userInfoViewController.view
+                                     attribute:NSLayoutAttributeTop
+                                    multiplier:1.0
+                                      constant:28];
+        [self.userInfoViewController.view addConstraint: self.userInfoViewController.verticalSpaceToTop28];
     }
 }
 //#pragma mark UITabBarController Delegate Method
@@ -210,13 +278,14 @@
     [self performSegueWithIdentifier: @"ViewNowPlaying" sender: self];
 
 }
+
 - (void)goBackClick
 {
     if (iPodLibraryChanged) {
         [self.navigationController popToRootViewControllerAnimated:YES];
     } else {
     [self.navigationController popViewControllerAnimated:YES];
-    [self.notesDelegate notesTabBarControllerDidCancel:self];
+    [self.infoDelegate infoTabBarControllerDidCancel:self];
     }
 }
 

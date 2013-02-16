@@ -1,22 +1,22 @@
 //
-//  SongInfoViewController.m
+//  AlbumInfoViewController.m
 //  MegaTunes Player
 //
 //  Created by Lori Hill on 11/16/12.
 //
 //
 
-#import "SongInfoViewController.h"
+#import "AlbumInfoViewController.h"
 #import "AppDelegate.h"
 #import "SongInfoCell.h"
 #import "UIImage+AdditionalFunctionalities.h"
 
 
-@interface SongInfoViewController ()
+@interface AlbumInfoViewController ()
 
 @end
 
-@implementation SongInfoViewController
+@implementation AlbumInfoViewController
 
 @synthesize managedObjectContext;
 @synthesize musicPlayer;
@@ -83,10 +83,14 @@
     UITabBar *tabBar = self.tabBarController.tabBar;
     UITabBarItem *item0 = [tabBar.items objectAtIndex:0];
     UITabBarItem *item1 = [tabBar.items objectAtIndex:1];
+    UITabBarItem *item2 = [tabBar.items objectAtIndex:2];
+    UITabBarItem *item3 = [tabBar.items objectAtIndex:3];
     
     
     [item0 setFinishedSelectedImage:selectedImage0 withFinishedUnselectedImage:unselectedImage0];
     [item1 setFinishedSelectedImage:selectedImage1 withFinishedUnselectedImage:unselectedImage1];
+    [item2 setFinishedSelectedImage:selectedImage0 withFinishedUnselectedImage:unselectedImage0];
+    [item3 setFinishedSelectedImage:selectedImage1 withFinishedUnselectedImage:unselectedImage1];
     
     
     [self updateLayoutForNewOrientation: self.interfaceOrientation];

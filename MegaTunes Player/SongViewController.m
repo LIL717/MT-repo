@@ -6,7 +6,7 @@
 //
 //
 #import "MainViewController.h"
-#import "NotesTabBarController.h"
+#import "InfoTabBarController.h"
 #import "SongViewController.h"
 #import "SongCell.h"
 #import "inCellScrollView.h"
@@ -273,11 +273,11 @@
 //        songInfoViewController.managedObjectContext = self.managedObjectContext;
 ////        songInfoViewController.title = @"Info";
 //        songInfoViewController.mediaItemForInfo = self.mediaItemForInfo;
-        NotesTabBarController *notesTabBarController = segue.destinationViewController;
-        notesTabBarController.managedObjectContext = self.managedObjectContext;
-        notesTabBarController.notesDelegate = self;
-        //        notesTabBarController.title = @"Info";
-        notesTabBarController.mediaItemForInfo = self.mediaItemForInfo;
+        InfoTabBarController *infoTabBarController = segue.destinationViewController;
+        infoTabBarController.managedObjectContext = self.managedObjectContext;
+        infoTabBarController.infoDelegate = self;
+        infoTabBarController.title = [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyTitle];
+        infoTabBarController.mediaItemForInfo = self.mediaItemForInfo;
         
 	}
     	if ([segue.identifier isEqualToString:@"PlaySong"])
@@ -392,7 +392,7 @@
 }
 //#pragma mark - NotesTabBarControllerDelegate
 
-- (void)notesTabBarControllerDidCancel:(NotesTabBarController *)controller
+- (void)infoTabBarControllerDidCancel:(InfoTabBarController *)controller
 {
     [self willAnimateRotationToInterfaceOrientation: self.interfaceOrientation duration: 1];
 }

@@ -15,8 +15,8 @@
 		7020E1DB16B218D000BAB41E /* rightButtonBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 7020E1D916B218D000BAB41E /* rightButtonBackground.png */; };
 		7020E1DC16B218D000BAB41E /* rightButtonBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7020E1DA16B218D000BAB41E /* rightButtonBackground@2x.png */; };
 		7020E1DF16B2305600BAB41E /* rightButtonBackgroundforTesting.png in Resources */ = {isa = PBXBuildFile; fileRef = 7020E1DE16B2305600BAB41E /* rightButtonBackgroundforTesting.png */; };
-		702B4149165714E7004A9265 /* NotesTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 702B4148165714E7004A9265 /* NotesTabBarController.m */; };
-		702B414D165715C2004A9265 /* SongInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 702B414C165715C2004A9265 /* SongInfoViewController.m */; };
+		702B4149165714E7004A9265 /* InfoTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 702B4148165714E7004A9265 /* InfoTabBarController.m */; };
+		702B414D165715C2004A9265 /* AlbumInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 702B414C165715C2004A9265 /* AlbumInfoViewController.m */; };
 		702B414F165741C8004A9265 /* info_48.png in Resources */ = {isa = PBXBuildFile; fileRef = 702B414E165741C8004A9265 /* info_48.png */; };
 		702B4151165741E0004A9265 /* note_48.png in Resources */ = {isa = PBXBuildFile; fileRef = 702B4150165741E0004A9265 /* note_48.png */; };
 		702B4153165742BF004A9265 /* note_24.png in Resources */ = {isa = PBXBuildFile; fileRef = 702B4152165742BF004A9265 /* note_24.png */; };
@@ -59,7 +59,7 @@
 		707862A51626385700871260 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 707862A41626385700871260 /* CoreData.framework */; };
 		707862A81626391600871260 /* MegaTunes Player.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 707862A61626391600871260 /* MegaTunes Player.xcdatamodeld */; };
 		707862B21626631700871260 /* TextMagnifierViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 707862B11626631700871260 /* TextMagnifierViewController.m */; };
-		707862B51626659900871260 /* NotesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 707862B41626659900871260 /* NotesViewController.m */; };
+		707862B51626659900871260 /* ITunesInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 707862B41626659900871260 /* ITunesInfoViewController.m */; };
 		707862BC1629F33A00871260 /* AutoScrollLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 707862BB1629F33A00871260 /* AutoScrollLabel.m */; };
 		707862BF162C729300871260 /* TimeMagnifierViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 707862BE162C729300871260 /* TimeMagnifierViewController.m */; };
 		70974B161630558400A33B7D /* menu-bar.png in Resources */ = {isa = PBXBuildFile; fileRef = 70974B141630558400A33B7D /* menu-bar.png */; };
@@ -143,6 +143,8 @@
 		70A4B73F16978C8100C84293 /* redWhitePlay68.png in Resources */ = {isa = PBXBuildFile; fileRef = 70A4B73E16978C8100C84293 /* redWhitePlay68.png */; };
 		70A4B74116978DAD00C84293 /* redWhitePlay57.png in Resources */ = {isa = PBXBuildFile; fileRef = 70A4B74016978DAD00C84293 /* redWhitePlay57.png */; };
 		70A4B74F169804D200C84293 /* noAlbumImage320.png in Resources */ = {isa = PBXBuildFile; fileRef = 70A4B74E169804D200C84293 /* noAlbumImage320.png */; };
+		70A6444F16CE08120059C561 /* ITunesCommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70A6444E16CE08120059C561 /* ITunesCommentsViewController.m */; };
+		70A6445216CE0FEE0059C561 /* UserInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70A6445116CE0FEE0059C561 /* UserInfoViewController.m */; };
 		70ADDC0C16113CAD00219873 /* sound.caf in Resources */ = {isa = PBXBuildFile; fileRef = 70ADDC0B16113CAD00219873 /* sound.caf */; };
 		70ADDC1F1614178500219873 /* CollectionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 70ADDC1E1614178500219873 /* CollectionItem.m */; };
 		70ADDC30161A4A7700219873 /* CollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70ADDC2F161A4A7700219873 /* CollectionViewController.m */; };
@@ -202,10 +204,10 @@
 		7020E1D916B218D000BAB41E /* rightButtonBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rightButtonBackground.png; sourceTree = "<group>"; };
 		7020E1DA16B218D000BAB41E /* rightButtonBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rightButtonBackground@2x.png"; sourceTree = "<group>"; };
 		7020E1DE16B2305600BAB41E /* rightButtonBackgroundforTesting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rightButtonBackgroundforTesting.png; sourceTree = "<group>"; };
-		702B4147165714E7004A9265 /* NotesTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotesTabBarController.h; sourceTree = "<group>"; };
-		702B4148165714E7004A9265 /* NotesTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotesTabBarController.m; sourceTree = "<group>"; };
-		702B414B165715C2004A9265 /* SongInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SongInfoViewController.h; sourceTree = "<group>"; };
-		702B414C165715C2004A9265 /* SongInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SongInfoViewController.m; sourceTree = "<group>"; };
+		702B4147165714E7004A9265 /* InfoTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfoTabBarController.h; sourceTree = "<group>"; };
+		702B4148165714E7004A9265 /* InfoTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfoTabBarController.m; sourceTree = "<group>"; };
+		702B414B165715C2004A9265 /* AlbumInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumInfoViewController.h; sourceTree = "<group>"; };
+		702B414C165715C2004A9265 /* AlbumInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumInfoViewController.m; sourceTree = "<group>"; };
 		702B414E165741C8004A9265 /* info_48.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = info_48.png; sourceTree = "<group>"; };
 		702B4150165741E0004A9265 /* note_48.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = note_48.png; sourceTree = "<group>"; };
 		702B4152165742BF004A9265 /* note_24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = note_24.png; sourceTree = "<group>"; };
@@ -262,8 +264,8 @@
 		707862A71626391600871260 /* MegaTunes Player.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "MegaTunes Player.xcdatamodel"; sourceTree = "<group>"; };
 		707862B01626631700871260 /* TextMagnifierViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextMagnifierViewController.h; sourceTree = "<group>"; };
 		707862B11626631700871260 /* TextMagnifierViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextMagnifierViewController.m; sourceTree = "<group>"; };
-		707862B31626659900871260 /* NotesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotesViewController.h; sourceTree = "<group>"; };
-		707862B41626659900871260 /* NotesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotesViewController.m; sourceTree = "<group>"; };
+		707862B31626659900871260 /* ITunesInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITunesInfoViewController.h; sourceTree = "<group>"; };
+		707862B41626659900871260 /* ITunesInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITunesInfoViewController.m; sourceTree = "<group>"; };
 		707862BA1629F33900871260 /* AutoScrollLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AutoScrollLabel.h; path = ../../../../AutoScrollLabel/AutoScrollLabel.h; sourceTree = "<group>"; };
 		707862BB1629F33A00871260 /* AutoScrollLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AutoScrollLabel.m; path = ../../../../AutoScrollLabel/AutoScrollLabel.m; sourceTree = "<group>"; };
 		707862BD162C729300871260 /* TimeMagnifierViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeMagnifierViewController.h; sourceTree = "<group>"; };
@@ -391,6 +393,10 @@
 		70A4B73E16978C8100C84293 /* redWhitePlay68.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redWhitePlay68.png; sourceTree = "<group>"; };
 		70A4B74016978DAD00C84293 /* redWhitePlay57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = redWhitePlay57.png; path = ../redWhitePlay57.png; sourceTree = "<group>"; };
 		70A4B74E169804D200C84293 /* noAlbumImage320.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = noAlbumImage320.png; path = ../noAlbumImage320.png; sourceTree = "<group>"; };
+		70A6444D16CE08120059C561 /* ITunesCommentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITunesCommentsViewController.h; sourceTree = "<group>"; };
+		70A6444E16CE08120059C561 /* ITunesCommentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITunesCommentsViewController.m; sourceTree = "<group>"; };
+		70A6445016CE0FEE0059C561 /* UserInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserInfoViewController.h; sourceTree = "<group>"; };
+		70A6445116CE0FEE0059C561 /* UserInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserInfoViewController.m; sourceTree = "<group>"; };
 		70ADDC0B16113CAD00219873 /* sound.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = sound.caf; path = ../../../../AddMusic/Resources/sound.caf; sourceTree = "<group>"; };
 		70ADDC1D1614178500219873 /* CollectionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionItem.h; sourceTree = "<group>"; };
 		70ADDC1E1614178500219873 /* CollectionItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionItem.m; sourceTree = "<group>"; };
@@ -966,12 +972,16 @@
 				707862BE162C729300871260 /* TimeMagnifierViewController.m */,
 				707862B01626631700871260 /* TextMagnifierViewController.h */,
 				707862B11626631700871260 /* TextMagnifierViewController.m */,
-				702B4147165714E7004A9265 /* NotesTabBarController.h */,
-				702B4148165714E7004A9265 /* NotesTabBarController.m */,
-				702B414B165715C2004A9265 /* SongInfoViewController.h */,
-				702B414C165715C2004A9265 /* SongInfoViewController.m */,
-				707862B31626659900871260 /* NotesViewController.h */,
-				707862B41626659900871260 /* NotesViewController.m */,
+				702B4147165714E7004A9265 /* InfoTabBarController.h */,
+				702B4148165714E7004A9265 /* InfoTabBarController.m */,
+				702B414B165715C2004A9265 /* AlbumInfoViewController.h */,
+				702B414C165715C2004A9265 /* AlbumInfoViewController.m */,
+				707862B31626659900871260 /* ITunesInfoViewController.h */,
+				707862B41626659900871260 /* ITunesInfoViewController.m */,
+				70A6444D16CE08120059C561 /* ITunesCommentsViewController.h */,
+				70A6444E16CE08120059C561 /* ITunesCommentsViewController.m */,
+				70A6445016CE0FEE0059C561 /* UserInfoViewController.h */,
+				70A6445116CE0FEE0059C561 /* UserInfoViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -1308,7 +1318,7 @@
 				70ADDC33161AC09C00219873 /* InitialViewController.m in Sources */,
 				707862A81626391600871260 /* MegaTunes Player.xcdatamodeld in Sources */,
 				707862B21626631700871260 /* TextMagnifierViewController.m in Sources */,
-				707862B51626659900871260 /* NotesViewController.m in Sources */,
+				707862B51626659900871260 /* ITunesInfoViewController.m in Sources */,
 				707862BC1629F33A00871260 /* AutoScrollLabel.m in Sources */,
 				707862BF162C729300871260 /* TimeMagnifierViewController.m in Sources */,
 				70974B511630698200A33B7D /* UIImage+iPhone5.m in Sources */,
@@ -1330,8 +1340,8 @@
 				70A13DE2163734D200244866 /* ScrollLabel.m in Sources */,
 				70984C221640C07A00CE7EA9 /* ItemCollection.m in Sources */,
 				7071DF90164D6D0200942E6A /* CustomNavigationBar.m in Sources */,
-				702B4149165714E7004A9265 /* NotesTabBarController.m in Sources */,
-				702B414D165715C2004A9265 /* SongInfoViewController.m in Sources */,
+				702B4149165714E7004A9265 /* InfoTabBarController.m in Sources */,
+				702B414D165715C2004A9265 /* AlbumInfoViewController.m in Sources */,
 				702B4158165743AB004A9265 /* UserDataForMediaItem.m in Sources */,
 				702B415E16585120004A9265 /* SongInfoCell.m in Sources */,
 				709FA3861658B3520082DAE5 /* SongImageCell.m in Sources */,
@@ -1341,6 +1351,8 @@
 				700511FA16AF19240085B6F1 /* CustomSongCell.m in Sources */,
 				7005120016AF2A9F0085B6F1 /* TemporaryViewController.m in Sources */,
 				709F238A16C329C000521158 /* MediaItemUserData.m in Sources */,
+				70A6444F16CE08120059C561 /* ITunesCommentsViewController.m in Sources */,
+				70A6445216CE0FEE0059C561 /* UserInfoViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

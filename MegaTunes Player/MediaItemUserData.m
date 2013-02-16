@@ -12,10 +12,9 @@
 @implementation MediaItemUserData
 
 @dynamic title;
-@dynamic userClassification;
-@dynamic userNotes;
+@dynamic userGrouping;
+@dynamic comments;
 @dynamic persistentID;
-@dynamic lastPlayedDate;
 @dynamic bpm;
 
 @synthesize fetchedResultsController = fetchedResultsController_;
@@ -23,44 +22,18 @@
 
 @synthesize fetchedObjects;
 
-- (void)addMediaItemToCoreData:(UserDataForMediaItem *) mediaItem {
+- (UserDataForMediaItem *) containsItem: (NSNumber *) currentItemPersistentID {
 
-    //LogMethod();
-    
-//    [self removeMediaItemFromCoreData];
-    
-    NSError * error = nil;
-    
-    // insert the user data for MediaItem into Core Data
-    NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:@"MediaItemUserData" inManagedObjectContext:self.managedObjectContext];
-    [newManagedObject setValue: mediaItem.title forKey:@"title"];
-    [newManagedObject setValue: mediaItem.userClassification forKey: @"userClassification"];
-    [newManagedObject setValue: mediaItem.userNotes forKey: @"userNotes"];
-    [newManagedObject setValue: mediaItem.persistentID forKey:@"persistentID"];
-    [newManagedObject setValue: mediaItem.lastPlayedDate forKey: @"lastPlayedDate"];
-    [newManagedObject setValue: mediaItem.bpm forKey: @"bpm"];
-
-    NSLog(@" newManagedObject is %@", newManagedObject);
-    
-    if (![self.managedObjectContext save:&error]) {
-        NSLog(@"%s: Problem saving: %@", __PRETTY_FUNCTION__, error);
-    }
-    
-}
-
-- (UserDataForMediaItem *) containsItem: (NSNumber *) currentItem {
-
-//    BOOL itemFound;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"MediaItemUserData"
                                               inManagedObjectContext:self.managedObjectContext];
     [fetchRequest setEntity:entity];
-    
-    NSString *persistentIDString = [currentItem stringValue];
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"persistentID == %@", persistentIDString];
+
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"persistentID == %@", currentItemPersistentID];
+
     [fetchRequest setPredicate:pred];
     
-    NSLog(@"entity retrieved is %@", entity);
+//    NSLog(@"entity retrieved is %@", entity);
 
     NSError *error = nil;
     self.fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
@@ -70,41 +43,48 @@
         NSLog (@"fetch error");
     }
     
-//    itemFound = NO;
     if ([self.fetchedObjects count] == 0) {
         NSLog (@"no objects fetched");
-//        itemFound = NO;
         return nil;
     } else {
         // if there is an object, need to return it
-//        itemFound = YES;
-        NSLog(@" fetchedObject is %@", [self.fetchedObjects objectAtIndex:0]);
         return [self.fetchedObjects objectAtIndex:0];
-        
-        //for nslog
-        UserDataForMediaItem *userDataForMediaItem = [self.fetchedObjects objectAtIndex:0];
-        NSLog(@"persistentID fetched from Core Data %@", userDataForMediaItem.persistentID);
-
     }
 }
-- (void) updateLastPlayedDateForItem: (NSNumber *) currentItem {
+- (void) updateUserGroupingForItem: (UserDataForMediaItem *) userDataForMediaItem {
     
-    if ([self containsItem: currentItem]) {
-        [[self.fetchedObjects objectAtIndex:0] setValue: [NSDate date] forKey: @"lastPlayedDate"];
-
-        NSError * error = nil;
-        if (![self.managedObjectContext save:&error]) {
-            NSLog(@"%s: Problem saving: %@", __PRETTY_FUNCTION__, error);
-        }
-            NSLog(@" updatedManagedObject is %@", [self.fetchedObjects objectAtIndex:0]);
+    NSError * error = nil;
+    
+    if ([self containsItem: userDataForMediaItem.persistentID]) {
+        //if the object is found, update its fields
+        [[self.fetchedObjects objectAtIndex:0] setValue: userDataForMediaItem.userGrouping forKey: @"userGrouping"];
     } else {
-        UserDataForMediaItem *userDataForMediaItem = [[UserDataForMediaItem alloc] init];
-        userDataForMediaItem.persistentID = currentItem;
-        userDataForMediaItem.lastPlayedDate = [NSDate date];
-        [self addMediaItemToCoreData:userDataForMediaItem];
-        
-        NSLog(@"persistnentID inserted into Core Data %@", userDataForMediaItem.persistentID);
+        //if the object was not found in Core Data, add a new object
+        NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:@"MediaItemUserData" inManagedObjectContext:self.managedObjectContext];
+        [newManagedObject setValue: userDataForMediaItem.title forKey:@"title"];
+        [newManagedObject setValue: userDataForMediaItem.userGrouping forKey: @"userGrouping"];
+        [newManagedObject setValue: userDataForMediaItem.persistentID forKey:@"persistentID"];
+    }
+    if (![self.managedObjectContext save:&error]) {
+        NSLog(@"%s: Problem saving: %@", __PRETTY_FUNCTION__, error);
     }
 }
-
+- (void) updateCommentsForItem: (UserDataForMediaItem *) userDataForMediaItem {
+    
+    NSError * error = nil;
+    
+    if ([self containsItem: userDataForMediaItem.persistentID]) {
+        //if the object is found, update its fields
+        [[self.fetchedObjects objectAtIndex:0] setValue: userDataForMediaItem.comments forKey: @"comments"];
+    } else {
+        //if the object was not found in Core Data, add a new object
+        NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:@"MediaItemUserData" inManagedObjectContext:self.managedObjectContext];
+        [newManagedObject setValue: userDataForMediaItem.title forKey:@"title"];
+        [newManagedObject setValue: userDataForMediaItem.comments forKey: @"comments"];
+        [newManagedObject setValue: userDataForMediaItem.persistentID forKey:@"persistentID"];
+    }
+    if (![self.managedObjectContext save:&error]) {
+        NSLog(@"%s: Problem saving: %@", __PRETTY_FUNCTION__, error);
+    }
+}
 @end

@@ -47,7 +47,7 @@
     }
     
 }
-- (CollectionItem *) containsItem: (NSNumber *) playingSong
+- (CollectionItem *) containsItem: (NSNumber *) playingSongPersistentID
 
 {
     BOOL itemFound;
@@ -76,7 +76,7 @@
         
             for (MPMediaItem *song in savedQueue) {
 //                if ([[song valueForProperty: MPMediaItemPropertyTitle] isEqual: playingSong]) {
-                if ([[song valueForProperty: MPMediaItemPropertyPersistentID] isEqual: playingSong]) {
+                if ([[song valueForProperty: MPMediaItemPropertyPersistentID] isEqual: playingSongPersistentID]) {
                     itemFound = YES;
                 }
             }

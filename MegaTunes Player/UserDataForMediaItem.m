@@ -11,10 +11,9 @@
 @implementation UserDataForMediaItem
 
 @synthesize title;
-@synthesize userClassification;
-@synthesize userNotes;
+@synthesize userGrouping;
+@synthesize comments;
 @synthesize persistentID;
-@synthesize lastPlayedDate;
 @synthesize bpm;
 
 @end

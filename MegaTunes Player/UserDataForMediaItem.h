@@ -9,10 +9,9 @@
 @interface UserDataForMediaItem : NSObject
 
 @property (nonatomic, retain) NSString * title;
-@property (nonatomic, retain) NSString * userClassification;
-@property (nonatomic, retain) NSString * userNotes;
+@property (nonatomic, retain) NSString * userGrouping;
+@property (nonatomic, retain) NSString * comments;
 @property (nonatomic, retain) NSNumber * persistentID;
-@property (nonatomic, retain) NSDate   * lastPlayedDate;
 @property (nonatomic, retain) NSNumber * bpm;
 
 @end
