@@ -33,13 +33,20 @@
     
     musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
     
+    [self loadDataForView];
+    
+    [self updateLayoutForNewOrientation: self.interfaceOrientation];
+    
+}
+- (void) loadDataForView {
+    
+    //check to see if there is user data for this media item
     if ([self.mediaItemForInfo valueForProperty: MPMediaItemPropertyComments]) {
         //display Comments and later save this value in userDataForMediaItem in Core Data
         self.comments.text= [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyComments];
     } else {
         self.comments.text = @"No iTunes Comments";
     }
-    [self updateLayoutForNewOrientation: self.interfaceOrientation];
     
 }
 
@@ -66,20 +73,20 @@
     }
 }
 
-- (UILabel *) customizeTitleView
-{
-    CGRect frame = CGRectMake(0, 0, [self.title sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 48);
-    UILabel *label = [[UILabel alloc] initWithFrame:frame];
-    label.backgroundColor = [UIColor clearColor];
-    label.textAlignment = NSTextAlignmentCenter;
-    UIFont *font = [UIFont systemFontOfSize:12];
-    UIFont *newFont = [font fontWithSize:44];
-    label.font = newFont;
-    label.textColor = [UIColor yellowColor];
-    label.text = self.title;
-    
-    return label;
-}
+//- (UILabel *) customizeTitleView
+//{
+//    CGRect frame = CGRectMake(0, 0, [self.title sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 48);
+//    UILabel *label = [[UILabel alloc] initWithFrame:frame];
+//    label.backgroundColor = [UIColor clearColor];
+//    label.textAlignment = NSTextAlignmentCenter;
+//    UIFont *font = [UIFont systemFontOfSize:12];
+//    UIFont *newFont = [font fontWithSize:44];
+//    label.font = newFont;
+//    label.textColor = [UIColor yellowColor];
+//    label.text = self.title;
+//    
+//    return label;
+//}
 
 - (void)didReceiveMemoryWarning
 {

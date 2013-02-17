@@ -41,7 +41,38 @@
 	// Do any additional setup after loading the view, typically from a nib.
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
     
-    //get the specific info from the 
+    UIImage *unselectedImage0 = [UIImage imageNamed:@"unselectedTabInfoButton.png"];
+    UIImage *selectedImage0 = [UIImage imageNamed:@"selectedTabInfoButton.png"];
+    
+    //    UIImage *unselectedImage1 = [UIImage imageNamed:@"notesLightButtonImageWhite.png"];
+    //    UIImage *unselectedImage1 = [UIImage imageNamed:@"tabButtonBlack.png"];
+    UIImage *unselectedImage1 = [UIImage imageNamed:@"unselectedTabNotesButton.png"];
+    UIImage *selectedImage1 = [UIImage imageNamed:@"selectedTabNotes2Button.png"];
+    
+    //    UIImage *selectedImage1 = [unselectedImage1 imageWithTint:[UIColor blueColor]];
+    
+    
+    UITabBar *tabBar = self.tabBarController.tabBar;
+    UITabBarItem *item0 = [tabBar.items objectAtIndex:0];
+    UITabBarItem *item1 = [tabBar.items objectAtIndex:1];
+    UITabBarItem *item2 = [tabBar.items objectAtIndex:2];
+    UITabBarItem *item3 = [tabBar.items objectAtIndex:3];
+    
+    
+    [item0 setFinishedSelectedImage:selectedImage0 withFinishedUnselectedImage:unselectedImage0];
+    [item1 setFinishedSelectedImage:selectedImage1 withFinishedUnselectedImage:unselectedImage1];
+    [item2 setFinishedSelectedImage:selectedImage0 withFinishedUnselectedImage:unselectedImage0];
+    [item3 setFinishedSelectedImage:selectedImage1 withFinishedUnselectedImage:unselectedImage1];
+
+    [self loadArrayForTable];
+
+//    [self registerForMediaPlayerNotifications];
+    
+    [self updateLayoutForNewOrientation: self.interfaceOrientation];
+    
+}
+- (void) loadArrayForTable {
+    //get the specific info from the
     
     self.songName = [self.mediaItemForInfo valueForProperty:  MPMediaItemPropertyTitle];
     self.album = [self.mediaItemForInfo valueForProperty:  MPMediaItemPropertyAlbumTitle];
@@ -68,33 +99,6 @@
     }
     
     self.songInfoData = [NSArray arrayWithObjects: self.artist, self.songName, self.album, nil];
-    
-    UIImage *unselectedImage0 = [UIImage imageNamed:@"unselectedTabInfoButton.png"];
-    UIImage *selectedImage0 = [UIImage imageNamed:@"selectedTabInfoButton.png"];
-    
-    //    UIImage *unselectedImage1 = [UIImage imageNamed:@"notesLightButtonImageWhite.png"];
-    //    UIImage *unselectedImage1 = [UIImage imageNamed:@"tabButtonBlack.png"];
-    UIImage *unselectedImage1 = [UIImage imageNamed:@"unselectedTabNotesButton.png"];
-    UIImage *selectedImage1 = [UIImage imageNamed:@"selectedTabNotes2Button.png"];
-    
-    //    UIImage *selectedImage1 = [unselectedImage1 imageWithTint:[UIColor blueColor]];
-    
-    
-    UITabBar *tabBar = self.tabBarController.tabBar;
-    UITabBarItem *item0 = [tabBar.items objectAtIndex:0];
-    UITabBarItem *item1 = [tabBar.items objectAtIndex:1];
-    UITabBarItem *item2 = [tabBar.items objectAtIndex:2];
-    UITabBarItem *item3 = [tabBar.items objectAtIndex:3];
-    
-    
-    [item0 setFinishedSelectedImage:selectedImage0 withFinishedUnselectedImage:unselectedImage0];
-    [item1 setFinishedSelectedImage:selectedImage1 withFinishedUnselectedImage:unselectedImage1];
-    [item2 setFinishedSelectedImage:selectedImage0 withFinishedUnselectedImage:unselectedImage0];
-    [item3 setFinishedSelectedImage:selectedImage1 withFinishedUnselectedImage:unselectedImage1];
-    
-    
-    [self updateLayoutForNewOrientation: self.interfaceOrientation];
-    
 }
 - (void) viewWillAppear:(BOOL)animated
 {
@@ -113,20 +117,20 @@
 //        NSLog (@"self.navigationItem.titleview is %@", self.navigationItem.titleView);
 //    }
 }
-- (UILabel *) customizeTitleView
-{
-    CGRect frame = CGRectMake(0, 0, [self.title sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 48);
-    UILabel *label = [[UILabel alloc] initWithFrame:frame];
-    label.backgroundColor = [UIColor clearColor];
-    label.textAlignment = NSTextAlignmentCenter;
-    UIFont *font = [UIFont systemFontOfSize:12];
-    UIFont *newFont = [font fontWithSize:44];
-    label.font = newFont;
-    label.textColor = [UIColor yellowColor];
-    label.text = self.title;
-    
-    return label;
-}
+//- (UILabel *) customizeTitleView
+//{
+//    CGRect frame = CGRectMake(0, 0, [self.title sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 48);
+//    UILabel *label = [[UILabel alloc] initWithFrame:frame];
+//    label.backgroundColor = [UIColor clearColor];
+//    label.textAlignment = NSTextAlignmentCenter;
+//    UIFont *font = [UIFont systemFontOfSize:12];
+//    UIFont *newFont = [font fontWithSize:44];
+//    label.font = newFont;
+//    label.textColor = [UIColor yellowColor];
+//    label.text = self.title;
+//    
+//    return label;
+//}
 
 - (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
     
@@ -219,6 +223,54 @@
     
 	[tableView deselectRowAtIndexPath: indexPath animated: YES];
 }
+
+//- (void) registerForMediaPlayerNotifications {
+//    //    LogMethod();
+//    
+//	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+//    
+//    [notificationCenter addObserver: self
+//						   selector: @selector (handle_NowPlayingItemChanged:)
+//							   name: MPMusicPlayerControllerNowPlayingItemDidChangeNotification
+//							 object: musicPlayer];
+//    
+//    [musicPlayer beginGeneratingPlaybackNotifications];
+//    
+//}
+//
+//// If displaying now-playing item when it changes, update mediaItemForInfo and show info for currently playing song
+//- (void) handle_NowPlayingItemChanged: (id) notification {
+//    LogMethod();
+//    //the rightBarButtonItem is nil when the info is for the currently playing song
+//    if (!self.navigationItem.rightBarButtonItem) {
+//        self.mediaItemForInfo = [musicPlayer nowPlayingItem];
+//        NSLog (@"newTitle is %@", [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyTitle]);
+//        
+////        self.albumInfoViewController.mediaItemForInfo = self.mediaItemForInfo;
+////        self.iTunesInfoViewController.mediaItemForInfo = self.mediaItemForInfo;
+////        self.iTunesCommentsViewController.mediaItemForInfo = self.mediaItemForInfo;
+////        self.userInfoViewController.mediaItemForInfo = self.mediaItemForInfo;
+////        [self loadArrayForTable];
+////        [self.infoTableView reloadData];
+////        [self.albumImageView setNeedsDisplay];
+//        
+////        [self.albumInfoViewController.view setNeedsDisplay];
+////        [self.iTunesInfoViewController.view setNeedsDisplay];
+////        [self.iTunesCommentsViewController.view setNeedsDisplay];
+////        [self.userInfoViewController.view setNeedsDisplay];
+//        
+//    }
+//}
+//
+//- (void)dealloc {
+//    //    LogMethod();
+//    [[NSNotificationCenter defaultCenter] removeObserver: self
+//                                                    name: MPMusicPlayerControllerNowPlayingItemDidChangeNotification
+//												  object: musicPlayer];
+//    
+//    [musicPlayer endGeneratingPlaybackNotifications];
+//    
+//}
 
 - (void)didReceiveMemoryWarning
 {

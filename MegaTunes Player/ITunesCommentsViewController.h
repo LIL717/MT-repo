@@ -17,5 +17,7 @@
 
 //@property (strong, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceToTop;
 //@property (strong, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceToTop28;
+- (void) loadDataForView;
+
 
 @end

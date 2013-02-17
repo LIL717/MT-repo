@@ -147,32 +147,7 @@
     
     return label;
 }
-//
-//- (IBAction)enableEditing:(id)sender {
-//
-//    self.notesViewController.userGrouping.backgroundColor = [UIColor darkGrayColor];
-//    UIFont *font = [UIFont systemFontOfSize:12];
-//    UIFont *newFont = [font fontWithSize:44];
-//    self.notesViewController.userGrouping.font = newFont;
-//    [self.notesViewController.userGrouping isEditing];
-//    
-//    self.notesViewController.comments.backgroundColor = [UIColor darkGrayColor];
-//    self.notesViewController.comments.textColor = [UIColor whiteColor];
-//    [self.notesViewController.comments isEditable];
-//    
-//    self.navigationItem.rightBarButtonItem = self.saveBarButton;
-//}
-//
-//- (void) doneEditing {
-//
-//    self.navigationItem.rightBarButtonItem = self.editBarButton;
-//}
-//
-//- (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
-//    
-//    [self updateLayoutForNewOrientation: orientation];
-//    
-//}
+
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
     
     [self updateLayoutForNewOrientation: orientation];
@@ -295,6 +270,11 @@
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     
     [notificationCenter addObserver: self
+						   selector: @selector (handle_NowPlayingItemChanged:)
+							   name: MPMusicPlayerControllerNowPlayingItemDidChangeNotification
+							 object: musicPlayer];
+    
+    [notificationCenter addObserver: self
 						   selector: @selector (handle_PlaybackStateChanged:)
 							   name: MPMusicPlayerControllerPlaybackStateDidChangeNotification
 							 object: musicPlayer];
@@ -307,6 +287,36 @@
     [[MPMediaLibrary defaultMediaLibrary] beginGeneratingLibraryChangeNotifications];
     [musicPlayer beginGeneratingPlaybackNotifications];
     
+}
+// If displaying now-playing item when it changes, update mediaItemForInfo and show info for currently playing song
+- (void) handle_NowPlayingItemChanged: (id) notification {
+    LogMethod();
+    //the rightBarButtonItem is nil when the info is for the currently playing song
+    if (!self.navigationItem.rightBarButtonItem) {
+        self.mediaItemForInfo = [musicPlayer nowPlayingItem];
+        
+        self.albumInfoViewController.mediaItemForInfo = self.mediaItemForInfo;
+        [self.albumInfoViewController loadArrayForTable];
+        [self.albumInfoViewController.infoTableView reloadData];
+        [self.albumInfoViewController.albumImageView setNeedsDisplay];
+        
+        self.iTunesInfoViewController.mediaItemForInfo = self.mediaItemForInfo;
+        [self.iTunesInfoViewController loadTableData];
+        [self.iTunesInfoViewController.infoTableView reloadData];
+        
+        self.iTunesCommentsViewController.mediaItemForInfo = self.mediaItemForInfo;
+        [self.iTunesCommentsViewController loadDataForView];
+        [self.iTunesCommentsViewController.comments setNeedsDisplay];
+        
+        self.userInfoViewController.mediaItemForInfo = self.mediaItemForInfo;
+        [self.userInfoViewController loadDataForView];
+        [self.userInfoViewController.userGrouping setNeedsDisplay];
+        [self.userInfoViewController.comments setNeedsDisplay];
+        
+        self.title = [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyTitle];
+        self.navigationItem.titleView = [self customizeTitleView];
+        
+    }
 }
 - (void) handle_iPodLibraryChanged: (id) changeNotification {
     LogMethod();
@@ -329,6 +339,9 @@
 
 - (void)dealloc {
     //    LogMethod();
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                    name: MPMusicPlayerControllerNowPlayingItemDidChangeNotification
+												  object: musicPlayer];
     
     [[NSNotificationCenter defaultCenter] removeObserver: self
                                                     name: MPMediaLibraryDidChangeNotification

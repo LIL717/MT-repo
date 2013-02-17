@@ -27,4 +27,5 @@
 
 @property (strong, nonatomic) IBOutlet UILabel *placeholderLabel;
 
+- (void) loadDataForView;
 @end

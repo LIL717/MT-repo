@@ -22,6 +22,6 @@
 @property (nonatomic, copy) NSString *artist;
 @property (nonatomic, copy) UIImage *albumImage;
 
-
+- (void) loadArrayForTable;
 
 @end

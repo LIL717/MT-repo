@@ -530,7 +530,7 @@
             <objects>
                 <viewController id="ATv-n6-VX6" userLabel="User Info View Controller" customClass="UserInfoViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Lr6-Id-qll">
-                        <rect key="frame" x="0.0" y="64" width="480" height="256"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dSl-sU-nne">
@@ -547,7 +547,7 @@
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1nd-7c-kt3">
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="342" id="tj3-4D-U8k"/>
+                                            <constraint firstAttribute="height" constant="293" id="bGl-Vf-RTX"/>
                                         </constraints>
                                         <color key="textColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="44"/>
@@ -555,7 +555,7 @@
                                     </textView>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Enter Notes" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ib9-ir-2yk">
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="270" id="nhC-30-ifD"/>
+                                            <constraint firstAttribute="width" constant="270" type="user" id="nhC-30-ifD"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="44"/>
                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -563,15 +563,15 @@
                                     </label>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="XJf-jC-nf6" firstAttribute="leading" secondItem="dSl-sU-nne" secondAttribute="leading" type="default" id="5ND-v1-5mA"/>
-                                    <constraint firstAttribute="bottom" secondItem="ib9-ir-2yk" secondAttribute="bottom" constant="122" id="7KI-gj-7A2"/>
+                                    <constraint firstItem="XJf-jC-nf6" firstAttribute="leading" secondItem="dSl-sU-nne" secondAttribute="leading" type="user" id="5ND-v1-5mA"/>
                                     <constraint firstItem="1nd-7c-kt3" firstAttribute="leading" secondItem="dSl-sU-nne" secondAttribute="leading" type="user" id="8Cc-1o-4HF"/>
-                                    <constraint firstItem="ib9-ir-2yk" firstAttribute="leading" secondItem="dSl-sU-nne" secondAttribute="leading" constant="7" id="Eb4-BN-c7t"/>
-                                    <constraint firstItem="XJf-jC-nf6" firstAttribute="centerX" secondItem="dSl-sU-nne" secondAttribute="centerX" type="default" id="Htw-l0-N8k"/>
-                                    <constraint firstItem="ib9-ir-2yk" firstAttribute="top" secondItem="XJf-jC-nf6" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="S2W-TT-D2R"/>
-                                    <constraint firstItem="XJf-jC-nf6" firstAttribute="top" secondItem="dSl-sU-nne" secondAttribute="top" type="user" id="gFx-Hl-5xm"/>
-                                    <constraint firstItem="XJf-jC-nf6" firstAttribute="trailing" secondItem="dSl-sU-nne" secondAttribute="trailing" type="default" id="pog-ez-9zD"/>
-                                    <constraint firstItem="1nd-7c-kt3" firstAttribute="top" secondItem="XJf-jC-nf6" secondAttribute="bottom" type="user" id="qEJ-Zu-fI3"/>
+                                    <constraint firstItem="ib9-ir-2yk" firstAttribute="leading" secondItem="dSl-sU-nne" secondAttribute="leading" constant="7" type="user" id="Eb4-BN-c7t"/>
+                                    <constraint firstItem="1nd-7c-kt3" firstAttribute="bottom" secondItem="dSl-sU-nne" secondAttribute="bottom" type="default" id="Hi3-j7-1N4"/>
+                                    <constraint firstItem="XJf-jC-nf6" firstAttribute="centerX" secondItem="dSl-sU-nne" secondAttribute="centerX" type="user" id="Htw-l0-N8k"/>
+                                    <constraint firstItem="ib9-ir-2yk" firstAttribute="top" secondItem="XJf-jC-nf6" secondAttribute="bottom" constant="8" symbolic="YES" type="user" id="S2W-TT-D2R"/>
+                                    <constraint firstItem="1nd-7c-kt3" firstAttribute="top" secondItem="XJf-jC-nf6" secondAttribute="bottom" type="user" id="Yhx-Su-JgF"/>
+                                    <constraint firstItem="XJf-jC-nf6" firstAttribute="top" secondItem="dSl-sU-nne" secondAttribute="top" type="user" id="bTx-a0-BO9"/>
+                                    <constraint firstItem="XJf-jC-nf6" firstAttribute="trailing" secondItem="dSl-sU-nne" secondAttribute="trailing" type="user" id="pog-ez-9zD"/>
                                     <constraint firstItem="1nd-7c-kt3" firstAttribute="trailing" secondItem="dSl-sU-nne" secondAttribute="trailing" type="default" id="vqT-rp-PKU"/>
                                 </constraints>
                             </scrollView>
@@ -583,11 +583,10 @@
                             <constraint firstItem="dSl-sU-nne" firstAttribute="trailing" secondItem="Lr6-Id-qll" secondAttribute="trailing" type="user" id="HwL-ZY-D6n"/>
                             <constraint firstAttribute="bottom" secondItem="dSl-sU-nne" secondAttribute="bottom" type="user" id="dyP-4q-0kP"/>
                         </constraints>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="" id="jFY-iC-Zg9" userLabel="Tab Bar Item"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
-                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="comments" destination="1nd-7c-kt3" id="ugX-XU-nwC"/>
                         <outlet property="placeholderLabel" destination="ib9-ir-2yk" id="p8u-cU-itV"/>
@@ -1068,161 +1067,6 @@
         <image name="infoSelectedButtonImage.png" width="40" height="40"/>
         <image name="list-background.png" width="320" height="77"/>
     </resources>
-    <classes>
-        <class className="AlbumInfoViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/AlbumInfoViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="albumImageView" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="infoTableView" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-        <class className="AutoScrollLabel" superclassName="UIScrollView">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/AutoScrollLabel.h"/>
-        </class>
-        <class className="CollectionItemCell" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/CollectionItemCell.h"/>
-            <relationships>
-                <relationship kind="outlet" name="durationLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="scrollView" candidateClass="InCellScrollView"/>
-            </relationships>
-        </class>
-        <class className="CollectionViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/CollectionViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="collectionTableView" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-        <class className="ITunesCommentsViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ITunesCommentsViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="comments" candidateClass="UITextView"/>
-            </relationships>
-        </class>
-        <class className="ITunesInfoViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ITunesInfoViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="bpm" candidateClass="NSString"/>
-                <relationship kind="outlet" name="infoTableView" candidateClass="UITableView"/>
-                <relationship kind="outlet" name="lastPlayedDate" candidateClass="NSString"/>
-                <relationship kind="outlet" name="userGrouping" candidateClass="NSString"/>
-            </relationships>
-        </class>
-        <class className="InCellScrollView" superclassName="UIScrollView">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/InCellScrollView.h"/>
-        </class>
-        <class className="InfoTabBarController" superclassName="UITabBarController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/InfoTabBarController.h"/>
-        </class>
-        <class className="InitialViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/InitialViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="choosePlaylist:"/>
-                <relationship kind="outlet" name="choosePlaylist" candidateClass="UIButton"/>
-            </relationships>
-        </class>
-        <class className="MPVolumeView" superclassName="UIView">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MPVolumeView.h"/>
-        </class>
-        <class className="MainViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MainViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="magnifyElapsedTime:"/>
-                <relationship kind="action" name="magnifyRemainingTime:"/>
-                <relationship kind="action" name="moveSlider:"/>
-                <relationship kind="action" name="nextSongTapDetected:" candidateClass="UITapGestureRecognizer"/>
-                <relationship kind="action" name="nowPlayingTapDetected:" candidateClass="UITapGestureRecognizer"/>
-                <relationship kind="action" name="playPause:"/>
-                <relationship kind="action" name="repeatModeChanged:"/>
-                <relationship kind="action" name="shuffleModeChanged:"/>
-                <relationship kind="action" name="skipBack:"/>
-                <relationship kind="action" name="skipForward:"/>
-                <relationship kind="outlet" name="elapsedTimeLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="initialNowPlayingLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="nextLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="nextSongLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="nextSongLabelWidthConstraint" candidateClass="NSLayoutConstraint"/>
-                <relationship kind="outlet" name="nextSongScrollView" candidateClass="UIScrollView"/>
-                <relationship kind="outlet" name="nowPlayingInfoButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="nowPlayingLabel" candidateClass="AutoScrollLabel"/>
-                <relationship kind="outlet" name="playPauseButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="playerButtonContraint" candidateClass="NSLayoutConstraint"/>
-                <relationship kind="outlet" name="progressSlider" candidateClass="UISlider"/>
-                <relationship kind="outlet" name="remainingTimeLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="repeatButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="repeatButtonHeightContraint" candidateClass="NSLayoutConstraint"/>
-                <relationship kind="outlet" name="shuffleButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="volumeView" candidateClass="MPVolumeView"/>
-                <relationship kind="outlet" name="volumeViewHeightConstraint" candidateClass="NSLayoutConstraint"/>
-            </relationships>
-        </class>
-        <class className="MediaGroupCell" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MediaGroupCell.h"/>
-            <relationships>
-                <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="MediaGroupViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MediaGroupViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="groupTableView" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-        <class className="NSLayoutConstraint" superclassName="NSObject">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
-        </class>
-        <class className="SongCell" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SongCell.h"/>
-            <relationships>
-                <relationship kind="outlet" name="durationLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="infoBackground" candidateClass="UIView"/>
-                <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="playingIndicator" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="scrollView" candidateClass="InCellScrollView"/>
-            </relationships>
-        </class>
-        <class className="SongInfoCell" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SongInfoCell.h"/>
-            <relationships>
-                <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
-            </relationships>
-        </class>
-        <class className="SongViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SongViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="songTableView" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-        <class className="TextMagnifierViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/TextMagnifierViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="swipeDownDetected:" candidateClass="UISwipeGestureRecognizer"/>
-                <relationship kind="action" name="swipeUpDetected:" candidateClass="UISwipeGestureRecognizer"/>
-                <relationship kind="action" name="tapDetected:" candidateClass="UITapGestureRecognizer"/>
-                <relationship kind="outlet" name="magnifiedLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
-            </relationships>
-        </class>
-        <class className="TimeMagnifierViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/TimeMagnifierViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="cancel:"/>
-                <relationship kind="outlet" name="magnifiedText" candidateClass="UIButton"/>
-            </relationships>
-        </class>
-        <class className="UserInfoViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/UserInfoViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="comments" candidateClass="UITextView"/>
-                <relationship kind="outlet" name="placeholderLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
-                <relationship kind="outlet" name="userGrouping" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="verticalSpaceToTop" candidateClass="NSLayoutConstraint"/>
-                <relationship kind="outlet" name="verticalSpaceToTop28" candidateClass="NSLayoutConstraint"/>
-            </relationships>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
