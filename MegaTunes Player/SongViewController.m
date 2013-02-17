@@ -269,15 +269,17 @@
     
 	if ([segue.identifier isEqualToString:@"ViewInfo"])
 	{
-//       SongInfoViewController *songInfoViewController = segue.destinationViewController;
-//        songInfoViewController.managedObjectContext = self.managedObjectContext;
-////        songInfoViewController.title = @"Info";
-//        songInfoViewController.mediaItemForInfo = self.mediaItemForInfo;
         InfoTabBarController *infoTabBarController = segue.destinationViewController;
         infoTabBarController.managedObjectContext = self.managedObjectContext;
         infoTabBarController.infoDelegate = self;
         infoTabBarController.title = [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyTitle];
         infoTabBarController.mediaItemForInfo = self.mediaItemForInfo;
+        
+        //remove observer for playbackstatechanged because if editing, don't want to pop view
+        //  observer will be added back in infoTabBarControllerDidCancel
+        [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                        name: MPMusicPlayerControllerPlaybackStateDidChangeNotification
+                                                      object: musicPlayer];
         
 	}
     	if ([segue.identifier isEqualToString:@"PlaySong"])
@@ -395,6 +397,12 @@
 - (void)infoTabBarControllerDidCancel:(InfoTabBarController *)controller
 {
     [self willAnimateRotationToInterfaceOrientation: self.interfaceOrientation duration: 1];
+    //need to add back observer for playbackStatechanged because it was removed before going to info in case user edits
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+	[notificationCenter addObserver: self
+						   selector: @selector (handle_PlaybackStateChanged:)
+							   name: MPMusicPlayerControllerPlaybackStateDidChangeNotification
+							 object: musicPlayer];
 }
 - (void)dealloc {
 //    LogMethod();

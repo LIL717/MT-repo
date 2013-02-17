@@ -17,6 +17,7 @@
 #import <AudioToolbox/AudioToolbox.h>
 
 #import "AutoScrollLabel.h"
+@class UserInfoViewController;
 
 @interface MainViewController : UIViewController <MPMediaPickerControllerDelegate, AVAudioPlayerDelegate, TimeMagnifierViewControllerDelegate, TextMagnifierViewControllerDelegate, InfoTabBarControllerDelegate, NSFetchedResultsControllerDelegate> {
     
@@ -55,6 +56,7 @@
 @property (readwrite)           BOOL                    iPodLibraryChanged;
 @property (readwrite)           BOOL                    showPlaylistRemaining;
 @property (nonatomic, strong)   MPMediaItem             *savedNowPlaying;
+@property (nonatomic, strong)   UserInfoViewController  *userInfoViewController;
 
 @property (strong, nonatomic) IBOutlet UILabel *initialNowPlayingLabel;
 @property (strong, nonatomic) IBOutlet AutoScrollLabel	*nowPlayingLabel;

@@ -15,6 +15,7 @@
 #import "UIImage+AdditionalFunctionalities.h"
 #import "InfoTabBarController.h"
 #import "MediaItemUserData.h"
+#import "UserInfoViewcontroller.h"
 
 //#import "UINavigationBar+AdditionalFunctionalities.h"
 
@@ -120,6 +121,7 @@ void audioRouteChangeListenerCallback (
 @synthesize iPodLibraryChanged;         //A flag indicating whether the library has been changed due to a sync
 @synthesize showPlaylistRemaining;      //A flag the captures the user's preference from setting whether to display the amount of time left in playlist
 @synthesize savedNowPlaying;             //for some reason a new song calls the handle_NowPlayingItemChanged: method twice, so this is used to save and compare
+@synthesize userInfoViewController;
 //these lines came from player view controller
 
 @synthesize currentQueue;
@@ -731,6 +733,11 @@ void audioRouteChangeListenerCallback (
         infoTabBarController.infoDelegate = self;
         infoTabBarController.title = [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyTitle];
         infoTabBarController.mediaItemForInfo = self.mediaItemForInfo;
+        //remove observer for playbackstatechanged because if editing, don't want to pop view
+        //  observer will be added back in infoTabBarControllerDidCancel
+        [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                        name: MPMusicPlayerControllerPlaybackStateDidChangeNotification
+                                                      object: musicPlayer];
         
 	}
 
@@ -910,13 +917,12 @@ void audioRouteChangeListenerCallback (
 		// Even though stopped, invoking 'stop' ensures that the music player will play
 		//		its queue from the start.
         [musicPlayer stop];
+        
         if (iPodLibraryChanged) {
             [self.navigationController popToRootViewControllerAnimated:YES];
         } else {
             [self.navigationController popViewControllerAnimated:YES];
-        }
-        
-        
+        }        
 	}
     
 }
@@ -949,40 +955,40 @@ void audioRouteChangeListenerCallback (
 //
 
 
-#pragma mark AV Foundation delegate methods____________
-
-- (void) audioPlayerDidFinishPlaying: (AVAudioPlayer *) appSoundPlayer successfully: (BOOL) flag {
-    LogMethod();
-	playing = NO;
-}
-
-- (void) audioPlayerBeginInterruption: player {
-    LogMethod();
-	NSLog (@"Interrupted. The system has paused audio playback.");
-	
-	if (playing) {
-        
-		playing = NO;
-		interruptedOnPlayback = YES;
-	}
-}
-
-- (void) audioPlayerEndInterruption: player {
-    LogMethod();
-	NSLog (@"Interruption ended. Resuming audio playback.");
-	
-	// Reactivates the audio session, whether or not audio was playing
-	//		when the interruption arrived.
-	[[AVAudioSession sharedInstance] setActive: YES error: nil];
-	
-	if (interruptedOnPlayback) {
-        
-		[appSoundPlayer prepareToPlay];
-		[appSoundPlayer play];
-		playing = YES;
-		interruptedOnPlayback = NO;
-	}
-}
+//#pragma mark AV Foundation delegate methods____________
+//
+//- (void) audioPlayerDidFinishPlaying: (AVAudioPlayer *) appSoundPlayer successfully: (BOOL) flag {
+//    LogMethod();
+//	playing = NO;
+//}
+//
+//- (void) audioPlayerBeginInterruption: player {
+//    LogMethod();
+//	NSLog (@"Interrupted. The system has paused audio playback.");
+//	
+//	if (playing) {
+//        
+//		playing = NO;
+//		interruptedOnPlayback = YES;
+//	}
+//}
+//
+//- (void) audioPlayerEndInterruption: player {
+//    LogMethod();
+//	NSLog (@"Interruption ended. Resuming audio playback.");
+//	
+//	// Reactivates the audio session, whether or not audio was playing
+//	//		when the interruption arrived.
+//	[[AVAudioSession sharedInstance] setActive: YES error: nil];
+//	
+//	if (interruptedOnPlayback) {
+//        
+//		[appSoundPlayer prepareToPlay];
+//		[appSoundPlayer play];
+//		playing = YES;
+//		interruptedOnPlayback = NO;
+//	}
+//}
 
 
 //#pragma mark - TextMagnifierViewControllerDelegate
@@ -1000,11 +1006,23 @@ void audioRouteChangeListenerCallback (
 	[self dismissViewControllerAnimated:YES completion:nil];
     [self willAnimateRotationToInterfaceOrientation: self.interfaceOrientation duration: 1];
 }
-//#pragma mark - NotesTabBarControllerDelegate
+//#pragma mark - InfoTabBarControllerDelegate
 
 - (void)infoTabBarControllerDidCancel:(InfoTabBarController *)controller
 {
     [self willAnimateRotationToInterfaceOrientation: self.interfaceOrientation duration: 1];
+    //need to add back observer for playbackStatechanged because it was removed before going to info in case user edits 
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+	[notificationCenter addObserver: self
+						   selector: @selector (handle_PlaybackStateChanged:)
+							   name: MPMusicPlayerControllerPlaybackStateDidChangeNotification
+							 object: musicPlayer];
+//    //check if playback was stopped while in info
+//    MPMusicPlaybackState playbackState = [musicPlayer playbackState];
+//    if (playbackState == MPMusicPlaybackStateStopped) {
+//        [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
+//	}
+    
 }
 - (void)viewWillDisappear:(BOOL)animated {
 //    LogMethod();

@@ -30,6 +30,8 @@
 @synthesize verticalSpaceToTop28;
 
 @synthesize placeholderLabel;
+@synthesize editingUserInfo;
+@synthesize editingUserInfoString;
 
 - (void)viewDidLoad
 {
@@ -42,6 +44,7 @@
     
     [self loadDataForView];
     
+    [self setEditingUserInfo: NO];
 
     [self updateLayoutForNewOrientation: self.interfaceOrientation];
 
@@ -106,14 +109,19 @@
 
 - (void) textFieldDidBeginEditing: (UITextField *) textField {
     LogMethod();
-
+    [self setEditingUserInfo: YES];
+    self.editingUserInfoString = @"YES";
+    
     UIImage *coloredBackgroundImage = [[UIImage imageNamed: @"list-background.png"] imageWithTint:[UIColor darkGrayColor]];
     [textField setBackgroundColor:[UIColor colorWithPatternImage: coloredBackgroundImage]];
+
+
 }
 
 
 - (void) textFieldDidEndEditing: (UITextField *) textField {
     LogMethod();
+
 
     UIImage *coloredBackgroundImage = [[UIImage imageNamed: @"list-background.png"] imageWithTint:[UIColor blackColor]];
     [textField setBackgroundColor:[UIColor colorWithPatternImage: coloredBackgroundImage]];
@@ -128,6 +136,9 @@
     self.userDataForMediaItem.userGrouping = self.userGrouping.text;
     
     [mediaItemUserData updateUserGroupingForItem: self.userDataForMediaItem];
+    [self setEditingUserInfo: NO];
+    self.editingUserInfoString = @"NO";
+
     
 }
 - (IBAction)textFieldFinished:(id)sender
@@ -139,6 +150,10 @@
 
 - (void) textViewDidBeginEditing: (UITextView *) textView {
     LogMethod();
+
+    [self setEditingUserInfo: YES];
+    self.editingUserInfoString = @"YES";
+
 
     [self registerForKeyboardNotifications];
 
@@ -174,6 +189,9 @@
     
     [mediaItemUserData updateCommentsForItem: self.userDataForMediaItem];
     [self unregisterForKeyboardNotifications];
+    [self setEditingUserInfo: NO];
+    self.editingUserInfoString = @"NO";
+
 
 }
 // Called when the UIKeyboardDidShowNotification is sent.

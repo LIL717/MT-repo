@@ -33,6 +33,7 @@
 @property (nonatomic, strong)   UserInfoViewController *userInfoViewController;
 
 @property (readwrite)           BOOL                    iPodLibraryChanged;
+@property (readwrite)           BOOL                    viewingNowPlaying;
 @property (nonatomic, strong)   MPMediaItem             *mediaItemForInfo;
 
 - (UILabel *) customizeTitleView;

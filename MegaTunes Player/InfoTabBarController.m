@@ -9,6 +9,7 @@
 #import "InfoTabBarController.h"
 #import "Appdelegate.h"
 #import "MainViewController.h"
+#import "SongViewController.h"
 #import "AlbumInfoViewController.h"
 #import "ITunesInfoViewController.h"
 #import "ITunesCommentsViewController.h"
@@ -29,6 +30,7 @@
 @synthesize userInfoViewController;
 @synthesize infoDelegate;
 @synthesize iPodLibraryChanged;         //A flag indicating whether the library has been changed due to a sync
+@synthesize viewingNowPlaying;
 @synthesize mediaItemForInfo;
 
 
@@ -105,12 +107,13 @@
     
 //    NSLog (@"self.navigationItem.titleview is %@", self.navigationItem.titleView);
 
-    
+    [self setViewingNowPlaying: NO];
     NSString *playingItem = [[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyTitle];
 //    NSLog (@"playing Item is *%@*, songInfo.SongName is *%@*", playingItem, self.songInfo.songName);
     if (playingItem) {
         //don't display right bar button is playing item is song info item
         if ([playingItem isEqualToString: [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyTitle]]) {
+            [self setViewingNowPlaying: YES];
             self.navigationItem.rightBarButtonItem = nil;
         } else {
             //initWithTitle cannot be nil, must be @""
@@ -259,8 +262,16 @@
     if (iPodLibraryChanged) {
         [self.navigationController popToRootViewControllerAnimated:YES];
     } else {
-    [self.navigationController popViewControllerAnimated:YES];
-    [self.infoDelegate infoTabBarControllerDidCancel:self];
+        MPMusicPlaybackState playbackState = [musicPlayer playbackState];
+        if (playbackState == MPMusicPlaybackStateStopped) {
+            //pop back to songviewcontroller
+            NSArray *array = [self.navigationController viewControllers];
+            [self.navigationController popToViewController:[array objectAtIndex:2] animated:YES];
+            [self.infoDelegate infoTabBarControllerDidCancel:self];
+        } else {
+            [self.navigationController popViewControllerAnimated:YES];
+            [self.infoDelegate infoTabBarControllerDidCancel:self];
+        }
     }
 }
 
@@ -291,30 +302,32 @@
 // If displaying now-playing item when it changes, update mediaItemForInfo and show info for currently playing song
 - (void) handle_NowPlayingItemChanged: (id) notification {
     LogMethod();
-    //the rightBarButtonItem is nil when the info is for the currently playing song
-    if (!self.navigationItem.rightBarButtonItem) {
-        self.mediaItemForInfo = [musicPlayer nowPlayingItem];
-        
-        self.albumInfoViewController.mediaItemForInfo = self.mediaItemForInfo;
-        [self.albumInfoViewController loadArrayForTable];
-        [self.albumInfoViewController.infoTableView reloadData];
-        [self.albumInfoViewController.albumImageView setNeedsDisplay];
-        
-        self.iTunesInfoViewController.mediaItemForInfo = self.mediaItemForInfo;
-        [self.iTunesInfoViewController loadTableData];
-        [self.iTunesInfoViewController.infoTableView reloadData];
-        
-        self.iTunesCommentsViewController.mediaItemForInfo = self.mediaItemForInfo;
-        [self.iTunesCommentsViewController loadDataForView];
-        [self.iTunesCommentsViewController.comments setNeedsDisplay];
-        
-        self.userInfoViewController.mediaItemForInfo = self.mediaItemForInfo;
-        [self.userInfoViewController loadDataForView];
-        [self.userInfoViewController.userGrouping setNeedsDisplay];
-        [self.userInfoViewController.comments setNeedsDisplay];
-        
-        self.title = [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyTitle];
-        self.navigationItem.titleView = [self customizeTitleView];
+    if (self.viewingNowPlaying) {
+        //if the user is in the middle of editing we won't change the mediaItem (until they return to previous view)
+        if (!self.userInfoViewController.editingUserInfo) {
+            self.mediaItemForInfo = [musicPlayer nowPlayingItem];
+            
+            self.albumInfoViewController.mediaItemForInfo = self.mediaItemForInfo;
+            [self.albumInfoViewController loadArrayForTable];
+            [self.albumInfoViewController.infoTableView reloadData];
+            [self.albumInfoViewController.albumImageView setNeedsDisplay];
+            
+            self.iTunesInfoViewController.mediaItemForInfo = self.mediaItemForInfo;
+            [self.iTunesInfoViewController loadTableData];
+            [self.iTunesInfoViewController.infoTableView reloadData];
+            
+            self.iTunesCommentsViewController.mediaItemForInfo = self.mediaItemForInfo;
+            [self.iTunesCommentsViewController loadDataForView];
+            [self.iTunesCommentsViewController.comments setNeedsDisplay];
+            
+            self.userInfoViewController.mediaItemForInfo = self.mediaItemForInfo;
+            [self.userInfoViewController loadDataForView];
+            [self.userInfoViewController.userGrouping setNeedsDisplay];
+            [self.userInfoViewController.comments setNeedsDisplay];
+            
+            self.title = [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyTitle];
+            self.navigationItem.titleView = [self customizeTitleView];
+        }
         
     }
 }
