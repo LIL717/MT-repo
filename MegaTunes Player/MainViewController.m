@@ -238,7 +238,7 @@ void audioRouteChangeListenerCallback (
         
         [self.volumeView setMinimumVolumeSliderImage:[UIImage imageNamed:@"slider-fill.png"] forState:UIControlStateNormal];
         [self.volumeView setMaximumVolumeSliderImage:[UIImage imageNamed:@"slider-trackGray.png"] forState:UIControlStateNormal];
-        [self.volumeView setVolumeThumbImage:[UIImage imageNamed:@"volume_down.png"] forState:UIControlStateNormal];
+        [self.volumeView setVolumeThumbImage:[UIImage imageNamed:@"volume-handle.png"] forState:UIControlStateNormal];
 //        self.title = @"";
 //        self.navigationItem.titleView = [self customizeTitleView];
 

@@ -27,7 +27,6 @@
 
 @property (strong, nonatomic) IBOutlet UILabel *placeholderLabel;
 @property (readwrite)         BOOL             editingUserInfo;
-@property (strong, nonatomic) NSString *editingUserInfoString;
 
 
 - (void) loadDataForView;

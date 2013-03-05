@@ -31,7 +31,6 @@
 
 @synthesize placeholderLabel;
 @synthesize editingUserInfo;
-@synthesize editingUserInfoString;
 
 - (void)viewDidLoad
 {
@@ -110,7 +109,6 @@
 - (void) textFieldDidBeginEditing: (UITextField *) textField {
     LogMethod();
     [self setEditingUserInfo: YES];
-    self.editingUserInfoString = @"YES";
     
     UIImage *coloredBackgroundImage = [[UIImage imageNamed: @"list-background.png"] imageWithTint:[UIColor darkGrayColor]];
     [textField setBackgroundColor:[UIColor colorWithPatternImage: coloredBackgroundImage]];
@@ -137,7 +135,6 @@
     
     [mediaItemUserData updateUserGroupingForItem: self.userDataForMediaItem];
     [self setEditingUserInfo: NO];
-    self.editingUserInfoString = @"NO";
 
     
 }
@@ -152,12 +149,10 @@
     LogMethod();
 
     [self setEditingUserInfo: YES];
-    self.editingUserInfoString = @"YES";
-
 
     [self registerForKeyboardNotifications];
 
-    UIImage *coloredBackgroundImage = [[UIImage imageNamed: @"background.png"] imageWithTint:[UIColor darkGrayColor]];
+    UIImage *coloredBackgroundImage = [[UIImage imageNamed: @"background.png"] imageWithTint:[UIColor redColor]];
     [textView setBackgroundColor:[UIColor colorWithPatternImage: coloredBackgroundImage]];
     
     if([textView isEqual:self.comments]){
@@ -190,18 +185,34 @@
     [mediaItemUserData updateCommentsForItem: self.userDataForMediaItem];
     [self unregisterForKeyboardNotifications];
     [self setEditingUserInfo: NO];
-    self.editingUserInfoString = @"NO";
-
 
 }
 // Called when the UIKeyboardDidShowNotification is sent.
 - (void)keyboardWasShown:(NSNotification*)aNotification
 {
     LogMethod();
-
     NSDictionary* info = [aNotification userInfo];
     CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+//    CGRect kbRect = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
+    //hmmm this is width 162 and height 480
+//    CGRect rotatedKbRect;
+    if (UIInterfaceOrientationIsLandscape (self.interfaceOrientation)) {
+//        [self.view removeConstraint:self.verticalSpaceToTop28];
+//        rotatedKbRect = [self.view convertRect: kbRect fromView: self.view];
+//        kbSize = rotatedKbRect.size;
+        NSLog (@"landscape");
+        CGSize flipSize = kbSize;
+        flipSize.height = kbSize.width;
+        flipSize.width = kbSize.height;
+        kbSize = flipSize;
+    }
     
+    CGRect scrollRect = self.scrollView.frame;
+    if (UIInterfaceOrientationIsLandscape (self.interfaceOrientation)) {
+        scrollRect.origin.y = 0.0;
+        scrollRect.size.height = self.scrollView.frame.size.height + 28;
+        self.scrollView.frame = scrollRect;
+    }
     UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
     self.scrollView.contentInset = contentInsets;
     self.scrollView.scrollIndicatorInsets = contentInsets;
@@ -210,9 +221,25 @@
     // Your application might not need or want this behavior.
     CGRect aRect = self.view.frame;
     aRect.size.height -= kbSize.height;
-    if (!CGRectContainsPoint(aRect, self.comments.frame.origin) ) {
-        CGPoint scrollPoint = CGPointMake(0.0, self.comments.frame.origin.y-kbSize.height);
-        [self.scrollView setContentOffset:scrollPoint animated:YES];
+    NSLog (@"self.comments.frame.origin.X = %f", self.comments.frame.origin.x);
+    NSLog (@"self.comments.frame.origin.Y = %f", self.comments.frame.origin.y);
+    
+    CGPoint textBottom = self.comments.frame.origin;
+    textBottom.y = self.comments.frame.origin.y + 54;
+   
+    if (UIInterfaceOrientationIsLandscape (self.interfaceOrientation)) {
+
+        if (!CGRectContainsPoint(aRect, textBottom)) {
+            [self.view removeConstraint:self.verticalSpaceToTop28];
+
+            CGPoint scrollPoint = CGPointMake(0.0, self.comments.frame.origin.y);
+            [scrollView setContentOffset:scrollPoint animated:YES];
+        }
+    } else {
+        if (!CGRectContainsPoint(aRect, self.comments.frame.origin) ) {
+            CGPoint scrollPoint = CGPointMake(0.0, self.comments.frame.origin.y-kbSize.height);
+            [scrollView setContentOffset:scrollPoint animated:YES];
+        }
     }
 }
 
@@ -224,6 +251,10 @@
     UIEdgeInsets contentInsets = UIEdgeInsetsZero;
     self.scrollView.contentInset = contentInsets;
     self.scrollView.scrollIndicatorInsets = contentInsets;
+    
+    if (UIInterfaceOrientationIsLandscape (self.interfaceOrientation)) {
+//        [self.view addConstraint: self.verticalSpaceToTop28];
+    }
 }
 
 - (void)registerForKeyboardNotifications
