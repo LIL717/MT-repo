@@ -22,7 +22,6 @@
 		702B4153165742BF004A9265 /* note_24.png in Resources */ = {isa = PBXBuildFile; fileRef = 702B4152165742BF004A9265 /* note_24.png */; };
 		702B4155165742DC004A9265 /* info_24.png in Resources */ = {isa = PBXBuildFile; fileRef = 702B4154165742DC004A9265 /* info_24.png */; };
 		702B4158165743AB004A9265 /* UserDataForMediaItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 702B4157165743AB004A9265 /* UserDataForMediaItem.m */; };
-		702B415E16585120004A9265 /* SongInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 702B415D16585120004A9265 /* SongInfoCell.m */; };
 		702B62C616530D2000A23A70 /* Music-App-Icon40.png in Resources */ = {isa = PBXBuildFile; fileRef = 702B62C516530D2000A23A70 /* Music-App-Icon40.png */; };
 		702B62C81653122900A23A70 /* Music-App-Icon54.png in Resources */ = {isa = PBXBuildFile; fileRef = 702B62C71653122900A23A70 /* Music-App-Icon54.png */; };
 		703E3EA116811FC7004C152C /* UINavigationBar+AdditionalFunctionalities.m in Sources */ = {isa = PBXBuildFile; fileRef = 703E3EA016811FC7004C152C /* UINavigationBar+AdditionalFunctionalities.m */; };
@@ -51,6 +50,8 @@
 		7049302216E81833005A66C4 /* megaMenu-bar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7049301F16E81833005A66C4 /* megaMenu-bar@2x.png */; };
 		7049302416E81893005A66C4 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7049302316E81893005A66C4 /* Default-568h@2x.png */; };
 		7049302616E81A18005A66C4 /* redWhitePlay57.png in Resources */ = {isa = PBXBuildFile; fileRef = 7049302516E81A17005A66C4 /* redWhitePlay57.png */; };
+		7049302816E81FB3005A66C4 /* noAlbumImage320.png in Resources */ = {isa = PBXBuildFile; fileRef = 7049302716E81FB2005A66C4 /* noAlbumImage320.png */; };
+		7049302B16E82101005A66C4 /* SongInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7049302A16E82101005A66C4 /* SongInfoCell.m */; };
 		70515C29160F986E00D96335 /* SongCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 70515C28160F986E00D96335 /* SongCell.m */; };
 		70515C2C160FD2DC00D96335 /* SongViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70515C2B160FD2DC00D96335 /* SongViewController.m */; };
 		70515C321610184A00D96335 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70515C311610184A00D96335 /* MainViewController.m */; };
@@ -71,10 +72,6 @@
 		7060524C14F88D44001A1CDB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7060522D14F88D43001A1CDB /* Foundation.framework */; };
 		7060525414F88D44001A1CDB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7060525214F88D44001A1CDB /* InfoPlist.strings */; };
 		7060525714F88D44001A1CDB /* MegaTunes_PlayerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7060525614F88D44001A1CDB /* MegaTunes_PlayerTests.m */; };
-		706052DD14FEE669001A1CDB /* video_next_64.png in Resources */ = {isa = PBXBuildFile; fileRef = 706052D914FEE669001A1CDB /* video_next_64.png */; };
-		706052DE14FEE669001A1CDB /* video_pause_64.png in Resources */ = {isa = PBXBuildFile; fileRef = 706052DA14FEE669001A1CDB /* video_pause_64.png */; };
-		706052DF14FEE669001A1CDB /* video_play_64.png in Resources */ = {isa = PBXBuildFile; fileRef = 706052DB14FEE669001A1CDB /* video_play_64.png */; };
-		706052E014FEE669001A1CDB /* video_previous_64.png in Resources */ = {isa = PBXBuildFile; fileRef = 706052DC14FEE669001A1CDB /* video_previous_64.png */; };
 		7071DF90164D6D0200942E6A /* CustomNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 7071DF8F164D6D0200942E6A /* CustomNavigationBar.m */; };
 		707862A31624D16E00871260 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 707862A21624D16E00871260 /* Settings.bundle */; };
 		707862A51626385700871260 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 707862A41626385700871260 /* CoreData.framework */; };
@@ -91,15 +88,6 @@
 		70974B1F163056B800A33B7D /* menubar-button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70974B1D163056B800A33B7D /* menubar-button@2x.png */; };
 		70974B511630698200A33B7D /* UIImage+iPhone5.m in Sources */ = {isa = PBXBuildFile; fileRef = 70974B2C1630698200A33B7D /* UIImage+iPhone5.m */; };
 		70974B521630698200A33B7D /* ColorSwitcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 70974B2F1630698200A33B7D /* ColorSwitcher.m */; };
-		70974B531630698200A33B7D /* DataLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 70974B331630698200A33B7D /* DataLoader.m */; };
-		70974B541630698200A33B7D /* Track.m in Sources */ = {isa = PBXBuildFile; fileRef = 70974B361630698200A33B7D /* Track.m */; };
-		70974B551630698200A33B7D /* MasterCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 70974B3A1630698200A33B7D /* MasterCell.m */; };
-		70974B561630698200A33B7D /* ThemeListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 70974B3D1630698200A33B7D /* ThemeListCell.m */; };
-		70974B571630698200A33B7D /* DetailThemeiPadController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70974B421630698200A33B7D /* DetailThemeiPadController.m */; };
-		70974B581630698200A33B7D /* MasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70974B451630698200A33B7D /* MasterViewController.m */; };
-		70974B591630698200A33B7D /* DetailThemeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70974B491630698200A33B7D /* DetailThemeController.m */; };
-		70974B5A1630698200A33B7D /* ElementThemeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70974B4C1630698200A33B7D /* ElementThemeController.m */; };
-		70974B5B1630698200A33B7D /* ThemeListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70974B4F1630698200A33B7D /* ThemeListController.m */; };
 		70974B5D1630701200A33B7D /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70974B5C1630701200A33B7D /* CoreImage.framework */; };
 		70974B64163071CE00A33B7D /* slider-fill.png in Resources */ = {isa = PBXBuildFile; fileRef = 70974B5E163071CE00A33B7D /* slider-fill.png */; };
 		70974B65163071CE00A33B7D /* slider-fill@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70974B5F163071CE00A33B7D /* slider-fill@2x.png */; };
@@ -110,8 +98,6 @@
 		70974B711630A27200A33B7D /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 70974B701630A27200A33B7D /* background.png */; };
 		70974B741630A3A700A33B7D /* background-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70974B721630A3A700A33B7D /* background-568h@2x.png */; };
 		70974B751630A3A700A33B7D /* background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70974B731630A3A700A33B7D /* background@2x.png */; };
-		70974B801630AE4000A33B7D /* bigrewind.png in Resources */ = {isa = PBXBuildFile; fileRef = 70974B7E1630AE4000A33B7D /* bigrewind.png */; };
-		70974B811630AE4000A33B7D /* bigrewind@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70974B7F1630AE4000A33B7D /* bigrewind@2x.png */; };
 		70974B941630C3B200A33B7D /* list-background.png in Resources */ = {isa = PBXBuildFile; fileRef = 70974B921630C3B000A33B7D /* list-background.png */; };
 		70974B951630C3B200A33B7D /* list-background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70974B931630C3B100A33B7D /* list-background@2x.png */; };
 		70974B991630CB6100A33B7D /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = 70974B981630CB6000A33B7D /* play.png */; };
@@ -144,10 +130,8 @@
 		70A4B73416974E9B00C84293 /* arrow_left_48_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 70A4B73216974E9B00C84293 /* arrow_left_48_white.png */; };
 		70A4B73516974E9B00C84293 /* arrow_left_58_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 70A4B73316974E9B00C84293 /* arrow_left_58_white.png */; };
 		70A4B73F16978C8100C84293 /* redWhitePlay68.png in Resources */ = {isa = PBXBuildFile; fileRef = 70A4B73E16978C8100C84293 /* redWhitePlay68.png */; };
-		70A4B74F169804D200C84293 /* noAlbumImage320.png in Resources */ = {isa = PBXBuildFile; fileRef = 70A4B74E169804D200C84293 /* noAlbumImage320.png */; };
 		70A6444F16CE08120059C561 /* ITunesCommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70A6444E16CE08120059C561 /* ITunesCommentsViewController.m */; };
 		70A6445216CE0FEE0059C561 /* UserInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70A6445116CE0FEE0059C561 /* UserInfoViewController.m */; };
-		70ADDC0C16113CAD00219873 /* sound.caf in Resources */ = {isa = PBXBuildFile; fileRef = 70ADDC0B16113CAD00219873 /* sound.caf */; };
 		70ADDC1F1614178500219873 /* CollectionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 70ADDC1E1614178500219873 /* CollectionItem.m */; };
 		70ADDC33161AC09C00219873 /* InitialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70ADDC32161AC09C00219873 /* InitialViewController.m */; };
 		70C1779E166DB86A00792D8F /* UIImage+AdditionalFunctionalities.m in Sources */ = {isa = PBXBuildFile; fileRef = 70C1779D166DB86A00792D8F /* UIImage+AdditionalFunctionalities.m */; };
@@ -155,11 +139,8 @@
 		70C177A7166EC6B400792D8F /* selection-tab.png in Resources */ = {isa = PBXBuildFile; fileRef = 70C177A6166EC6B400792D8F /* selection-tab.png */; };
 		70C177AA166EC6D500792D8F /* tabbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 70C177A8166EC6D500792D8F /* tabbar.png */; };
 		70C177AB166EC6D500792D8F /* tabbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70C177A9166EC6D500792D8F /* tabbar@2x.png */; };
-		70DAEA1D16914C6000479D61 /* notesLightButtonImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 70DAEA1B16914C6000479D61 /* notesLightButtonImage.png */; };
-		70DAEA1E16914C6000479D61 /* notesLightButtonImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70DAEA1C16914C6000479D61 /* notesLightButtonImage@2x.png */; };
 		70DAEA231692141B00479D61 /* selection-tabCircle.png in Resources */ = {isa = PBXBuildFile; fileRef = 70DAEA221692141B00479D61 /* selection-tabCircle.png */; };
 		70DAEA25169228C500479D61 /* tabbar-stretchable.png in Resources */ = {isa = PBXBuildFile; fileRef = 70DAEA24169228C500479D61 /* tabbar-stretchable.png */; };
-		70DAEA3E1693981C00479D61 /* notesLightButtonImageWhite.png in Resources */ = {isa = PBXBuildFile; fileRef = 70DAEA3D1693981C00479D61 /* notesLightButtonImageWhite.png */; };
 		70DAEA471694173A00479D61 /* tabbarButtonBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 70DAEA461694173A00479D61 /* tabbarButtonBackground.png */; };
 		70DAEA491694FCB900479D61 /* tabButtonBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = 70DAEA481694FCB700479D61 /* tabButtonBlack.png */; };
 		70DAEA4B169501CB00479D61 /* tabInfoButtonBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = 70DAEA4A169501CA00479D61 /* tabInfoButtonBlack.png */; };
@@ -215,12 +196,10 @@
 		702B4154165742DC004A9265 /* info_24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = info_24.png; sourceTree = "<group>"; };
 		702B4156165743AB004A9265 /* UserDataForMediaItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserDataForMediaItem.h; sourceTree = "<group>"; };
 		702B4157165743AB004A9265 /* UserDataForMediaItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserDataForMediaItem.m; sourceTree = "<group>"; };
-		702B415C16585120004A9265 /* SongInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SongInfoCell.h; path = ../SongInfoCell.h; sourceTree = "<group>"; };
-		702B415D16585120004A9265 /* SongInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SongInfoCell.m; path = ../SongInfoCell.m; sourceTree = "<group>"; };
 		702B62C516530D2000A23A70 /* Music-App-Icon40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Music-App-Icon40.png"; sourceTree = "<group>"; };
 		702B62C71653122900A23A70 /* Music-App-Icon54.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Music-App-Icon54.png"; sourceTree = "<group>"; };
-		703E3E9F16811FC7004C152C /* UINavigationBar+AdditionalFunctionalities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationBar+AdditionalFunctionalities.h"; sourceTree = "<group>"; };
-		703E3EA016811FC7004C152C /* UINavigationBar+AdditionalFunctionalities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationBar+AdditionalFunctionalities.m"; sourceTree = "<group>"; };
+		703E3E9F16811FC7004C152C /* UINavigationBar+AdditionalFunctionalities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UINavigationBar+AdditionalFunctionalities.h"; path = "../../../../../../Development Sandbox/MegaTunesPlayer/MegaTunes Player/MegaTunes Player/UINavigationBar+AdditionalFunctionalities.h"; sourceTree = "<group>"; };
+		703E3EA016811FC7004C152C /* UINavigationBar+AdditionalFunctionalities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UINavigationBar+AdditionalFunctionalities.m"; path = "../../../../../../Development Sandbox/MegaTunesPlayer/MegaTunes Player/MegaTunes Player/UINavigationBar+AdditionalFunctionalities.m"; sourceTree = "<group>"; };
 		70492FF416E71A9D005A66C4 /* shinyVolumeHandle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shinyVolumeHandle.png; sourceTree = "<group>"; };
 		70492FF516E71A9D005A66C4 /* shinyVolumeHandle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shinyVolumeHandle@2x.png"; sourceTree = "<group>"; };
 		70492FF816E802F0005A66C4 /* shinyVolumeHandle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shinyVolumeHandle.png; sourceTree = "<group>"; };
@@ -242,11 +221,14 @@
 		7049301616E808E1005A66C4 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		7049301716E808E1005A66C4 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		7049301B16E80A0D005A66C4 /* CollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewController.m; sourceTree = "<group>"; };
-		7049301D16E81832005A66C4 /* megaMenu-bar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "megaMenu-bar.png"; path = "MegaTunes Player/megaMenu-bar.png"; sourceTree = "<group>"; };
-		7049301E16E81833005A66C4 /* megaMenu-bar-landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "megaMenu-bar-landscape.png"; path = "MegaTunes Player/megaMenu-bar-landscape.png"; sourceTree = "<group>"; };
-		7049301F16E81833005A66C4 /* megaMenu-bar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "megaMenu-bar@2x.png"; path = "MegaTunes Player/megaMenu-bar@2x.png"; sourceTree = "<group>"; };
+		7049301D16E81832005A66C4 /* megaMenu-bar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "megaMenu-bar.png"; sourceTree = "<group>"; };
+		7049301E16E81833005A66C4 /* megaMenu-bar-landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "megaMenu-bar-landscape.png"; sourceTree = "<group>"; };
+		7049301F16E81833005A66C4 /* megaMenu-bar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "megaMenu-bar@2x.png"; sourceTree = "<group>"; };
 		7049302316E81893005A66C4 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		7049302516E81A17005A66C4 /* redWhitePlay57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redWhitePlay57.png; sourceTree = "<group>"; };
+		7049302716E81FB2005A66C4 /* noAlbumImage320.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = noAlbumImage320.png; sourceTree = "<group>"; };
+		7049302916E82101005A66C4 /* SongInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SongInfoCell.h; sourceTree = "<group>"; };
+		7049302A16E82101005A66C4 /* SongInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SongInfoCell.m; sourceTree = "<group>"; };
 		70515C1E160CBE7600D96335 /* Song.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Song.h; sourceTree = "<group>"; };
 		70515C27160F986E00D96335 /* SongCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SongCell.h; sourceTree = "<group>"; };
 		70515C28160F986E00D96335 /* SongCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SongCell.m; sourceTree = "<group>"; };
@@ -276,10 +258,6 @@
 		7060525314F88D44001A1CDB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		7060525514F88D44001A1CDB /* MegaTunes_PlayerTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MegaTunes_PlayerTests.h; sourceTree = "<group>"; };
 		7060525614F88D44001A1CDB /* MegaTunes_PlayerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MegaTunes_PlayerTests.m; sourceTree = "<group>"; };
-		706052D914FEE669001A1CDB /* video_next_64.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video_next_64.png; sourceTree = "<group>"; };
-		706052DA14FEE669001A1CDB /* video_pause_64.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video_pause_64.png; sourceTree = "<group>"; };
-		706052DB14FEE669001A1CDB /* video_play_64.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video_play_64.png; sourceTree = "<group>"; };
-		706052DC14FEE669001A1CDB /* video_previous_64.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video_previous_64.png; sourceTree = "<group>"; };
 		7071DF8E164D6D0200942E6A /* CustomNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomNavigationBar.h; path = "../../../../podradio/sample-project/podradio/Classes/CustomNavigationBar.h"; sourceTree = "<group>"; };
 		7071DF8F164D6D0200942E6A /* CustomNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CustomNavigationBar.m; path = "../../../../podradio/sample-project/podradio/Classes/CustomNavigationBar.m"; sourceTree = "<group>"; };
 		707862A21624D16E00871260 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Settings.bundle; path = ../Settings.bundle; sourceTree = "<group>"; };
@@ -316,28 +294,10 @@
 		70974B191630565100A33B7D /* back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "back@2x.png"; path = "../../../../podradio/slices/back@2x.png"; sourceTree = "<group>"; };
 		70974B1C163056B800A33B7D /* menubar-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "menubar-button.png"; path = "../../../../podradio/slices/menubar-button.png"; sourceTree = "<group>"; };
 		70974B1D163056B800A33B7D /* menubar-button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "menubar-button@2x.png"; path = "../../../../podradio/slices/menubar-button@2x.png"; sourceTree = "<group>"; };
-		70974B2B1630698200A33B7D /* UIImage+iPhone5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+iPhone5.h"; sourceTree = "<group>"; };
-		70974B2C1630698200A33B7D /* UIImage+iPhone5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+iPhone5.m"; sourceTree = "<group>"; };
+		70974B2B1630698200A33B7D /* UIImage+iPhone5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+iPhone5.h"; path = "UIImage+iPhone5/UIImage+iPhone5.h"; sourceTree = "<group>"; };
+		70974B2C1630698200A33B7D /* UIImage+iPhone5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+iPhone5.m"; path = "UIImage+iPhone5/UIImage+iPhone5.m"; sourceTree = "<group>"; };
 		70974B2E1630698200A33B7D /* ColorSwitcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorSwitcher.h; sourceTree = "<group>"; };
 		70974B2F1630698200A33B7D /* ColorSwitcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorSwitcher.m; sourceTree = "<group>"; };
-		70974B321630698200A33B7D /* DataLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataLoader.h; sourceTree = "<group>"; };
-		70974B331630698200A33B7D /* DataLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataLoader.m; sourceTree = "<group>"; };
-		70974B351630698200A33B7D /* Track.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Track.h; sourceTree = "<group>"; };
-		70974B361630698200A33B7D /* Track.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Track.m; sourceTree = "<group>"; };
-		70974B391630698200A33B7D /* MasterCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MasterCell.h; sourceTree = "<group>"; };
-		70974B3A1630698200A33B7D /* MasterCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MasterCell.m; sourceTree = "<group>"; };
-		70974B3C1630698200A33B7D /* ThemeListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemeListCell.h; sourceTree = "<group>"; };
-		70974B3D1630698200A33B7D /* ThemeListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemeListCell.m; sourceTree = "<group>"; };
-		70974B411630698200A33B7D /* DetailThemeiPadController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailThemeiPadController.h; sourceTree = "<group>"; };
-		70974B421630698200A33B7D /* DetailThemeiPadController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailThemeiPadController.m; sourceTree = "<group>"; };
-		70974B441630698200A33B7D /* MasterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MasterViewController.h; sourceTree = "<group>"; };
-		70974B451630698200A33B7D /* MasterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MasterViewController.m; sourceTree = "<group>"; };
-		70974B481630698200A33B7D /* DetailThemeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailThemeController.h; sourceTree = "<group>"; };
-		70974B491630698200A33B7D /* DetailThemeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailThemeController.m; sourceTree = "<group>"; };
-		70974B4B1630698200A33B7D /* ElementThemeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ElementThemeController.h; sourceTree = "<group>"; };
-		70974B4C1630698200A33B7D /* ElementThemeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ElementThemeController.m; sourceTree = "<group>"; };
-		70974B4E1630698200A33B7D /* ThemeListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemeListController.h; sourceTree = "<group>"; };
-		70974B4F1630698200A33B7D /* ThemeListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemeListController.m; sourceTree = "<group>"; };
 		70974B5C1630701200A33B7D /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		70974B5E163071CE00A33B7D /* slider-fill.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "slider-fill.png"; path = "../../../../podradio/slices/slider-fill.png"; sourceTree = "<group>"; };
 		70974B5F163071CE00A33B7D /* slider-fill@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "slider-fill@2x.png"; path = "../../../../podradio/slices/slider-fill@2x.png"; sourceTree = "<group>"; };
@@ -348,8 +308,6 @@
 		70974B701630A27200A33B7D /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = background.png; path = "../../../../podradio/sample-project/podradio/Resources/background.png"; sourceTree = "<group>"; };
 		70974B721630A3A700A33B7D /* background-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "background-568h@2x.png"; path = "../../../../podradio/sample-project/podradio/Resources/background-568h@2x.png"; sourceTree = "<group>"; };
 		70974B731630A3A700A33B7D /* background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "background@2x.png"; path = "../../../../podradio/sample-project/podradio/Resources/background@2x.png"; sourceTree = "<group>"; };
-		70974B7E1630AE4000A33B7D /* bigrewind.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bigrewind.png; path = "../../../../../podradio/sample-project/podradio/Resources/bigrewind.png"; sourceTree = "<group>"; };
-		70974B7F1630AE4000A33B7D /* bigrewind@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "bigrewind@2x.png"; path = "../../../../../podradio/sample-project/podradio/Resources/bigrewind@2x.png"; sourceTree = "<group>"; };
 		70974B921630C3B000A33B7D /* list-background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list-background.png"; sourceTree = "<group>"; };
 		70974B931630C3B100A33B7D /* list-background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list-background@2x.png"; sourceTree = "<group>"; };
 		70974B981630CB6000A33B7D /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = "<group>"; };
@@ -392,21 +350,17 @@
 		70A4B70A169602A300C84293 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		70A4B73216974E9B00C84293 /* arrow_left_48_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow_left_48_white.png; sourceTree = "<group>"; };
 		70A4B73316974E9B00C84293 /* arrow_left_58_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow_left_58_white.png; sourceTree = "<group>"; };
-		70A4B73616974F5100C84293 /* arrow_left_48_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow_left_48_white.png; sourceTree = "<group>"; };
-		70A4B73716974F5100C84293 /* arrow_left_58_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow_left_58_white.png; sourceTree = "<group>"; };
 		70A4B73E16978C8100C84293 /* redWhitePlay68.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redWhitePlay68.png; sourceTree = "<group>"; };
-		70A4B74E169804D200C84293 /* noAlbumImage320.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = noAlbumImage320.png; path = ../noAlbumImage320.png; sourceTree = "<group>"; };
 		70A6444D16CE08120059C561 /* ITunesCommentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITunesCommentsViewController.h; sourceTree = "<group>"; };
 		70A6444E16CE08120059C561 /* ITunesCommentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITunesCommentsViewController.m; sourceTree = "<group>"; };
 		70A6445016CE0FEE0059C561 /* UserInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserInfoViewController.h; sourceTree = "<group>"; };
 		70A6445116CE0FEE0059C561 /* UserInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserInfoViewController.m; sourceTree = "<group>"; };
-		70ADDC0B16113CAD00219873 /* sound.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = sound.caf; path = ../../../../AddMusic/Resources/sound.caf; sourceTree = "<group>"; };
 		70ADDC1D1614178500219873 /* CollectionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionItem.h; sourceTree = "<group>"; };
 		70ADDC1E1614178500219873 /* CollectionItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionItem.m; sourceTree = "<group>"; };
 		70ADDC31161AC09B00219873 /* InitialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InitialViewController.h; sourceTree = "<group>"; };
 		70ADDC32161AC09C00219873 /* InitialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InitialViewController.m; sourceTree = "<group>"; };
-		70C1779C166DB86A00792D8F /* UIImage+AdditionalFunctionalities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+AdditionalFunctionalities.h"; sourceTree = "<group>"; };
-		70C1779D166DB86A00792D8F /* UIImage+AdditionalFunctionalities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+AdditionalFunctionalities.m"; sourceTree = "<group>"; };
+		70C1779C166DB86A00792D8F /* UIImage+AdditionalFunctionalities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+AdditionalFunctionalities.h"; path = "../../../../../../Development Sandbox/MegaTunesPlayer/MegaTunes Player/MegaTunes Player/UIImage+AdditionalFunctionalities.h"; sourceTree = "<group>"; };
+		70C1779D166DB86A00792D8F /* UIImage+AdditionalFunctionalities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+AdditionalFunctionalities.m"; path = "../../../../../../Development Sandbox/MegaTunesPlayer/MegaTunes Player/MegaTunes Player/UIImage+AdditionalFunctionalities.m"; sourceTree = "<group>"; };
 		70C177A4166EC67A00792D8F /* selection-tab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "selection-tab@2x.png"; sourceTree = "<group>"; };
 		70C177A6166EC6B400792D8F /* selection-tab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "selection-tab.png"; sourceTree = "<group>"; };
 		70C177A8166EC6D500792D8F /* tabbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tabbar.png; sourceTree = "<group>"; };
@@ -455,11 +409,8 @@
 		70D225FE16BE00980046948A /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Localizable.strings; sourceTree = "<group>"; };
 		70D225FF16BE00980046948A /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		70D2260016BE00980046948A /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		70DAEA1B16914C6000479D61 /* notesLightButtonImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = notesLightButtonImage.png; sourceTree = "<group>"; };
-		70DAEA1C16914C6000479D61 /* notesLightButtonImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "notesLightButtonImage@2x.png"; sourceTree = "<group>"; };
 		70DAEA221692141B00479D61 /* selection-tabCircle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "selection-tabCircle.png"; sourceTree = "<group>"; };
 		70DAEA24169228C500479D61 /* tabbar-stretchable.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabbar-stretchable.png"; sourceTree = "<group>"; };
-		70DAEA3D1693981C00479D61 /* notesLightButtonImageWhite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = notesLightButtonImageWhite.png; sourceTree = "<group>"; };
 		70DAEA461694173A00479D61 /* tabbarButtonBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tabbarButtonBackground.png; sourceTree = "<group>"; };
 		70DAEA481694FCB700479D61 /* tabButtonBlack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tabButtonBlack.png; sourceTree = "<group>"; };
 		70DAEA4A169501CA00479D61 /* tabInfoButtonBlack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tabInfoButtonBlack.png; sourceTree = "<group>"; };
@@ -527,9 +478,6 @@
 		7060521C14F88D43001A1CDB = {
 			isa = PBXGroup;
 			children = (
-				7049301D16E81832005A66C4 /* megaMenu-bar.png */,
-				7049301E16E81833005A66C4 /* megaMenu-bar-landscape.png */,
-				7049301F16E81833005A66C4 /* megaMenu-bar@2x.png */,
 				70A13DF9163DD02100244866 /* bass24-iphone */,
 				7060523114F88D43001A1CDB /* MegaTunes Player */,
 				7060524F14F88D44001A1CDB /* MegaTunes PlayerTests */,
@@ -573,10 +521,6 @@
 				70974B241630698200A33B7D /* Classes */,
 				70ADDC0F1612245F00219873 /* View */,
 				70ADDC0E1612245400219873 /* Model */,
-				70C1779C166DB86A00792D8F /* UIImage+AdditionalFunctionalities.h */,
-				70C1779D166DB86A00792D8F /* UIImage+AdditionalFunctionalities.m */,
-				703E3E9F16811FC7004C152C /* UINavigationBar+AdditionalFunctionalities.h */,
-				703E3EA016811FC7004C152C /* UINavigationBar+AdditionalFunctionalities.m */,
 				70ADDC101612246900219873 /* Controller */,
 				70A13D9216320F6500244866 /* Unused */,
 				70ADDC11161224BD00219873 /* Resources */,
@@ -588,6 +532,7 @@
 		7060523214F88D43001A1CDB /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				707862A21624D16E00871260 /* Settings.bundle */,
 				70515C47161126B400D96335 /* Localizable.strings */,
 				7060523314F88D43001A1CDB /* MegaTunes Player-Info.plist */,
 				7060523414F88D43001A1CDB /* InfoPlist.strings */,
@@ -616,27 +561,12 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		706052D814FEE669001A1CDB /* audio player icons */ = {
-			isa = PBXGroup;
-			children = (
-				70974B7E1630AE4000A33B7D /* bigrewind.png */,
-				70974B7F1630AE4000A33B7D /* bigrewind@2x.png */,
-				706052D914FEE669001A1CDB /* video_next_64.png */,
-				706052DA14FEE669001A1CDB /* video_pause_64.png */,
-				706052DB14FEE669001A1CDB /* video_play_64.png */,
-				706052DC14FEE669001A1CDB /* video_previous_64.png */,
-			);
-			path = "audio player icons";
-			sourceTree = "<group>";
-		};
 		70974B241630698200A33B7D /* Classes */ = {
 			isa = PBXGroup;
 			children = (
 				70974B251630698200A33B7D /* AppDelegate */,
-				70974B281630698200A33B7D /* Libraries */,
-				70974B301630698200A33B7D /* Repository */,
-				70974B371630698200A33B7D /* TableCells */,
-				70974B3E1630698200A33B7D /* Views */,
+				70974B291630698200A33B7D /* Categories */,
+				70974B2D1630698200A33B7D /* ColorSwitcher */,
 			);
 			name = Classes;
 			path = "../../../../podradio/sample-project/podradio/Classes";
@@ -651,30 +581,18 @@
 			path = AppDelegate;
 			sourceTree = "<group>";
 		};
-		70974B281630698200A33B7D /* Libraries */ = {
-			isa = PBXGroup;
-			children = (
-				70974B291630698200A33B7D /* Categories */,
-				70974B2D1630698200A33B7D /* ColorSwitcher */,
-			);
-			path = Libraries;
-			sourceTree = "<group>";
-		};
 		70974B291630698200A33B7D /* Categories */ = {
 			isa = PBXGroup;
 			children = (
-				70974B2A1630698200A33B7D /* UIImage+iPhone5 */,
-			);
-			path = Categories;
-			sourceTree = "<group>";
-		};
-		70974B2A1630698200A33B7D /* UIImage+iPhone5 */ = {
-			isa = PBXGroup;
-			children = (
+				70C1779C166DB86A00792D8F /* UIImage+AdditionalFunctionalities.h */,
+				70C1779D166DB86A00792D8F /* UIImage+AdditionalFunctionalities.m */,
+				703E3E9F16811FC7004C152C /* UINavigationBar+AdditionalFunctionalities.h */,
+				703E3EA016811FC7004C152C /* UINavigationBar+AdditionalFunctionalities.m */,
 				70974B2B1630698200A33B7D /* UIImage+iPhone5.h */,
 				70974B2C1630698200A33B7D /* UIImage+iPhone5.m */,
 			);
-			path = "UIImage+iPhone5";
+			name = Categories;
+			path = Libraries/Categories;
 			sourceTree = "<group>";
 		};
 		70974B2D1630698200A33B7D /* ColorSwitcher */ = {
@@ -683,134 +601,8 @@
 				70974B2E1630698200A33B7D /* ColorSwitcher.h */,
 				70974B2F1630698200A33B7D /* ColorSwitcher.m */,
 			);
-			path = ColorSwitcher;
-			sourceTree = "<group>";
-		};
-		70974B301630698200A33B7D /* Repository */ = {
-			isa = PBXGroup;
-			children = (
-				70974B311630698200A33B7D /* DataLoader */,
-				70974B341630698200A33B7D /* Track */,
-			);
-			path = Repository;
-			sourceTree = "<group>";
-		};
-		70974B311630698200A33B7D /* DataLoader */ = {
-			isa = PBXGroup;
-			children = (
-				70974B321630698200A33B7D /* DataLoader.h */,
-				70974B331630698200A33B7D /* DataLoader.m */,
-			);
-			path = DataLoader;
-			sourceTree = "<group>";
-		};
-		70974B341630698200A33B7D /* Track */ = {
-			isa = PBXGroup;
-			children = (
-				70974B351630698200A33B7D /* Track.h */,
-				70974B361630698200A33B7D /* Track.m */,
-			);
-			path = Track;
-			sourceTree = "<group>";
-		};
-		70974B371630698200A33B7D /* TableCells */ = {
-			isa = PBXGroup;
-			children = (
-				70974B381630698200A33B7D /* MasterCell */,
-				70974B3B1630698200A33B7D /* ThemeListCell */,
-			);
-			path = TableCells;
-			sourceTree = "<group>";
-		};
-		70974B381630698200A33B7D /* MasterCell */ = {
-			isa = PBXGroup;
-			children = (
-				70974B391630698200A33B7D /* MasterCell.h */,
-				70974B3A1630698200A33B7D /* MasterCell.m */,
-			);
-			path = MasterCell;
-			sourceTree = "<group>";
-		};
-		70974B3B1630698200A33B7D /* ThemeListCell */ = {
-			isa = PBXGroup;
-			children = (
-				70974B3C1630698200A33B7D /* ThemeListCell.h */,
-				70974B3D1630698200A33B7D /* ThemeListCell.m */,
-			);
-			path = ThemeListCell;
-			sourceTree = "<group>";
-		};
-		70974B3E1630698200A33B7D /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				70974B3F1630698200A33B7D /* iPad */,
-				70974B461630698200A33B7D /* iPhone */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		70974B3F1630698200A33B7D /* iPad */ = {
-			isa = PBXGroup;
-			children = (
-				70974B401630698200A33B7D /* Detail View */,
-				70974B431630698200A33B7D /* Master View */,
-			);
-			path = iPad;
-			sourceTree = "<group>";
-		};
-		70974B401630698200A33B7D /* Detail View */ = {
-			isa = PBXGroup;
-			children = (
-				70974B411630698200A33B7D /* DetailThemeiPadController.h */,
-				70974B421630698200A33B7D /* DetailThemeiPadController.m */,
-			);
-			path = "Detail View";
-			sourceTree = "<group>";
-		};
-		70974B431630698200A33B7D /* Master View */ = {
-			isa = PBXGroup;
-			children = (
-				70974B441630698200A33B7D /* MasterViewController.h */,
-				70974B451630698200A33B7D /* MasterViewController.m */,
-			);
-			path = "Master View";
-			sourceTree = "<group>";
-		};
-		70974B461630698200A33B7D /* iPhone */ = {
-			isa = PBXGroup;
-			children = (
-				70974B471630698200A33B7D /* Detail View */,
-				70974B4A1630698200A33B7D /* Elements view */,
-				70974B4D1630698200A33B7D /* ThemeList */,
-			);
-			path = iPhone;
-			sourceTree = "<group>";
-		};
-		70974B471630698200A33B7D /* Detail View */ = {
-			isa = PBXGroup;
-			children = (
-				70974B481630698200A33B7D /* DetailThemeController.h */,
-				70974B491630698200A33B7D /* DetailThemeController.m */,
-			);
-			path = "Detail View";
-			sourceTree = "<group>";
-		};
-		70974B4A1630698200A33B7D /* Elements view */ = {
-			isa = PBXGroup;
-			children = (
-				70974B4B1630698200A33B7D /* ElementThemeController.h */,
-				70974B4C1630698200A33B7D /* ElementThemeController.m */,
-			);
-			path = "Elements view";
-			sourceTree = "<group>";
-		};
-		70974B4D1630698200A33B7D /* ThemeList */ = {
-			isa = PBXGroup;
-			children = (
-				70974B4E1630698200A33B7D /* ThemeListController.h */,
-				70974B4F1630698200A33B7D /* ThemeListController.m */,
-			);
-			path = ThemeList;
+			name = ColorSwitcher;
+			path = Libraries/ColorSwitcher;
 			sourceTree = "<group>";
 		};
 		709F238B16C3525400521158 /* bass_fx24-iphone */ = {
@@ -944,8 +736,8 @@
 				70A13DD816334B6D00244866 /* Song.m */,
 				707862BA1629F33900871260 /* AutoScrollLabel.h */,
 				707862BB1629F33A00871260 /* AutoScrollLabel.m */,
-				702B415C16585120004A9265 /* SongInfoCell.h */,
-				702B415D16585120004A9265 /* SongInfoCell.m */,
+				7049302916E82101005A66C4 /* SongInfoCell.h */,
+				7049302A16E82101005A66C4 /* SongInfoCell.m */,
 				7049301416E808E1005A66C4 /* DTCustomColoredAccessory.h */,
 				7049301516E808E1005A66C4 /* DTCustomColoredAccessory.m */,
 				702B4156165743AB004A9265 /* UserDataForMediaItem.h */,
@@ -1006,8 +798,6 @@
 				70DAEA6116955EE100479D61 /* selectedTabInfo2Button@2x.png */,
 				70DAEA6216955EE300479D61 /* selectedTabNotes2Button.png */,
 				70DAEA6316955EE500479D61 /* selectedTabNotes2Button@2x.png */,
-				70A4B73616974F5100C84293 /* arrow_left_48_white.png */,
-				70A4B73716974F5100C84293 /* arrow_left_58_white.png */,
 				70A4B73216974E9B00C84293 /* arrow_left_48_white.png */,
 				70A4B73316974E9B00C84293 /* arrow_left_58_white.png */,
 				70974B721630A3A700A33B7D /* background-568h@2x.png */,
@@ -1035,16 +825,16 @@
 				70DAEA6D169564A700479D61 /* infoSelectedButtonImage@2x.png */,
 				70974B921630C3B000A33B7D /* list-background.png */,
 				70974B931630C3B100A33B7D /* list-background@2x.png */,
+				7049301D16E81832005A66C4 /* megaMenu-bar.png */,
+				7049301E16E81833005A66C4 /* megaMenu-bar-landscape.png */,
+				7049301F16E81833005A66C4 /* megaMenu-bar@2x.png */,
 				70974B141630558400A33B7D /* menu-bar.png */,
 				70974B151630558400A33B7D /* menu-bar@2x.png */,
 				70974B1C163056B800A33B7D /* menubar-button.png */,
 				70974B1D163056B800A33B7D /* menubar-button@2x.png */,
-				70A4B74E169804D200C84293 /* noAlbumImage320.png */,
+				7049302716E81FB2005A66C4 /* noAlbumImage320.png */,
 				702B4152165742BF004A9265 /* note_24.png */,
 				702B4150165741E0004A9265 /* note_48.png */,
-				70DAEA1B16914C6000479D61 /* notesLightButtonImage.png */,
-				70DAEA1C16914C6000479D61 /* notesLightButtonImage@2x.png */,
-				70DAEA3D1693981C00479D61 /* notesLightButtonImageWhite.png */,
 				7005120116AFC65A0085B6F1 /* notPlaying.png */,
 				7005120216AFC65A0085B6F1 /* notPlaying@2x.png */,
 				70974B981630CB6000A33B7D /* play.png */,
@@ -1078,10 +868,7 @@
 				70DAEA481694FCB700479D61 /* tabButtonBlack.png */,
 				70DAEA24169228C500479D61 /* tabbar-stretchable.png */,
 				70C177A9166EC6D500792D8F /* tabbar@2x.png */,
-				707862A21624D16E00871260 /* Settings.bundle */,
 				7049302316E81893005A66C4 /* Default-568h@2x.png */,
-				70ADDC0B16113CAD00219873 /* sound.caf */,
-				706052D814FEE669001A1CDB /* audio player icons */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1176,12 +963,7 @@
 			files = (
 				7060523614F88D43001A1CDB /* InfoPlist.strings in Resources */,
 				7060523F14F88D43001A1CDB /* MainStoryboard.storyboard in Resources */,
-				706052DD14FEE669001A1CDB /* video_next_64.png in Resources */,
-				706052DE14FEE669001A1CDB /* video_pause_64.png in Resources */,
-				706052DF14FEE669001A1CDB /* video_play_64.png in Resources */,
-				706052E014FEE669001A1CDB /* video_previous_64.png in Resources */,
 				70515C49161126B400D96335 /* Localizable.strings in Resources */,
-				70ADDC0C16113CAD00219873 /* sound.caf in Resources */,
 				707862A31624D16E00871260 /* Settings.bundle in Resources */,
 				70974B161630558400A33B7D /* menu-bar.png in Resources */,
 				70974B171630558400A33B7D /* menu-bar@2x.png in Resources */,
@@ -1198,8 +980,6 @@
 				70974B711630A27200A33B7D /* background.png in Resources */,
 				70974B741630A3A700A33B7D /* background-568h@2x.png in Resources */,
 				70974B751630A3A700A33B7D /* background@2x.png in Resources */,
-				70974B801630AE4000A33B7D /* bigrewind.png in Resources */,
-				70974B811630AE4000A33B7D /* bigrewind@2x.png in Resources */,
 				70974B941630C3B200A33B7D /* list-background.png in Resources */,
 				70974B951630C3B200A33B7D /* list-background@2x.png in Resources */,
 				70974B991630CB6100A33B7D /* play.png in Resources */,
@@ -1217,11 +997,8 @@
 				70C177A7166EC6B400792D8F /* selection-tab.png in Resources */,
 				70C177AA166EC6D500792D8F /* tabbar.png in Resources */,
 				70C177AB166EC6D500792D8F /* tabbar@2x.png in Resources */,
-				70DAEA1D16914C6000479D61 /* notesLightButtonImage.png in Resources */,
-				70DAEA1E16914C6000479D61 /* notesLightButtonImage@2x.png in Resources */,
 				70DAEA231692141B00479D61 /* selection-tabCircle.png in Resources */,
 				70DAEA25169228C500479D61 /* tabbar-stretchable.png in Resources */,
-				70DAEA3E1693981C00479D61 /* notesLightButtonImageWhite.png in Resources */,
 				70DAEA471694173A00479D61 /* tabbarButtonBackground.png in Resources */,
 				70DAEA491694FCB900479D61 /* tabButtonBlack.png in Resources */,
 				70DAEA4B169501CB00479D61 /* tabInfoButtonBlack.png in Resources */,
@@ -1244,7 +1021,6 @@
 				70A4B73416974E9B00C84293 /* arrow_left_48_white.png in Resources */,
 				70A4B73516974E9B00C84293 /* arrow_left_58_white.png in Resources */,
 				70A4B73F16978C8100C84293 /* redWhitePlay68.png in Resources */,
-				70A4B74F169804D200C84293 /* noAlbumImage320.png in Resources */,
 				7005120316AFC65A0085B6F1 /* notPlaying.png in Resources */,
 				7005120416AFC65A0085B6F1 /* notPlaying@2x.png in Resources */,
 				7020E1DB16B218D000BAB41E /* rightButtonBackground.png in Resources */,
@@ -1277,6 +1053,7 @@
 				7049302216E81833005A66C4 /* megaMenu-bar@2x.png in Resources */,
 				7049302416E81893005A66C4 /* Default-568h@2x.png in Resources */,
 				7049302616E81A18005A66C4 /* redWhitePlay57.png in Resources */,
+				7049302816E81FB3005A66C4 /* noAlbumImage320.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1326,15 +1103,6 @@
 				707862BF162C729300871260 /* TimeMagnifierViewController.m in Sources */,
 				70974B511630698200A33B7D /* UIImage+iPhone5.m in Sources */,
 				70974B521630698200A33B7D /* ColorSwitcher.m in Sources */,
-				70974B531630698200A33B7D /* DataLoader.m in Sources */,
-				70974B541630698200A33B7D /* Track.m in Sources */,
-				70974B551630698200A33B7D /* MasterCell.m in Sources */,
-				70974B561630698200A33B7D /* ThemeListCell.m in Sources */,
-				70974B571630698200A33B7D /* DetailThemeiPadController.m in Sources */,
-				70974B581630698200A33B7D /* MasterViewController.m in Sources */,
-				70974B591630698200A33B7D /* DetailThemeController.m in Sources */,
-				70974B5A1630698200A33B7D /* ElementThemeController.m in Sources */,
-				70974B5B1630698200A33B7D /* ThemeListController.m in Sources */,
 				70A13D861631AD8700244866 /* MediaGroupViewController.m in Sources */,
 				70A13D8E1631B40300244866 /* MediaGroup.m in Sources */,
 				70A13D911631BCC100244866 /* MediaGroupCell.m in Sources */,
@@ -1345,7 +1113,6 @@
 				702B4149165714E7004A9265 /* InfoTabBarController.m in Sources */,
 				702B414D165715C2004A9265 /* AlbumInfoViewController.m in Sources */,
 				702B4158165743AB004A9265 /* UserDataForMediaItem.m in Sources */,
-				702B415E16585120004A9265 /* SongInfoCell.m in Sources */,
 				709FA3861658B3520082DAE5 /* SongImageCell.m in Sources */,
 				70C1779E166DB86A00792D8F /* UIImage+AdditionalFunctionalities.m in Sources */,
 				703E3EA116811FC7004C152C /* UINavigationBar+AdditionalFunctionalities.m in Sources */,
@@ -1357,6 +1124,7 @@
 				70A6445216CE0FEE0059C561 /* UserInfoViewController.m in Sources */,
 				7049301816E808E1005A66C4 /* DTCustomColoredAccessory.m in Sources */,
 				7049301C16E80A0D005A66C4 /* CollectionViewController.m in Sources */,
+				7049302B16E82101005A66C4 /* SongInfoCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
