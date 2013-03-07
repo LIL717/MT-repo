@@ -234,16 +234,16 @@ void audioRouteChangeListenerCallback (
         UIImage *coloredImage = [self.repeatButton.currentImage imageWithTint:[UIColor whiteColor]];
         [self.repeatButton setImage: coloredImage forState:UIControlStateNormal];
     }
-    if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
-        
+//    if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+    
         [self.volumeView setMinimumVolumeSliderImage:[UIImage imageNamed:@"slider-fill.png"] forState:UIControlStateNormal];
         [self.volumeView setMaximumVolumeSliderImage:[UIImage imageNamed:@"slider-trackGray.png"] forState:UIControlStateNormal];
         [self.volumeView setVolumeThumbImage:[UIImage imageNamed:@"shinyVolumeHandle.png"] forState:UIControlStateNormal];
 //        self.title = @"";
 //        self.navigationItem.titleView = [self customizeTitleView];
 
-        
-    } else {
+    if (!UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+//    } else {
         [self.view removeConstraint:self.playerButtonContraint];
         [self.view removeConstraint:self.repeatButtonHeightContraint];
         [self.view removeConstraint:self.volumeViewHeightConstraint];
