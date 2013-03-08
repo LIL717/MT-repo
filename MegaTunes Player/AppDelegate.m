@@ -237,7 +237,7 @@ static const NSUInteger kNavigationBarHeight = 60;
     [[UINavigationBar appearance] setBackgroundImage:navBarDefaultImage forBarMetrics:UIBarMetricsDefault];
     
 //    UIImage *navBarLandscapeImage = [colorSwitcher processImageWithName:@"megaMenu-bar-landscape.png"];
-    UIImage *navBarLandscapeImage = [colorSwitcher processImageWithName:@"megaMenu-bar@2x.png"];
+    UIImage *navBarLandscapeImage = [colorSwitcher processImageWithName:@"megaMenu-bar-landscape.png"];
     [[UINavigationBar appearance] setBackgroundImage:navBarLandscapeImage forBarMetrics:UIBarMetricsLandscapePhone];
     
 //    UIImage* barButtonImage = [UIImage tallImageNamed:@"menubar-button.png"];

@@ -35,22 +35,20 @@
     LogMethod();
     [super viewDidLoad];
     
-    //    UIImage* emptyImage = [UIImage imageNamed:@"infoLightButtonImage.png"];
-    //    [[UITabBar appearance] setSelectionIndicatorImage:emptyImage];
-    
 	// Do any additional setup after loading the view, typically from a nib.
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
     
-    UIImage *unselectedImage0 = [UIImage imageNamed:@"unselectedTabInfoButton.png"];
-    UIImage *selectedImage0 = [UIImage imageNamed:@"selectedTabInfoButton.png"];
+    UIImage *unselectedImage0 = [UIImage imageNamed:@"unselectedTabAlbumButton.png"];
+    UIImage *selectedImage0 = [UIImage imageNamed:@"selectedTabAlbumButton.png"];
     
-    //    UIImage *unselectedImage1 = [UIImage imageNamed:@"notesLightButtonImageWhite.png"];
-    //    UIImage *unselectedImage1 = [UIImage imageNamed:@"tabButtonBlack.png"];
-    UIImage *unselectedImage1 = [UIImage imageNamed:@"unselectedTabNotesButton.png"];
-    UIImage *selectedImage1 = [UIImage imageNamed:@"selectedTabNotes2Button.png"];
+    UIImage *unselectedImage1 = [UIImage imageNamed:@"unselectedTabInfoButton.png"];
+    UIImage *selectedImage1 = [UIImage imageNamed:@"selectedTabInfoButton.png"];
     
-    //    UIImage *selectedImage1 = [unselectedImage1 imageWithTint:[UIColor blueColor]];
+    UIImage *unselectedImage2 = [UIImage imageNamed:@"unselectedTabCommentsButton.png"];
+    UIImage *selectedImage2 = [UIImage imageNamed:@"selectedTabCommentsButton.png"];
     
+    UIImage *unselectedImage3 = [UIImage imageNamed:@"unselectedTabUserButton.png"];
+    UIImage *selectedImage3 = [UIImage imageNamed:@"selectedTabUserButton.png"];
     
     UITabBar *tabBar = self.tabBarController.tabBar;
     UITabBarItem *item0 = [tabBar.items objectAtIndex:0];
@@ -61,8 +59,8 @@
     
     [item0 setFinishedSelectedImage:selectedImage0 withFinishedUnselectedImage:unselectedImage0];
     [item1 setFinishedSelectedImage:selectedImage1 withFinishedUnselectedImage:unselectedImage1];
-    [item2 setFinishedSelectedImage:selectedImage0 withFinishedUnselectedImage:unselectedImage0];
-    [item3 setFinishedSelectedImage:selectedImage1 withFinishedUnselectedImage:unselectedImage1];
+    [item2 setFinishedSelectedImage:selectedImage2 withFinishedUnselectedImage:unselectedImage2];
+    [item3 setFinishedSelectedImage:selectedImage3 withFinishedUnselectedImage:unselectedImage3];
 
     [self loadArrayForTable];
 
