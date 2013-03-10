@@ -138,8 +138,21 @@ void audioRouteChangeListenerCallback (
 @synthesize playPauseButton;
 @synthesize repeatButton;
 @synthesize shuffleButton;
-@synthesize playerButtonContraint;
-@synthesize repeatButtonHeightContraint;
+
+//@synthesize playerButtonContraint;
+//@synthesize repeatButtonHeightContraint;
+//@synthesize volumeViewHeightConstraint;
+@synthesize leadingSpaceToSliderConstraint;
+@synthesize trailingSpaceFromSliderConstraint;
+@synthesize verticalSpaceBetweenSliderAndElapsedTime;
+@synthesize verticalSpaceBetweenSliderAndRemainingTime;
+@synthesize verticalSpaceBetweenRewindAndReplay;
+@synthesize topSpaceToPlayButton;
+@synthesize playButtonToBottomSpace;
+
+
+
+
 @synthesize nextSongLabelWidthConstraint;
 @synthesize nowPlayingInfoButton;
 
@@ -233,26 +246,25 @@ void audioRouteChangeListenerCallback (
     if (musicPlayer.repeatMode == MPMusicRepeatModeNone) {
         UIImage *coloredImage = [self.repeatButton.currentImage imageWithTint:[UIColor whiteColor]];
         [self.repeatButton setImage: coloredImage forState:UIControlStateNormal];
-    }
-//    if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
-    
-        [self.volumeView setMinimumVolumeSliderImage:[UIImage imageNamed:@"slider-fill.png"] forState:UIControlStateNormal];
-        [self.volumeView setMaximumVolumeSliderImage:[UIImage imageNamed:@"slider-trackGray.png"] forState:UIControlStateNormal];
-        [self.volumeView setVolumeThumbImage:[UIImage imageNamed:@"shinyVolumeHandle.png"] forState:UIControlStateNormal];
-//        self.title = @"";
-//        self.navigationItem.titleView = [self customizeTitleView];
+    }    
+    [self.volumeView setMinimumVolumeSliderImage:[UIImage imageNamed:@"slider-fill.png"] forState:UIControlStateNormal];
+    [self.volumeView setMaximumVolumeSliderImage:[UIImage imageNamed:@"slider-trackGray.png"] forState:UIControlStateNormal];
+    [self.volumeView setVolumeThumbImage:[UIImage imageNamed:@"shinyVolumeHandle.png"] forState:UIControlStateNormal];
 
     if (!UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
-//    } else {
-        [self.view removeConstraint:self.playerButtonContraint];
-        [self.view removeConstraint:self.repeatButtonHeightContraint];
-        [self.view removeConstraint:self.volumeViewHeightConstraint];
-//        if (showTitle) {
-//            self.title = @"Now Playing";
-//            self.navigationItem.titleView = [self customizeTitleView];
-//        } else self.Title = @"";
-
+//        [self.view removeConstraint:self.playerButtonContraint];
+//        [self.view removeConstraint:self.repeatButtonHeightContraint];
+//        [self.view removeConstraint:self.volumeViewHeightConstraint];
+        [self.view removeConstraint:self.leadingSpaceToSliderConstraint];
+        [self.view removeConstraint:self.trailingSpaceFromSliderConstraint];
+        [self.view removeConstraint:self.verticalSpaceBetweenSliderAndElapsedTime];
+        [self.view removeConstraint:self.verticalSpaceBetweenSliderAndRemainingTime];
+        [self.view removeConstraint:self.verticalSpaceBetweenRewindAndReplay];
+        [self.view removeConstraint:self.topSpaceToPlayButton];
+    } else {
+        [self.view removeConstraint:self.playButtonToBottomSpace];
     }
+    
     [self willAnimateRotationToInterfaceOrientation: self.interfaceOrientation duration: 1];
     [self registerForMediaPlayerNotifications];
     [self setPlayedMusicOnce: YES];
@@ -264,9 +276,18 @@ void audioRouteChangeListenerCallback (
     
     [nowPlayingLabel  refreshLabels];
     if (UIInterfaceOrientationIsLandscape(orientation)) {
-        [self.view removeConstraint:self.playerButtonContraint];
-        [self.view removeConstraint:self.repeatButtonHeightContraint];
-        [self.view removeConstraint:self.volumeViewHeightConstraint];
+//        [self.view removeConstraint:self.playerButtonContraint];
+//        [self.view removeConstraint:self.repeatButtonHeightContraint];
+//        [self.view removeConstraint:self.volumeViewHeightConstraint];
+        [self.view removeConstraint:self.leadingSpaceToSliderConstraint];
+        [self.view removeConstraint:self.trailingSpaceFromSliderConstraint];
+        [self.view removeConstraint:self.verticalSpaceBetweenSliderAndElapsedTime];
+        [self.view removeConstraint:self.verticalSpaceBetweenSliderAndRemainingTime];
+        [self.view removeConstraint:self.verticalSpaceBetweenRewindAndReplay];
+        [self.view removeConstraint:self.topSpaceToPlayButton];
+        [self.view addConstraint:self.playButtonToBottomSpace];
+
+
         
         self.repeatButton.hidden = YES;
         self.shuffleButton.hidden = YES;
@@ -283,10 +304,18 @@ void audioRouteChangeListenerCallback (
         
     } else {
         
-        [self.view addConstraint:self.playerButtonContraint];
-        [self.view addConstraint:self.repeatButtonHeightContraint];
-        [self.view addConstraint:self.volumeViewHeightConstraint];
-        
+//        [self.view addConstraint:self.playerButtonContraint];
+//        [self.view addConstraint:self.repeatButtonHeightContraint];
+//        [self.view addConstraint:self.volumeViewHeightConstraint];
+        [self.view addConstraint:self.leadingSpaceToSliderConstraint];
+        [self.view addConstraint:self.trailingSpaceFromSliderConstraint];
+        [self.view addConstraint:self.verticalSpaceBetweenSliderAndElapsedTime];
+        [self.view addConstraint:self.verticalSpaceBetweenSliderAndRemainingTime];
+        [self.view addConstraint:self.verticalSpaceBetweenRewindAndReplay];
+        [self.view removeConstraint:self.playButtonToBottomSpace];
+        [self.view addConstraint:self.topSpaceToPlayButton];
+
+
         self.repeatButton.hidden = NO;
         self.shuffleButton.hidden = NO;
         self.volumeView.hidden = NO;
@@ -316,7 +345,7 @@ void audioRouteChangeListenerCallback (
     return label;
 }
 - (void)viewWillAppear:(BOOL)animated {
-//    LogMethod();
+    LogMethod();
     [super viewWillAppear: animated];
     
     self.playbackTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
@@ -328,7 +357,7 @@ void audioRouteChangeListenerCallback (
 }
 
 -(void) viewDidAppear:(BOOL)animated {
-//    LogMethod();
+    LogMethod();
 
     if (playNew) {
         [self setPlayNew: NO];
@@ -388,6 +417,7 @@ void audioRouteChangeListenerCallback (
     
     self.nextSongLabel.text = [NSString stringWithFormat: @""];
     self.nextLabel.text = [NSString stringWithFormat:@""];
+//    NSLog (@"shuffle mode??? %d", musicPlayer.shuffleMode);
     if (musicPlayer.shuffleMode == MPMusicShuffleModeOff) {
         [self prepareNextSongLabel];
     }
@@ -913,16 +943,18 @@ void audioRouteChangeListenerCallback (
 	} else if (playbackState == MPMusicPlaybackStateStopped) {
                 
         [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
-		
-		// Even though stopped, invoking 'stop' ensures that the music player will play
-		//		its queue from the start.
-        [musicPlayer stop];
         
-        if (iPodLibraryChanged) {
-            [self.navigationController popToRootViewControllerAnimated:YES];
-        } else {
-            [self.navigationController popViewControllerAnimated:YES];
-        }        
+        if (!playNew) {
+            // Even though stopped, invoking 'stop' ensures that the music player will play
+            //		its queue from the start. - !except if first time thru and state is stopped
+            [musicPlayer stop];
+        
+            if (iPodLibraryChanged) {
+                [self.navigationController popToRootViewControllerAnimated:YES];
+            } else {
+                [self.navigationController popViewControllerAnimated:YES];
+            }
+        }
 	}
     
 }
@@ -1065,15 +1097,18 @@ void audioRouteChangeListenerCallback (
     [self setNextSongLabel:nil];
     [self setNextLabel:nil];
     [self setVolumeView:nil];
-    [self setPlayerButtonContraint:nil];
     [self setPlayPauseButton:nil];
-    [self setRepeatButtonHeightContraint:nil];
     [self setRepeatButton:nil];
     [self setShuffleButton:nil];
-    [self setVolumeViewHeightConstraint:nil];
     [self setNextSongScrollView:nil];
     [self setNextSongLabel:nil];
     [self setNextSongLabelWidthConstraint:nil];
+//    [self setPlayerButtonContraint:nil];
+//    [self setRepeatButtonHeightContraint:nil];
+//    [self setVolumeViewHeightConstraint:nil];
+
+
+
 	
 	// Release any cached data, images, etc that aren't in use.
 }

@@ -27,7 +27,7 @@
 
 - (void)viewDidLoad
 {
-    LogMethod();
+//    LogMethod();
     [super viewDidLoad];
     
     //set the backround image for the view
@@ -64,7 +64,7 @@
 
 - (void) viewWillAppear:(BOOL)animated
 {
-    LogMethod();
+//    LogMethod();
     [super viewWillAppear: animated];
     
     //set the navigation bar title
@@ -116,7 +116,7 @@
     
 }
 - (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
-    LogMethod();
+//    LogMethod();
     if (UIInterfaceOrientationIsPortrait(orientation)) {
         [self.songTableView setContentInset:UIEdgeInsetsMake(11,0,0,0)];
 
