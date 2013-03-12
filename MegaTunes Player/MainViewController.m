@@ -161,7 +161,7 @@ void audioRouteChangeListenerCallback (
 // Configure the application.
 
 - (void) viewDidLoad {
-    LogMethod();
+//    LogMethod();
     [super viewDidLoad];
     UIImage *backgroundImage = [UIImage imageNamed: @"infoSelectedButtonImage.png"];
     [self.nowPlayingInfoButton setImage: backgroundImage forState:UIControlStateHighlighted];
@@ -287,8 +287,6 @@ void audioRouteChangeListenerCallback (
         [self.view removeConstraint:self.topSpaceToPlayButton];
         [self.view addConstraint:self.playButtonToBottomSpace];
 
-
-        
         self.repeatButton.hidden = YES;
         self.shuffleButton.hidden = YES;
         self.volumeView.hidden = YES;
@@ -345,7 +343,7 @@ void audioRouteChangeListenerCallback (
     return label;
 }
 - (void)viewWillAppear:(BOOL)animated {
-    LogMethod();
+//    LogMethod();
     [super viewWillAppear: animated];
     
     self.playbackTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
@@ -357,7 +355,7 @@ void audioRouteChangeListenerCallback (
 }
 
 -(void) viewDidAppear:(BOOL)animated {
-    LogMethod();
+//    LogMethod();
 
     if (playNew) {
         [self setPlayNew: NO];
@@ -923,7 +921,7 @@ void audioRouteChangeListenerCallback (
 
 // When the playback state changes, set the play/pause button appropriately.
 - (void) handle_PlaybackStateChanged: (id) notification {
-    LogMethod();
+//    LogMethod();
     //    //temporary nslogs for debugging
     //
     //    NSLog (@"size of nextSongLabel is %f, %f", self.nextSongLabel.frame.size.width, self.nextSongLabel.frame.size.height);

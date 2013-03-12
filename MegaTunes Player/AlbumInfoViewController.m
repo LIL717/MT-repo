@@ -32,7 +32,7 @@
 
 - (void)viewDidLoad
 {
-    LogMethod();
+//    LogMethod();
     [super viewDidLoad];
     
 	// Do any additional setup after loading the view, typically from a nib.
@@ -100,7 +100,7 @@
 }
 - (void) viewWillAppear:(BOOL)animated
 {
-    LogMethod();
+//    LogMethod();
     [super viewWillAppear: animated];
 
 //    if (self.tabBarController.selectedIndex = 0) {

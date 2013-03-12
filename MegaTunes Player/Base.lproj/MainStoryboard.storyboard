@@ -530,55 +530,43 @@
                         <rect key="frame" x="0.0" y="64" width="480" height="207"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dSl-sU-nne">
-                                <subviews>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" placeholder="Enter Grouping" adjustsFontSizeToFit="NO" minimumFontSize="44" translatesAutoresizingMaskIntoConstraints="NO" id="XJf-jC-nf6">
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="54" type="user" id="8g4-GH-old"/>
-                                        </constraints>
-                                        <color key="textColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="44"/>
-                                        <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="done"/>
-                                    </textField>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1nd-7c-kt3">
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="293" id="bGl-Vf-RTX"/>
-                                        </constraints>
-                                        <color key="textColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="44"/>
-                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
-                                    </textView>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Enter Notes" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ib9-ir-2yk">
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="270" type="user" id="nhC-30-ifD"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="44"/>
-                                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" placeholder="Enter Grouping" adjustsFontSizeToFit="NO" minimumFontSize="44" translatesAutoresizingMaskIntoConstraints="NO" id="XJf-jC-nf6">
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="XJf-jC-nf6" firstAttribute="leading" secondItem="dSl-sU-nne" secondAttribute="leading" type="user" id="5ND-v1-5mA"/>
-                                    <constraint firstItem="1nd-7c-kt3" firstAttribute="leading" secondItem="dSl-sU-nne" secondAttribute="leading" type="user" id="8Cc-1o-4HF"/>
-                                    <constraint firstItem="ib9-ir-2yk" firstAttribute="leading" secondItem="dSl-sU-nne" secondAttribute="leading" constant="7" type="user" id="Eb4-BN-c7t"/>
-                                    <constraint firstItem="1nd-7c-kt3" firstAttribute="bottom" secondItem="dSl-sU-nne" secondAttribute="bottom" type="default" id="Hi3-j7-1N4"/>
-                                    <constraint firstItem="XJf-jC-nf6" firstAttribute="centerX" secondItem="dSl-sU-nne" secondAttribute="centerX" type="user" id="Htw-l0-N8k"/>
-                                    <constraint firstItem="ib9-ir-2yk" firstAttribute="top" secondItem="XJf-jC-nf6" secondAttribute="bottom" constant="8" symbolic="YES" type="user" id="S2W-TT-D2R"/>
-                                    <constraint firstItem="1nd-7c-kt3" firstAttribute="top" secondItem="XJf-jC-nf6" secondAttribute="bottom" type="user" id="Yhx-Su-JgF"/>
-                                    <constraint firstItem="XJf-jC-nf6" firstAttribute="top" secondItem="dSl-sU-nne" secondAttribute="top" type="user" id="bTx-a0-BO9"/>
-                                    <constraint firstItem="XJf-jC-nf6" firstAttribute="trailing" secondItem="dSl-sU-nne" secondAttribute="trailing" type="user" id="pog-ez-9zD"/>
-                                    <constraint firstItem="1nd-7c-kt3" firstAttribute="trailing" secondItem="dSl-sU-nne" secondAttribute="trailing" type="default" id="vqT-rp-PKU"/>
+                                    <constraint firstAttribute="height" constant="54" id="pdG-KN-1Jf"/>
                                 </constraints>
-                            </scrollView>
+                                <color key="textColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="44"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="done"/>
+                            </textField>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1nd-7c-kt3">
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="textColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="44"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
+                            </textView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Enter Notes" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ib9-ir-2yk">
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="54" type="user" id="KvA-Qz-EWw"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="44"/>
+                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="dSl-sU-nne" firstAttribute="top" secondItem="Lr6-Id-qll" secondAttribute="top" constant="20" type="user" id="DOT-ty-heB"/>
-                            <constraint firstItem="dSl-sU-nne" firstAttribute="leading" secondItem="Lr6-Id-qll" secondAttribute="leading" type="user" id="Dcc-wc-DB8"/>
-                            <constraint firstItem="dSl-sU-nne" firstAttribute="trailing" secondItem="Lr6-Id-qll" secondAttribute="trailing" type="user" id="HwL-ZY-D6n"/>
-                            <constraint firstAttribute="bottom" secondItem="dSl-sU-nne" secondAttribute="bottom" type="user" id="dyP-4q-0kP"/>
+                            <constraint firstItem="ib9-ir-2yk" firstAttribute="trailing" secondItem="Lr6-Id-qll" secondAttribute="trailing" type="default" id="1RZ-No-WK5"/>
+                            <constraint firstItem="XJf-jC-nf6" firstAttribute="top" secondItem="Lr6-Id-qll" secondAttribute="top" constant="12" type="user" id="30g-ym-CzH"/>
+                            <constraint firstItem="1nd-7c-kt3" firstAttribute="top" secondItem="Lr6-Id-qll" secondAttribute="top" constant="66" type="user" id="Ojh-WR-8CS"/>
+                            <constraint firstItem="ib9-ir-2yk" firstAttribute="leading" secondItem="Lr6-Id-qll" secondAttribute="leading" constant="6" type="user" id="Sve-cZ-Ut8"/>
+                            <constraint firstItem="XJf-jC-nf6" firstAttribute="trailing" secondItem="Lr6-Id-qll" secondAttribute="trailing" type="user" id="WPA-aN-C8f"/>
+                            <constraint firstItem="1nd-7c-kt3" firstAttribute="bottom" secondItem="Lr6-Id-qll" secondAttribute="bottom" type="user" id="br9-zj-HeE"/>
+                            <constraint firstItem="ib9-ir-2yk" firstAttribute="top" secondItem="1nd-7c-kt3" secondAttribute="top" type="user" id="fil-Wh-pRT"/>
+                            <constraint firstItem="1nd-7c-kt3" firstAttribute="leading" secondItem="Lr6-Id-qll" secondAttribute="leading" type="user" id="gX7-Bt-YKO"/>
+                            <constraint firstItem="1nd-7c-kt3" firstAttribute="trailing" secondItem="Lr6-Id-qll" secondAttribute="trailing" type="user" id="hEy-Q0-Gsz"/>
+                            <constraint firstItem="XJf-jC-nf6" firstAttribute="leading" secondItem="Lr6-Id-qll" secondAttribute="leading" type="user" id="oyN-IQ-Cgn"/>
                         </constraints>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
@@ -588,10 +576,11 @@
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <connections>
                         <outlet property="comments" destination="1nd-7c-kt3" id="ugX-XU-nwC"/>
+                        <outlet property="keyboardHeight" destination="br9-zj-HeE" id="0cr-sB-2K2"/>
                         <outlet property="placeholderLabel" destination="ib9-ir-2yk" id="p8u-cU-itV"/>
-                        <outlet property="scrollView" destination="dSl-sU-nne" id="vz4-tt-52w"/>
                         <outlet property="userGrouping" destination="XJf-jC-nf6" id="4QN-1j-i41"/>
-                        <outlet property="verticalSpaceToTop" destination="DOT-ty-heB" id="8b7-q7-JLU"/>
+                        <outlet property="verticalSpaceTopToCommentsConstraint" destination="Ojh-WR-8CS" id="Lke-mR-dEy"/>
+                        <outlet property="verticalSpaceTopToGroupingConstraint" destination="30g-ym-CzH" id="l4m-Dg-Kbo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="n5c-6K-4g2" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1217,11 +1206,11 @@
             <source key="sourceIdentifier" type="project" relativePath="./Classes/UserInfoViewController.h"/>
             <relationships>
                 <relationship kind="outlet" name="comments" candidateClass="UITextView"/>
+                <relationship kind="outlet" name="keyboardHeight" candidateClass="NSLayoutConstraint"/>
                 <relationship kind="outlet" name="placeholderLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
                 <relationship kind="outlet" name="userGrouping" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="verticalSpaceToTop" candidateClass="NSLayoutConstraint"/>
-                <relationship kind="outlet" name="verticalSpaceToTop28" candidateClass="NSLayoutConstraint"/>
+                <relationship kind="outlet" name="verticalSpaceTopToCommentsConstraint" candidateClass="NSLayoutConstraint"/>
+                <relationship kind="outlet" name="verticalSpaceTopToGroupingConstraint" candidateClass="NSLayoutConstraint"/>
             </relationships>
         </class>
     </classes>

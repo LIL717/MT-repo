@@ -36,7 +36,7 @@
 
 - (void)viewDidLoad
 {
-    LogMethod();
+//    LogMethod();
     [super viewDidLoad];
     
     //    self.delegate = self;
@@ -90,19 +90,9 @@
 }
 - (void) viewWillAppear:(BOOL)animated
 {
-    LogMethod();
+//    LogMethod();
     [super viewWillAppear: animated];
 
-//    UIImage* infoImage = [UIImage imageNamed:@"infoLightButtonImage.png"];
-//    UIImage* notesImage = [UIImage imageNamed:@"notesLightButtonImage.png"];
-
-//    [[UITabBar appearance] setSelectionIndicatorImage:emptyImage];
-//    [[self.navigationController.viewControllers objectAtIndex:0] setSelectionIndicatorImage:infoImage];
-//    [[self.navigationController.viewControllers objectAtIndex:1] setSelectionIndicatorImage:notesImage];
-
-    
-//    [[self.navigationController.viewControllers objectAtIndex:1] setTitle:@"Blah"];
-//
     self.navigationItem.titleView = [self customizeTitleView];
     
 //    NSLog (@"self.navigationItem.titleview is %@", self.navigationItem.titleView);
@@ -131,8 +121,7 @@
     } else {
         self.navigationItem.rightBarButtonItem= nil;
     }
-//    UIImage* emptyImage = [UIImage imageNamed:@"infoLightButtonImage.png"];
-//    [[UITabBar appearance] setSelectionIndicatorImage:emptyImage];
+
     return;
 }
 
@@ -157,6 +146,7 @@
     
 }
 - (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
+        //executes the method in the individual view on initial load and the one here after that, so they need to stay in synch with each other and with the constaints set in interface builder
     
     if (UIInterfaceOrientationIsPortrait(orientation)) {
         NSLog (@"portrait");
@@ -173,8 +163,11 @@
         [self.iTunesCommentsViewController.comments setContentInset:UIEdgeInsetsMake(11,0,-11,0)];
         [self.iTunesCommentsViewController.comments scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
 
-        [self.userInfoViewController.view removeConstraint:self.userInfoViewController.verticalSpaceToTop28];
-        [self.userInfoViewController.view addConstraint:self.userInfoViewController.verticalSpaceToTop];
+//        [self.userInfoViewController.view removeConstraint:self.userInfoViewController.verticalSpaceToTop28];
+//        [self.userInfoViewController.view addConstraint:self.userInfoViewController.verticalSpaceToTop];
+        self.userInfoViewController.verticalSpaceTopToGroupingConstraint.constant = 12;
+        self.userInfoViewController.verticalSpaceTopToCommentsConstraint.constant = 66;
+        
 
     } else {
         NSLog (@"landscape");
@@ -192,18 +185,8 @@
         [self.iTunesCommentsViewController.comments scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
         
         // Set top row spacing to superview top
-
-        [self.userInfoViewController.view removeConstraint:self.userInfoViewController.verticalSpaceToTop];
-        
-        self.userInfoViewController.verticalSpaceToTop28 =
-        [NSLayoutConstraint constraintWithItem:self.userInfoViewController.userGrouping
-                                     attribute:NSLayoutAttributeTop
-                                     relatedBy:NSLayoutRelationEqual
-                                        toItem:self.userInfoViewController.view
-                                     attribute:NSLayoutAttributeTop
-                                    multiplier:1.0
-                                      constant:28];
-        [self.userInfoViewController.view addConstraint: self.userInfoViewController.verticalSpaceToTop28];
+        self.userInfoViewController.verticalSpaceTopToGroupingConstraint.constant += self.userInfoViewController.landscapeOffset;
+        self.userInfoViewController.verticalSpaceTopToCommentsConstraint.constant += self.userInfoViewController.landscapeOffset;
     }
 }
 //#pragma mark UITabBarController Delegate Method
@@ -346,8 +329,12 @@
 	
     if (playbackState == MPMusicPlaybackStateStopped) {
         self.navigationItem.rightBarButtonItem= nil;
-	}
-    
+
+        //if the currently playing song is the last one in the queue, force a goBack
+        if (self.viewingNowPlaying) {
+            [self goBackClick];
+        }
+    }
 }
 
 - (void)dealloc {

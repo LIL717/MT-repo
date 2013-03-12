@@ -270,7 +270,7 @@
 
         
         songViewController.title = collectionItem.name;
-        NSLog (@"collectionItem.name is %@", collectionItem.name);
+//        NSLog (@"collectionItem.name is %@", collectionItem.name);
 
         songViewController.collectionItem = collectionItem;
 

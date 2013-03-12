@@ -21,13 +21,14 @@
 @property (strong, nonatomic) IBOutlet UITextField  *userGrouping;
 @property (strong, nonatomic) IBOutlet UITextView   *comments;
 
-@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceToTop;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceToTop28;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceTopToGroupingConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *keyboardHeight;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceTopToCommentsConstraint;
 
 @property (strong, nonatomic) IBOutlet UILabel *placeholderLabel;
 @property (readwrite)         BOOL             editingUserInfo;
 
+@property (readwrite)                  CGFloat landscapeOffset;
 
 - (void) loadDataForView;
 @end
