@@ -40,6 +40,8 @@
 //    LogMethod();
     [super viewDidLoad];
     
+    [TestFlight passCheckpoint:@"UserInfoViewController"];
+    
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
     
     musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
@@ -67,8 +69,7 @@
         self.userGrouping.textColor = [UIColor whiteColor];
 
     } else {
-        self.userGrouping.text = @"Enter Grouping";
-        self.userGrouping.textColor = [UIColor lightGrayColor];
+        self.userGrouping.text = @"";
     }
     
     self.userGrouping.delegate = self;

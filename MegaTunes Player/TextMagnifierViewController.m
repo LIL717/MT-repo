@@ -8,6 +8,7 @@
 
 #import "TextMagnifierViewController.h"
 #import "AppDelegate.h"
+#import "MainViewcontroller.h"
 
 @interface TextMagnifierViewController ()
 
@@ -15,9 +16,15 @@
 
 @implementation TextMagnifierViewController
 
+@synthesize musicPlayer;
+@synthesize mainViewController;
 @synthesize scrollView;
 @synthesize textToMagnify;
 @synthesize magnifiedLabel;
+@synthesize textType;
+@synthesize iPodLibraryChanged;         //A flag indicating whether the library has been changed due to a sync
+
+
 @synthesize delegate;
 
 - (void)viewDidLoad
@@ -27,9 +34,17 @@
 	// Do any additional setup after loading the view.
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
 
-
-    // Display text
+    musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
     
+    [self registerForMediaPlayerNotifications];
+    
+    // Display text
+    [self displayMagnifiedText];
+}
+- (void) displayMagnifiedText
+{
+    LogMethod();
+
     self.magnifiedLabel = [[UILabel alloc] initWithFrame: CGRectMake(0, 0, 320, 460)];
     self.magnifiedLabel.textColor = [UIColor whiteColor];
     self.magnifiedLabel.backgroundColor = [UIColor clearColor];
@@ -64,13 +79,32 @@
     // Center the label vertically in the window
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:magnifiedLabel attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0]];
 
-
 }
 
 
 //    Tap to cancel
 - (IBAction)tapDetected:(UITapGestureRecognizer *)sender {
-    [self.delegate textMagnifierViewControllerDidCancel:self];
+    
+    [self exitGracefully];
+}
+
+- (void) exitGracefully {
+    if (iPodLibraryChanged) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    } else {
+        MPMusicPlaybackState playbackState = [musicPlayer playbackState];
+        if (playbackState == MPMusicPlaybackStateStopped) {
+//            //pop back to songviewcontroller
+//            NSArray *array = [self.navigationController viewControllers];
+//            [self.navigationController popToViewController:[array objectAtIndex:2] animated:YES];
+#pragma mark TODO            //need to set up this delegate
+            [self.delegate textMagnifierViewControllerDidCancel:self];
+        } else {
+//            [self.navigationController popViewControllerAnimated:YES];
+            [self.delegate textMagnifierViewControllerDidCancel:self];
+
+        }
+    }
     
 }
 
@@ -124,6 +158,85 @@
 //    [super viewDidUnload];
 //}
 
+- (void) registerForMediaPlayerNotifications {
+    //    LogMethod();
+    
+	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    
+    [notificationCenter addObserver: self
+						   selector: @selector (handle_NowPlayingItemChanged:)
+							   name: MPMusicPlayerControllerNowPlayingItemDidChangeNotification
+							 object: musicPlayer];
+    
+    [notificationCenter addObserver: self
+						   selector: @selector (handle_PlaybackStateChanged:)
+							   name: MPMusicPlayerControllerPlaybackStateDidChangeNotification
+							 object: musicPlayer];
+    
+    [notificationCenter addObserver: self
+                           selector: @selector (handle_iPodLibraryChanged:)
+                               name: MPMediaLibraryDidChangeNotification
+                             object: nil];
+    
+    [[MPMediaLibrary defaultMediaLibrary] beginGeneratingLibraryChangeNotifications];
+    [musicPlayer beginGeneratingPlaybackNotifications];
+    
+}
+// If displaying now-playing item when it changes, update mediaItemForInfo and show info for currently playing song
+- (void) handle_NowPlayingItemChanged: (id) notification {
+    LogMethod();
+    if ([self.textType isEqualToString: @"MagnifyNowPlaying"]) {
+            self.textToMagnify = self.mainViewController.nowPlayingLabel.text;
+    } else {
+        self.textToMagnify = self.mainViewController.nextSongLabel.text;
+    }
+    //pop out of here if there isn't any text to display
+    if ([self.textToMagnify isEqualToString: @""]) {
+        [self exitGracefully];
+    } else {
+        //remove the previous magnified label before creating anonther
+        [self.magnifiedLabel removeFromSuperview];
+        [self displayMagnifiedText];
+    }
+    
+}
+- (void) handle_iPodLibraryChanged: (id) changeNotification {
+    LogMethod();
+	// Implement this method to update cached collections of media items when the
+	// user performs a sync while application is running.
+    [self setIPodLibraryChanged: YES];
+    
+}
+// When the playback state changes
+- (void) handle_PlaybackStateChanged: (id) notification {
+    LogMethod();
+    
+	MPMusicPlaybackState playbackState = [musicPlayer playbackState];
+	
+    if (playbackState == MPMusicPlaybackStateStopped) {        
+        //if the currently playing song is the last one in the queue, exit
+        [self exitGracefully];
+
+    }
+}
+
+- (void)dealloc {
+    LogMethod();
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                    name: MPMusicPlayerControllerNowPlayingItemDidChangeNotification
+												  object: musicPlayer];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                    name: MPMediaLibraryDidChangeNotification
+                                                  object: nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+													name: MPMusicPlayerControllerPlaybackStateDidChangeNotification
+												  object: musicPlayer];
+    [[MPMediaLibrary defaultMediaLibrary] endGeneratingLibraryChangeNotifications];
+    [musicPlayer endGeneratingPlaybackNotifications];
+    
+}
 - (void)didReceiveMemoryWarning
 {
     LogMethod();

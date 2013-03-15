@@ -160,6 +160,15 @@
 	SongCell *cell = (SongCell *)[tableView
                                           dequeueReusableCellWithIdentifier:@"SongCell"];
     
+//    if ([[self.collectionItem.collection items] count] == 0) {
+//        cell.nameLabel.text = @"";
+//        cell.durationLabel.text = @"";
+//        cell.playingIndicator.image = [UIImage imageNamed:@"notPlaying"];
+//        cell.scrollView.scrollEnabled = NO;
+//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//        return cell;
+//    }
+    
     MPMediaItem *song = [[self.collectionItem.collection items] objectAtIndex:indexPath.row];
     
 

@@ -17,9 +17,6 @@
 #import "MediaItemUserData.h"
 #import "UserInfoViewcontroller.h"
 
-//#import "UINavigationBar+AdditionalFunctionalities.h"
-
-
 
 
 
@@ -163,6 +160,9 @@ void audioRouteChangeListenerCallback (
 - (void) viewDidLoad {
 //    LogMethod();
     [super viewDidLoad];
+    
+    [TestFlight passCheckpoint:@"MainViewController"];
+
     UIImage *backgroundImage = [UIImage imageNamed: @"infoSelectedButtonImage.png"];
     [self.nowPlayingInfoButton setImage: backgroundImage forState:UIControlStateHighlighted];
     self.nextLabel.textColor = [UIColor yellowColor];
@@ -376,7 +376,7 @@ void audioRouteChangeListenerCallback (
 
 // When the now-playing item changes, update the now-playing label and the next label.
 - (void) handle_NowPlayingItemChanged: (id) notification {
-//    LogMethod();
+    LogMethod();
 // need to check if this method has already been executed because sometimes the notification gets sent twice for the same nowPlaying item, this workaround seems to solve the problem (check if the nowPlayingItem is the same as previous one)
     if (self.savedNowPlaying != [musicPlayer nowPlayingItem]) {
 //        NSLog (@"actually handling it");
@@ -737,6 +737,9 @@ void audioRouteChangeListenerCallback (
         TextMagnifierViewController *textMagnifierViewController = [[navigationController viewControllers] objectAtIndex:0];
         textMagnifierViewController.delegate = self;
         textMagnifierViewController.textToMagnify = self.nowPlayingLabel.text;
+        textMagnifierViewController.textType = segue.identifier;
+        textMagnifierViewController.mainViewController = self;
+
 	}
     
     if ([segue.identifier isEqualToString:@"MagnifyPlaylistRemaining"])
@@ -753,6 +756,9 @@ void audioRouteChangeListenerCallback (
         TextMagnifierViewController *textMagnifierViewController = [[navigationController viewControllers] objectAtIndex:0];
         textMagnifierViewController.delegate = self;
         textMagnifierViewController.textToMagnify = self.nextSongLabel.text;
+        textMagnifierViewController.textType = segue.identifier;
+        textMagnifierViewController.mainViewController = self;
+
 	}
     if ([segue.identifier isEqualToString:@"ViewInfo"])
 	{
@@ -1021,10 +1027,12 @@ void audioRouteChangeListenerCallback (
 //}
 
 
-//#pragma mark - TextMagnifierViewControllerDelegate
+#pragma mark - TextMagnifierViewControllerDelegate
 
 - (void)textMagnifierViewControllerDidCancel:(TextMagnifierViewController *)controller
 {
+    LogMethod();
+
 	[self dismissViewControllerAnimated:YES completion:nil];
     [self willAnimateRotationToInterfaceOrientation: self.interfaceOrientation duration: 1];
 

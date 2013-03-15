@@ -143,40 +143,50 @@
 	CollectionItemCell *cell = (CollectionItemCell *)[tableView
                                           dequeueReusableCellWithIdentifier:@"CollectionItemCell"];
     
-    MPMediaItemCollection *currentQueue = [MPMediaItemCollection collectionWithItems: [[self.collection objectAtIndex:indexPath.row] items]];    
-
     if ([self.collectionType isEqualToString: @"Playlists"]) {
         MPMediaPlaylist  *mediaPlaylist = [self.collection objectAtIndex:indexPath.row];
         cell.nameLabel.text = [mediaPlaylist valueForProperty: MPMediaPlaylistPropertyName];
+        NSLog (@" cell.nameLabel.text = %@", cell.nameLabel.text);
     }
-    if ([self.collectionType isEqualToString: @"Artists"]) {
-        cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyArtist];
+    if ([[self.collection objectAtIndex:indexPath.row] count] > 0) {
+//        cell.nameLabel.text = @"";
+//        cell.durationLabel.text = @"";
+//        cell.scrollView.scrollEnabled = NO;
+//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+        MPMediaItemCollection *currentQueue = [MPMediaItemCollection collectionWithItems: [[self.collection objectAtIndex:indexPath.row] items]];
+
+        if ([self.collectionType isEqualToString: @"Artists"]) {
+            cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyArtist];
+        }
+        if ([self.collectionType isEqualToString: @"Albums"]) {
+            cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyAlbumTitle];
+        }
+        if ([self.collectionType isEqualToString: @"Composers"]) {
+            cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyComposer];
+        }
+        if ([self.collectionType isEqualToString: @"Genres"]) {
+            cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyGenre];
+        }
+        if ([self.collectionType isEqualToString: @"Podcasts"]) {
+            cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyPodcastTitle];
+        }
+
+        //get the duration of the the playlist
+        
+        NSNumber *playlistDurationNumber = [self calculatePlaylistDuration: currentQueue];
+        long playlistDuration = [playlistDurationNumber longValue];
+        
+        int playlistMinutes = (playlistDuration / 60);     // Whole minutes
+        int playlistSeconds = (playlistDuration % 60);                        // seconds
+        cell.durationLabel.text = [NSString stringWithFormat:@"%2d:%02d", playlistMinutes, playlistSeconds];
+    } else {
+        cell.durationLabel.text = @"";
     }
-    if ([self.collectionType isEqualToString: @"Albums"]) {
-        cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyAlbumTitle];
-    }
-    if ([self.collectionType isEqualToString: @"Composers"]) {
-        cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyComposer];
-    }
-    if ([self.collectionType isEqualToString: @"Genres"]) {
-        cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyGenre];
-    }
-    if ([self.collectionType isEqualToString: @"Podcasts"]) {
-        cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyPodcastTitle];
-    }
+
     if (cell.nameLabel.text == nil) {
         cell.nameLabel.text = @"Unknown";
     }
-    //get the duration of the the playlist
-    
-    NSNumber *playlistDurationNumber = [self calculatePlaylistDuration: currentQueue];
-    long playlistDuration = [playlistDurationNumber longValue];
-    
-    int playlistMinutes = (playlistDuration / 60);     // Whole minutes
-    int playlistSeconds = (playlistDuration % 60);                        // seconds
-    cell.durationLabel.text = [NSString stringWithFormat:@"%2d:%02d", playlistMinutes, playlistSeconds];
-    
-
     
     DTCustomColoredAccessory *accessory = [DTCustomColoredAccessory accessoryWithColor:cell.nameLabel.textColor];
     accessory.highlightedColor = [UIColor blueColor];

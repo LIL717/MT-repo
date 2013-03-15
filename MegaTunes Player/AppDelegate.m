@@ -137,37 +137,26 @@ static const NSUInteger kNavigationBarHeight = 60;
 }
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
+    
+#pragma mark TODO before submit to Apple Store
+    
+    //*** beginning of TestFlight code
+    // comment out #define TESTING 1 before production!!!!
+#define TESTING 1
+#ifdef TESTING
+    [TestFlight setDeviceIdentifier:[[UIDevice currentDevice] uniqueIdentifier]];
+#endif
+    [TestFlight takeOff:@"3ec22a1e-ddac-483c-8152-21c537a9fb42"];
+
+    //*** end of TestFlight code
+
     UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
     
     MediaGroupViewController *mediaGroupViewController = (MediaGroupViewController *)navigationController.topViewController;
     mediaGroupViewController.managedObjectContext = self.managedObjectContext;
 
-
-//    UINavigationController *newNavigationController = [self customizeNavigationController: navigationController];
-//
-//    MediaGroupViewController *mediaGroupViewController = (MediaGroupViewController *)newNavigationController.topViewController;
-//    mediaGroupViewController.managedObjectContext = self.managedObjectContext;
-    
-//    [navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-//                                                [UIFont systemFontOfSize:22], UITextAttributeFont,
-//                                                   [UIColor yellowColor], UITextAttributeTextColor,
-//                                                   [UIColor grayColor], UITextAttributeTextShadowColor,
-//                                                   [NSValue valueWithUIOffset:UIOffsetMake(0.0f, 1.0f)], UITextAttributeTextShadowOffset,
-//                                                   nil]];
-    
-//    [navigationController.navigationBar setTitleVerticalPositionAdjustment: 0 forBarMetrics: UIBarMetricsDefault];
     [navigationController.navigationBar setTitleVerticalPositionAdjustment: 4 forBarMetrics: UIBarMetricsLandscapePhone];
     
-    
-//    [[UIBarButtonItem appearance] setBackButtonBackgroundVerticalPositionAdjustment: 7.0f
-//                                                                      forBarMetrics:UIBarMetricsLandscapePhone];
-//    const CGFloat TextOffset = 0.0f;
-//    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(TextOffset, 0)
-//     forBarMetrics:UIBarMetricsDefault];
-//
-//    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(TextOffset, 0)
-//     forBarMetrics:UIBarMetricsLandscapePhone];
-
     
 //    self.colorSwitcher = [[ColorSwitcher alloc] initWithScheme:@"maroon"];
     self.colorSwitcher = [[ColorSwitcher alloc] initWithScheme:@"black"];
@@ -184,107 +173,18 @@ static const NSUInteger kNavigationBarHeight = 60;
     return YES;
 }
 
-//- (UINavigationController *)customizeNavigationController: navController
-//{
-////    UINavigationController *navController = (UINavigationController *)self.window.rootViewController;
-//    
-//    // Ensure the UINavigationBar is created so that it can be archived. If we do not access the
-//    // navigation bar then it will not be allocated, and thus, it will not be archived by the
-//    // NSKeyedArchvier.
-//    [navController navigationBar];
-//    
-//    // Archive the navigation controller.
-//    NSMutableData *data = [NSMutableData data];
-//    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
-//    [archiver encodeObject:navController forKey:@"root"];
-//    [archiver finishEncoding];
-//    
-//    // Unarchive the navigation controller and ensure that our UINavigationBar subclass is used.
-//    NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
-//    [unarchiver setClass:[CustomNavigationBar class] forClassName:@"UINavigationBar"];
-//    UINavigationController *customizedNavController = [unarchiver decodeObjectForKey:@"root"];
-//    [unarchiver finishDecoding];
-//    
-//    // Modify the navigation bar to have a background image.
-//    CustomNavigationBar *navBar = (CustomNavigationBar *)[customizedNavController navigationBar];
-//    
-//    CGRect frame = navBar.frame;
-//    frame.size.height = kNavigationBarHeight;
-//    navBar.frame = frame;
-//    
-//    [navBar setBackgroundImage:[UIImage imageNamed:@"megaMenu-bar.png"] forBarMetrics:UIBarMetricsDefault];
-//    [navBar setBackgroundImage:[UIImage imageNamed:@"megaMenu-bar-landscape.png"] forBarMetrics:
-//     UIBarMetricsLandscapePhone];
-//    [navBar setTitleVerticalPositionAdjustment: 5 forBarMetrics: UIBarMetricsDefault];
-//    [navBar setTitleVerticalPositionAdjustment: 10 forBarMetrics: UIBarMetricsLandscapePhone];
-//    
-//    
-//    //    //this does not fit in the titleview "space"
-//    [navBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-//                                                [UIFont systemFontOfSize:44], UITextAttributeFont,
-//                                                   [UIColor yellowColor], UITextAttributeTextColor,
-//                                                   [UIColor grayColor], UITextAttributeTextShadowColor,
-//                                                   [NSValue valueWithUIOffset:UIOffsetMake(0.0f, 1.0f)], UITextAttributeTextShadowOffset,
-//                                                   nil]];
-//
-////    self.colorSwitcher = [[ColorSwitcher alloc] initWithScheme:@"maroon"];
-//    
-//    return customizedNavController;
-//}
 - (void)customizeGlobalTheme {
     
     UIImage *navBarDefaultImage = [colorSwitcher processImageWithName:@"megaMenu-bar.png"];
     [[UINavigationBar appearance] setBackgroundImage:navBarDefaultImage forBarMetrics:UIBarMetricsDefault];
     
-//    UIImage *navBarLandscapeImage = [colorSwitcher processImageWithName:@"megaMenu-bar-landscape.png"];
     UIImage *navBarLandscapeImage = [colorSwitcher processImageWithName:@"megaMenu-bar-landscape.png"];
     [[UINavigationBar appearance] setBackgroundImage:navBarLandscapeImage forBarMetrics:UIBarMetricsLandscapePhone];
     
-//    UIImage* barButtonImage = [UIImage tallImageNamed:@"menubar-button.png"];
-//    
-//    [[UIBarButtonItem appearance] setBackgroundImage:barButtonImage forState:UIControlStateNormal
-//                                          barMetrics:UIBarMetricsDefault];
-//    
-//    UIImage* barButtonLandscapeImage = [UIImage tallImageNamed:@"menubar-button@2x.png"];
-//    
-//    [[UIBarButtonItem appearance] setBackgroundImage:barButtonLandscapeImage forState:UIControlStateNormal
-//                                          barMetrics:UIBarMetricsLandscapePhone];
-//    
-////    UIImage *backButton = [UIImage tallImageNamed:@"back.png"];
-//    UIImage *backButton = [UIImage tallImageNamed:@"arrow_left_48.png"];
-//
-//
-//    [[UIBarButtonItem appearance] setBackButtonBackgroundImage:backButton forState:UIControlStateNormal
-//                                                    barMetrics:UIBarMetricsDefault];
-//    
-////    UIImage *backButtonLandscape = [UIImage tallImageNamed:@"back.png"];
-//    UIImage *backButtonLandscape = [UIImage tallImageNamed:@"arrow_left_48.png"];
-//    
-//    [[UIBarButtonItem appearance] setBackButtonBackgroundImage:backButtonLandscape forState:UIControlStateNormal
-//                                                    barMetrics:UIBarMetricsLandscapePhone];
-
-    
-//    UIImage* tabBarBackground = [colorSwitcher processImageWithName:@"tabbar-stretchable.png"];
-//    UIImage* stretchableTabImage =[tabBarBackground resizableImageWithCapInsets:UIEdgeInsetsMake(0, 4, 0, 4)];
-//    UIImage* stretchableTabImage =[[UIImage imageNamed: @"tabbar-stretchable.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-//    [[UITabBar appearance] setBackgroundImage:stretchableTabImage];
-    
     UIImage* tabBarBackground = [colorSwitcher processImageWithName:@"tabbar.png"];    
     [[UITabBar appearance] setBackgroundImage:tabBarBackground];
-    
-//    UIImage* emptyImage = [UIImage imageNamed:@"infoLightButtonImage.png"];
-//    [[UITabBar appearance] setBackgroundImage:emptyImage];
 
     [[UITabBar appearance] setSelectionIndicatorImage:[UIImage tallImageNamed:@"selection-tab.png"]];
-
-
-    
-//    UIImage* segmentedControlBackground = [colorSwitcher processImageWithName:@"tabbar.png"];
-//    UIImage* segmentedControlBackground = [colorSwitcher processImageWithName:@"blue-button.png"];
-//
-//    [[UISegmentedControl appearance] setBackgroundImage:segmentedControlBackground
-//                                forState:UIControlStateNormal
-//                              barMetrics:UIBarMetricsDefault];
     
     UIImage *minImage = [UIImage tallImageNamed:@"slider-fill.png"];
     UIImage *maxImage = [UIImage tallImageNamed:@"slider-trackGray.png"];
