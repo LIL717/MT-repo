@@ -15,6 +15,8 @@
 @property (nonatomic, strong) IBOutlet UILabel *durationLabel;
 //@property (strong, nonatomic) IBOutlet UILabel *BPM;
 @property (strong, nonatomic) IBOutlet UIView *infoBackground;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *scrollViewToCellConstraint;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *centerXAlignmentConstraint;
 
 
 

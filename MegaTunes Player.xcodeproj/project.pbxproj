@@ -97,6 +97,10 @@
 		709F239116C3525400521158 /* bass_fx.txt in Resources */ = {isa = PBXBuildFile; fileRef = 709F238E16C3525400521158 /* bass_fx.txt */; };
 		709F239216C3525400521158 /* libbass_fx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 709F238F16C3525400521158 /* libbass_fx.a */; };
 		709FA3861658B3520082DAE5 /* SongImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 709FA3851658B3520082DAE5 /* SongImageCell.m */; };
+		70A0493016F6814700F70A90 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 70A0491D16F6814700F70A90 /* LICENSE.txt */; };
+		70A0493116F6814700F70A90 /* OBSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 70A0492016F6814700F70A90 /* OBSlider.m */; };
+		70A0493716F6814700F70A90 /* README.mdown in Resources */ = {isa = PBXBuildFile; fileRef = 70A0492E16F6814700F70A90 /* README.mdown */; };
+		70A0493E16F692EA00F70A90 /* NSDateFormatter+Duration.m in Sources */ = {isa = PBXBuildFile; fileRef = 70A0493D16F692EA00F70A90 /* NSDateFormatter+Duration.m */; };
 		70A13D861631AD8700244866 /* MediaGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70A13D851631AD8700244866 /* MediaGroupViewController.m */; };
 		70A13D8E1631B40300244866 /* MediaGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 70A13D8D1631B40300244866 /* MediaGroup.m */; };
 		70A13D911631BCC100244866 /* MediaGroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 70A13D901631BCC000244866 /* MediaGroupCell.m */; };
@@ -308,6 +312,12 @@
 		709F238F16C3525400521158 /* libbass_fx.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libbass_fx.a; sourceTree = "<group>"; };
 		709FA3841658B3520082DAE5 /* SongImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SongImageCell.h; sourceTree = "<group>"; };
 		709FA3851658B3520082DAE5 /* SongImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SongImageCell.m; sourceTree = "<group>"; };
+		70A0491D16F6814700F70A90 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
+		70A0491F16F6814700F70A90 /* OBSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSlider.h; sourceTree = "<group>"; };
+		70A0492016F6814700F70A90 /* OBSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBSlider.m; sourceTree = "<group>"; };
+		70A0492E16F6814700F70A90 /* README.mdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.mdown; sourceTree = "<group>"; };
+		70A0493C16F692EA00F70A90 /* NSDateFormatter+Duration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDateFormatter+Duration.h"; path = "../../../../podradio/sample-project/podradio/Classes/OBSlider-master/NSDateFormatter+Duration.h"; sourceTree = "<group>"; };
+		70A0493D16F692EA00F70A90 /* NSDateFormatter+Duration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDateFormatter+Duration.m"; path = "../../../../podradio/sample-project/podradio/Classes/OBSlider-master/NSDateFormatter+Duration.m"; sourceTree = "<group>"; };
 		70A13D841631AD8700244866 /* MediaGroupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaGroupViewController.h; sourceTree = "<group>"; };
 		70A13D851631AD8700244866 /* MediaGroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaGroupViewController.m; sourceTree = "<group>"; };
 		70A13D8C1631B40300244866 /* MediaGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaGroup.h; sourceTree = "<group>"; };
@@ -476,7 +486,6 @@
 			children = (
 				707797F716EFF4A90026FD56 /* libz.dylib */,
 				707797EF16EFF3B80026FD56 /* TestFlightSDK1-2 */,
-				70A13DF9163DD02100244866 /* bass24-iphone */,
 				7060523114F88D43001A1CDB /* MegaTunes Player */,
 				7060524F14F88D44001A1CDB /* MegaTunes PlayerTests */,
 				7060522A14F88D43001A1CDB /* Frameworks */,
@@ -573,6 +582,7 @@
 		70974B241630698200A33B7D /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				70A0491A16F6810000F70A90 /* 3rd Party */,
 				70974B251630698200A33B7D /* AppDelegate */,
 				70974B291630698200A33B7D /* Categories */,
 				70974B2D1630698200A33B7D /* ColorSwitcher */,
@@ -625,9 +635,49 @@
 			path = "bass_fx24-iphone";
 			sourceTree = "<group>";
 		};
+		70A0491A16F6810000F70A90 /* 3rd Party */ = {
+			isa = PBXGroup;
+			children = (
+				70A0491B16F6814700F70A90 /* OBSlider-master */,
+				70A0493B16F6822E00F70A90 /* AutoScrollLabel */,
+				70A13DF9163DD02100244866 /* bass24-iphone */,
+			);
+			name = "3rd Party";
+			sourceTree = "<group>";
+		};
+		70A0491B16F6814700F70A90 /* OBSlider-master */ = {
+			isa = PBXGroup;
+			children = (
+				70A0491D16F6814700F70A90 /* LICENSE.txt */,
+				70A0491E16F6814700F70A90 /* OBSlider */,
+				70A0492E16F6814700F70A90 /* README.mdown */,
+			);
+			path = "OBSlider-master";
+			sourceTree = "<group>";
+		};
+		70A0491E16F6814700F70A90 /* OBSlider */ = {
+			isa = PBXGroup;
+			children = (
+				70A0491F16F6814700F70A90 /* OBSlider.h */,
+				70A0492016F6814700F70A90 /* OBSlider.m */,
+			);
+			path = OBSlider;
+			sourceTree = "<group>";
+		};
+		70A0493B16F6822E00F70A90 /* AutoScrollLabel */ = {
+			isa = PBXGroup;
+			children = (
+				707862BA1629F33900871260 /* AutoScrollLabel.h */,
+				707862BB1629F33A00871260 /* AutoScrollLabel.m */,
+			);
+			name = AutoScrollLabel;
+			sourceTree = "<group>";
+		};
 		70A13D9216320F6500244866 /* Unused */ = {
 			isa = PBXGroup;
 			children = (
+				70A0493C16F692EA00F70A90 /* NSDateFormatter+Duration.h */,
+				70A0493D16F692EA00F70A90 /* NSDateFormatter+Duration.m */,
 				700511FE16AF2A9E0085B6F1 /* TemporaryViewController.h */,
 				700511FF16AF2A9E0085B6F1 /* TemporaryViewController.m */,
 				703E3E9F16811FC7004C152C /* UINavigationBar+AdditionalFunctionalities.h */,
@@ -662,7 +712,8 @@
 				70A13E06163DD02200244866 /* libbass.a */,
 				70A13E07163DD02200244866 /* mp3-free */,
 			);
-			path = "bass24-iphone";
+			name = "bass24-iphone";
+			path = "../../../../Development Sandbox/MegaTunesPlayer/MegaTunes Player/bass24-iphone";
 			sourceTree = "<group>";
 		};
 		70A13DFA163DD02200244866 /* bassenc */ = {
@@ -743,8 +794,6 @@
 				70515C28160F986E00D96335 /* SongCell.m */,
 				70515C1E160CBE7600D96335 /* Song.h */,
 				70A13DD816334B6D00244866 /* Song.m */,
-				707862BA1629F33900871260 /* AutoScrollLabel.h */,
-				707862BB1629F33A00871260 /* AutoScrollLabel.m */,
 				7049302916E82101005A66C4 /* SongInfoCell.h */,
 				7049302A16E82101005A66C4 /* SongInfoCell.m */,
 				7049301416E808E1005A66C4 /* DTCustomColoredAccessory.h */,
@@ -1049,6 +1098,8 @@
 				70AB1ECE16E982C50019B789 /* black-button@2x copy.png in Resources */,
 				707797F516EFF3B90026FD56 /* README.md in Resources */,
 				707797F616EFF3B90026FD56 /* release_notes.md in Resources */,
+				70A0493016F6814700F70A90 /* LICENSE.txt in Resources */,
+				70A0493716F6814700F70A90 /* README.mdown in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1121,6 +1172,8 @@
 				7049301C16E80A0D005A66C4 /* CollectionViewController.m in Sources */,
 				7049302B16E82101005A66C4 /* SongInfoCell.m in Sources */,
 				70AA4D8516F27948002E9EE5 /* UINavigationController+MaskAll.m in Sources */,
+				70A0493116F6814700F70A90 /* OBSlider.m in Sources */,
+				70A0493E16F692EA00F70A90 /* NSDateFormatter+Duration.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

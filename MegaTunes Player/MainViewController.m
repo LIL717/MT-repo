@@ -16,9 +16,8 @@
 #import "InfoTabBarController.h"
 #import "MediaItemUserData.h"
 #import "UserInfoViewcontroller.h"
-
-
-
+#import "OBSlider.h"
+//#import "NSDateFormatter+Duration.h"
 
 #pragma mark Audio session callbacks_______________________
 
@@ -120,6 +119,8 @@ void audioRouteChangeListenerCallback (
 @synthesize savedNowPlaying;             //for some reason a new song calls the handle_NowPlayingItemChanged: method twice, so this is used to save and compare
 @synthesize userInfoViewController;
 //these lines came from player view controller
+@synthesize userIsScrubbing;
+@synthesize hasFinishedMoving;
 
 @synthesize currentQueue;
 @synthesize elapsedTimeLabel;
@@ -132,7 +133,9 @@ void audioRouteChangeListenerCallback (
 @synthesize nextSongScrollView;
 @synthesize nextSongLabel;
 @synthesize collectionItem;
+@synthesize rewindButton;
 @synthesize playPauseButton;
+@synthesize forwardButton;
 @synthesize repeatButton;
 @synthesize shuffleButton;
 
@@ -152,6 +155,12 @@ void audioRouteChangeListenerCallback (
 
 @synthesize nextSongLabelWidthConstraint;
 @synthesize nowPlayingInfoButton;
+
+@synthesize currentPlaybackPosition;
+
+float savedHandleValue;
+MPMusicPlaybackState savedPlaybackState;
+
 
 #pragma mark ViewDidLoad________________________________
 
@@ -346,7 +355,7 @@ void audioRouteChangeListenerCallback (
 //    LogMethod();
     [super viewWillAppear: animated];
     
-    self.playbackTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
+    self.playbackTimer = [NSTimer scheduledTimerWithTimeInterval:0.5
                                                           target:self
                                                         selector:@selector(updateTime)
                                                         userInfo:nil
@@ -377,6 +386,7 @@ void audioRouteChangeListenerCallback (
 // When the now-playing item changes, update the now-playing label and the next label.
 - (void) handle_NowPlayingItemChanged: (id) notification {
     LogMethod();
+
 // need to check if this method has already been executed because sometimes the notification gets sent twice for the same nowPlaying item, this workaround seems to solve the problem (check if the nowPlayingItem is the same as previous one)
     if (self.savedNowPlaying != [musicPlayer nowPlayingItem]) {
 //        NSLog (@"actually handling it");
@@ -439,9 +449,14 @@ void audioRouteChangeListenerCallback (
     NSUInteger nextPlayingIndex = [musicPlayer indexOfNowPlayingItem] + 1;
     
     if (nextPlayingIndex >= self.userMediaItemCollection.count) {
-        self.nextSongLabel.text = [NSString stringWithFormat: @""];
-        self.nextLabel.text = [NSString stringWithFormat:@""];
+//        self.nextSongLabel.text = [NSString stringWithFormat: @""];
+//        self.nextLabel.text = [NSString stringWithFormat:@""];
+        self.nextSongScrollView.hidden = YES;
+        self.nextSongLabel.hidden = YES;
     } else {
+        self.nextSongScrollView.hidden = NO;
+        self.nextSongLabel.hidden = NO;
+        [self.nextSongLabel setUserInteractionEnabled:YES];
         long nextDuration = [[[[self.userMediaItemCollection items] objectAtIndex: nextPlayingIndex] valueForProperty:MPMediaItemPropertyPlaybackDuration] floatValue];
         NSString *formattedNextDuration = [NSString stringWithFormat:@"%2lu:%02lu",nextDuration/60,nextDuration -(nextDuration/60)*60];
         
@@ -569,13 +584,15 @@ void audioRouteChangeListenerCallback (
 - (void) updateTime
 {
     //   LogMethod();
+    
     long playbackSeconds = musicPlayer.currentPlaybackTime;
     long songDuration = [[self.musicPlayer.nowPlayingItem valueForProperty:MPMediaItemPropertyPlaybackDuration] floatValue];
     long songRemainingSeconds = songDuration - playbackSeconds;
-    
+
     //if the currently playing song has been deleted during a sync then stop playing and pop to rootViewController
     if (songDuration == 0 && self.iPodLibraryChanged) {
         [musicPlayer stop];
+        [self.playbackTimer invalidate];
         [self.navigationController popToRootViewControllerAnimated:YES];
         NSLog (@"BOOM");
         return;
@@ -583,7 +600,7 @@ void audioRouteChangeListenerCallback (
     
     NSString *elapsed = [NSString stringWithFormat:@"%02lu:%02lu",playbackSeconds/60,playbackSeconds-(playbackSeconds/60)*60];
     NSString *songRemaining = [NSString stringWithFormat:@"%02lu:%02lu",songRemainingSeconds/60,songRemainingSeconds-(songRemainingSeconds/60)*60];
-    
+
     //Use NSDateFormatter to get seconds and minutes from the time string:
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -596,8 +613,10 @@ void audioRouteChangeListenerCallback (
     self.remainingTimeLabel.text = [NSString stringWithFormat:@"-%@",[formatter stringFromDate:songRemainingTime]];
     self.remainingTimeLabel.textColor = [UIColor whiteColor];
     
-    [self positionSlider];
-
+    if (!self.userIsScrubbing) {
+        [self positionSlider];
+    }
+    
     self.navigationItem.rightBarButtonItem = nil;
     // only show the collection remaining if the setting is on and shuffle is off and repeat is off
     if (showPlaylistRemaining) {
@@ -619,7 +638,15 @@ void audioRouteChangeListenerCallback (
     float totalTime = [duration floatValue];
     self.progressSlider.maximumValue = totalTime;
     //note to self: setting of value must be after setting of minimum and maximum to show correctly on viewdidload
-    self.progressSlider.value = musicPlayer.currentPlaybackTime;
+    if (!self.userIsScrubbing) {
+        if (self.hasFinishedMoving) {
+            self.progressSlider.value = savedHandleValue;
+            self.hasFinishedMoving = NO;     //set up for next scrubbing session
+        } else {
+        self.progressSlider.value = musicPlayer.currentPlaybackTime;
+        }
+    }
+
 //    NSLog (@" currentPlaybackTime is %f", musicPlayer.currentPlaybackTime);
 }
 
@@ -778,11 +805,54 @@ void audioRouteChangeListenerCallback (
 }
 #pragma mark Music control________________________________
 
-- (IBAction)moveSlider:(id)sender {
+- (IBAction)handleScrub:(id)sender {
     //    LogMethod();
-    [musicPlayer setCurrentPlaybackTime: [self.progressSlider value]];
+//    //if scrub has gone to the end don't update the currentPlaybackTime to the full duration until the touch has ended so the nowPlayingSongChanged is not triggered
+//    if ([self.progressSlider value] >= [[self.musicPlayer.nowPlayingItem valueForProperty:MPMediaItemPropertyPlaybackDuration] floatValue]) {
+//        [musicPlayer setCurrentPlaybackTime: ([self.progressSlider value] - 0.5)];
+//    } else {
+        [musicPlayer setCurrentPlaybackTime: [self.progressSlider value]];
+//    }
+    [self updateTime];
 }
 
+- (IBAction)handleScrubberTouchDown:(id)sender {
+    self.userIsScrubbing = YES;
+    self.hasFinishedMoving = NO;
+    [self setScrubbingUI: YES];
+    MPMusicPlaybackState playbackState = [musicPlayer playbackState];
+    savedPlaybackState = playbackState;
+    if (playbackState == MPMusicPlaybackStatePlaying) {
+		[musicPlayer pause];
+	}
+}
+
+- (IBAction)handleScrubberTouchUp:(id)sender {
+    self.userIsScrubbing = NO;
+    self.hasFinishedMoving = YES;
+    savedHandleValue = self.progressSlider.value;
+    [self setScrubbingUI: NO];
+    if (savedPlaybackState == MPMusicPlaybackStatePlaying) {
+        [musicPlayer play];
+    }
+}
+
+/*
+ * Updates the UI according to the current scrubbing state given.
+ */
+-(void)setScrubbingUI:(BOOL)scrubbingState {
+    float alpha = ( scrubbingState ? .5 : 0 );
+    [UIView animateWithDuration:0.25 animations:^{
+        self.repeatButton.alpha = 1-alpha;
+        self.shuffleButton.alpha = 1-alpha;
+        self.playPauseButton.alpha = 1-alpha;
+        self.rewindButton.alpha = 1-alpha;
+        self.forwardButton.alpha = 1-alpha;
+        self.volumeView.alpha = 1 - alpha;
+        self.nextSongLabel.alpha = 1 - alpha;
+        self.nextLabel.alpha = 1 - alpha;
+    }];
+}
 - (IBAction)skipBack:(id)sender {
     if ([musicPlayer currentPlaybackTime] > 5.0) {
         [musicPlayer skipToBeginning];
@@ -933,34 +1003,36 @@ void audioRouteChangeListenerCallback (
     //    NSLog (@"size of nextSongLabel is %f, %f", self.nextSongLabel.frame.size.width, self.nextSongLabel.frame.size.height);
     //    NSLog (@"size of nextSongScrollView is %f, %f", self.nextSongScrollView.frame.size.width, self.nextSongScrollView.frame.size.height);
     
+    //play is paused during scrubbing to prevent skipping to new song, so do not change the UI
+    if (!userIsScrubbing) {
     
-	MPMusicPlaybackState playbackState = [musicPlayer playbackState];
-	
-	if (playbackState == MPMusicPlaybackStatePaused) {
+        MPMusicPlaybackState playbackState = [musicPlayer playbackState];
         
-        [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
-		
-	} else if (playbackState == MPMusicPlaybackStatePlaying) {
-        
-        [playPauseButton setImage: [UIImage imageNamed:@"bigpause.png"] forState:UIControlStateNormal];
-        
-	} else if (playbackState == MPMusicPlaybackStateStopped) {
-                
-        [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
-        
-        if (!playNew) {
-            // Even though stopped, invoking 'stop' ensures that the music player will play
-            //		its queue from the start. - !except if first time thru and state is stopped
-            [musicPlayer stop];
-        
-            if (iPodLibraryChanged) {
-                [self.navigationController popToRootViewControllerAnimated:YES];
-            } else {
-                [self.navigationController popViewControllerAnimated:YES];
+        if (playbackState == MPMusicPlaybackStatePaused) {
+            
+            [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
+            
+        } else if (playbackState == MPMusicPlaybackStatePlaying) {
+            
+            [playPauseButton setImage: [UIImage imageNamed:@"bigpause.png"] forState:UIControlStateNormal];
+            
+        } else if (playbackState == MPMusicPlaybackStateStopped) {
+                    
+            [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
+            
+            if (!playNew) {
+                // Even though stopped, invoking 'stop' ensures that the music player will play
+                //		its queue from the start. - !except if first time thru and state is stopped
+                [musicPlayer stop];
+            
+                if (iPodLibraryChanged) {
+                    [self.navigationController popToRootViewControllerAnimated:YES];
+                } else {
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
             }
         }
-	}
-    
+    }
 }
 
 - (void) handle_iPodLibraryChanged: (id) changeNotification {
@@ -1033,9 +1105,8 @@ void audioRouteChangeListenerCallback (
 {
     LogMethod();
 
-	[self dismissViewControllerAnimated:YES completion:nil];
+	[controller dismissViewControllerAnimated:YES completion:nil];
     [self willAnimateRotationToInterfaceOrientation: self.interfaceOrientation duration: 1];
-
 }
 //#pragma mark - TextMagnifierViewControllerDelegate
 
@@ -1055,11 +1126,6 @@ void audioRouteChangeListenerCallback (
 						   selector: @selector (handle_PlaybackStateChanged:)
 							   name: MPMusicPlayerControllerPlaybackStateDidChangeNotification
 							 object: musicPlayer];
-//    //check if playback was stopped while in info
-//    MPMusicPlaybackState playbackState = [musicPlayer playbackState];
-//    if (playbackState == MPMusicPlaybackStateStopped) {
-//        [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
-//	}
     
 }
 - (void)viewWillDisappear:(BOOL)animated {

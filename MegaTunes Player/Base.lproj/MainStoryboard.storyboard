@@ -9,23 +9,20 @@
             <objects>
                 <viewController id="mNb-57-5Xm" customClass="SongViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="55" sectionHeaderHeight="22" sectionFooterHeight="22" id="EmK-pd-wau">
-                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="64" width="480" height="256"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                         <color key="separatorColor" white="0.80000000000000004" alpha="1" colorSpace="deviceWhite"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" restorationIdentifier="SongCell" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="SongCell" rowHeight="55" id="fy5-n4-fQP" userLabel="cell" customClass="SongCell">
-                                <rect key="frame" x="0.0" y="22" width="320" height="55"/>
+                                <rect key="frame" x="0.0" y="22" width="480" height="55"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="54"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="480" height="54"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="list-background.png" translatesAutoresizingMaskIntoConstraints="NO" id="7eR-Mq-JMU" userLabel="bkgImage">
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="480" id="gNE-aM-mUl"/>
-                                            </constraints>
-                                        </imageView>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="list-background.png" translatesAutoresizingMaskIntoConstraints="NO" id="7eR-Mq-JMU" userLabel="bkgImage"/>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2sQ-Rj-GH3" userLabel="nowPlayingIndicator">
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="20" type="user" id="M4D-Pr-Xbw"/>
@@ -41,24 +38,19 @@
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="e09-6C-UeW" firstAttribute="trailing" secondItem="EZG-Q9-yHA" secondAttribute="trailing" type="default" id="1nm-kR-Rvu"/>
-                                                <constraint firstItem="e09-6C-UeW" firstAttribute="bottom" secondItem="EZG-Q9-yHA" secondAttribute="bottom" type="default" id="2qd-pR-PJn"/>
-                                                <constraint firstItem="e09-6C-UeW" firstAttribute="centerY" secondItem="EZG-Q9-yHA" secondAttribute="centerY" type="default" id="B7b-iu-0mH"/>
-                                                <constraint firstItem="SVb-KX-c1T" firstAttribute="bottom" secondItem="EZG-Q9-yHA" secondAttribute="bottom" type="default" id="CZf-t8-c5Z"/>
-                                                <constraint firstItem="SVb-KX-c1T" firstAttribute="leading" secondItem="EZG-Q9-yHA" secondAttribute="leading" type="user" id="LF9-pX-iuO"/>
-                                                <constraint firstItem="e09-6C-UeW" firstAttribute="leading" secondItem="EZG-Q9-yHA" secondAttribute="leading" type="default" id="N8v-gj-R1K"/>
-                                                <constraint firstItem="SVb-KX-c1T" firstAttribute="trailing" secondItem="EZG-Q9-yHA" secondAttribute="trailing" type="default" id="QiD-ne-kNP"/>
-                                                <constraint firstItem="SVb-KX-c1T" firstAttribute="centerX" secondItem="EZG-Q9-yHA" secondAttribute="centerX" priority="250" type="user" id="Ti6-Er-ber"/>
-                                                <constraint firstItem="e09-6C-UeW" firstAttribute="centerX" secondItem="EZG-Q9-yHA" secondAttribute="centerX" priority="250" type="user" id="bIw-qp-UOZ"/>
-                                                <constraint firstItem="e09-6C-UeW" firstAttribute="top" secondItem="EZG-Q9-yHA" secondAttribute="top" type="default" id="gai-w9-krY"/>
-                                                <constraint firstItem="SVb-KX-c1T" firstAttribute="top" secondItem="EZG-Q9-yHA" secondAttribute="top" type="default" id="i0k-14-8j5"/>
-                                                <constraint firstAttribute="width" priority="500" constant="312" type="user" id="lYB-l8-P8z"/>
+                                                <constraint firstItem="SVb-KX-c1T" firstAttribute="centerX" secondItem="EZG-Q9-yHA" secondAttribute="centerX" type="user" id="6hf-wx-Qtm"/>
+                                                <constraint firstAttribute="centerY" secondItem="e09-6C-UeW" secondAttribute="centerY" type="user" id="8y9-8S-J80"/>
+                                                <constraint firstItem="e09-6C-UeW" firstAttribute="leading" secondItem="EZG-Q9-yHA" secondAttribute="leading" type="user" id="JMZ-KI-x0O"/>
+                                                <constraint firstItem="SVb-KX-c1T" firstAttribute="leading" secondItem="EZG-Q9-yHA" secondAttribute="leading" type="user" id="NRb-fg-poR"/>
+                                                <constraint firstItem="e09-6C-UeW" firstAttribute="trailing" secondItem="EZG-Q9-yHA" secondAttribute="trailing" type="default" id="YvB-xp-0Jz"/>
+                                                <constraint firstItem="SVb-KX-c1T" firstAttribute="centerY" secondItem="EZG-Q9-yHA" secondAttribute="centerY" type="user" id="gTm-lf-BiR"/>
+                                                <constraint firstItem="SVb-KX-c1T" firstAttribute="trailing" secondItem="EZG-Q9-yHA" secondAttribute="trailing" type="default" id="hw9-Kv-UJi"/>
+                                                <constraint firstItem="SVb-KX-c1T" firstAttribute="top" secondItem="EZG-Q9-yHA" secondAttribute="top" type="user" id="i0k-14-8j5"/>
+                                                <constraint firstItem="e09-6C-UeW" firstAttribute="bottom" secondItem="EZG-Q9-yHA" secondAttribute="bottom" type="default" id="jD6-rA-0cz"/>
+                                                <constraint firstItem="e09-6C-UeW" firstAttribute="top" secondItem="EZG-Q9-yHA" secondAttribute="top" type="default" id="oT0-oN-dpz"/>
                                             </constraints>
                                         </scrollView>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="0:00" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Je-hu-yhg" userLabel="durationLabel">
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="98" type="user" id="dhZ-20-hwF"/>
-                                            </constraints>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="00:00" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Je-hu-yhg" userLabel="durationLabel">
                                             <fontDescription key="fontDescription" type="system" pointSize="44"/>
                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                             <color key="highlightedColor" red="0.070588238540000001" green="0.1176470667" blue="1" alpha="1" colorSpace="deviceRGB"/>
@@ -67,26 +59,28 @@
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
                                 <constraints>
+                                    <constraint firstItem="EZG-Q9-yHA" firstAttribute="top" secondItem="fy5-n4-fQP" secondAttribute="top" type="user" id="38W-ez-D1I"/>
                                     <constraint firstItem="EZG-Q9-yHA" firstAttribute="leading" secondItem="2sQ-Rj-GH3" secondAttribute="trailing" constant="-2" type="user" id="7BY-cl-ev9"/>
                                     <constraint firstItem="7eR-Mq-JMU" firstAttribute="top" secondItem="fy5-n4-fQP" secondAttribute="top" type="default" id="A2d-K1-hbw"/>
                                     <constraint firstItem="2sQ-Rj-GH3" firstAttribute="top" secondItem="fy5-n4-fQP" secondAttribute="top" type="user" id="Avz-9Q-W91"/>
-                                    <constraint firstItem="9Je-hu-yhg" firstAttribute="leading" secondItem="EZG-Q9-yHA" secondAttribute="trailing" priority="750" constant="2" type="user" id="BUo-HP-jec"/>
-                                    <constraint firstItem="7eR-Mq-JMU" firstAttribute="leading" secondItem="fy5-n4-fQP" secondAttribute="leading" type="default" id="USS-2c-jB0"/>
+                                    <constraint firstItem="7eR-Mq-JMU" firstAttribute="trailing" secondItem="fy5-n4-fQP" secondAttribute="trailing" type="user" id="ReB-pa-LQG"/>
+                                    <constraint firstItem="7eR-Mq-JMU" firstAttribute="leading" secondItem="fy5-n4-fQP" secondAttribute="leading" type="user" id="USS-2c-jB0"/>
                                     <constraint firstItem="2sQ-Rj-GH3" firstAttribute="leading" secondItem="fy5-n4-fQP" secondAttribute="leading" type="user" id="XGg-kz-y3R"/>
                                     <constraint firstItem="2sQ-Rj-GH3" firstAttribute="bottom" secondItem="fy5-n4-fQP" secondAttribute="bottom" type="default" id="fco-cH-Yni"/>
                                     <constraint firstItem="9Je-hu-yhg" firstAttribute="top" secondItem="fy5-n4-fQP" secondAttribute="top" type="user" id="flt-6T-83S"/>
-                                    <constraint firstItem="9Je-hu-yhg" firstAttribute="leading" secondItem="fy5-n4-fQP" secondAttribute="leading" constant="332" type="user" id="fr5-au-C5A"/>
-                                    <constraint firstItem="EZG-Q9-yHA" firstAttribute="bottom" secondItem="fy5-n4-fQP" secondAttribute="bottom" type="default" id="g4G-kD-yki"/>
-                                    <constraint firstItem="EZG-Q9-yHA" firstAttribute="top" secondItem="fy5-n4-fQP" secondAttribute="top" type="default" id="oEb-gX-Ghr"/>
+                                    <constraint firstItem="EZG-Q9-yHA" firstAttribute="bottom" secondItem="fy5-n4-fQP" secondAttribute="bottom" type="user" id="g4G-kD-yki"/>
                                     <constraint firstItem="9Je-hu-yhg" firstAttribute="bottom" secondItem="fy5-n4-fQP" secondAttribute="bottom" type="default" id="qZC-U1-sVe"/>
                                     <constraint firstItem="7eR-Mq-JMU" firstAttribute="bottom" secondItem="fy5-n4-fQP" secondAttribute="bottom" type="default" id="su2-ir-bd0"/>
-                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="EZG-Q9-yHA" secondAttribute="trailing" constant="55" type="user" id="wBm-tl-FEG"/>
+                                    <constraint firstAttribute="trailing" secondItem="9Je-hu-yhg" secondAttribute="trailing" constant="50" type="user" id="taG-W1-CYd"/>
+                                    <constraint firstAttribute="trailing" secondItem="EZG-Q9-yHA" secondAttribute="trailing" constant="50" type="user" id="xXR-i4-buK"/>
                                 </constraints>
                                 <connections>
+                                    <outlet property="centerXAlignmentConstraint" destination="6hf-wx-Qtm" id="4jd-Hq-isz"/>
                                     <outlet property="durationLabel" destination="9Je-hu-yhg" id="RmS-bV-NaJ"/>
                                     <outlet property="nameLabel" destination="e09-6C-UeW" id="3lF-FX-uw6"/>
                                     <outlet property="playingIndicator" destination="2sQ-Rj-GH3" id="O29-nE-7af"/>
                                     <outlet property="scrollView" destination="EZG-Q9-yHA" id="YrC-fc-SOR"/>
+                                    <outlet property="scrollViewToCellConstraint" destination="xXR-i4-buK" id="ZfA-Eh-KFV"/>
                                     <segue destination="SKu-HW-GrJ" kind="push" identifier="PlaySong" id="9o8-eN-Pkt"/>
                                 </connections>
                             </tableViewCell>
@@ -97,7 +91,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="n9y-KG-rl2"/>
-                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <connections>
                         <outlet property="songTableView" destination="EmK-pd-wau" id="snT-SN-1Np"/>
                         <segue destination="SKu-HW-GrJ" kind="push" identifier="ViewNowPlaying" id="oc8-HG-QrB"/>
@@ -106,7 +100,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RDZ-Zm-HIO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="669" y="-758"/>
+            <point key="canvasLocation" x="562" y="-732"/>
         </scene>
         <!--Main View Controller - Now Playing-->
         <scene sceneID="PLo-C0-SNg">
@@ -143,13 +137,16 @@
                                     <outletCollection property="gestureRecognizers" destination="ruF-Pi-kTB" appends="YES" id="HiP-1l-nCG"/>
                                 </connections>
                             </label>
-                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="vBs-Pg-YLN">
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1000" translatesAutoresizingMaskIntoConstraints="NO" id="vBs-Pg-YLN" customClass="OBSlider">
                                 <constraints>
                                     <constraint firstAttribute="width" priority="500" constant="190" type="user" id="OUB-yb-lG0"/>
                                     <constraint firstAttribute="height" constant="23" type="user" id="rGt-3F-w2X"/>
                                 </constraints>
                                 <connections>
-                                    <action selector="moveSlider:" destination="SKu-HW-GrJ" eventType="valueChanged" id="uJ3-HH-lua"/>
+                                    <action selector="handleScrub:" destination="SKu-HW-GrJ" eventType="valueChanged" id="WW8-Zn-cHw"/>
+                                    <action selector="handleScrubberTouchDown:" destination="SKu-HW-GrJ" eventType="touchDown" id="Q5f-9L-yFG"/>
+                                    <action selector="handleScrubberTouchUp:" destination="SKu-HW-GrJ" eventType="touchUpOutside" id="c9w-sR-Uip"/>
+                                    <action selector="handleScrubberTouchUp:" destination="SKu-HW-GrJ" eventType="touchUpInside" id="iAh-SQ-xkS"/>
                                 </connections>
                             </slider>
                             <label opaque="NO" clipsSubviews="YES" contentMode="left" text="-00:00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r00-yo-I0n">
@@ -159,7 +156,7 @@
                                 <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstAttribute="height" priority="635" constant="43" type="user" id="LuG-Ou-2EX"/>
-                                    <constraint firstAttribute="width" constant="126" type="user" id="dyJ-Vm-WRD"/>
+                                    <constraint firstAttribute="width" constant="128" type="user" id="dyJ-Vm-WRD"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="44"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -328,7 +325,7 @@
                             <constraint firstItem="hvR-vh-6Bp" firstAttribute="top" secondItem="AEk-F1-SJe" secondAttribute="top" type="user" id="dX5-01-Ej3"/>
                             <constraint firstItem="vBs-Pg-YLN" firstAttribute="top" secondItem="1ht-Bf-15S" secondAttribute="top" constant="86" id="eZq-1c-Mzp"/>
                             <constraint firstItem="vBs-Pg-YLN" firstAttribute="leading" secondItem="1ht-Bf-15S" secondAttribute="leading" constant="20" symbolic="YES" type="user" id="glp-ve-JGO"/>
-                            <constraint firstAttribute="trailing" secondItem="r00-yo-I0n" secondAttribute="trailing" constant="10" type="user" id="guC-xg-p6J"/>
+                            <constraint firstAttribute="trailing" secondItem="r00-yo-I0n" secondAttribute="trailing" constant="9" type="user" id="guC-xg-p6J"/>
                             <constraint firstItem="U4I-PN-hea" firstAttribute="width" secondItem="Xek-mb-ENQ" secondAttribute="width" type="user" id="hBV-aj-tg5"/>
                             <constraint firstItem="r00-yo-I0n" firstAttribute="top" secondItem="jp7-Ow-fVH" secondAttribute="top" type="user" id="hci-fv-lQ9"/>
                             <constraint firstItem="EYp-S6-Fep" firstAttribute="centerY" secondItem="Xek-mb-ENQ" secondAttribute="centerY" type="user" id="i3I-Yo-VAO"/>
@@ -355,6 +352,7 @@
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <connections>
                         <outlet property="elapsedTimeLabel" destination="jp7-Ow-fVH" id="XRO-tm-sfx"/>
+                        <outlet property="forwardButton" destination="Xek-mb-ENQ" id="dtw-nc-89v"/>
                         <outlet property="initialNowPlayingLabel" destination="AEk-F1-SJe" id="jG8-SL-2IW"/>
                         <outlet property="leadingSpaceToSliderConstraint" destination="glp-ve-JGO" id="2Ke-u6-i8s"/>
                         <outlet property="nextLabel" destination="pNh-na-wBJ" id="miO-kU-qIM"/>
@@ -368,6 +366,7 @@
                         <outlet property="progressSlider" destination="vBs-Pg-YLN" id="r3f-gC-8qq"/>
                         <outlet property="remainingTimeLabel" destination="r00-yo-I0n" id="unW-43-0PV"/>
                         <outlet property="repeatButton" destination="wwo-eb-cjv" id="SM2-5Y-kU4"/>
+                        <outlet property="rewindButton" destination="EYp-S6-Fep" id="Evi-ip-XTu"/>
                         <outlet property="shuffleButton" destination="YF1-6P-sPE" id="81D-xE-uol"/>
                         <outlet property="topSpaceToPlayButton" destination="kjp-Jt-13J" id="Zki-cz-0z3"/>
                         <outlet property="trailingSpaceFromSliderConstraint" destination="BW5-tL-gmS" id="dYf-2E-As2"/>
@@ -457,14 +456,16 @@
                         <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceHorizontal="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="msy-OP-RHE"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceHorizontal="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="msy-OP-RHE">
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="msy-OP-RHE" firstAttribute="top" secondItem="wjZ-BW-RcM" secondAttribute="top" type="user" id="1Lb-Ap-pHM"/>
                             <constraint firstItem="msy-OP-RHE" firstAttribute="leading" secondItem="wjZ-BW-RcM" secondAttribute="leading" type="user" id="63M-dt-h56"/>
-                            <constraint firstAttribute="centerX" secondItem="msy-OP-RHE" secondAttribute="centerX" type="user" id="ez7-fu-xWM"/>
+                            <constraint firstItem="msy-OP-RHE" firstAttribute="trailing" secondItem="wjZ-BW-RcM" secondAttribute="trailing" type="user" id="ai3-WF-iNv"/>
                             <constraint firstItem="msy-OP-RHE" firstAttribute="bottom" secondItem="wjZ-BW-RcM" secondAttribute="bottom" type="user" id="hJr-xI-oMT"/>
                         </constraints>
                         <connections>
@@ -710,11 +711,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="460" height="54"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="list-background.png" translatesAutoresizingMaskIntoConstraints="NO" id="VCT-gA-fzU" userLabel="bkgImage">
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="480" id="MkO-so-QCo"/>
-                                            </constraints>
-                                        </imageView>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="list-background.png" translatesAutoresizingMaskIntoConstraints="NO" id="VCT-gA-fzU" userLabel="bkgImage"/>
                                         <scrollView clipsSubviews="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BEu-UQ-vTB" userLabel="scrollView" customClass="InCellScrollView">
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="list-background.png" translatesAutoresizingMaskIntoConstraints="NO" id="An2-Fa-iiH"/>
@@ -726,17 +723,17 @@
                                             </subviews>
                                             <gestureRecognizers/>
                                             <constraints>
-                                                <constraint firstAttribute="width" priority="500" constant="312" type="user" id="0dX-7w-oRJ"/>
-                                                <constraint firstItem="An2-Fa-iiH" firstAttribute="trailing" secondItem="Ka0-Cb-Mfz" secondAttribute="trailing" type="default" id="7yP-bE-lkQ"/>
-                                                <constraint firstItem="Ka0-Cb-Mfz" firstAttribute="leading" secondItem="BEu-UQ-vTB" secondAttribute="leading" type="default" id="815-9K-Dca"/>
+                                                <constraint firstItem="An2-Fa-iiH" firstAttribute="centerX" secondItem="BEu-UQ-vTB" secondAttribute="centerX" type="user" id="6ic-Pe-rfj"/>
+                                                <constraint firstItem="Ka0-Cb-Mfz" firstAttribute="trailing" secondItem="BEu-UQ-vTB" secondAttribute="trailing" type="default" id="EXY-yI-Csc"/>
                                                 <constraint firstAttribute="bottom" secondItem="Ka0-Cb-Mfz" secondAttribute="bottom" type="user" id="End-E9-LTR"/>
-                                                <constraint firstItem="An2-Fa-iiH" firstAttribute="centerY" secondItem="BEu-UQ-vTB" secondAttribute="centerY" type="default" id="GEW-7D-Gy3"/>
-                                                <constraint firstAttribute="height" constant="55" type="user" id="KXU-XW-n1o"/>
-                                                <constraint firstItem="An2-Fa-iiH" firstAttribute="leading" secondItem="BEu-UQ-vTB" secondAttribute="leading" type="default" id="KXl-9R-rDr"/>
+                                                <constraint firstItem="An2-Fa-iiH" firstAttribute="centerY" secondItem="BEu-UQ-vTB" secondAttribute="centerY" type="user" id="GEW-7D-Gy3"/>
+                                                <constraint firstItem="An2-Fa-iiH" firstAttribute="leading" secondItem="BEu-UQ-vTB" secondAttribute="leading" type="user" id="KO7-b2-Yri"/>
                                                 <constraint firstItem="Ka0-Cb-Mfz" firstAttribute="top" secondItem="BEu-UQ-vTB" secondAttribute="top" type="user" id="Lof-uB-SKt"/>
-                                                <constraint firstItem="An2-Fa-iiH" firstAttribute="top" secondItem="BEu-UQ-vTB" secondAttribute="top" type="default" id="ZVW-IO-2kq"/>
-                                                <constraint firstAttribute="trailing" secondItem="An2-Fa-iiH" secondAttribute="trailing" type="user" id="aDK-BV-ENR"/>
-                                                <constraint firstItem="An2-Fa-iiH" firstAttribute="bottom" secondItem="BEu-UQ-vTB" secondAttribute="bottom" type="default" id="zlN-2n-xzH"/>
+                                                <constraint firstItem="Ka0-Cb-Mfz" firstAttribute="leading" secondItem="BEu-UQ-vTB" secondAttribute="leading" type="default" id="RUk-gU-yOE"/>
+                                                <constraint firstItem="An2-Fa-iiH" firstAttribute="trailing" secondItem="BEu-UQ-vTB" secondAttribute="trailing" type="default" id="Z1T-bZ-CaI"/>
+                                                <constraint firstItem="Ka0-Cb-Mfz" firstAttribute="centerY" secondItem="BEu-UQ-vTB" secondAttribute="centerY" type="user" id="Z3n-zn-6nv"/>
+                                                <constraint firstItem="An2-Fa-iiH" firstAttribute="top" secondItem="BEu-UQ-vTB" secondAttribute="top" type="user" id="ZVW-IO-2kq"/>
+                                                <constraint firstItem="An2-Fa-iiH" firstAttribute="bottom" secondItem="BEu-UQ-vTB" secondAttribute="bottom" type="user" id="zlN-2n-xzH"/>
                                             </constraints>
                                         </scrollView>
                                         <label opaque="NO" clipsSubviews="YES" contentMode="left" text="000:00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="22" translatesAutoresizingMaskIntoConstraints="NO" id="jfz-Q5-l6V" userLabel="duration">
@@ -752,21 +749,23 @@
                                 </view>
                                 <constraints>
                                     <constraint firstItem="jfz-Q5-l6V" firstAttribute="top" secondItem="DFq-ZQ-3yg" secondAttribute="top" type="user" id="3da-zu-BOE"/>
+                                    <constraint firstAttribute="trailing" secondItem="BEu-UQ-vTB" secondAttribute="trailing" constant="168" type="user" id="59C-m6-r2f"/>
                                     <constraint firstItem="VCT-gA-fzU" firstAttribute="top" secondItem="DFq-ZQ-3yg" secondAttribute="top" type="default" id="7q2-y9-aQ7"/>
-                                    <constraint firstItem="jfz-Q5-l6V" firstAttribute="leading" secondItem="DFq-ZQ-3yg" secondAttribute="leading" constant="320" type="user" id="HtZ-Qp-Nc0"/>
-                                    <constraint firstItem="VCT-gA-fzU" firstAttribute="leading" secondItem="DFq-ZQ-3yg" secondAttribute="leading" type="default" id="QWu-Ih-HGR"/>
+                                    <constraint firstItem="VCT-gA-fzU" firstAttribute="leading" secondItem="DFq-ZQ-3yg" secondAttribute="leading" type="user" id="QWu-Ih-HGR"/>
                                     <constraint firstItem="VCT-gA-fzU" firstAttribute="bottom" secondItem="DFq-ZQ-3yg" secondAttribute="bottom" type="default" id="YkK-CC-01Q"/>
                                     <constraint firstItem="BEu-UQ-vTB" firstAttribute="leading" secondItem="DFq-ZQ-3yg" secondAttribute="leading" type="user" id="Yo9-zM-iV7"/>
+                                    <constraint firstItem="VCT-gA-fzU" firstAttribute="trailing" secondItem="DFq-ZQ-3yg" secondAttribute="trailing" type="user" id="j4m-r7-qRl"/>
                                     <constraint firstAttribute="bottom" secondItem="BEu-UQ-vTB" secondAttribute="bottom" type="user" id="pT9-MN-89o"/>
                                     <constraint firstItem="jfz-Q5-l6V" firstAttribute="bottom" secondItem="DFq-ZQ-3yg" secondAttribute="bottom" type="default" id="qDx-rL-B69"/>
-                                    <constraint firstItem="jfz-Q5-l6V" firstAttribute="leading" secondItem="BEu-UQ-vTB" secondAttribute="trailing" priority="750" constant="8" symbolic="YES" type="user" id="rqp-au-Vwm"/>
-                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="BEu-UQ-vTB" secondAttribute="trailing" constant="27" type="user" id="voA-Ga-LRD"/>
+                                    <constraint firstAttribute="trailing" secondItem="jfz-Q5-l6V" secondAttribute="trailing" constant="30" type="user" id="qs2-kx-eTI"/>
                                     <constraint firstItem="BEu-UQ-vTB" firstAttribute="top" secondItem="DFq-ZQ-3yg" secondAttribute="top" type="user" id="wgG-IE-HJY"/>
                                 </constraints>
                                 <connections>
+                                    <outlet property="centerXInScrollView" destination="6ic-Pe-rfj" id="baf-DM-fwq"/>
                                     <outlet property="durationLabel" destination="jfz-Q5-l6V" id="DwN-a5-MUD"/>
                                     <outlet property="nameLabel" destination="Ka0-Cb-Mfz" id="d6N-Fl-4iW"/>
                                     <outlet property="scrollView" destination="BEu-UQ-vTB" id="aE0-ba-hdQ"/>
+                                    <outlet property="scrollViewToCellConstraint" destination="59C-m6-r2f" id="YUl-gx-aJK"/>
                                     <segue destination="mNb-57-5Xm" kind="push" identifier="ViewSongs" id="Y3b-rb-AIT"/>
                                 </connections>
                             </tableViewCell>
@@ -1055,173 +1054,14 @@
         <image name="infoSelectedButtonImage.png" width="40" height="40"/>
         <image name="list-background.png" width="320" height="77"/>
     </resources>
-    <classes>
-        <class className="AlbumInfoViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/AlbumInfoViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="albumImageView" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="infoTableView" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-        <class className="AutoScrollLabel" superclassName="UIScrollView">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/AutoScrollLabel.h"/>
-        </class>
-        <class className="CollectionItemCell" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/CollectionItemCell.h"/>
-            <relationships>
-                <relationship kind="outlet" name="durationLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="scrollView" candidateClass="InCellScrollView"/>
-            </relationships>
-        </class>
-        <class className="CollectionViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/CollectionViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="collectionTableView" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-        <class className="ITunesCommentsViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ITunesCommentsViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="comments" candidateClass="UITextView"/>
-            </relationships>
-        </class>
-        <class className="ITunesInfoViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ITunesInfoViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="bpm" candidateClass="NSString"/>
-                <relationship kind="outlet" name="infoTableView" candidateClass="UITableView"/>
-                <relationship kind="outlet" name="lastPlayedDate" candidateClass="NSString"/>
-                <relationship kind="outlet" name="userGrouping" candidateClass="NSString"/>
-            </relationships>
-        </class>
-        <class className="InCellScrollView" superclassName="UIScrollView">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/InCellScrollView.h"/>
-        </class>
-        <class className="InfoTabBarController" superclassName="UITabBarController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/InfoTabBarController.h"/>
-        </class>
-        <class className="InitialViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/InitialViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="choosePlaylist:"/>
-                <relationship kind="outlet" name="choosePlaylist" candidateClass="UIButton"/>
-            </relationships>
-        </class>
-        <class className="MPVolumeView" superclassName="UIView">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MPVolumeView.h"/>
-        </class>
-        <class className="MainViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MainViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="magnifyElapsedTime:"/>
-                <relationship kind="action" name="magnifyRemainingTime:"/>
-                <relationship kind="action" name="moveSlider:"/>
-                <relationship kind="action" name="nextSongTapDetected:" candidateClass="UITapGestureRecognizer"/>
-                <relationship kind="action" name="nowPlayingTapDetected:" candidateClass="UITapGestureRecognizer"/>
-                <relationship kind="action" name="playPause:"/>
-                <relationship kind="action" name="repeatModeChanged:"/>
-                <relationship kind="action" name="shuffleModeChanged:"/>
-                <relationship kind="action" name="skipBack:"/>
-                <relationship kind="action" name="skipForward:"/>
-                <relationship kind="outlet" name="elapsedTimeLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="initialNowPlayingLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="leadingSpaceToSliderConstraint" candidateClass="NSLayoutConstraint"/>
-                <relationship kind="outlet" name="nextLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="nextSongLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="nextSongLabelWidthConstraint" candidateClass="NSLayoutConstraint"/>
-                <relationship kind="outlet" name="nextSongScrollView" candidateClass="UIScrollView"/>
-                <relationship kind="outlet" name="nowPlayingInfoButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="nowPlayingLabel" candidateClass="AutoScrollLabel"/>
-                <relationship kind="outlet" name="playButtonToBottomSpace" candidateClass="NSLayoutConstraint"/>
-                <relationship kind="outlet" name="playPauseButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="progressSlider" candidateClass="UISlider"/>
-                <relationship kind="outlet" name="remainingTimeLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="repeatButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="shuffleButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="topSpaceToPlayButton" candidateClass="NSLayoutConstraint"/>
-                <relationship kind="outlet" name="trailingSpaceFromSliderConstraint" candidateClass="NSLayoutConstraint"/>
-                <relationship kind="outlet" name="verticalSpaceBetweenRewindAndReplay" candidateClass="NSLayoutConstraint"/>
-                <relationship kind="outlet" name="verticalSpaceBetweenSliderAndElapsedTime" candidateClass="NSLayoutConstraint"/>
-                <relationship kind="outlet" name="verticalSpaceBetweenSliderAndRemainingTime" candidateClass="NSLayoutConstraint"/>
-                <relationship kind="outlet" name="volumeView" candidateClass="MPVolumeView"/>
-            </relationships>
-        </class>
-        <class className="MediaGroupCell" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MediaGroupCell.h"/>
-            <relationships>
-                <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="MediaGroupViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MediaGroupViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="groupTableView" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-        <class className="NSLayoutConstraint" superclassName="NSObject">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
-        </class>
-        <class className="SongCell" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SongCell.h"/>
-            <relationships>
-                <relationship kind="outlet" name="durationLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="infoBackground" candidateClass="UIView"/>
-                <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="playingIndicator" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="scrollView" candidateClass="InCellScrollView"/>
-            </relationships>
-        </class>
-        <class className="SongInfoCell" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SongInfoCell.h"/>
-            <relationships>
-                <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
-            </relationships>
-        </class>
-        <class className="SongViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SongViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="songTableView" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-        <class className="TextMagnifierViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/TextMagnifierViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="swipeDownDetected:" candidateClass="UISwipeGestureRecognizer"/>
-                <relationship kind="action" name="swipeUpDetected:" candidateClass="UISwipeGestureRecognizer"/>
-                <relationship kind="action" name="tapDetected:" candidateClass="UITapGestureRecognizer"/>
-                <relationship kind="outlet" name="magnifiedLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
-            </relationships>
-        </class>
-        <class className="TimeMagnifierViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/TimeMagnifierViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="cancel:"/>
-                <relationship kind="outlet" name="magnifiedText" candidateClass="UIButton"/>
-            </relationships>
-        </class>
-        <class className="UserInfoViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/UserInfoViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="comments" candidateClass="UITextView"/>
-                <relationship kind="outlet" name="keyboardHeight" candidateClass="NSLayoutConstraint"/>
-                <relationship kind="outlet" name="placeholderLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="userGrouping" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="verticalSpaceTopToCommentsConstraint" candidateClass="NSLayoutConstraint"/>
-                <relationship kind="outlet" name="verticalSpaceTopToGroupingConstraint" candidateClass="NSLayoutConstraint"/>
-            </relationships>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="ZlS-b1-pog"/>
-        <segue reference="cs7-xB-URz"/>
+        <segue reference="Y3b-rb-AIT"/>
+        <segue reference="nbU-Bw-UO3"/>
         <segue reference="pO3-jk-z6Z"/>
         <segue reference="AZe-Nd-Xxh"/>
         <segue reference="uzR-Fh-xG0"/>

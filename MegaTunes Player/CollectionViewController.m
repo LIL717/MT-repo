@@ -99,7 +99,8 @@
 
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
     
-    [self updateLayoutForNewOrientation: orientation];    
+    [self updateLayoutForNewOrientation: orientation];
+    [self.collectionTableView reloadData];
 }
 - (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
     
@@ -143,16 +144,16 @@
 	CollectionItemCell *cell = (CollectionItemCell *)[tableView
                                           dequeueReusableCellWithIdentifier:@"CollectionItemCell"];
     
+    BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
+
     if ([self.collectionType isEqualToString: @"Playlists"]) {
         MPMediaPlaylist  *mediaPlaylist = [self.collection objectAtIndex:indexPath.row];
         cell.nameLabel.text = [mediaPlaylist valueForProperty: MPMediaPlaylistPropertyName];
-        NSLog (@" cell.nameLabel.text = %@", cell.nameLabel.text);
     }
+    
+    cell.durationLabel.text = @"";
+
     if ([[self.collection objectAtIndex:indexPath.row] count] > 0) {
-//        cell.nameLabel.text = @"";
-//        cell.durationLabel.text = @"";
-//        cell.scrollView.scrollEnabled = NO;
-//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
         MPMediaItemCollection *currentQueue = [MPMediaItemCollection collectionWithItems: [[self.collection objectAtIndex:indexPath.row] items]];
 
@@ -173,17 +174,19 @@
         }
 
         //get the duration of the the playlist
-        
-        NSNumber *playlistDurationNumber = [self calculatePlaylistDuration: currentQueue];
-        long playlistDuration = [playlistDurationNumber longValue];
-        
-        int playlistMinutes = (playlistDuration / 60);     // Whole minutes
-        int playlistSeconds = (playlistDuration % 60);                        // seconds
-        cell.durationLabel.text = [NSString stringWithFormat:@"%2d:%02d", playlistMinutes, playlistSeconds];
-    } else {
-        cell.durationLabel.text = @"";
+        if (isPortrait) {
+            cell.durationLabel.hidden = YES;
+        } else {
+            cell.durationLabel.hidden = NO;
+            
+            NSNumber *playlistDurationNumber = [self calculatePlaylistDuration: currentQueue];
+            long playlistDuration = [playlistDurationNumber longValue];
+            
+            int playlistMinutes = (playlistDuration / 60);     // Whole minutes
+            int playlistSeconds = (playlistDuration % 60);                        // seconds
+            cell.durationLabel.text = [NSString stringWithFormat:@"%2d:%02d", playlistMinutes, playlistSeconds];
+        }
     }
-
     if (cell.nameLabel.text == nil) {
         cell.nameLabel.text = @"Unknown";
     }
@@ -192,7 +195,7 @@
     accessory.highlightedColor = [UIColor blueColor];
     cell.accessoryView = accessory;
     
-    //size of duration Label is set at 138 to match the fixed size that it is set in interface builder
+    //size of duration Label is set at 130 to match the fixed size that it is set in interface builder
     // note that cell.durationLabel.frame.size.width) = 0 here
     //    NSLog (@"************************************width of durationLabel is %f", cell.durationLabel.frame.size.width);
 
@@ -201,17 +204,26 @@
 //    CGSize durationLabelSize = [cell.durationLabel.text sizeWithFont:cell.durationLabel.font
 //                                                   constrainedToSize:CGSizeMake(135, CGRectGetHeight(cell.durationLabel.bounds))
 //                                                       lineBreakMode:NSLineBreakByClipping];
+    //cell.durationLabel.frame.size.width = 130- have to hard code because not calculated yet at this point
     
+    //this is the constraint from scrollView to Cell  needs to just handle accessory in portrait and handle duration and accessory in landscape
+    CGFloat contraintConstant = isPortrait ? 30 : (30 + 130 + 5);
+    
+    cell.scrollViewToCellConstraint.constant = contraintConstant;
+
     NSUInteger scrollViewWidth;
     
     if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
-        scrollViewWidth = (tableView.frame.size.width - cell.accessoryView.frame.size.width);
+        //14 just is the number that was needed to make the label scroll correctly within the scrollView
+        scrollViewWidth = (tableView.frame.size.width -14 - cell.accessoryView.frame.size.width);
     } else {
 //        scrollViewWidth = (tableView.frame.size.width - durationLabelSize.width - cell.accessoryView.frame.size.width);
-        scrollViewWidth = (tableView.frame.size.width - 138 - cell.accessoryView.frame.size.width);
+        // and 145 is the number that makes the scroll work right in landscape - don't try to figure it out
+        scrollViewWidth = (tableView.frame.size.width - 145 - cell.accessoryView.frame.size.width);
 
     }
-    
+    [cell.scrollView removeConstraint:cell.centerXInScrollView];
+
     //calculate the label size to fit the text with the font size
     CGSize labelSize = [cell.nameLabel.text sizeWithFont:cell.nameLabel.font
                                        constrainedToSize:CGSizeMake(INT16_MAX, tableView.rowHeight)
@@ -275,7 +287,8 @@
         collectionItem.name = cell.nameLabel.text;
         collectionItem.duration = [self calculatePlaylistDuration: [self.collection objectAtIndex:indexPath.row]];
         
-        collectionItem.collection = [MPMediaItemCollection collectionWithItems: [[self.collection objectAtIndex:indexPath.row] items]];
+//        collectionItem.collection = [MPMediaItemCollection collectionWithItems: [[self.collection objectAtIndex:indexPath.row] items]];
+        collectionItem.collectionArray = [NSMutableArray arrayWithArray:[[self.collection objectAtIndex:indexPath.row] items]];
         songViewController.iPodLibraryChanged = self.iPodLibraryChanged;
 
         

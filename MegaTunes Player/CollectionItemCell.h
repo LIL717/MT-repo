@@ -12,6 +12,8 @@
 @property (strong, nonatomic) IBOutlet InCellScrollView *scrollView;
 @property (nonatomic, strong) IBOutlet UILabel *nameLabel;
 @property (nonatomic, strong) IBOutlet UILabel *durationLabel;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *scrollViewToCellConstraint;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *centerXInScrollView;
 
 
 @end

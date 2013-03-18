@@ -14,6 +14,8 @@
 @property (nonatomic, copy) NSNumber *duration;
 @property (nonatomic, copy) NSDate *lastPlayedDate;
 @property (nonatomic, copy) MPMediaItemCollection *collection;
+//need to pass data in the collectionArray until it is certain that the array will not have 0 items, then data is copied into the MPMediaItemCollection   collection is saved in Core Data, collectionArray is not
+@property (nonatomic, copy) NSMutableArray *collectionArray;
 
 
 

@@ -232,7 +232,8 @@
         CollectionItem *collectionItem = [CollectionItem alloc];
         collectionItem.name = selectedGroup.name;
         collectionItem.duration = [NSNumber numberWithLong: playlistDuration];
-        collectionItem.collection = [MPMediaItemCollection collectionWithItems: songMutableArray];
+//        collectionItem.collection = [MPMediaItemCollection collectionWithItems: songMutableArray];
+        collectionItem.collectionArray = songMutableArray;
 
         songViewController.title = NSLocalizedString(collectionItem.name, nil);
         songViewController.collectionItem = collectionItem;

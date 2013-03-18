@@ -7,6 +7,9 @@
 //
 @class CollectionItem;
 @class ItemCollection;
+@class UserInfoViewController;
+@class OBSlider;
+
 #import "TimeMagnifierViewController.h"
 #import "TextMagnifierViewController.h"
 #import "InfoTabBarController.h"
@@ -17,7 +20,7 @@
 #import <AudioToolbox/AudioToolbox.h>
 
 #import "AutoScrollLabel.h"
-@class UserInfoViewController;
+
 
 @interface MainViewController : UIViewController <MPMediaPickerControllerDelegate, AVAudioPlayerDelegate, TimeMagnifierViewControllerDelegate, TextMagnifierViewControllerDelegate, InfoTabBarControllerDelegate, NSFetchedResultsControllerDelegate> {
     
@@ -57,14 +60,19 @@
 @property (readwrite)           BOOL                    showPlaylistRemaining;
 @property (nonatomic, strong)   MPMediaItem             *savedNowPlaying;
 @property (nonatomic, strong)   UserInfoViewController  *userInfoViewController;
+@property (readwrite)           BOOL                    userIsScrubbing;
+@property (readwrite)           BOOL                    hasFinishedMoving;
+@property (nonatomic)           BOOL scrubbing; // Whether the player is currently scrubbing
 
 @property (strong, nonatomic) IBOutlet UILabel *initialNowPlayingLabel;
 @property (strong, nonatomic) IBOutlet AutoScrollLabel	*nowPlayingLabel;
 @property (strong, nonatomic) IBOutlet UILabel *elapsedTimeLabel;
-@property (strong, nonatomic) IBOutlet UISlider *progressSlider;
+@property (strong, nonatomic) IBOutlet OBSlider *progressSlider;
 @property (strong, nonatomic) IBOutlet UILabel *remainingTimeLabel;
 @property (strong, nonatomic) IBOutlet MPVolumeView *volumeView;
+@property (strong, nonatomic) IBOutlet UIButton *rewindButton;
 @property (strong, nonatomic) IBOutlet UIButton *playPauseButton;
+@property (strong, nonatomic) IBOutlet UIButton *forwardButton;
 @property (strong, nonatomic) IBOutlet UIButton *repeatButton;
 @property (strong, nonatomic) IBOutlet UIButton *shuffleButton;
 
@@ -88,7 +96,9 @@
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *topSpaceToPlayButton;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *playButtonToBottomSpace;
 
-- (IBAction)moveSlider:(id)sender;
+- (IBAction)handleScrub:(id)sender;
+- (IBAction)handleScrubberTouchDown:(id)sender;
+- (IBAction)handleScrubberTouchUp:(id)sender;
 - (IBAction)skipBack:(id)sender;
 - (IBAction)playPause:(id)sender;
 - (IBAction)skipForward:(id)sender;
@@ -108,6 +118,9 @@
 - (void) timeMagnifierViewControllerDidCancel:(TimeMagnifierViewController *)controller;
 - (void) textMagnifierViewControllerDidCancel:(TextMagnifierViewController *)controller;
 - (void) infoTabBarControllerDidCancel:(InfoTabBarController *)controller;
+
+/// The Current Playback position in seconds
+@property (nonatomic) CGFloat currentPlaybackPosition;
 
 @end
 

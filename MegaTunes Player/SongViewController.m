@@ -18,6 +18,7 @@
 
 @synthesize songTableView;
 @synthesize collectionItem;
+@synthesize collectionOfOne;
 @synthesize musicPlayer;
 @synthesize managedObjectContext;
 @synthesize mediaItemForInfo;
@@ -49,6 +50,8 @@
     
 
     musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
+    //if we have made it to here, then there is are items in the collection so move them into the MPMediaItemCollection field, MPMediaItemCollection cannot have 0 items, so needed to be an array until it got to here
+//    self.collectionItem.collection = [MPMediaItemCollection collectionWithItems: self.collectionItem.collectionArray];
 
     //    self.currentQueue = self.mainViewController.userMediaItemCollection;
     
@@ -113,6 +116,7 @@
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
     
     [self updateLayoutForNewOrientation: orientation];
+    [self.songTableView reloadData];
     
 }
 - (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
@@ -152,7 +156,8 @@
 {
     // Return the number of rows in the section.
     
-    return [[self.collectionItem.collection items] count];
+//    return [[self.collectionItem.collection items] count];
+    return [self.collectionItem.collectionArray count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -160,18 +165,30 @@
 	SongCell *cell = (SongCell *)[tableView
                                           dequeueReusableCellWithIdentifier:@"SongCell"];
     
-//    if ([[self.collectionItem.collection items] count] == 0) {
-//        cell.nameLabel.text = @"";
-//        cell.durationLabel.text = @"";
-//        cell.playingIndicator.image = [UIImage imageNamed:@"notPlaying"];
-//        cell.scrollView.scrollEnabled = NO;
-//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//        return cell;
-//    }
-    
-    MPMediaItem *song = [[self.collectionItem.collection items] objectAtIndex:indexPath.row];
-    
+    MPMediaItem *song = [self.collectionItem.collectionArray objectAtIndex:indexPath.row];
+    BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
 
+    //playback duration of the song
+    
+    long playbackDuration = [[song valueForProperty: MPMediaItemPropertyPlaybackDuration] longValue];
+    
+    //if song has been deleted during a sync then pop to rootViewController
+    if (playbackDuration == 0 && self.iPodLibraryChanged) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+        NSLog (@"BOOM");
+    }
+    
+    if (isPortrait) {
+        cell.durationLabel.hidden = YES;
+    } else {
+        cell.durationLabel.hidden = NO;
+
+        int playbackHours = (playbackDuration / 3600);                         // returns number of whole hours fitted in totalSecs
+        int playbackMinutes = ((playbackDuration / 60) - playbackHours*60);     // Whole minutes
+        int playbackSeconds = (playbackDuration % 60);                        // seconds
+        cell.durationLabel.text = [NSString stringWithFormat:@"%2d:%02d", playbackMinutes, playbackSeconds];
+        
+    }
     
     //make the accessory view into a custom info button
     
@@ -198,20 +215,7 @@
 //    [cell.infoBackground addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[button]|" options:0 metrics: 0 views:viewsDictionary]];
 //    [cell.infoBackground addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[button]|" options:0 metrics: 0 views:viewsDictionary]];
 
-    //playback duration of the song
-    
-    long playbackDuration = [[song valueForProperty: MPMediaItemPropertyPlaybackDuration] longValue];
-    
-    //if song has been deleted during a sync then pop to rootViewController
-    if (playbackDuration == 0 && self.iPodLibraryChanged) {
-        [self.navigationController popToRootViewControllerAnimated:YES];
-        NSLog (@"BOOM");
-    }
-    int playbackHours = (playbackDuration / 3600);                         // returns number of whole hours fitted in totalSecs
-    int playbackMinutes = ((playbackDuration / 60) - playbackHours*60);     // Whole minutes
-    int playbackSeconds = (playbackDuration % 60);                        // seconds
-    cell.durationLabel.text = [NSString stringWithFormat:@"%2d:%02d", playbackMinutes, playbackSeconds];
-    
+
 //    NSString *songTitle =[song valueForProperty: MPMediaItemPropertyTitle];
 //    NSNumber *duration = [song valueForProperty: MPMediaItemPropertyPlaybackDuration];
 //    NSLog (@"\t\t%@,%@", songTitle,duration);
@@ -224,8 +228,15 @@
     }
     // Display text
 
+    //cell.durationLabel.frame.size.width = 111 - have to hard code because not calculated yet at this point
+    
+    CGFloat contraintConstant = isPortrait ? 50 : (50 + 111 + 5);
+    
+    cell.scrollViewToCellConstraint.constant = contraintConstant;
+    
     cell.nameLabel.text = [song valueForProperty:  MPMediaItemPropertyTitle];
 
+    [cell.scrollView removeConstraint:cell.centerXAlignmentConstraint];
     //calculate the label size to fit the text with the font size
     CGSize labelSize = [cell.nameLabel.text sizeWithFont:cell.nameLabel.font
                                        constrainedToSize:CGSizeMake(INT16_MAX, tableView.rowHeight)
@@ -233,15 +244,15 @@
 
     //calculate the width of the actual scrollview
     //cell.playingIndicator is 20
-    //durationLabelSize.width is 98
+    //durationLabelSize.width is 111
     //cell.accessoryView.frame.size.width is 42
     // so scrollViewWidth should be 480-24-98-42 = 316   or 320-28-42= 250
     NSUInteger scrollViewWidth;
     
     if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
-        scrollViewWidth = (tableView.frame.size.width - 28 - cell.accessoryView.frame.size.width);
+        scrollViewWidth = (tableView.frame.size.width - 27 - cell.accessoryView.frame.size.width);
     } else {
-        scrollViewWidth = (tableView.frame.size.width - 24 - 98 - cell.accessoryView.frame.size.width);
+        scrollViewWidth = (tableView.frame.size.width - 24 - 111 - cell.accessoryView.frame.size.width);
     }
     //Make sure that label is aligned with scrollView
     [cell.scrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
@@ -253,6 +264,7 @@
     }
     else {
         cell.scrollView.scrollEnabled = NO;
+        cell.scrollView.hidden = YES;
         //        NSLog (@"scrollDisabled");
     }
     return cell;
@@ -293,6 +305,8 @@
 	}
     	if ([segue.identifier isEqualToString:@"PlaySong"])
 	{
+        self.collectionItem.collection = [MPMediaItemCollection collectionWithItems: self.collectionItem.collectionArray];
+
         MainViewController *mainViewController = segue.destinationViewController;
         mainViewController.managedObjectContext = self.managedObjectContext;
         NSIndexPath *indexPath = [self.songTableView indexPathForCell:sender];
@@ -345,8 +359,8 @@
 }
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
     
-    MPMediaItem *song = [[self.collectionItem.collection items] objectAtIndex:indexPath.row];
-    
+//    MPMediaItem *song = [[self.collectionItem.collection items] objectAtIndex:indexPath.row];
+    MPMediaItem *song = [self.collectionItem.collectionArray objectAtIndex:indexPath.row];
     self.mediaItemForInfo = song;
     
     [self performSegueWithIdentifier: @"ViewInfo" sender: self];

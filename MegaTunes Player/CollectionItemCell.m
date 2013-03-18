@@ -12,6 +12,8 @@
 @synthesize scrollView; 
 @synthesize nameLabel;
 @synthesize durationLabel;
+@synthesize scrollViewToCellConstraint;
+@synthesize centerXInScrollView;
 
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier

@@ -18,6 +18,8 @@
 @property (strong, nonatomic) IBOutlet UITableView *songTableView;
 @property (nonatomic, retain)   NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong)   CollectionItem *collectionItem;
+@property (nonatomic, strong)   MPMediaItemCollection *collectionOfOne;
+
 @property (nonatomic, strong)	MPMusicPlayerController	*musicPlayer;
 @property (nonatomic, strong)   MPMediaItem *mediaItemForInfo;
 @property (nonatomic, strong)   MPMediaItem *itemToPlay;

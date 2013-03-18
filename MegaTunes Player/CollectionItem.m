@@ -14,6 +14,7 @@
 @synthesize duration;
 @synthesize lastPlayedDate;
 @synthesize collection;
+@synthesize collectionArray;
 
 
 @end

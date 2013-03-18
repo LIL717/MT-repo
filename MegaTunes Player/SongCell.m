@@ -16,6 +16,9 @@
 @synthesize durationLabel;
 @synthesize infoBackground;
 //@synthesize BPM;
+@synthesize scrollViewToCellConstraint;
+@synthesize centerXAlignmentConstraint;
+
 
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
