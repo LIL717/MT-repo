@@ -12,16 +12,6 @@
 			<key>Title</key>
 			<string>Configuration</string>
 		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSToggleSwitchSpecifier</string>
-			<key>Title</key>
-			<string>Show Playlist Remaining Time</string>
-			<key>DefaultValue</key>
-			<true/>
-			<key>Key</key>
-			<string>show_playlist_remaining</string>
-		</dict>
 	</array>
 </dict>
 </plist>

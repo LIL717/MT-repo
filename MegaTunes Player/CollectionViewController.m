@@ -51,8 +51,9 @@
     musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
     
     [self registerForMediaPlayerNotifications];
-    
+
 }
+
 - (void) viewWillAppear:(BOOL)animated
 {
     //    LogMethod();
@@ -226,17 +227,36 @@
 
     //calculate the label size to fit the text with the font size
     CGSize labelSize = [cell.nameLabel.text sizeWithFont:cell.nameLabel.font
-                                       constrainedToSize:CGSizeMake(INT16_MAX, tableView.rowHeight)
+                                       constrainedToSize:CGSizeMake(scrollViewWidth, tableView.rowHeight)
                                            lineBreakMode:NSLineBreakByClipping];
+    
+//    //build a new label that will hold all the text
+//    UILabel *newLabel = [[UILabel alloc] initWithFrame: cell.nameLabel.frame];
+//    CGRect frame = newLabel.frame;
+////    frame.size.height = CGRectGetHeight(cell.nameLabel.bounds);
+//    frame.size.width = labelSize.width;
+//    newLabel.frame = frame;
+//
+//    //set the UIOutlet label's frame to the new sized frame
+//    cell.nameLabel.frame = newLabel.frame;
+    
+    //    NSLog (@"size of newLabel is %f", frame.size.width);
+    
+    //***********add constaint to line up Y of nameLabel and scrollView
+    
     //Make sure that label is aligned with scrollView
     [cell.scrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+    
+    cell.scrollView.scrollEnabled = YES;
 
     if (labelSize.width>scrollViewWidth) {
-        cell.scrollView.scrollEnabled = YES;
+        cell.scrollView.bounces = YES;
     }
     else {
-        cell.scrollView.scrollEnabled = NO;
-
+        
+        cell.scrollView.bounces = NO;
+        //**********set the width constraint of the label equal to the scrollView
+        
     }
     
     return cell;
@@ -307,7 +327,6 @@
         mainViewController.playNew = NO;
         mainViewController.iPodLibraryChanged = self.iPodLibraryChanged;
 
-        
     }
 }
 - (IBAction)viewNowPlaying {
@@ -327,6 +346,20 @@
         [self.navigationController popViewControllerAnimated:YES];
     }
 }
+//// this subclassed to prevent scrollView from intrepretting half a tap as a tap (turning cell blue but not actually selecting until next selection
+//- (void)singleTapGestureCaptured:(UITapGestureRecognizer *)gesture
+//{
+//    LogMethod();
+//    
+//    CGPoint currentTouchPosition=[gesture locationInView:self.collectionTableView];
+//    NSIndexPath *indexPath = [self.collectionTableView indexPathForRowAtPoint: currentTouchPosition];
+//    CollectionItemCell *cell = (CollectionItemCell *)[self.collectionTableView cellForRowAtIndexPath:indexPath];
+//    cell.nameLabel.highlighted = YES;
+//
+//    [self.collectionTableView.delegate tableView:self.collectionTableView didSelectRowAtIndexPath:indexPath];
+//    [self performSegueWithIdentifier: @"ViewSongs" sender: [self.collectionTableView cellForRowAtIndexPath:indexPath]];
+//}
+
 - (void) registerForMediaPlayerNotifications {
 //    LogMethod();
     

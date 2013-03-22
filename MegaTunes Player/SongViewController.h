@@ -8,7 +8,6 @@
 @class CollectionItem;
 #import "InfoTabBarController.h"
 
-
 @interface SongViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, InfoTabBarControllerDelegate,MPMediaPickerControllerDelegate> {
   
     NSManagedObjectContext *managedObjectContext;
@@ -24,6 +23,7 @@
 @property (nonatomic, strong)   MPMediaItem *mediaItemForInfo;
 @property (nonatomic, strong)   MPMediaItem *itemToPlay;
 @property (readwrite)           BOOL iPodLibraryChanged;
+
 
 - (void) infoTabBarControllerDidCancel:(InfoTabBarController *)controller;
 

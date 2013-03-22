@@ -83,6 +83,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *nextSongLabel;
 
 @property (strong, nonatomic) CollectionItem *collectionItem;
+@property (strong, nonatomic) UISwipeGestureRecognizer *swipeLeftRight;
 
 //@property (strong, nonatomic) IBOutlet NSLayoutConstraint *playerButtonContraint;
 //@property (strong, nonatomic) IBOutlet NSLayoutConstraint *repeatButtonHeightContraint;

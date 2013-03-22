@@ -1060,10 +1060,10 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="Y3b-rb-AIT"/>
-        <segue reference="nbU-Bw-UO3"/>
-        <segue reference="pO3-jk-z6Z"/>
-        <segue reference="AZe-Nd-Xxh"/>
         <segue reference="uzR-Fh-xG0"/>
+        <segue reference="nbU-Bw-UO3"/>
+        <segue reference="Y3b-rb-AIT"/>
+        <segue reference="AZe-Nd-Xxh"/>
+        <segue reference="pO3-jk-z6Z"/>
     </inferredMetricsTieBreakers>
 </document>

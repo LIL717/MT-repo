@@ -8,28 +8,30 @@
 
 #import "InCellScrollView.h"
 
+
 @implementation InCellScrollView
 
 - (void) touchesEnded: (NSSet *) touches withEvent: (UIEvent *) event
 {
-
-    // If not dragging, send event to next responder
-    if (!self.dragging) {
-//            NSLog(@"touch scroll not dragging");
-        [self.nextResponder touchesEnded: touches withEvent:event];
-    } else {
+    if (self.dragging) {
         [super touchesEnded: touches withEvent: event];
-//            NSLog(@"touch scroll is dragging");
+//        NSLog (@"touches that ended dragging are %@", touches);
+        NSLog(@"touch scroll is dragging");
+    } else {
+        [self.nextResponder touchesEnded: touches withEvent:event];
+        [super touchesBegan: touches withEvent: event];
     }
 }
 
-//OMG need to for nextResponder to handled passed through touchesEnded 
+//OMG need this too for nextResponder to handled passed through touchesEnded
 - (void) touchesBegan: (NSSet *) touches withEvent: (UIEvent *) event
 {
-//        NSLog(@"touchesBegan in scrollview");
+        NSLog(@"touchesBegan in scrollview");
         [self.nextResponder touchesBegan: touches withEvent:event];
         [super touchesBegan: touches withEvent: event];
+//    for (UITouch *touch in touches) {
+//        NSLog (@"BEGINNING TOUCH: %@", touch);
+//    }
 }
-
 
 @end

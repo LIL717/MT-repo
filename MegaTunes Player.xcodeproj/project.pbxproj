@@ -92,6 +92,7 @@
 		70984C16163F964600CE7EA9 /* playing.png in Resources */ = {isa = PBXBuildFile; fileRef = 70984C14163F964600CE7EA9 /* playing.png */; };
 		70984C17163F964600CE7EA9 /* playing@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70984C15163F964600CE7EA9 /* playing@2x.png */; };
 		70984C221640C07A00CE7EA9 /* ItemCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 70984C211640C07A00CE7EA9 /* ItemCollection.m */; };
+		709A578916F93B59000D1678 /* TapGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 709A578816F93B59000D1678 /* TapGestureRecognizer.m */; };
 		709F238A16C329C000521158 /* MediaItemUserData.m in Sources */ = {isa = PBXBuildFile; fileRef = 709F238916C329C000521158 /* MediaItemUserData.m */; };
 		709F239016C3525400521158 /* bass_fx.chm in Resources */ = {isa = PBXBuildFile; fileRef = 709F238C16C3525400521158 /* bass_fx.chm */; };
 		709F239116C3525400521158 /* bass_fx.txt in Resources */ = {isa = PBXBuildFile; fileRef = 709F238E16C3525400521158 /* bass_fx.txt */; };
@@ -304,6 +305,8 @@
 		70984C15163F964600CE7EA9 /* playing@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "playing@2x.png"; sourceTree = "<group>"; };
 		70984C201640C07A00CE7EA9 /* ItemCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemCollection.h; sourceTree = "<group>"; };
 		70984C211640C07A00CE7EA9 /* ItemCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemCollection.m; sourceTree = "<group>"; };
+		709A578716F93B59000D1678 /* TapGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TapGestureRecognizer.h; sourceTree = "<group>"; };
+		709A578816F93B59000D1678 /* TapGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TapGestureRecognizer.m; sourceTree = "<group>"; };
 		709F238816C329C000521158 /* MediaItemUserData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaItemUserData.h; sourceTree = "<group>"; };
 		709F238916C329C000521158 /* MediaItemUserData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaItemUserData.m; sourceTree = "<group>"; };
 		709F238C16C3525400521158 /* bass_fx.chm */ = {isa = PBXFileReference; lastKnownFileType = file; path = bass_fx.chm; sourceTree = "<group>"; };
@@ -676,6 +679,8 @@
 		70A13D9216320F6500244866 /* Unused */ = {
 			isa = PBXGroup;
 			children = (
+				709A578716F93B59000D1678 /* TapGestureRecognizer.h */,
+				709A578816F93B59000D1678 /* TapGestureRecognizer.m */,
 				70A0493C16F692EA00F70A90 /* NSDateFormatter+Duration.h */,
 				70A0493D16F692EA00F70A90 /* NSDateFormatter+Duration.m */,
 				700511FE16AF2A9E0085B6F1 /* TemporaryViewController.h */,
@@ -1174,6 +1179,7 @@
 				70AA4D8516F27948002E9EE5 /* UINavigationController+MaskAll.m in Sources */,
 				70A0493116F6814700F70A90 /* OBSlider.m in Sources */,
 				70A0493E16F692EA00F70A90 /* NSDateFormatter+Duration.m in Sources */,
+				709A578916F93B59000D1678 /* TapGestureRecognizer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

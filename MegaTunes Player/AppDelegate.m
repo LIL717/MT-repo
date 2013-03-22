@@ -209,14 +209,14 @@ static const NSUInteger kNavigationBarHeight = 60;
 //	}
 //}
 // Returns whether to show the playlist remaining time in the player
-- (BOOL) showPlaylistRemaining {
-    //      LogMethod();
-	if ([[NSUserDefaults standardUserDefaults] boolForKey: SHOW_PLAYLIST_REMAINING_KEY]) {
-		return YES;
-	} else {
-		return NO;
-	}
-}
+//- (BOOL) showPlaylistRemaining {
+//    //      LogMethod();
+//	if ([[NSUserDefaults standardUserDefaults] boolForKey: SHOW_PLAYLIST_REMAINING_KEY]) {
+//		return YES;
+//	} else {
+//		return NO;
+//	}
+//}
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     /*

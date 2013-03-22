@@ -33,7 +33,7 @@
 
 - (void)customizeGlobalTheme;
 //- (BOOL) useiPodPlayer;
-- (BOOL) showPlaylistRemaining;
+//- (BOOL) showPlaylistRemaining;
 
 
 @end

@@ -133,6 +133,8 @@ void audioRouteChangeListenerCallback (
 @synthesize nextSongScrollView;
 @synthesize nextSongLabel;
 @synthesize collectionItem;
+@synthesize swipeLeftRight;
+
 @synthesize rewindButton;
 @synthesize playPauseButton;
 @synthesize forwardButton;
@@ -160,6 +162,8 @@ void audioRouteChangeListenerCallback (
 
 float savedHandleValue;
 MPMusicPlaybackState savedPlaybackState;
+long collectionRemainingSeconds;
+long songRemainingSeconds;
 
 
 #pragma mark ViewDidLoad________________________________
@@ -201,20 +205,23 @@ MPMusicPlaybackState savedPlaybackState;
 
     [self setMusicPlayer: [MPMusicPlayerController iPodMusicPlayer]];
 
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
  
     // get the user's preference from Settings whether to display Playlist Remaining Time
-    if ([appDelegate showPlaylistRemaining]) {
-        self.showPlaylistRemaining = YES;
-//        NSLog (@"show Playlist Remaining");
-    } else {
+//    if ([appDelegate showPlaylistRemaining]) {
+//        self.showPlaylistRemaining = YES;
+////        NSLog (@"show Playlist Remaining");
+//    } else {
         self.showPlaylistRemaining = NO;
         //title will only be displayed if playlist remaining is turned off
         self.title = NSLocalizedString(@"Now Playing", nil);
         self.navigationItem.titleView = [self customizeTitleView];
 //        NSLog (@"don't show Playlist Remaining");
+//    }
 
-    }
+    self.swipeLeftRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(togglePlaylistRemainingAndTitle:)];
+    [self.swipeLeftRight setDirection:(UISwipeGestureRecognizerDirectionRight | UISwipeGestureRecognizerDirectionLeft )];
+    [self.navigationController.navigationBar addGestureRecognizer:self.swipeLeftRight];
 
     //    NSArray *returnedQueue = [self.userMediaItemCollection items];
     //
@@ -453,9 +460,11 @@ MPMusicPlaybackState savedPlaybackState;
 //        self.nextLabel.text = [NSString stringWithFormat:@""];
         self.nextSongScrollView.hidden = YES;
         self.nextSongLabel.hidden = YES;
+        self.nextLabel.hidden = YES;
     } else {
         self.nextSongScrollView.hidden = NO;
         self.nextSongLabel.hidden = NO;
+        self.nextLabel.hidden = NO;
         [self.nextSongLabel setUserInteractionEnabled:YES];
         long nextDuration = [[[[self.userMediaItemCollection items] objectAtIndex: nextPlayingIndex] valueForProperty:MPMediaItemPropertyPlaybackDuration] floatValue];
         NSString *formattedNextDuration = [NSString stringWithFormat:@"%2lu:%02lu",nextDuration/60,nextDuration -(nextDuration/60)*60];
@@ -587,13 +596,14 @@ MPMusicPlaybackState savedPlaybackState;
     
     long playbackSeconds = musicPlayer.currentPlaybackTime;
     long songDuration = [[self.musicPlayer.nowPlayingItem valueForProperty:MPMediaItemPropertyPlaybackDuration] floatValue];
-    long songRemainingSeconds = songDuration - playbackSeconds;
+    songRemainingSeconds = songDuration - playbackSeconds;
 
     //if the currently playing song has been deleted during a sync then stop playing and pop to rootViewController
     if (songDuration == 0 && self.iPodLibraryChanged) {
         [musicPlayer stop];
         [self.playbackTimer invalidate];
-        [self.navigationController popToRootViewControllerAnimated:YES];
+        [self goBackClick];
+//        [self.navigationController popToRootViewControllerAnimated:YES];
         NSLog (@"BOOM");
         return;
     }
@@ -621,11 +631,13 @@ MPMusicPlaybackState savedPlaybackState;
     // only show the collection remaining if the setting is on and shuffle is off and repeat is off
     if (showPlaylistRemaining) {
         if (musicPlayer.shuffleMode == MPMusicShuffleModeOff && musicPlayer.repeatMode == MPMusicRepeatModeNone) {
-        NSString * collectionRemaining = [self calculateCollectionRemaining];
+//        NSString * collectionRemaining = [self calculateCollectionRemaining];
+            [self calculateCollectionRemaining];
+
         // don't show collectionRemaining if it is the same as songRemaining
-            if (collectionRemaining == songRemaining) {
-                self.navigationItem.rightBarButtonItem=nil;
-            }
+//            if (collectionRemainingSeconds == songRemainingSeconds) {
+//                self.navigationItem.rightBarButtonItem=nil;
+//            }
         }
     }
     
@@ -650,18 +662,24 @@ MPMusicPlaybackState savedPlaybackState;
 //    NSLog (@" currentPlaybackTime is %f", musicPlayer.currentPlaybackTime);
 }
 
-- (NSString *) calculateCollectionRemaining {
+- (void) calculateCollectionRemaining {
     
     long playbackSeconds = musicPlayer.currentPlaybackTime;
     long collectionDuration = [self.collectionItem.duration longValue];
     long collectionElapsed;
-    long collectionRemainingSeconds;
+//    long collectionRemainingSeconds;
     
     if (collectionDuration > 0) {
         collectionElapsed = [[self calculatePlaylistElapsed] longValue] + playbackSeconds;
         collectionRemainingSeconds = collectionDuration - collectionElapsed;
     } else {
         collectionRemainingSeconds = 0;
+    }
+    
+    // don't show collectionRemaining if it is the same as songRemaining
+    if (collectionRemainingSeconds <= songRemainingSeconds) {
+        self.navigationItem.rightBarButtonItem=nil;
+        return;
     }
     
     NSString *collectionRemaining;
@@ -678,7 +696,7 @@ MPMusicPlaybackState savedPlaybackState;
 //        }
     } else {
 //        self.showTitle = YES;
-        collectionRemaining = [NSString stringWithFormat:@"%lu:%02lu",
+        collectionRemaining = [NSString stringWithFormat:@"%02lu:%02lu",
                                collectionRemainingSeconds /60,
                                collectionRemainingSeconds % 60];
         formatter.dateFormat = @"m:ss";
@@ -706,13 +724,12 @@ MPMusicPlaybackState savedPlaybackState;
             
             self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:durationButton,negativeSpacer,nil];
 
-            
         } else {
             self.navigationItem.rightBarButtonItem=nil;
         }
 
     } 
-    return collectionRemaining;
+    return;
 }
 - (NSNumber *)calculatePlaylistElapsed {
         
@@ -917,8 +934,11 @@ MPMusicPlaybackState savedPlaybackState;
     if (musicPlayer.shuffleMode == MPMusicShuffleModeOff) {
         [musicPlayer setShuffleMode: MPMusicShuffleModeSongs];
         [self.shuffleButton setImage: [UIImage imageNamed: @"bigshuffle.png"] forState: UIControlStateNormal];
-        self.nextSongLabel.text = [NSString stringWithFormat: @""];
-        self.nextLabel.text = [NSString stringWithFormat:@""];
+//        self.nextSongLabel.text = [NSString stringWithFormat: @""];
+//        self.nextLabel.text = [NSString stringWithFormat:@""];
+        self.nextSongScrollView.hidden = YES;
+        self.nextSongLabel.hidden = YES;
+        self.nextLabel.hidden = YES;
     } else if (musicPlayer.shuffleMode == MPMusicShuffleModeSongs) {
         [musicPlayer setShuffleMode: MPMusicShuffleModeOff];
         UIImage *coloredImage = [self.shuffleButton.currentImage imageWithTint:[UIColor whiteColor]];
@@ -928,12 +948,37 @@ MPMusicPlaybackState savedPlaybackState;
         
     }
 }
+- (IBAction) togglePlaylistRemainingAndTitle:(id)sender {
+    if (showPlaylistRemaining) {
+        self.showPlaylistRemaining = NO;
+        //title will only be displayed if playlist remaining is turned off
+        self.title = NSLocalizedString(@"Now Playing", nil);
+        [UIView animateWithDuration:2.5 animations:^{
+            self.navigationItem.rightBarButtonItem = nil;
+            self.navigationItem.titleView = [self customizeTitleView];
+        }];
+        //        NSLog (@"show Playlist Remaining");
+    } else {
+        self.showPlaylistRemaining = YES;
+        [UIView animateWithDuration:0.25 animations:^{
+            self.title = nil;
+            self.navigationItem.titleView = nil;
+            [self updateTime];
+        }];
+        //        NSLog (@"don't show Playlist Remaining");
+    }
+}
 - (IBAction)magnify {
     
     [self performSegueWithIdentifier: @"MagnifyPlaylistRemaining" sender: self];
 }
 - (void)goBackClick
 {
+    LogMethod();
+
+    //remove the swipe gesture from the nav bar  (doesn't work to wait until dealloc)
+    [self.navigationController.navigationBar removeGestureRecognizer:self.swipeLeftRight];
+
     if (iPodLibraryChanged) {
         [self.navigationController popToRootViewControllerAnimated:YES];
     } else {
@@ -1024,12 +1069,14 @@ MPMusicPlaybackState savedPlaybackState;
                 // Even though stopped, invoking 'stop' ensures that the music player will play
                 //		its queue from the start. - !except if first time thru and state is stopped
                 [musicPlayer stop];
+                
+                [self goBackClick];
             
-                if (iPodLibraryChanged) {
-                    [self.navigationController popToRootViewControllerAnimated:YES];
-                } else {
-                    [self.navigationController popViewControllerAnimated:YES];
-                }
+//                if (iPodLibraryChanged) {
+//                    [self.navigationController popToRootViewControllerAnimated:YES];
+//                } else {
+//                    [self.navigationController popViewControllerAnimated:YES];
+//                }
             }
         }
     }
@@ -1040,12 +1087,8 @@ MPMusicPlaybackState savedPlaybackState;
 	// Implement this method to update cached collections of media items when the
 	// user performs a sync while application is running.
     [self setIPodLibraryChanged: YES];
-    //    [musicPlayer stop];
-    //    [self.navigationController popToRootViewControllerAnimated:YES];
     
 }
-
-
 
 #pragma mark Application playback control_________________
 
@@ -1138,7 +1181,7 @@ MPMusicPlaybackState savedPlaybackState;
 												  object: nil];
 }
 - (void)dealloc {
-    //       LogMethod();
+//       LogMethod();
     
 	[[NSNotificationCenter defaultCenter] removeObserver: self
 													name: MPMusicPlayerControllerNowPlayingItemDidChangeNotification
@@ -1155,7 +1198,7 @@ MPMusicPlaybackState savedPlaybackState;
     [[MPMediaLibrary defaultMediaLibrary] endGeneratingLibraryChangeNotifications];
     
 	[musicPlayer endGeneratingPlaybackNotifications];
-    
+
     
 }
 - (void) didReceiveMemoryWarning {

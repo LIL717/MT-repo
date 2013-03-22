@@ -37,9 +37,5 @@
 
     // Configure the view for the selected state
 }
-//- (void) touchesEnded: (NSSet *) touches withEvent: (UIEvent *) event
-//{
-//    NSLog(@"touch cell");
-//    [super touchesEnded: touches withEvent: event];
-//}
+
 @end

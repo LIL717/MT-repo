@@ -25,7 +25,6 @@
 @synthesize itemToPlay;
 @synthesize iPodLibraryChanged;         //A flag indicating whether the library has been changed due to a sync
 
-
 - (void)viewDidLoad
 {
 //    LogMethod();
@@ -50,8 +49,6 @@
     
 
     musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
-    //if we have made it to here, then there is are items in the collection so move them into the MPMediaItemCollection field, MPMediaItemCollection cannot have 0 items, so needed to be an array until it got to here
-//    self.collectionItem.collection = [MPMediaItemCollection collectionWithItems: self.collectionItem.collectionArray];
 
     //    self.currentQueue = self.mainViewController.userMediaItemCollection;
     
@@ -195,14 +192,14 @@
     UIImage *image = [UIImage imageNamed: @"infoLightButtonImage.png"];
     UIImage *backgroundImage = [UIImage imageNamed: @"infoSelectedButtonImage.png"];
 
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIButton *infoButton = [UIButton buttonWithType:UIButtonTypeCustom];
 
     CGRect frame = CGRectMake(0.0, 0.0, image.size.width, image.size.height);
-    button.frame = frame;
-    [button setBackgroundImage:image forState:UIControlStateNormal];
-    [button setBackgroundImage: backgroundImage forState:UIControlStateHighlighted];
-    [button addTarget:self action:@selector(infoButtonTapped:event:)  forControlEvents:UIControlEventTouchUpInside];
-    cell.accessoryView = button;
+    infoButton.frame = frame;
+    [infoButton setBackgroundImage:image forState:UIControlStateNormal];
+    [infoButton setBackgroundImage: backgroundImage forState:UIControlStateHighlighted];
+    [infoButton addTarget:self action:@selector(infoButtonTapped:event:)  forControlEvents:UIControlEventTouchUpInside];
+    cell.accessoryView = infoButton;
     
     //this would need some work - crashes with auto layout issues
 //    [cell.infoBackground addSubview: button];
@@ -256,16 +253,15 @@
     }
     //Make sure that label is aligned with scrollView
     [cell.scrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-    
-    if (labelSize.width>scrollViewWidth) {
 
-        cell.scrollView.scrollEnabled = YES;
-        //        NSLog (@"scrollEnabled");
+    cell.scrollView.scrollEnabled = YES;
+    //        NSLog (@"scrollEnabled");
+
+    if (labelSize.width>scrollViewWidth) {
+        cell.scrollView.bounces = YES;
     }
     else {
-        cell.scrollView.scrollEnabled = NO;
-        cell.scrollView.hidden = YES;
-        //        NSLog (@"scrollDisabled");
+        cell.scrollView.bounces = NO;
     }
     return cell;
 }
@@ -278,10 +274,15 @@
 - (void) tableView: (UITableView *) tableView didSelectRowAtIndexPath: (NSIndexPath *) indexPath {
     
 	[tableView deselectRowAtIndexPath: indexPath animated: YES];
+//    UITableViewCell *selectedCell =[self.songTableView cellForRowAtIndexPath:indexPath];
+//    selectedCell.textLabel.highlighted = NO;
     
     //set the "nowPlaying indicator" as the view disappears (already selected play indicator is still there too :(
     SongCell *cell = (SongCell *)[tableView cellForRowAtIndexPath:indexPath];
     cell.playingIndicator.image = [UIImage imageNamed:@"playing"];
+//    cell.nameLabel.highlighted = NO;
+    
+
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -357,6 +358,7 @@
         [self tableView: self.songTableView accessoryButtonTappedForRowWithIndexPath: indexPath];
     }
 }
+
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
     
 //    MPMediaItem *song = [[self.collectionItem.collection items] objectAtIndex:indexPath.row];
