@@ -141,9 +141,6 @@ void audioRouteChangeListenerCallback (
 @synthesize repeatButton;
 @synthesize shuffleButton;
 
-//@synthesize playerButtonContraint;
-//@synthesize repeatButtonHeightContraint;
-//@synthesize volumeViewHeightConstraint;
 @synthesize leadingSpaceToSliderConstraint;
 @synthesize trailingSpaceFromSliderConstraint;
 @synthesize verticalSpaceBetweenSliderAndElapsedTime;
@@ -268,9 +265,6 @@ long songRemainingSeconds;
     [self.volumeView setVolumeThumbImage:[UIImage imageNamed:@"shinyVolumeHandle.png"] forState:UIControlStateNormal];
 
     if (!UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
-//        [self.view removeConstraint:self.playerButtonContraint];
-//        [self.view removeConstraint:self.repeatButtonHeightContraint];
-//        [self.view removeConstraint:self.volumeViewHeightConstraint];
         [self.view removeConstraint:self.leadingSpaceToSliderConstraint];
         [self.view removeConstraint:self.trailingSpaceFromSliderConstraint];
         [self.view removeConstraint:self.verticalSpaceBetweenSliderAndElapsedTime];
@@ -292,9 +286,6 @@ long songRemainingSeconds;
     
     [nowPlayingLabel  refreshLabels];
     if (UIInterfaceOrientationIsLandscape(orientation)) {
-//        [self.view removeConstraint:self.playerButtonContraint];
-//        [self.view removeConstraint:self.repeatButtonHeightContraint];
-//        [self.view removeConstraint:self.volumeViewHeightConstraint];
         [self.view removeConstraint:self.leadingSpaceToSliderConstraint];
         [self.view removeConstraint:self.trailingSpaceFromSliderConstraint];
         [self.view removeConstraint:self.verticalSpaceBetweenSliderAndElapsedTime];
@@ -318,9 +309,6 @@ long songRemainingSeconds;
         
     } else {
         
-//        [self.view addConstraint:self.playerButtonContraint];
-//        [self.view addConstraint:self.repeatButtonHeightContraint];
-//        [self.view addConstraint:self.volumeViewHeightConstraint];
         [self.view addConstraint:self.leadingSpaceToSliderConstraint];
         [self.view addConstraint:self.trailingSpaceFromSliderConstraint];
         [self.view addConstraint:self.verticalSpaceBetweenSliderAndElapsedTime];
@@ -1218,9 +1206,6 @@ long songRemainingSeconds;
     [self setNextSongScrollView:nil];
     [self setNextSongLabel:nil];
     [self setNextSongLabelWidthConstraint:nil];
-//    [self setPlayerButtonContraint:nil];
-//    [self setRepeatButtonHeightContraint:nil];
-//    [self setVolumeViewHeightConstraint:nil];
 
 
 

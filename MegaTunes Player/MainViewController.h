@@ -85,9 +85,7 @@
 @property (strong, nonatomic) CollectionItem *collectionItem;
 @property (strong, nonatomic) UISwipeGestureRecognizer *swipeLeftRight;
 
-//@property (strong, nonatomic) IBOutlet NSLayoutConstraint *playerButtonContraint;
-//@property (strong, nonatomic) IBOutlet NSLayoutConstraint *repeatButtonHeightContraint;
-//@property (strong, nonatomic) IBOutlet NSLayoutConstraint *volumeViewHeightConstraint;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *playerButtonConstraint;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *nextSongLabelWidthConstraint;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *leadingSpaceToSliderConstraint;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *trailingSpaceFromSliderConstraint;
