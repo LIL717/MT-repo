@@ -253,8 +253,8 @@
         cell.scrollView.bounces = YES;
     }
     else {
-        
-        cell.scrollView.bounces = NO;
+        labelSize.width = scrollViewWidth - 1;
+//        cell.scrollView.bounces = NO;
         //**********set the width constraint of the label equal to the scrollView
         
     }
