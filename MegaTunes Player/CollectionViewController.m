@@ -101,7 +101,6 @@
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
     
     [self updateLayoutForNewOrientation: orientation];
-    [self.collectionTableView reloadData];
 }
 - (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
     
@@ -114,11 +113,10 @@
         for (NSIndexPath *index in indexes) {
             if (index.row == 0) {
                 [self.collectionTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-                return;
             }
-            
         }
     }
+    [self.collectionTableView reloadData];
 }
 - (void) viewWillLayoutSubviews {
         //need this to pin portrait view to bounds otherwise if start in landscape, push to next view, rotate to portrait then pop back the original view in portrait - it will be too wide and "scroll" horizontally
@@ -173,7 +171,18 @@
         if ([self.collectionType isEqualToString: @"Podcasts"]) {
             cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyPodcastTitle];
         }
-
+        if (cell.nameLabel.text == nil) {
+            cell.nameLabel.text = @"Unknown";
+        }
+        //set the textLabel to the same thing - it is used if the text does not need to scroll
+        UIFont *font = [UIFont systemFontOfSize:12];
+        UIFont *newFont = [font fontWithSize:44];
+        cell.textLabel.font = newFont;
+        cell.textLabel.textColor = [UIColor whiteColor];
+        cell.textLabel.highlightedTextColor = [UIColor blueColor];
+        cell.textLabel.backgroundColor = [UIColor clearColor];
+        cell.textLabel.text = cell.nameLabel.text;
+        
         //get the duration of the the playlist
         if (isPortrait) {
             cell.durationLabel.hidden = YES;
@@ -186,11 +195,10 @@
             int playlistMinutes = (playlistDuration / 60);     // Whole minutes
             int playlistSeconds = (playlistDuration % 60);                        // seconds
             cell.durationLabel.text = [NSString stringWithFormat:@"%2d:%02d", playlistMinutes, playlistSeconds];
+//            [cell.textLabel addSubView:cell.durationLabel];
         }
     }
-    if (cell.nameLabel.text == nil) {
-        cell.nameLabel.text = @"Unknown";
-    }
+
     
     DTCustomColoredAccessory *accessory = [DTCustomColoredAccessory accessoryWithColor:cell.nameLabel.textColor];
     accessory.highlightedColor = [UIColor blueColor];
@@ -227,7 +235,7 @@
 
     //calculate the label size to fit the text with the font size
     CGSize labelSize = [cell.nameLabel.text sizeWithFont:cell.nameLabel.font
-                                       constrainedToSize:CGSizeMake(scrollViewWidth, tableView.rowHeight)
+                                       constrainedToSize:CGSizeMake(INT16_MAX,tableView.rowHeight)
                                            lineBreakMode:NSLineBreakByClipping];
     
 //    //build a new label that will hold all the text
@@ -247,16 +255,16 @@
     //Make sure that label is aligned with scrollView
     [cell.scrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
     
-    cell.scrollView.scrollEnabled = YES;
 
     if (labelSize.width>scrollViewWidth) {
-        cell.scrollView.bounces = YES;
+        cell.scrollView.hidden = NO;
+//        cell.nameLabel.hidden = NO;
+        cell.textLabel.hidden = YES;
     }
     else {
-        labelSize.width = scrollViewWidth - 1;
-//        cell.scrollView.bounces = NO;
-        //**********set the width constraint of the label equal to the scrollView
-        
+        cell.scrollView.hidden = YES;
+//        cell.nameLabel.hidden = YES;
+        cell.textLabel.hidden = NO;
     }
     
     return cell;

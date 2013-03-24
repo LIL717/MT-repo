@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12C60" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="1j9-19-lml">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12D78" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="1j9-19-lml">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
     </dependencies>
@@ -726,7 +726,6 @@
                                                 <constraint firstItem="An2-Fa-iiH" firstAttribute="centerX" secondItem="BEu-UQ-vTB" secondAttribute="centerX" type="user" id="6ic-Pe-rfj"/>
                                                 <constraint firstItem="Ka0-Cb-Mfz" firstAttribute="trailing" secondItem="BEu-UQ-vTB" secondAttribute="trailing" type="default" id="EXY-yI-Csc"/>
                                                 <constraint firstAttribute="bottom" secondItem="Ka0-Cb-Mfz" secondAttribute="bottom" type="user" id="End-E9-LTR"/>
-                                                <constraint firstItem="An2-Fa-iiH" firstAttribute="centerY" secondItem="BEu-UQ-vTB" secondAttribute="centerY" type="user" id="GEW-7D-Gy3"/>
                                                 <constraint firstItem="An2-Fa-iiH" firstAttribute="leading" secondItem="BEu-UQ-vTB" secondAttribute="leading" type="user" id="KO7-b2-Yri"/>
                                                 <constraint firstItem="Ka0-Cb-Mfz" firstAttribute="top" secondItem="BEu-UQ-vTB" secondAttribute="top" type="user" id="Lof-uB-SKt"/>
                                                 <constraint firstItem="Ka0-Cb-Mfz" firstAttribute="leading" secondItem="BEu-UQ-vTB" secondAttribute="leading" type="default" id="RUk-gU-yOE"/>
@@ -753,7 +752,7 @@
                                     <constraint firstItem="VCT-gA-fzU" firstAttribute="top" secondItem="DFq-ZQ-3yg" secondAttribute="top" type="default" id="7q2-y9-aQ7"/>
                                     <constraint firstItem="VCT-gA-fzU" firstAttribute="leading" secondItem="DFq-ZQ-3yg" secondAttribute="leading" type="user" id="QWu-Ih-HGR"/>
                                     <constraint firstItem="VCT-gA-fzU" firstAttribute="bottom" secondItem="DFq-ZQ-3yg" secondAttribute="bottom" type="default" id="YkK-CC-01Q"/>
-                                    <constraint firstItem="BEu-UQ-vTB" firstAttribute="leading" secondItem="DFq-ZQ-3yg" secondAttribute="leading" type="user" id="Yo9-zM-iV7"/>
+                                    <constraint firstItem="BEu-UQ-vTB" firstAttribute="leading" secondItem="DFq-ZQ-3yg" secondAttribute="leading" constant="10" type="user" id="Yo9-zM-iV7"/>
                                     <constraint firstItem="VCT-gA-fzU" firstAttribute="trailing" secondItem="DFq-ZQ-3yg" secondAttribute="trailing" type="user" id="j4m-r7-qRl"/>
                                     <constraint firstAttribute="bottom" secondItem="BEu-UQ-vTB" secondAttribute="bottom" type="user" id="pT9-MN-89o"/>
                                     <constraint firstItem="jfz-Q5-l6V" firstAttribute="bottom" secondItem="DFq-ZQ-3yg" secondAttribute="bottom" type="default" id="qDx-rL-B69"/>
@@ -1054,16 +1053,187 @@
         <image name="infoSelectedButtonImage.png" width="40" height="40"/>
         <image name="list-background.png" width="320" height="77"/>
     </resources>
+    <classes>
+        <class className="AlbumInfoViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/AlbumInfoViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="albumImageView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="infoTableView" candidateClass="UITableView"/>
+            </relationships>
+        </class>
+        <class className="AutoScrollLabel" superclassName="UIScrollView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/AutoScrollLabel.h"/>
+        </class>
+        <class className="CollectionItemCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/CollectionItemCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="centerXInScrollView" candidateClass="NSLayoutConstraint"/>
+                <relationship kind="outlet" name="durationLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="scrollView" candidateClass="InCellScrollView"/>
+                <relationship kind="outlet" name="scrollViewToCellConstraint" candidateClass="NSLayoutConstraint"/>
+            </relationships>
+        </class>
+        <class className="CollectionViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/CollectionViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="collectionTableView" candidateClass="UITableView"/>
+            </relationships>
+        </class>
+        <class className="ITunesCommentsViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ITunesCommentsViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="comments" candidateClass="UITextView"/>
+            </relationships>
+        </class>
+        <class className="ITunesInfoViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ITunesInfoViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="bpm" candidateClass="NSString"/>
+                <relationship kind="outlet" name="infoTableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="lastPlayedDate" candidateClass="NSString"/>
+                <relationship kind="outlet" name="userGrouping" candidateClass="NSString"/>
+            </relationships>
+        </class>
+        <class className="InCellScrollView" superclassName="UIScrollView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/InCellScrollView.h"/>
+        </class>
+        <class className="InfoTabBarController" superclassName="UITabBarController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/InfoTabBarController.h"/>
+        </class>
+        <class className="InitialViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/InitialViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="choosePlaylist:"/>
+                <relationship kind="outlet" name="choosePlaylist" candidateClass="UIButton"/>
+            </relationships>
+        </class>
+        <class className="MPVolumeView" superclassName="UIView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MPVolumeView.h"/>
+        </class>
+        <class className="MainViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MainViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="handleScrub:"/>
+                <relationship kind="action" name="handleScrubberTouchDown:"/>
+                <relationship kind="action" name="handleScrubberTouchUp:"/>
+                <relationship kind="action" name="magnifyElapsedTime:"/>
+                <relationship kind="action" name="magnifyRemainingTime:"/>
+                <relationship kind="action" name="nextSongTapDetected:" candidateClass="UITapGestureRecognizer"/>
+                <relationship kind="action" name="nowPlayingTapDetected:" candidateClass="UITapGestureRecognizer"/>
+                <relationship kind="action" name="playPause:"/>
+                <relationship kind="action" name="repeatModeChanged:"/>
+                <relationship kind="action" name="shuffleModeChanged:"/>
+                <relationship kind="action" name="skipBack:"/>
+                <relationship kind="action" name="skipForward:"/>
+                <relationship kind="outlet" name="elapsedTimeLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="forwardButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="initialNowPlayingLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="leadingSpaceToSliderConstraint" candidateClass="NSLayoutConstraint"/>
+                <relationship kind="outlet" name="nextLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="nextSongLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="nextSongLabelWidthConstraint" candidateClass="NSLayoutConstraint"/>
+                <relationship kind="outlet" name="nextSongScrollView" candidateClass="UIScrollView"/>
+                <relationship kind="outlet" name="nowPlayingInfoButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="nowPlayingLabel" candidateClass="AutoScrollLabel"/>
+                <relationship kind="outlet" name="playButtonToBottomSpace" candidateClass="NSLayoutConstraint"/>
+                <relationship kind="outlet" name="playPauseButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="playerButtonConstraint" candidateClass="NSLayoutConstraint"/>
+                <relationship kind="outlet" name="progressSlider" candidateClass="OBSlider"/>
+                <relationship kind="outlet" name="remainingTimeLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="repeatButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="rewindButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="shuffleButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="topSpaceToPlayButton" candidateClass="NSLayoutConstraint"/>
+                <relationship kind="outlet" name="trailingSpaceFromSliderConstraint" candidateClass="NSLayoutConstraint"/>
+                <relationship kind="outlet" name="verticalSpaceBetweenRewindAndReplay" candidateClass="NSLayoutConstraint"/>
+                <relationship kind="outlet" name="verticalSpaceBetweenSliderAndElapsedTime" candidateClass="NSLayoutConstraint"/>
+                <relationship kind="outlet" name="verticalSpaceBetweenSliderAndRemainingTime" candidateClass="NSLayoutConstraint"/>
+                <relationship kind="outlet" name="volumeView" candidateClass="MPVolumeView"/>
+            </relationships>
+        </class>
+        <class className="MediaGroupCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MediaGroupCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="MediaGroupViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MediaGroupViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="groupTableView" candidateClass="UITableView"/>
+            </relationships>
+        </class>
+        <class className="NSLayoutConstraint" superclassName="NSObject">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
+        </class>
+        <class className="OBSlider" superclassName="UISlider">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/OBSlider.h"/>
+        </class>
+        <class className="SongCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SongCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="centerXAlignmentConstraint" candidateClass="NSLayoutConstraint"/>
+                <relationship kind="outlet" name="durationLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="infoBackground" candidateClass="UIView"/>
+                <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="playingIndicator" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="scrollView" candidateClass="InCellScrollView"/>
+                <relationship kind="outlet" name="scrollViewToCellConstraint" candidateClass="NSLayoutConstraint"/>
+            </relationships>
+        </class>
+        <class className="SongInfoCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SongInfoCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
+            </relationships>
+        </class>
+        <class className="SongViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SongViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="songTableView" candidateClass="UITableView"/>
+            </relationships>
+        </class>
+        <class className="TextMagnifierViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/TextMagnifierViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="swipeDownDetected:" candidateClass="UISwipeGestureRecognizer"/>
+                <relationship kind="action" name="swipeUpDetected:" candidateClass="UISwipeGestureRecognizer"/>
+                <relationship kind="action" name="tapDetected:" candidateClass="UITapGestureRecognizer"/>
+                <relationship kind="outlet" name="magnifiedLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
+            </relationships>
+        </class>
+        <class className="TimeMagnifierViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/TimeMagnifierViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="cancel:"/>
+                <relationship kind="outlet" name="magnifiedText" candidateClass="UIButton"/>
+            </relationships>
+        </class>
+        <class className="UserInfoViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/UserInfoViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="comments" candidateClass="UITextView"/>
+                <relationship kind="outlet" name="keyboardHeight" candidateClass="NSLayoutConstraint"/>
+                <relationship kind="outlet" name="placeholderLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="userGrouping" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="verticalSpaceTopToCommentsConstraint" candidateClass="NSLayoutConstraint"/>
+                <relationship kind="outlet" name="verticalSpaceTopToGroupingConstraint" candidateClass="NSLayoutConstraint"/>
+            </relationships>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="uzR-Fh-xG0"/>
-        <segue reference="nbU-Bw-UO3"/>
-        <segue reference="Y3b-rb-AIT"/>
         <segue reference="AZe-Nd-Xxh"/>
-        <segue reference="pO3-jk-z6Z"/>
+        <segue reference="oc8-HG-QrB"/>
+        <segue reference="Y3b-rb-AIT"/>
+        <segue reference="SvT-2g-rDr"/>
+        <segue reference="uzR-Fh-xG0"/>
     </inferredMetricsTieBreakers>
 </document>
