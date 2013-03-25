@@ -18,6 +18,8 @@
 //@synthesize BPM;
 @synthesize scrollViewToCellConstraint;
 @synthesize centerXAlignmentConstraint;
+@synthesize centerYAlignmentConstraint;
+@synthesize xOffset;
 
 
 
@@ -37,5 +39,12 @@
 
     // Configure the view for the selected state
 }
-
+- (void) layoutSubviews
+{
+    [super layoutSubviews];
+    CGRect textLabelFrame = self.textLabel.frame;
+    textLabelFrame.origin.x += self.xOffset;
+    textLabelFrame.size.width -= self.xOffset;
+    self.textLabel.frame = textLabelFrame;
+}
 @end

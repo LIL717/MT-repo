@@ -174,14 +174,7 @@
         if (cell.nameLabel.text == nil) {
             cell.nameLabel.text = @"Unknown";
         }
-        //set the textLabel to the same thing - it is used if the text does not need to scroll
-        UIFont *font = [UIFont systemFontOfSize:12];
-        UIFont *newFont = [font fontWithSize:44];
-        cell.textLabel.font = newFont;
-        cell.textLabel.textColor = [UIColor whiteColor];
-        cell.textLabel.highlightedTextColor = [UIColor blueColor];
-        cell.textLabel.backgroundColor = [UIColor clearColor];
-        cell.textLabel.text = cell.nameLabel.text;
+
         
         //get the duration of the the playlist
         if (isPortrait) {
@@ -197,8 +190,16 @@
             cell.durationLabel.text = [NSString stringWithFormat:@"%2d:%02d", playlistMinutes, playlistSeconds];
 //            [cell.textLabel addSubView:cell.durationLabel];
         }
-    }
 
+    }
+    //set the textLabel to the same thing - it is used if the text does not need to scroll
+    UIFont *font = [UIFont systemFontOfSize:12];
+    UIFont *newFont = [font fontWithSize:44];
+    cell.textLabel.font = newFont;
+    cell.textLabel.textColor = [UIColor whiteColor];
+    cell.textLabel.highlightedTextColor = [UIColor blueColor];
+    cell.textLabel.backgroundColor = [UIColor clearColor];
+    cell.textLabel.text = cell.nameLabel.text;
     
     DTCustomColoredAccessory *accessory = [DTCustomColoredAccessory accessoryWithColor:cell.nameLabel.textColor];
     accessory.highlightedColor = [UIColor blueColor];
@@ -258,12 +259,10 @@
 
     if (labelSize.width>scrollViewWidth) {
         cell.scrollView.hidden = NO;
-//        cell.nameLabel.hidden = NO;
         cell.textLabel.hidden = YES;
     }
     else {
         cell.scrollView.hidden = YES;
-//        cell.nameLabel.hidden = YES;
         cell.textLabel.hidden = NO;
     }
     

@@ -113,7 +113,6 @@
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
     
     [self updateLayoutForNewOrientation: orientation];
-    [self.songTableView reloadData];
     
 }
 - (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
@@ -128,11 +127,12 @@
         for (NSIndexPath *index in indexes) {
             if (index.row == 0) {
                 [self.songTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-                return;
             }
             
         }
     }
+    [self.songTableView reloadData];
+
 }
 - (void) viewWillLayoutSubviews {
         //need this to pin portrait view to bounds otherwise if start in landscape, push to next view, rotate to portrait then pop back the original view in portrait - it will be too wide and "scroll" horizontally
@@ -162,6 +162,7 @@
 	SongCell *cell = (SongCell *)[tableView
                                           dequeueReusableCellWithIdentifier:@"SongCell"];
     
+    cell.xOffset = 8.0;
     MPMediaItem *song = [self.collectionItem.collectionArray objectAtIndex:indexPath.row];
     BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
 
@@ -232,6 +233,14 @@
     cell.scrollViewToCellConstraint.constant = contraintConstant;
     
     cell.nameLabel.text = [song valueForProperty:  MPMediaItemPropertyTitle];
+    //set the textLabel to the same thing - it is used if the text does not need to scroll
+    UIFont *font = [UIFont systemFontOfSize:12];
+    UIFont *newFont = [font fontWithSize:44];
+    cell.textLabel.font = newFont;
+    cell.textLabel.textColor = [UIColor whiteColor];
+    cell.textLabel.highlightedTextColor = [UIColor blueColor];
+    cell.textLabel.backgroundColor = [UIColor clearColor];
+    cell.textLabel.text = cell.nameLabel.text;
 
     [cell.scrollView removeConstraint:cell.centerXAlignmentConstraint];
     //calculate the label size to fit the text with the font size
@@ -247,7 +256,7 @@
     NSUInteger scrollViewWidth;
     
     if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
-        scrollViewWidth = (tableView.frame.size.width - 27 - cell.accessoryView.frame.size.width);
+        scrollViewWidth = (tableView.frame.size.width - 28 - cell.accessoryView.frame.size.width);
     } else {
         scrollViewWidth = (tableView.frame.size.width - 24 - 111 - cell.accessoryView.frame.size.width);
     }
@@ -258,10 +267,16 @@
     //        NSLog (@"scrollEnabled");
 
     if (labelSize.width>scrollViewWidth) {
-        cell.scrollView.bounces = YES;
+        cell.scrollView.hidden = NO;
+        cell.textLabel.hidden = YES;
+        [cell.scrollView addConstraint:cell.centerYAlignmentConstraint];
+
     }
     else {
-        cell.scrollView.bounces = NO;
+        cell.scrollView.hidden = YES;
+        cell.textLabel.hidden = NO;
+        [cell.scrollView removeConstraint:cell.centerYAlignmentConstraint];
+
     }
     return cell;
 }

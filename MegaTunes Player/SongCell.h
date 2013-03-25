@@ -17,7 +17,8 @@
 @property (strong, nonatomic) IBOutlet UIView *infoBackground;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *scrollViewToCellConstraint;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *centerXAlignmentConstraint;
-
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *centerYAlignmentConstraint;
+@property (nonatomic) CGFloat xOffset;
 
 
 

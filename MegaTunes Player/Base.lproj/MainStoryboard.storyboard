@@ -13,6 +13,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                        <inset key="scrollIndicatorInsets" minX="1" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <color key="separatorColor" white="0.80000000000000004" alpha="1" colorSpace="deviceWhite"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" restorationIdentifier="SongCell" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="SongCell" rowHeight="55" id="fy5-n4-fQP" userLabel="cell" customClass="SongCell">
@@ -42,8 +43,8 @@
                                                 <constraint firstAttribute="centerY" secondItem="e09-6C-UeW" secondAttribute="centerY" type="user" id="8y9-8S-J80"/>
                                                 <constraint firstItem="e09-6C-UeW" firstAttribute="leading" secondItem="EZG-Q9-yHA" secondAttribute="leading" type="user" id="JMZ-KI-x0O"/>
                                                 <constraint firstItem="SVb-KX-c1T" firstAttribute="leading" secondItem="EZG-Q9-yHA" secondAttribute="leading" type="user" id="NRb-fg-poR"/>
+                                                <constraint firstItem="SVb-KX-c1T" firstAttribute="bottom" secondItem="EZG-Q9-yHA" secondAttribute="bottom" type="default" id="Ro2-eC-nG3"/>
                                                 <constraint firstItem="e09-6C-UeW" firstAttribute="trailing" secondItem="EZG-Q9-yHA" secondAttribute="trailing" type="default" id="YvB-xp-0Jz"/>
-                                                <constraint firstItem="SVb-KX-c1T" firstAttribute="centerY" secondItem="EZG-Q9-yHA" secondAttribute="centerY" type="user" id="gTm-lf-BiR"/>
                                                 <constraint firstItem="SVb-KX-c1T" firstAttribute="trailing" secondItem="EZG-Q9-yHA" secondAttribute="trailing" type="default" id="hw9-Kv-UJi"/>
                                                 <constraint firstItem="SVb-KX-c1T" firstAttribute="top" secondItem="EZG-Q9-yHA" secondAttribute="top" type="user" id="i0k-14-8j5"/>
                                                 <constraint firstItem="e09-6C-UeW" firstAttribute="bottom" secondItem="EZG-Q9-yHA" secondAttribute="bottom" type="default" id="jD6-rA-0cz"/>
@@ -76,6 +77,7 @@
                                 </constraints>
                                 <connections>
                                     <outlet property="centerXAlignmentConstraint" destination="6hf-wx-Qtm" id="4jd-Hq-isz"/>
+                                    <outlet property="centerYAlignmentConstraint" destination="8y9-8S-J80" id="7H6-MG-aCC"/>
                                     <outlet property="durationLabel" destination="9Je-hu-yhg" id="RmS-bV-NaJ"/>
                                     <outlet property="nameLabel" destination="e09-6C-UeW" id="3lF-FX-uw6"/>
                                     <outlet property="playingIndicator" destination="2sQ-Rj-GH3" id="O29-nE-7af"/>
@@ -846,11 +848,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="300" height="54"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="list-background.png" translatesAutoresizingMaskIntoConstraints="NO" id="NO0-Fe-bnN">
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="480" id="alN-1q-WOZ"/>
-                                            </constraints>
-                                        </imageView>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="list-background.png" translatesAutoresizingMaskIntoConstraints="NO" id="NO0-Fe-bnN"/>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Group" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ohl-C1-tHe">
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="460" id="CTA-Vc-lnV"/>
@@ -865,9 +863,10 @@
                                 <constraints>
                                     <constraint firstItem="Ohl-C1-tHe" firstAttribute="leading" secondItem="CCK-8o-IkS" secondAttribute="leading" constant="6" id="18S-QT-pQQ"/>
                                     <constraint firstItem="Ohl-C1-tHe" firstAttribute="top" secondItem="CCK-8o-IkS" secondAttribute="top" type="default" id="2Za-Ri-rRu"/>
+                                    <constraint firstItem="NO0-Fe-bnN" firstAttribute="leading" secondItem="CCK-8o-IkS" secondAttribute="leading" type="user" id="2s8-tS-iIU"/>
                                     <constraint firstItem="NO0-Fe-bnN" firstAttribute="top" secondItem="CCK-8o-IkS" secondAttribute="top" type="default" id="Sbq-cF-Abi"/>
                                     <constraint firstItem="NO0-Fe-bnN" firstAttribute="bottom" secondItem="CCK-8o-IkS" secondAttribute="bottom" type="default" id="X4Q-FQ-N0U"/>
-                                    <constraint firstItem="NO0-Fe-bnN" firstAttribute="leading" secondItem="CCK-8o-IkS" secondAttribute="leading" type="default" id="wx3-Gl-h4R"/>
+                                    <constraint firstAttribute="trailing" secondItem="NO0-Fe-bnN" secondAttribute="trailing" type="user" id="vvF-L5-x1L"/>
                                 </constraints>
                                 <connections>
                                     <outlet property="nameLabel" destination="Ohl-C1-tHe" id="dRZ-WF-ajI"/>
@@ -1174,6 +1173,7 @@
             <source key="sourceIdentifier" type="project" relativePath="./Classes/SongCell.h"/>
             <relationships>
                 <relationship kind="outlet" name="centerXAlignmentConstraint" candidateClass="NSLayoutConstraint"/>
+                <relationship kind="outlet" name="centerYAlignmentConstraint" candidateClass="NSLayoutConstraint"/>
                 <relationship kind="outlet" name="durationLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="infoBackground" candidateClass="UIView"/>
                 <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
@@ -1192,6 +1192,7 @@
         <class className="SongViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/SongViewController.h"/>
             <relationships>
+                <relationship kind="action" name="infoButtonTapped:event:"/>
                 <relationship kind="outlet" name="songTableView" candidateClass="UITableView"/>
             </relationships>
         </class>
@@ -1230,10 +1231,10 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="AZe-Nd-Xxh"/>
-        <segue reference="oc8-HG-QrB"/>
+        <segue reference="uzR-Fh-xG0"/>
+        <segue reference="nbU-Bw-UO3"/>
         <segue reference="Y3b-rb-AIT"/>
         <segue reference="SvT-2g-rDr"/>
-        <segue reference="uzR-Fh-xG0"/>
+        <segue reference="AZe-Nd-Xxh"/>
     </inferredMetricsTieBreakers>
 </document>
