@@ -884,6 +884,7 @@
                         <segue destination="SKu-HW-GrJ" kind="push" identifier="ViewNowPlaying" id="cs7-xB-URz"/>
                         <segue destination="DPV-A8-OP5" kind="push" identifier="ViewCollections" id="alZ-vp-mjH"/>
                         <segue destination="mNb-57-5Xm" kind="push" identifier="ViewSongCollection" id="ZlS-b1-pog"/>
+                        <segue destination="527-b6-fAN" kind="push" identifier="AlbumCollections" id="hot-4h-GjM"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eMR-Vj-Zhh" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1040,6 +1041,123 @@
             </objects>
             <point key="canvasLocation" x="1537" y="-148"/>
         </scene>
+        <!--Album View Controller-->
+        <scene sceneID="bwP-yX-pq9">
+            <objects>
+                <viewController id="527-b6-fAN" customClass="AlbumViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" rowHeight="55" sectionHeaderHeight="22" sectionFooterHeight="22" id="oc8-bL-YeY">
+                        <rect key="frame" x="0.0" y="64" width="480" height="256"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                        <color key="separatorColor" white="0.80000000000000004" alpha="1" colorSpace="deviceWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" shouldIndentWhileEditing="NO" rowHeight="55" id="zlN-LW-zNI" userLabel="AllSongsCell">
+                                <rect key="frame" x="0.0" y="22" width="480" height="55"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="460" height="54"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="list-background.png" translatesAutoresizingMaskIntoConstraints="NO" id="7nD-R0-iDC" userLabel="bkgImage">
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="480" id="6JG-hi-xUY"/>
+                                            </constraints>
+                                        </imageView>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                                <accessibility key="accessibilityConfiguration">
+                                    <accessibilityTraits key="traits" none="YES" staticText="YES"/>
+                                </accessibility>
+                                <constraints>
+                                    <constraint firstItem="7nD-R0-iDC" firstAttribute="leading" secondItem="zlN-LW-zNI" secondAttribute="leading" type="user" id="P5E-jG-1j8"/>
+                                    <constraint firstItem="7nD-R0-iDC" firstAttribute="bottom" secondItem="zlN-LW-zNI" secondAttribute="bottom" type="default" id="mdb-c3-uZe"/>
+                                    <constraint firstItem="7nD-R0-iDC" firstAttribute="top" secondItem="zlN-LW-zNI" secondAttribute="top" type="default" id="pmh-nT-sxj"/>
+                                </constraints>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="CollectionItemCell" rowHeight="55" id="WIN-8k-Cc9" userLabel="cell" customClass="CollectionItemCell">
+                                <rect key="frame" x="0.0" y="77" width="480" height="55"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="460" height="54"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="list-background.png" translatesAutoresizingMaskIntoConstraints="NO" id="DQO-If-dVP" userLabel="bkgImage"/>
+                                        <scrollView clipsSubviews="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9aX-f3-0ln" userLabel="scrollView" customClass="InCellScrollView">
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="list-background.png" translatesAutoresizingMaskIntoConstraints="NO" id="P6x-zt-QXa"/>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Album Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FPI-Oo-UfO" userLabel="cTitleLabel">
+                                                    <fontDescription key="fontDescription" type="system" pointSize="44"/>
+                                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                                    <color key="highlightedColor" red="0.070588238540000001" green="0.1176470667" blue="1" alpha="1" colorSpace="deviceRGB"/>
+                                                </label>
+                                            </subviews>
+                                            <gestureRecognizers/>
+                                            <constraints>
+                                                <constraint firstItem="FPI-Oo-UfO" firstAttribute="trailing" secondItem="9aX-f3-0ln" secondAttribute="trailing" type="default" id="0cZ-ZB-Gzr"/>
+                                                <constraint firstItem="P6x-zt-QXa" firstAttribute="bottom" secondItem="9aX-f3-0ln" secondAttribute="bottom" type="user" id="6hE-Bu-K3z"/>
+                                                <constraint firstAttribute="bottom" secondItem="FPI-Oo-UfO" secondAttribute="bottom" type="user" id="Jnr-Er-7gH"/>
+                                                <constraint firstItem="FPI-Oo-UfO" firstAttribute="top" secondItem="9aX-f3-0ln" secondAttribute="top" type="user" id="L5q-lq-jfm"/>
+                                                <constraint firstItem="P6x-zt-QXa" firstAttribute="trailing" secondItem="9aX-f3-0ln" secondAttribute="trailing" type="default" id="X2s-fl-Yns"/>
+                                                <constraint firstItem="P6x-zt-QXa" firstAttribute="centerX" secondItem="9aX-f3-0ln" secondAttribute="centerX" type="user" id="YET-0a-hxf"/>
+                                                <constraint firstItem="FPI-Oo-UfO" firstAttribute="centerY" secondItem="9aX-f3-0ln" secondAttribute="centerY" type="user" id="d1u-T6-5nk"/>
+                                                <constraint firstItem="P6x-zt-QXa" firstAttribute="leading" secondItem="9aX-f3-0ln" secondAttribute="leading" type="user" id="exB-AM-U9u"/>
+                                                <constraint firstItem="P6x-zt-QXa" firstAttribute="top" secondItem="9aX-f3-0ln" secondAttribute="top" type="user" id="iYq-Qs-C89"/>
+                                                <constraint firstItem="FPI-Oo-UfO" firstAttribute="leading" secondItem="9aX-f3-0ln" secondAttribute="leading" type="default" id="mdY-vJ-Lmr"/>
+                                            </constraints>
+                                        </scrollView>
+                                        <label opaque="NO" clipsSubviews="YES" contentMode="left" text="000:00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="22" translatesAutoresizingMaskIntoConstraints="NO" id="P6Y-cL-7cG" userLabel="duration">
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="130" type="user" id="0eU-hn-3rg"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="44"/>
+                                            <color key="textColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="highlightedColor" red="0.070588238540000001" green="0.1176470667" blue="1" alpha="1" colorSpace="deviceRGB"/>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                                <constraints>
+                                    <constraint firstItem="DQO-If-dVP" firstAttribute="trailing" secondItem="WIN-8k-Cc9" secondAttribute="trailing" type="user" id="BYW-gn-sms"/>
+                                    <constraint firstAttribute="bottom" secondItem="9aX-f3-0ln" secondAttribute="bottom" type="user" id="E0S-Ol-08V"/>
+                                    <constraint firstAttribute="trailing" secondItem="P6Y-cL-7cG" secondAttribute="trailing" constant="30" type="user" id="K9x-hN-TSy"/>
+                                    <constraint firstItem="P6Y-cL-7cG" firstAttribute="bottom" secondItem="WIN-8k-Cc9" secondAttribute="bottom" type="default" id="MMM-Kq-MNk"/>
+                                    <constraint firstItem="DQO-If-dVP" firstAttribute="leading" secondItem="WIN-8k-Cc9" secondAttribute="leading" type="user" id="TaG-4b-gVk"/>
+                                    <constraint firstItem="P6Y-cL-7cG" firstAttribute="top" secondItem="WIN-8k-Cc9" secondAttribute="top" type="user" id="U4K-Er-Jbu"/>
+                                    <constraint firstItem="DQO-If-dVP" firstAttribute="top" secondItem="WIN-8k-Cc9" secondAttribute="top" type="default" id="VPb-Vi-wHm"/>
+                                    <constraint firstAttribute="trailing" secondItem="9aX-f3-0ln" secondAttribute="trailing" constant="168" type="user" id="cdM-Xu-K4m"/>
+                                    <constraint firstItem="DQO-If-dVP" firstAttribute="bottom" secondItem="WIN-8k-Cc9" secondAttribute="bottom" type="default" id="f7i-wn-gC2"/>
+                                    <constraint firstItem="9aX-f3-0ln" firstAttribute="top" secondItem="WIN-8k-Cc9" secondAttribute="top" type="user" id="iwf-B8-FhS"/>
+                                    <constraint firstItem="9aX-f3-0ln" firstAttribute="leading" secondItem="WIN-8k-Cc9" secondAttribute="leading" constant="10" type="user" id="uie-0f-nHU"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="centerXInScrollView" destination="YET-0a-hxf" id="V3T-hv-RoE"/>
+                                    <outlet property="durationLabel" destination="P6Y-cL-7cG" id="2DI-eh-MKo"/>
+                                    <outlet property="nameLabel" destination="FPI-Oo-UfO" id="sgD-IY-TXD"/>
+                                    <outlet property="scrollView" destination="9aX-f3-0ln" id="bKp-4y-xEH"/>
+                                    <outlet property="scrollViewToCellConstraint" destination="cdM-Xu-K4m" id="Cf6-XR-pFW"/>
+                                    <segue destination="mNb-57-5Xm" kind="push" identifier="ViewSongs" id="Whi-Ye-4AG"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="527-b6-fAN" id="0UW-iw-gup"/>
+                            <outlet property="delegate" destination="527-b6-fAN" id="RPL-Bl-CQb"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="BRm-bg-dgx"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    <connections>
+                        <outlet property="collectionTableView" destination="oc8-bL-YeY" id="skv-hY-J8U"/>
+                        <segue destination="SKu-HW-GrJ" kind="push" identifier="ViewNowPlaying" id="M8w-G2-QEj"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="h82-kO-Sv2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="24" y="-560"/>
+        </scene>
     </scenes>
     <resources>
         <image name="bigforward.png" width="64" height="60"/>
@@ -1052,189 +1170,16 @@
         <image name="infoSelectedButtonImage.png" width="40" height="40"/>
         <image name="list-background.png" width="320" height="77"/>
     </resources>
-    <classes>
-        <class className="AlbumInfoViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/AlbumInfoViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="albumImageView" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="infoTableView" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-        <class className="AutoScrollLabel" superclassName="UIScrollView">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/AutoScrollLabel.h"/>
-        </class>
-        <class className="CollectionItemCell" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/CollectionItemCell.h"/>
-            <relationships>
-                <relationship kind="outlet" name="centerXInScrollView" candidateClass="NSLayoutConstraint"/>
-                <relationship kind="outlet" name="durationLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="scrollView" candidateClass="InCellScrollView"/>
-                <relationship kind="outlet" name="scrollViewToCellConstraint" candidateClass="NSLayoutConstraint"/>
-            </relationships>
-        </class>
-        <class className="CollectionViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/CollectionViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="collectionTableView" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-        <class className="ITunesCommentsViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ITunesCommentsViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="comments" candidateClass="UITextView"/>
-            </relationships>
-        </class>
-        <class className="ITunesInfoViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ITunesInfoViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="bpm" candidateClass="NSString"/>
-                <relationship kind="outlet" name="infoTableView" candidateClass="UITableView"/>
-                <relationship kind="outlet" name="lastPlayedDate" candidateClass="NSString"/>
-                <relationship kind="outlet" name="userGrouping" candidateClass="NSString"/>
-            </relationships>
-        </class>
-        <class className="InCellScrollView" superclassName="UIScrollView">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/InCellScrollView.h"/>
-        </class>
-        <class className="InfoTabBarController" superclassName="UITabBarController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/InfoTabBarController.h"/>
-        </class>
-        <class className="InitialViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/InitialViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="choosePlaylist:"/>
-                <relationship kind="outlet" name="choosePlaylist" candidateClass="UIButton"/>
-            </relationships>
-        </class>
-        <class className="MPVolumeView" superclassName="UIView">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MPVolumeView.h"/>
-        </class>
-        <class className="MainViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MainViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="handleScrub:"/>
-                <relationship kind="action" name="handleScrubberTouchDown:"/>
-                <relationship kind="action" name="handleScrubberTouchUp:"/>
-                <relationship kind="action" name="magnifyElapsedTime:"/>
-                <relationship kind="action" name="magnifyRemainingTime:"/>
-                <relationship kind="action" name="nextSongTapDetected:" candidateClass="UITapGestureRecognizer"/>
-                <relationship kind="action" name="nowPlayingTapDetected:" candidateClass="UITapGestureRecognizer"/>
-                <relationship kind="action" name="playPause:"/>
-                <relationship kind="action" name="repeatModeChanged:"/>
-                <relationship kind="action" name="shuffleModeChanged:"/>
-                <relationship kind="action" name="skipBack:"/>
-                <relationship kind="action" name="skipForward:"/>
-                <relationship kind="outlet" name="elapsedTimeLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="forwardButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="initialNowPlayingLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="leadingSpaceToSliderConstraint" candidateClass="NSLayoutConstraint"/>
-                <relationship kind="outlet" name="nextLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="nextSongLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="nextSongLabelWidthConstraint" candidateClass="NSLayoutConstraint"/>
-                <relationship kind="outlet" name="nextSongScrollView" candidateClass="UIScrollView"/>
-                <relationship kind="outlet" name="nowPlayingInfoButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="nowPlayingLabel" candidateClass="AutoScrollLabel"/>
-                <relationship kind="outlet" name="playButtonToBottomSpace" candidateClass="NSLayoutConstraint"/>
-                <relationship kind="outlet" name="playPauseButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="playerButtonConstraint" candidateClass="NSLayoutConstraint"/>
-                <relationship kind="outlet" name="progressSlider" candidateClass="OBSlider"/>
-                <relationship kind="outlet" name="remainingTimeLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="repeatButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="rewindButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="shuffleButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="topSpaceToPlayButton" candidateClass="NSLayoutConstraint"/>
-                <relationship kind="outlet" name="trailingSpaceFromSliderConstraint" candidateClass="NSLayoutConstraint"/>
-                <relationship kind="outlet" name="verticalSpaceBetweenRewindAndReplay" candidateClass="NSLayoutConstraint"/>
-                <relationship kind="outlet" name="verticalSpaceBetweenSliderAndElapsedTime" candidateClass="NSLayoutConstraint"/>
-                <relationship kind="outlet" name="verticalSpaceBetweenSliderAndRemainingTime" candidateClass="NSLayoutConstraint"/>
-                <relationship kind="outlet" name="volumeView" candidateClass="MPVolumeView"/>
-            </relationships>
-        </class>
-        <class className="MediaGroupCell" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MediaGroupCell.h"/>
-            <relationships>
-                <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="MediaGroupViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MediaGroupViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="groupTableView" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-        <class className="NSLayoutConstraint" superclassName="NSObject">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
-        </class>
-        <class className="OBSlider" superclassName="UISlider">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/OBSlider.h"/>
-        </class>
-        <class className="SongCell" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SongCell.h"/>
-            <relationships>
-                <relationship kind="outlet" name="centerXAlignmentConstraint" candidateClass="NSLayoutConstraint"/>
-                <relationship kind="outlet" name="centerYAlignmentConstraint" candidateClass="NSLayoutConstraint"/>
-                <relationship kind="outlet" name="durationLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="infoBackground" candidateClass="UIView"/>
-                <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="playingIndicator" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="scrollView" candidateClass="InCellScrollView"/>
-                <relationship kind="outlet" name="scrollViewToCellConstraint" candidateClass="NSLayoutConstraint"/>
-            </relationships>
-        </class>
-        <class className="SongInfoCell" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SongInfoCell.h"/>
-            <relationships>
-                <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
-            </relationships>
-        </class>
-        <class className="SongViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SongViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="infoButtonTapped:event:"/>
-                <relationship kind="outlet" name="songTableView" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-        <class className="TextMagnifierViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/TextMagnifierViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="swipeDownDetected:" candidateClass="UISwipeGestureRecognizer"/>
-                <relationship kind="action" name="swipeUpDetected:" candidateClass="UISwipeGestureRecognizer"/>
-                <relationship kind="action" name="tapDetected:" candidateClass="UITapGestureRecognizer"/>
-                <relationship kind="outlet" name="magnifiedLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
-            </relationships>
-        </class>
-        <class className="TimeMagnifierViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/TimeMagnifierViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="cancel:"/>
-                <relationship kind="outlet" name="magnifiedText" candidateClass="UIButton"/>
-            </relationships>
-        </class>
-        <class className="UserInfoViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/UserInfoViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="comments" candidateClass="UITextView"/>
-                <relationship kind="outlet" name="keyboardHeight" candidateClass="NSLayoutConstraint"/>
-                <relationship kind="outlet" name="placeholderLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="userGrouping" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="verticalSpaceTopToCommentsConstraint" candidateClass="NSLayoutConstraint"/>
-                <relationship kind="outlet" name="verticalSpaceTopToGroupingConstraint" candidateClass="NSLayoutConstraint"/>
-            </relationships>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="uzR-Fh-xG0"/>
-        <segue reference="nbU-Bw-UO3"/>
-        <segue reference="Y3b-rb-AIT"/>
-        <segue reference="SvT-2g-rDr"/>
+        <segue reference="M8w-G2-QEj"/>
+        <segue reference="Whi-Ye-4AG"/>
         <segue reference="AZe-Nd-Xxh"/>
+        <segue reference="uzR-Fh-xG0"/>
+        <segue reference="SvT-2g-rDr"/>
     </inferredMetricsTieBreakers>
 </document>

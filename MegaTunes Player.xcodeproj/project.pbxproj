@@ -148,6 +148,8 @@
 		70AB1ECE16E982C50019B789 /* black-button@2x copy.png in Resources */ = {isa = PBXBuildFile; fileRef = 70AB1ECC16E982C40019B789 /* black-button@2x copy.png */; };
 		70ADDC1F1614178500219873 /* CollectionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 70ADDC1E1614178500219873 /* CollectionItem.m */; };
 		70ADDC33161AC09C00219873 /* InitialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70ADDC32161AC09C00219873 /* InitialViewController.m */; };
+		70BAC6251700C9A100C39980 /* AlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BAC6241700C9A000C39980 /* AlbumViewController.m */; };
+		70BAC6281701434100C39980 /* AllSongsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BAC6271701434100C39980 /* AllSongsCell.m */; };
 		70C1779E166DB86A00792D8F /* UIImage+AdditionalFunctionalities.m in Sources */ = {isa = PBXBuildFile; fileRef = 70C1779D166DB86A00792D8F /* UIImage+AdditionalFunctionalities.m */; };
 		70C177A5166EC67A00792D8F /* selection-tab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70C177A4166EC67A00792D8F /* selection-tab@2x.png */; };
 		70C177A7166EC6B400792D8F /* selection-tab.png in Resources */ = {isa = PBXBuildFile; fileRef = 70C177A6166EC6B400792D8F /* selection-tab.png */; };
@@ -379,6 +381,10 @@
 		70ADDC1E1614178500219873 /* CollectionItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionItem.m; sourceTree = "<group>"; };
 		70ADDC31161AC09B00219873 /* InitialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InitialViewController.h; sourceTree = "<group>"; };
 		70ADDC32161AC09C00219873 /* InitialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InitialViewController.m; sourceTree = "<group>"; };
+		70BAC6231700C99E00C39980 /* AlbumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumViewController.h; sourceTree = "<group>"; };
+		70BAC6241700C9A000C39980 /* AlbumViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumViewController.m; sourceTree = "<group>"; };
+		70BAC6261701434000C39980 /* AllSongsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllSongsCell.h; sourceTree = "<group>"; };
+		70BAC6271701434100C39980 /* AllSongsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllSongsCell.m; sourceTree = "<group>"; };
 		70C1779C166DB86A00792D8F /* UIImage+AdditionalFunctionalities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+AdditionalFunctionalities.h"; path = "../../../../../../Development Sandbox/MegaTunesPlayer/MegaTunes Player/MegaTunes Player/UIImage+AdditionalFunctionalities.h"; sourceTree = "<group>"; };
 		70C1779D166DB86A00792D8F /* UIImage+AdditionalFunctionalities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+AdditionalFunctionalities.m"; path = "../../../../../../Development Sandbox/MegaTunesPlayer/MegaTunes Player/MegaTunes Player/UIImage+AdditionalFunctionalities.m"; sourceTree = "<group>"; };
 		70C177A4166EC67A00792D8F /* selection-tab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "selection-tab@2x.png"; sourceTree = "<group>"; };
@@ -679,6 +685,8 @@
 		70A13D9216320F6500244866 /* Unused */ = {
 			isa = PBXGroup;
 			children = (
+				70BAC6261701434000C39980 /* AllSongsCell.h */,
+				70BAC6271701434100C39980 /* AllSongsCell.m */,
 				709A578716F93B59000D1678 /* TapGestureRecognizer.h */,
 				709A578816F93B59000D1678 /* TapGestureRecognizer.m */,
 				70A0493C16F692EA00F70A90 /* NSDateFormatter+Duration.h */,
@@ -824,6 +832,8 @@
 				70A13D851631AD8700244866 /* MediaGroupViewController.m */,
 				70A13DD4163322A400244866 /* CollectionViewController.h */,
 				7049301B16E80A0D005A66C4 /* CollectionViewController.m */,
+				70BAC6231700C99E00C39980 /* AlbumViewController.h */,
+				70BAC6241700C9A000C39980 /* AlbumViewController.m */,
 				70515C2A160FD2DC00D96335 /* SongViewController.h */,
 				70515C2B160FD2DC00D96335 /* SongViewController.m */,
 				70515C301610184A00D96335 /* MainViewController.h */,
@@ -1180,6 +1190,8 @@
 				70A0493116F6814700F70A90 /* OBSlider.m in Sources */,
 				70A0493E16F692EA00F70A90 /* NSDateFormatter+Duration.m in Sources */,
 				709A578916F93B59000D1678 /* TapGestureRecognizer.m in Sources */,
+				70BAC6251700C9A100C39980 /* AlbumViewController.m in Sources */,
+				70BAC6281701434100C39980 /* AllSongsCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

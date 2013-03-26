@@ -14,6 +14,7 @@
 #import "CollectionItem.h"
 #import "DTCustomColoredAccessory.h"
 #import "MainViewController.h"
+#import "AlbumViewcontroller.h"
 
 @interface MediaGroupViewController ()
 
@@ -174,15 +175,20 @@
 
 	[tableView deselectRowAtIndexPath: indexPath animated: YES];
     
+    //self.selectedGroup is a MediaGroup with a name and a querytype
     self.selectedGroup = [self.groupingData objectAtIndex:indexPath.row];
     if ([selectedGroup.name isEqualToString: @"Songs"]) {
         [self performSegueWithIdentifier: @"ViewSongCollection" sender: self];
-    } else
+    } else {
         if ([selectedGroup.name isEqualToString: @"Compilations"]) {
             [self performSegueWithIdentifier: @"ViewSongCollection" sender: self];
-        } else
-        {
-            [self performSegueWithIdentifier: @"ViewCollections" sender: self];
+        } else {
+            if ([selectedGroup.name isEqualToString:@"Albums"]) {
+                [self performSegueWithIdentifier:@"AlbumCollections" sender:self];
+            } else {
+                [self performSegueWithIdentifier: @"ViewCollections" sender: self];
+            }
+        }
     }
 }
 
@@ -204,7 +210,20 @@
         collectionViewController.iPodLibraryChanged = self.iPodLibraryChanged;
 
 	}
-    
+    if ([segue.identifier isEqualToString:@"AlbumCollections"])
+	{
+		AlbumViewController *albumViewController = segue.destinationViewController;
+        albumViewController.managedObjectContext = self.managedObjectContext;
+        
+        MPMediaQuery *myCollectionQuery = selectedGroup.queryType;
+        
+        self.collection = [myCollectionQuery collections];
+		albumViewController.collection = self.collection;
+        albumViewController.collectionType = selectedGroup.name;
+        albumViewController.title = NSLocalizedString(selectedGroup.name, nil);
+        albumViewController.iPodLibraryChanged = self.iPodLibraryChanged;
+        
+	}
     if ([segue.identifier isEqualToString:@"ViewSongCollection"])
 	{
         SongViewController *songViewController = segue.destinationViewController;

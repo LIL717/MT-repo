@@ -423,6 +423,10 @@ long songRemainingSeconds;
 //    NSLog (@"shuffle mode??? %d", musicPlayer.shuffleMode);
     if (musicPlayer.shuffleMode == MPMusicShuffleModeOff) {
         [self prepareNextSongLabel];
+    } else {
+        self.nextSongScrollView.hidden = YES;
+        self.nextSongLabel.hidden = YES;
+        self.nextLabel.hidden = YES;
     }
     [self updateTime];
     [self dataForNowPlayingInfoCenter];

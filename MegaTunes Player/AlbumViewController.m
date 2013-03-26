@@ -1,12 +1,13 @@
 //
-//  CollectionViewController.m
+//  AlbumViewController.m
 //  MegaTunes Player
 //
-//  Created by Lori Hill on 10/1/12.
+//  Created by Lori Hill on 3/25/13.
 //
 //
 
-#import "CollectionViewController.h"
+
+#import "AlbumViewController.h"
 #import "CollectionItemCell.h"
 #import "CollectionItem.h"
 #import "SongViewController.h"
@@ -15,11 +16,11 @@
 #import "InCellScrollView.h"
 
 
-@interface CollectionViewController ()
+@interface AlbumViewController ()
 
 @end
 
-@implementation CollectionViewController
+@implementation AlbumViewController
 
 @synthesize collectionTableView;
 @synthesize collection;
@@ -47,11 +48,11 @@
     UIImage *menuBarImage58 = [[UIImage imageNamed:@"arrow_left_58_white.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
     [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage48 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage58 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
-
+    
     musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
     
     [self registerForMediaPlayerNotifications];
-
+    
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -60,7 +61,7 @@
     [super viewWillAppear: animated];
     
     self.navigationItem.titleView = [self customizeTitleView];
-  
+    
     NSString *playingItem = [[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyTitle];
     
     if (playingItem) {
@@ -79,7 +80,7 @@
         self.navigationItem.rightBarButtonItem= nil;
     }
     [self updateLayoutForNewOrientation: self.interfaceOrientation];
-
+    
     return;
 }
 
@@ -119,7 +120,7 @@
     [self.collectionTableView reloadData];
 }
 - (void) viewWillLayoutSubviews {
-        //need this to pin portrait view to bounds otherwise if start in landscape, push to next view, rotate to portrait then pop back the original view in portrait - it will be too wide and "scroll" horizontally
+    //need this to pin portrait view to bounds otherwise if start in landscape, push to next view, rotate to portrait then pop back the original view in portrait - it will be too wide and "scroll" horizontally
     self.collectionTableView.contentSize = CGSizeMake(self.collectionTableView.frame.size.width, self.collectionTableView.contentSize.height);
     [super viewWillLayoutSubviews];
 }
@@ -134,16 +135,18 @@
 }
 
 - (NSInteger) tableView: (UITableView *) table numberOfRowsInSection: (NSInteger)section {
-        
-    return [self.collection count];
+    
+//    return [self.collection count];
+    return [self.collection count] + 1;
+
 }
 //#pragma - TableView Index Scrolling
 //
 //- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
-//    
+//
 ////    if(searching)
 ////        return nil;
-//    
+//
 //    NSMutableArray *tempArray = [[NSMutableArray alloc] init];
 //    [tempArray addObject:@"A"];
 //    [tempArray addObject:@"B"];
@@ -171,56 +174,74 @@
 //    [tempArray addObject:@"Y"];
 //    [tempArray addObject:@"X"];
 //    [tempArray addObject:@"Z"];
-//    
+//
 //    return tempArray;
 //}
 //
 //- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index {
-//    
+//
 ////    if(searching)
 ////        return -1;
-////    
+////
 ////    return index % 2;
 //}
 - (UITableViewCell *) tableView: (UITableView *) tableView cellForRowAtIndexPath: (NSIndexPath *) indexPath {
     
 	CollectionItemCell *cell = (CollectionItemCell *)[tableView
-                                          dequeueReusableCellWithIdentifier:@"CollectionItemCell"];
+                                                      dequeueReusableCellWithIdentifier:@"CollectionItemCell"];
     
     BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
-
-    if ([self.collectionType isEqualToString: @"Playlists"]) {
-        MPMediaPlaylist  *mediaPlaylist = [self.collection objectAtIndex:indexPath.row];
-        cell.nameLabel.text = [mediaPlaylist valueForProperty: MPMediaPlaylistPropertyName];
-    }
     
+//    if ([self.collectionType isEqualToString: @"Playlists"]) {
+//        MPMediaPlaylist  *mediaPlaylist = [self.collection objectAtIndex:indexPath.row];
+//        cell.nameLabel.text = [mediaPlaylist valueForProperty: MPMediaPlaylistPropertyName];
+//    }
+    
+    if (indexPath.row == 0) {
+        cell.textLabel.text = @"All Songs";
+        cell.textLabel.font = [UIFont boldSystemFontOfSize: 44];
+        cell.textLabel.textColor = [UIColor whiteColor];
+        cell.textLabel.highlightedTextColor = [UIColor blueColor];
+        cell.textLabel.backgroundColor = [UIColor clearColor];
+        cell.scrollView.hidden = YES;
+        cell.textLabel.hidden = NO;
+        cell.durationLabel.hidden = YES;
+
+        
+        return cell;
+    }
     cell.durationLabel.text = @"";
+    
+//    if ([[self.collection objectAtIndex:indexPath.row] count] > 0) {
+        if ([[self.collection objectAtIndex:indexPath.row - 1] count] > 0) {
 
-    if ([[self.collection objectAtIndex:indexPath.row] count] > 0) {
+        
+//        MPMediaItemCollection *currentQueue = [MPMediaItemCollection collectionWithItems: [[self.collection objectAtIndex:indexPath.row] items]];
+        MPMediaItemCollection *currentQueue = [MPMediaItemCollection collectionWithItems: [[self.collection objectAtIndex:indexPath.row - 1] items]];
 
-        MPMediaItemCollection *currentQueue = [MPMediaItemCollection collectionWithItems: [[self.collection objectAtIndex:indexPath.row] items]];
-
-        if ([self.collectionType isEqualToString: @"Artists"]) {
-            cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyArtist];
-        }
-        if ([self.collectionType isEqualToString: @"Albums"]) {
+        
+//        if ([self.collectionType isEqualToString: @"Artists"]) {
+//            cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyArtist];
+//        }
+//        if ([self.collectionType isEqualToString: @"Albums"]) {
             cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyAlbumTitle];
-        }
-        if ([self.collectionType isEqualToString: @"Composers"]) {
-            cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyComposer];
-        }
-        if ([self.collectionType isEqualToString: @"Genres"]) {
-            cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyGenre];
-        }
-        if ([self.collectionType isEqualToString: @"Podcasts"]) {
-            cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyPodcastTitle];
-        }
+//        }
+//        if ([self.collectionType isEqualToString: @"Composers"]) {
+//            cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyComposer];
+//        }
+//        if ([self.collectionType isEqualToString: @"Genres"]) {
+//            cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyGenre];
+//        }
+//        if ([self.collectionType isEqualToString: @"Podcasts"]) {
+//            cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyPodcastTitle];
+//        }
         if (cell.nameLabel.text == nil) {
             cell.nameLabel.text = @"Unknown";
         }
-
+        
         
         //get the duration of the the playlist
+
         if (isPortrait) {
             cell.durationLabel.hidden = YES;
         } else {
@@ -232,9 +253,10 @@
             int playlistMinutes = (playlistDuration / 60);     // Whole minutes
             int playlistSeconds = (playlistDuration % 60);                        // seconds
             cell.durationLabel.text = [NSString stringWithFormat:@"%2d:%02d", playlistMinutes, playlistSeconds];
-//            [cell.textLabel addSubView:cell.durationLabel];
+            //            [cell.textLabel addSubView:cell.durationLabel];
         }
 
+        
     }
     //set the textLabel to the same thing - it is used if the text does not need to scroll
     UIFont *font = [UIFont systemFontOfSize:12];
@@ -248,52 +270,52 @@
     DTCustomColoredAccessory *accessory = [DTCustomColoredAccessory accessoryWithColor:cell.nameLabel.textColor];
     accessory.highlightedColor = [UIColor blueColor];
     cell.accessoryView = accessory;
-//    cell.accessoryType = UITableViewCellAccessoryNone;
+    //    cell.accessoryType = UITableViewCellAccessoryNone;
     
     //size of duration Label is set at 130 to match the fixed size that it is set in interface builder
     // note that cell.durationLabel.frame.size.width) = 0 here
     //    NSLog (@"************************************width of durationLabel is %f", cell.durationLabel.frame.size.width);
-
+    
     // if want to make scrollview width flex with width of duration label, need to set it up in code rather than interface builder - not doing that now, but don't see any problem with doing it
     
-//    CGSize durationLabelSize = [cell.durationLabel.text sizeWithFont:cell.durationLabel.font
-//                                                   constrainedToSize:CGSizeMake(135, CGRectGetHeight(cell.durationLabel.bounds))
-//                                                       lineBreakMode:NSLineBreakByClipping];
+    //    CGSize durationLabelSize = [cell.durationLabel.text sizeWithFont:cell.durationLabel.font
+    //                                                   constrainedToSize:CGSizeMake(135, CGRectGetHeight(cell.durationLabel.bounds))
+    //                                                       lineBreakMode:NSLineBreakByClipping];
     //cell.durationLabel.frame.size.width = 130- have to hard code because not calculated yet at this point
     
     //this is the constraint from scrollView to Cell  needs to just handle accessory in portrait and handle duration and accessory in landscape
     CGFloat contraintConstant = isPortrait ? 30 : (30 + 130 + 5);
-
+    
     
     cell.scrollViewToCellConstraint.constant = contraintConstant;
-
+    
     NSUInteger scrollViewWidth;
     
     if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
         //14 just is the number that was needed to make the label scroll correctly within the scrollView
         scrollViewWidth = (tableView.frame.size.width -14 - cell.accessoryView.frame.size.width);
     } else {
-//        scrollViewWidth = (tableView.frame.size.width - durationLabelSize.width - cell.accessoryView.frame.size.width);
+        //        scrollViewWidth = (tableView.frame.size.width - durationLabelSize.width - cell.accessoryView.frame.size.width);
         // and 145 is the number that makes the scroll work right in landscape - don't try to figure it out
         scrollViewWidth = (tableView.frame.size.width - 145 - cell.accessoryView.frame.size.width);
-
+        
     }
     [cell.scrollView removeConstraint:cell.centerXInScrollView];
-
+    
     //calculate the label size to fit the text with the font size
     CGSize labelSize = [cell.nameLabel.text sizeWithFont:cell.nameLabel.font
                                        constrainedToSize:CGSizeMake(INT16_MAX,tableView.rowHeight)
                                            lineBreakMode:NSLineBreakByClipping];
     
-//    //build a new label that will hold all the text
-//    UILabel *newLabel = [[UILabel alloc] initWithFrame: cell.nameLabel.frame];
-//    CGRect frame = newLabel.frame;
-////    frame.size.height = CGRectGetHeight(cell.nameLabel.bounds);
-//    frame.size.width = labelSize.width;
-//    newLabel.frame = frame;
-//
-//    //set the UIOutlet label's frame to the new sized frame
-//    cell.nameLabel.frame = newLabel.frame;
+    //    //build a new label that will hold all the text
+    //    UILabel *newLabel = [[UILabel alloc] initWithFrame: cell.nameLabel.frame];
+    //    CGRect frame = newLabel.frame;
+    ////    frame.size.height = CGRectGetHeight(cell.nameLabel.bounds);
+    //    frame.size.width = labelSize.width;
+    //    newLabel.frame = frame;
+    //
+    //    //set the UIOutlet label's frame to the new sized frame
+    //    cell.nameLabel.frame = newLabel.frame;
     
     //    NSLog (@"size of newLabel is %f", frame.size.width);
     
@@ -302,7 +324,7 @@
     //Make sure that label is aligned with scrollView
     [cell.scrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
     
-
+    
     if (labelSize.width>scrollViewWidth) {
         cell.scrollView.hidden = NO;
         cell.textLabel.hidden = YES;
@@ -315,23 +337,23 @@
     return cell;
 }
 - (NSNumber *)calculatePlaylistDuration: (MPMediaItemCollection *) currentQueue {
-
+    
     NSArray *returnedQueue = [currentQueue items];
     
     long playlistDuration = 0;
     long songDuration = 0;
-
+    
     for (MPMediaItem *song in returnedQueue) {
         songDuration = [[song valueForProperty:MPMediaItemPropertyPlaybackDuration] longValue];
         //if the  song has been deleted during a sync then pop to rootViewController
-
+        
         if (songDuration == 0 && self.iPodLibraryChanged) {
             [self.navigationController popToRootViewControllerAnimated:YES];
             NSLog (@"BOOM");
         }
-//        playlistDuration = (playlistDuration + [[song valueForProperty:MPMediaItemPropertyPlaybackDuration] longValue]);
+        //        playlistDuration = (playlistDuration + [[song valueForProperty:MPMediaItemPropertyPlaybackDuration] longValue]);
         playlistDuration = (playlistDuration + songDuration);
-
+        
     }
     return [NSNumber numberWithLong: playlistDuration];
 }
@@ -340,48 +362,83 @@
 //	 deselect the row after it has been selected.
 - (void) tableView: (UITableView *) tableView didSelectRowAtIndexPath: (NSIndexPath *) indexPath {
     
-//    LogMethod();
+    //    LogMethod();
 	[tableView deselectRowAtIndexPath: indexPath animated: YES];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-//    LogMethod();
+    //    LogMethod();
     NSIndexPath *indexPath = [ self.collectionTableView indexPathForCell:sender];
     
 	if ([segue.identifier isEqualToString:@"ViewSongs"])
 	{
         SongViewController *songViewController = segue.destinationViewController;
         songViewController.managedObjectContext = self.managedObjectContext;
-
-        CollectionItemCell *cell = (CollectionItemCell*)[self.collectionTableView cellForRowAtIndexPath:indexPath];
-
-        CollectionItem *collectionItem = [CollectionItem alloc];
-        collectionItem.name = cell.nameLabel.text;
-        collectionItem.duration = [self calculatePlaylistDuration: [self.collection objectAtIndex:indexPath.row]];
         
-//        collectionItem.collection = [MPMediaItemCollection collectionWithItems: [[self.collection objectAtIndex:indexPath.row] items]];
-        collectionItem.collectionArray = [NSMutableArray arrayWithArray:[[self.collection objectAtIndex:indexPath.row] items]];
-        songViewController.iPodLibraryChanged = self.iPodLibraryChanged;
+        if (indexPath.row == 0) {
+            MPMediaQuery *myCollectionQuery = [MPMediaQuery songsQuery];
 
-        
-        songViewController.title = collectionItem.name;
-//        NSLog (@"collectionItem.name is %@", collectionItem.name);
+            self.collection = [myCollectionQuery collections];
 
-        songViewController.collectionItem = collectionItem;
+            NSMutableArray *songMutableArray = [[NSMutableArray alloc] init];
+            long playlistDuration = 0;
 
+            for (MPMediaPlaylist *mediaPlaylist in self.collection) {
+
+                NSArray *songs = [mediaPlaylist items];
+
+                for (MPMediaItem *song in songs) {
+                    [songMutableArray addObject: song];
+                    playlistDuration = (playlistDuration + [[song valueForProperty:MPMediaItemPropertyPlaybackDuration] longValue]);
+                    //                NSString *songTitle =[song valueForProperty: MPMediaItemPropertyTitle];
+                    //                NSLog (@"\t\t%@", songTitle);
+                }
+            }
+            CollectionItem *collectionItem = [CollectionItem alloc];
+            collectionItem.name = @"Songs";
+            collectionItem.duration = [NSNumber numberWithLong: playlistDuration];
+            //        collectionItem.collection = [MPMediaItemCollection collectionWithItems: songMutableArray];
+            collectionItem.collectionArray = songMutableArray;
+            
+            songViewController.title = NSLocalizedString(collectionItem.name, nil);
+            songViewController.collectionItem = collectionItem;
+            songViewController.iPodLibraryChanged = self.iPodLibraryChanged;
+   
+        } else {
+            CollectionItemCell *cell = (CollectionItemCell*)[self.collectionTableView cellForRowAtIndexPath:indexPath];
+
+            CollectionItem *collectionItem = [CollectionItem alloc];
+            collectionItem.name = cell.nameLabel.text;
+    //        collectionItem.duration = [self calculatePlaylistDuration: [self.collection objectAtIndex:indexPath.row]];
+            collectionItem.duration = [self calculatePlaylistDuration: [self.collection objectAtIndex:indexPath.row - 1]];
+
+            
+            //        collectionItem.collection = [MPMediaItemCollection collectionWithItems: [[self.collection objectAtIndex:indexPath.row] items]];
+    //        collectionItem.collectionArray = [NSMutableArray arrayWithArray:[[self.collection objectAtIndex:indexPath.row] items]];
+            collectionItem.collectionArray = [NSMutableArray arrayWithArray:[[self.collection objectAtIndex:indexPath.row - 1] items]];
+
+            songViewController.iPodLibraryChanged = self.iPodLibraryChanged;
+            
+            
+            songViewController.title = collectionItem.name;
+            //        NSLog (@"collectionItem.name is %@", collectionItem.name);
+            
+            songViewController.collectionItem = collectionItem;
+        }
 	}
-
+    
     if ([segue.identifier isEqualToString:@"ViewNowPlaying"])
 	{
 		MainViewController *mainViewController = segue.destinationViewController;
         mainViewController.managedObjectContext = self.managedObjectContext;
-
+        
         mainViewController.playNew = NO;
         mainViewController.iPodLibraryChanged = self.iPodLibraryChanged;
-
+        
     }
 }
+
 - (IBAction)viewNowPlaying {
     
     [self performSegueWithIdentifier: @"ViewNowPlaying" sender: self];
@@ -392,7 +449,7 @@
 
 - (void)goBackClick
 {
-    //both actually go back to mediaGroupViewController 
+    //both actually go back to mediaGroupViewController
     if (iPodLibraryChanged) {
         [self.navigationController popToRootViewControllerAnimated:YES];
     } else {
@@ -403,7 +460,7 @@
 //- (void)singleTapGestureCaptured:(UITapGestureRecognizer *)gesture
 //{
 //    LogMethod();
-//    
+//
 //    CGPoint currentTouchPosition=[gesture locationInView:self.collectionTableView];
 //    NSIndexPath *indexPath = [self.collectionTableView indexPathForRowAtPoint: currentTouchPosition];
 //    CollectionItemCell *cell = (CollectionItemCell *)[self.collectionTableView cellForRowAtIndexPath:indexPath];
@@ -414,7 +471,7 @@
 //}
 
 - (void) registerForMediaPlayerNotifications {
-//    LogMethod();
+    //    LogMethod();
     
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     
@@ -430,10 +487,10 @@
     
     [[MPMediaLibrary defaultMediaLibrary] beginGeneratingLibraryChangeNotifications];
     [musicPlayer beginGeneratingPlaybackNotifications];
-
+    
 }
 - (void) handle_iPodLibraryChanged: (id) changeNotification {
-//    LogMethod();
+    //    LogMethod();
 	// Implement this method to update cached collections of media items when the
 	// user performs a sync while application is running.
     [self setIPodLibraryChanged: YES];
@@ -451,7 +508,7 @@
     
 }
 - (void)dealloc {
-//    LogMethod();
+    //    LogMethod();
     
     [[NSNotificationCenter defaultCenter] removeObserver: self
                                                     name: MPMediaLibraryDidChangeNotification
@@ -460,15 +517,15 @@
     [[NSNotificationCenter defaultCenter] removeObserver: self
 													name: MPMusicPlayerControllerPlaybackStateDidChangeNotification
 												  object: musicPlayer];
-
+    
     [[MPMediaLibrary defaultMediaLibrary] endGeneratingLibraryChangeNotifications];
     [musicPlayer endGeneratingPlaybackNotifications];
-
+    
 }
 - (void)didReceiveMemoryWarning {
-        
+    
     [super didReceiveMemoryWarning];
 	
-
+    
 }
 @end
