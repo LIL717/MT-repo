@@ -685,8 +685,6 @@
 		70A13D9216320F6500244866 /* Unused */ = {
 			isa = PBXGroup;
 			children = (
-				70BAC6261701434000C39980 /* AllSongsCell.h */,
-				70BAC6271701434100C39980 /* AllSongsCell.m */,
 				709A578716F93B59000D1678 /* TapGestureRecognizer.h */,
 				709A578816F93B59000D1678 /* TapGestureRecognizer.m */,
 				70A0493C16F692EA00F70A90 /* NSDateFormatter+Duration.h */,
@@ -803,6 +801,8 @@
 				70515C37161028FE00D96335 /* CollectionItemCell.m */,
 				70ADDC1D1614178500219873 /* CollectionItem.h */,
 				70ADDC1E1614178500219873 /* CollectionItem.m */,
+				70BAC6261701434000C39980 /* AllSongsCell.h */,
+				70BAC6271701434100C39980 /* AllSongsCell.m */,
 				70515C27160F986E00D96335 /* SongCell.h */,
 				70515C28160F986E00D96335 /* SongCell.m */,
 				70515C1E160CBE7600D96335 /* Song.h */,

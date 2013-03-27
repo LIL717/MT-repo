@@ -20,6 +20,7 @@
 @property (nonatomic, strong)   NSIndexPath* saveIndexPath;
 @property (readwrite)           BOOL iPodLibraryChanged;
 @property (nonatomic, strong)	MPMusicPlayerController	*musicPlayer;
+@property (nonatomic, strong)   NSMutableArray *albumDataArray;
 
 - (NSNumber *) calculatePlaylistDuration: (MPMediaItemCollection *) currentQueue;
 
