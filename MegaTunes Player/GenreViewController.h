@@ -1,14 +1,15 @@
 //
-//  CollectionViewController.h
+//  GenreViewController.h
 //  MegaTunes Player
 //
-//  Created by Lori Hill on 10/1/12.
+//  Created by Lori Hill on 3/31/13.
 //
 //
+
 @class CollectionItem;
 
-@interface CollectionViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MPMediaPickerControllerDelegate> {
-
+@interface GenreViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MPMediaPickerControllerDelegate> {
+    
     NSManagedObjectContext *managedObjectContext;
 }
 
@@ -22,7 +23,6 @@
 @property (nonatomic, strong)	MPMusicPlayerController	*musicPlayer;
 @property (nonatomic, strong)   NSMutableArray *collectionDataArray;
 @property (nonatomic, strong)   NSArray *albumCollection;
-@property (nonatomic, strong)   NSIndexPath *selectedIndexPath;
 
 
 - (NSNumber *) calculatePlaylistDuration: (MPMediaItemCollection *) currentQueue;

@@ -13,6 +13,7 @@
 #import "DTCustomColoredAccessory.h"
 #import "MainViewController.h"
 #import "InCellScrollView.h"
+#import "AlbumViewcontroller.h"
 
 
 @interface CollectionViewController ()
@@ -24,10 +25,14 @@
 @synthesize collectionTableView;
 @synthesize collection;
 @synthesize collectionType;
+@synthesize collectionQueryType;
 @synthesize managedObjectContext;
 @synthesize saveIndexPath;
 @synthesize iPodLibraryChanged;         //A flag indicating whether the library has been changed due to a sync
 @synthesize musicPlayer;
+@synthesize collectionDataArray;
+@synthesize albumCollection;
+@synthesize selectedIndexPath;
 
 - (void) viewDidLoad {
     
@@ -51,6 +56,12 @@
     musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
     
     [self registerForMediaPlayerNotifications];
+    
+    //add an NSString @"All Songs" object to the beginning of the collection array, then use albumDataArray as data source for table
+    
+    self.collectionDataArray = [[NSMutableArray alloc] initWithCapacity: 20];
+    [self.collectionDataArray addObjectsFromArray: self.collection];
+    [self.collectionDataArray insertObject: @"All Albums" atIndex: 0];
 
 }
 
@@ -135,7 +146,7 @@
 
 - (NSInteger) tableView: (UITableView *) table numberOfRowsInSection: (NSInteger)section {
         
-    return [self.collection count];
+    return [self.collectionDataArray count];
 }
 //#pragma - TableView Index Scrolling
 //
@@ -184,33 +195,46 @@
 //}
 - (UITableViewCell *) tableView: (UITableView *) tableView cellForRowAtIndexPath: (NSIndexPath *) indexPath {
     
+    if (indexPath.row == 0) {
+        // dequeue and configure my static cell for indexPath.row
+        NSString *cellIdentifier = @"allAlbumsCell";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: cellIdentifier];
+        cell.textLabel.textColor = [UIColor whiteColor];
+        cell.textLabel.highlightedTextColor = [UIColor blueColor];
+        cell.textLabel.text = @"All Albums";
+        cell.textLabel.font = [UIFont boldSystemFontOfSize:44];
+        cell.textLabel.textColor = [UIColor whiteColor];
+        DTCustomColoredAccessory *accessory = [DTCustomColoredAccessory accessoryWithColor:cell.textLabel.textColor];
+        accessory.highlightedColor = [UIColor blueColor];
+        cell.accessoryView = accessory;
+        
+        return cell;
+    }
+
 	CollectionItemCell *cell = (CollectionItemCell *)[tableView
                                           dequeueReusableCellWithIdentifier:@"CollectionItemCell"];
     
     BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
 
-    if ([self.collectionType isEqualToString: @"Playlists"]) {
-        MPMediaPlaylist  *mediaPlaylist = [self.collection objectAtIndex:indexPath.row];
-        cell.nameLabel.text = [mediaPlaylist valueForProperty: MPMediaPlaylistPropertyName];
-    }
+//    if ([self.collectionType isEqualToString: @"Playlists"]) {
+//        MPMediaPlaylist  *mediaPlaylist = [self.collectionDataArray objectAtIndex:indexPath.row];
+//        cell.nameLabel.text = [mediaPlaylist valueForProperty: MPMediaPlaylistPropertyName];
+//    }
     
     cell.durationLabel.text = @"";
 
-    if ([[self.collection objectAtIndex:indexPath.row] count] > 0) {
+    if ([[self.collectionDataArray objectAtIndex:indexPath.row] count] > 0) {
 
-        MPMediaItemCollection *currentQueue = [MPMediaItemCollection collectionWithItems: [[self.collection objectAtIndex:indexPath.row] items]];
+        MPMediaItemCollection *currentQueue = [MPMediaItemCollection collectionWithItems: [[self.collectionDataArray objectAtIndex:indexPath.row] items]];
 
         if ([self.collectionType isEqualToString: @"Artists"]) {
             cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyArtist];
-        }
-        if ([self.collectionType isEqualToString: @"Albums"]) {
-            cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyAlbumTitle];
         }
         if ([self.collectionType isEqualToString: @"Composers"]) {
             cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyComposer];
         }
         if ([self.collectionType isEqualToString: @"Genres"]) {
-            cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyGenre];
+            cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyArtist];
         }
         if ([self.collectionType isEqualToString: @"Podcasts"]) {
             cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyPodcastTitle];
@@ -218,7 +242,6 @@
         if (cell.nameLabel.text == nil) {
             cell.nameLabel.text = @"Unknown";
         }
-
         
         //get the duration of the the playlist
         if (isPortrait) {
@@ -342,15 +365,82 @@
     
 //    LogMethod();
 	[tableView deselectRowAtIndexPath: indexPath animated: YES];
+    
+    //if there is more than one album, display albums, otherwise display songs in the album in song order
+    if (!indexPath.row == 0) {
+        CollectionItemCell *cell = (CollectionItemCell*)[self.collectionTableView cellForRowAtIndexPath:indexPath];
+        
+        NSString *mediaItemProperty = [[NSString alloc] init];
+        
+        if ([self.collectionType isEqualToString: @"Artists"] || [self.collectionType isEqualToString: @"Genres"]) {
+            mediaItemProperty = MPMediaItemPropertyAlbumArtist;
+        } else {
+            if ([self.collectionType isEqualToString: @"Composers"]) {
+                 mediaItemProperty = MPMediaItemPropertyComposer;
+            }
+        }
+        
+//        MPMediaQuery *myCollectionQuery = [[MPMediaQuery alloc] init];
+        MPMediaQuery *myCollectionQuery = self.collectionQueryType;
+
+        
+        [myCollectionQuery addFilterPredicate: [MPMediaPropertyPredicate
+                                                predicateWithValue: cell.nameLabel.text
+                                                forProperty: mediaItemProperty]];
+        // Sets the grouping type for the media query
+        [myCollectionQuery setGroupingType: MPMediaGroupingAlbum];
+        
+        self.collectionQueryType = myCollectionQuery;
+        self.albumCollection = [myCollectionQuery collections];
+        
+//        NSLog(@"album Collection count is %d", [self.albumCollection count]);
+        
+        self.selectedIndexPath = indexPath;
+        
+        if ([self.albumCollection count] > 1) {
+            [self performSegueWithIdentifier: @"AlbumCollections" sender: self];
+        } else {
+            [self performSegueWithIdentifier: @"ViewSongs" sender: self];
+        }
+    }
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
 //    LogMethod();
-    NSIndexPath *indexPath = [ self.collectionTableView indexPathForCell:sender];
+//    NSIndexPath *indexPath = [ self.collectionTableView indexPathForCell:sender];
     
+    if ([segue.identifier isEqualToString:@"ViewAllAlbums"])
+	{
+		AlbumViewController *albumViewController = segue.destinationViewController;
+        albumViewController.managedObjectContext = self.managedObjectContext;
+        
+        MPMediaQuery *myCollectionQuery = [[MPMediaQuery alloc] init];
+
+        if ([self.collectionType isEqualToString: @"Genres"]) {
+            
+            [myCollectionQuery addFilterPredicate: [MPMediaPropertyPredicate
+                                                    predicateWithValue: self.title
+                                                    forProperty: MPMediaItemPropertyGenre]];
+            // Sets the grouping type for the media query
+            [myCollectionQuery setGroupingType: MPMediaGroupingAlbum];
+        } else {
+            myCollectionQuery = [MPMediaQuery albumsQuery];
+        }
+        
+        self.collection = [myCollectionQuery collections];
+		albumViewController.collection = self.collection;
+        albumViewController.collectionType = @"Albums";
+        albumViewController.collectionQueryType = myCollectionQuery;
+        albumViewController.title = NSLocalizedString(@"Albums", nil);
+        albumViewController.iPodLibraryChanged = self.iPodLibraryChanged;
+        
+	}
+    //this is called if there is only one album - the songs for that album are displayed in track order
 	if ([segue.identifier isEqualToString:@"ViewSongs"])
 	{
+        NSIndexPath *indexPath = self.selectedIndexPath;
+
         SongViewController *songViewController = segue.destinationViewController;
         songViewController.managedObjectContext = self.managedObjectContext;
 
@@ -358,12 +448,17 @@
 
         CollectionItem *collectionItem = [CollectionItem alloc];
         collectionItem.name = cell.nameLabel.text;
-        collectionItem.duration = [self calculatePlaylistDuration: [self.collection objectAtIndex:indexPath.row]];
-        
-//        collectionItem.collection = [MPMediaItemCollection collectionWithItems: [[self.collection objectAtIndex:indexPath.row] items]];
-        collectionItem.collectionArray = [NSMutableArray arrayWithArray:[[self.collection objectAtIndex:indexPath.row] items]];
-        songViewController.iPodLibraryChanged = self.iPodLibraryChanged;
+//        collectionItem.duration = [self calculatePlaylistDuration: [self.collectionDataArray objectAtIndex:indexPath.row]];
+        collectionItem.duration = [self calculatePlaylistDuration: [self.albumCollection objectAtIndex: 0]];
 
+        
+//        collectionItem.collectionArray = [NSMutableArray arrayWithArray:[[self.collectionDataArray objectAtIndex:indexPath.row] items]];
+        collectionItem.collectionArray = [NSMutableArray arrayWithArray:[[self.albumCollection objectAtIndex:0] items]];
+
+//        collectionItem.collectionArray = [self.albumCollection objectAtIndex:0];
+
+
+        songViewController.iPodLibraryChanged = self.iPodLibraryChanged;
         
         songViewController.title = collectionItem.name;
 //        NSLog (@"collectionItem.name is %@", collectionItem.name);
@@ -371,7 +466,22 @@
         songViewController.collectionItem = collectionItem;
 
 	}
+    if ([segue.identifier isEqualToString:@"AlbumCollections"])
+	{
+        NSIndexPath *indexPath = self.selectedIndexPath;
 
+        CollectionItemCell *cell = (CollectionItemCell*)[self.collectionTableView cellForRowAtIndexPath:indexPath];
+
+        AlbumViewController *albumViewController = segue.destinationViewController;
+        albumViewController.managedObjectContext = self.managedObjectContext;
+        
+        albumViewController.title = cell.nameLabel.text;
+        albumViewController.collection = self.albumCollection;
+        albumViewController.collectionType = self.collectionType;
+        albumViewController.collectionQueryType = self.collectionQueryType;
+        
+        albumViewController.iPodLibraryChanged = self.iPodLibraryChanged;
+	}
     if ([segue.identifier isEqualToString:@"ViewNowPlaying"])
 	{
 		MainViewController *mainViewController = segue.destinationViewController;

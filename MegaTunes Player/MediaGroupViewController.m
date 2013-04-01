@@ -15,6 +15,7 @@
 #import "DTCustomColoredAccessory.h"
 #import "MainViewController.h"
 #import "AlbumViewcontroller.h"
+#import "GenreViewController.h"
 
 @interface MediaGroupViewController ()
 
@@ -180,13 +181,22 @@
     if ([selectedGroup.name isEqualToString: @"Songs"]) {
         [self performSegueWithIdentifier: @"ViewSongCollection" sender: self];
     } else {
-        if ([selectedGroup.name isEqualToString: @"Compilations"]) {
-            [self performSegueWithIdentifier: @"ViewSongCollection" sender: self];
+        if ([selectedGroup.name isEqualToString:@"Artists"]) {
+            //works more like Apple with AlbumArtist rather than just Artist
+            MPMediaQuery *myCollectionQuery = [[MPMediaQuery alloc] init];
+            [myCollectionQuery setGroupingType: MPMediaGroupingAlbumArtist];
+            selectedGroup.queryType = myCollectionQuery;
+            [self performSegueWithIdentifier: @"ViewCollections" sender: self];
         } else {
-            if ([selectedGroup.name isEqualToString:@"Albums"]) {
-                [self performSegueWithIdentifier:@"AlbumCollections" sender:self];
-            } else {
+            if ([selectedGroup.name isEqualToString:@"Composers"]) {
                 [self performSegueWithIdentifier: @"ViewCollections" sender: self];
+            } else {
+                if ([selectedGroup.name isEqualToString:@"Genres"]) {
+                    [self performSegueWithIdentifier: @"ViewGenres" sender: self];
+                } else {
+                    // Playlists, Albums, Compilations, Podcasts go to albumCollections
+                    [self performSegueWithIdentifier:@"AlbumCollections" sender:self];
+                }
             }
         }
     }
@@ -196,7 +206,22 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
 //    LogMethod();
-	if ([segue.identifier isEqualToString:@"ViewCollections"])
+	if ([segue.identifier isEqualToString:@"ViewGenres"])
+	{
+		GenreViewController *genreViewController = segue.destinationViewController;
+        genreViewController.managedObjectContext = self.managedObjectContext;
+        
+        MPMediaQuery *myCollectionQuery = selectedGroup.queryType;
+        
+        self.collection = [myCollectionQuery collections];
+		genreViewController.collection = self.collection;
+        genreViewController.collectionType = selectedGroup.name;
+        genreViewController.collectionQueryType = selectedGroup.queryType;
+        genreViewController.title = NSLocalizedString(selectedGroup.name, nil);
+        genreViewController.iPodLibraryChanged = self.iPodLibraryChanged;
+
+	}
+    if ([segue.identifier isEqualToString:@"ViewCollections"])
 	{
 		CollectionViewController *collectionViewController = segue.destinationViewController;
         collectionViewController.managedObjectContext = self.managedObjectContext;
@@ -206,10 +231,12 @@
         self.collection = [myCollectionQuery collections];
 		collectionViewController.collection = self.collection;
         collectionViewController.collectionType = selectedGroup.name;
+        collectionViewController.collectionQueryType = selectedGroup.queryType;
         collectionViewController.title = NSLocalizedString(selectedGroup.name, nil);
         collectionViewController.iPodLibraryChanged = self.iPodLibraryChanged;
-
+        
 	}
+
     if ([segue.identifier isEqualToString:@"AlbumCollections"])
 	{
 		AlbumViewController *albumViewController = segue.destinationViewController;
@@ -220,6 +247,7 @@
         self.collection = [myCollectionQuery collections];
 		albumViewController.collection = self.collection;
         albumViewController.collectionType = selectedGroup.name;
+        albumViewController.collectionQueryType = selectedGroup.queryType;
         albumViewController.title = NSLocalizedString(selectedGroup.name, nil);
         albumViewController.iPodLibraryChanged = self.iPodLibraryChanged;
         
@@ -229,25 +257,21 @@
         SongViewController *songViewController = segue.destinationViewController;
         songViewController.managedObjectContext = self.managedObjectContext;
 
-        
         MPMediaQuery *myCollectionQuery = selectedGroup.queryType;
-        
-        self.collection = [myCollectionQuery collections];
-        
+                
         NSMutableArray *songMutableArray = [[NSMutableArray alloc] init];
         long playlistDuration = 0;
-        
-        for (MPMediaPlaylist *mediaPlaylist in self.collection) {
-            
-            NSArray *songs = [mediaPlaylist items];
 
-            for (MPMediaItem *song in songs) {
-                [songMutableArray addObject: song];
-                playlistDuration = (playlistDuration + [[song valueForProperty:MPMediaItemPropertyPlaybackDuration] longValue]);
+        NSArray *songs = [myCollectionQuery items];
+
+
+        for (MPMediaItem *song in songs) {
+            [songMutableArray addObject: song];
+            playlistDuration = (playlistDuration + [[song valueForProperty:MPMediaItemPropertyPlaybackDuration] longValue]);
 //                NSString *songTitle =[song valueForProperty: MPMediaItemPropertyTitle];
 //                NSLog (@"\t\t%@", songTitle);
-            }
         }
+
         CollectionItem *collectionItem = [CollectionItem alloc];
         collectionItem.name = selectedGroup.name;
         collectionItem.duration = [NSNumber numberWithLong: playlistDuration];

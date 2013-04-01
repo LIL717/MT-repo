@@ -73,6 +73,8 @@
 		707862B51626659900871260 /* ITunesInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 707862B41626659900871260 /* ITunesInfoViewController.m */; };
 		707862BC1629F33A00871260 /* AutoScrollLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 707862BB1629F33A00871260 /* AutoScrollLabel.m */; };
 		707862BF162C729300871260 /* TimeMagnifierViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 707862BE162C729300871260 /* TimeMagnifierViewController.m */; };
+		70864FCB170605960030210C /* AllAlbumsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 70864FCA170605960030210C /* AllAlbumsCell.m */; };
+		70864FCE17092B5B0030210C /* GenreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70864FCD17092B5B0030210C /* GenreViewController.m */; };
 		70974B1A1630565100A33B7D /* back.png in Resources */ = {isa = PBXBuildFile; fileRef = 70974B181630565100A33B7D /* back.png */; };
 		70974B1B1630565100A33B7D /* back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70974B191630565100A33B7D /* back@2x.png */; };
 		70974B511630698200A33B7D /* UIImage+iPhone5.m in Sources */ = {isa = PBXBuildFile; fileRef = 70974B2C1630698200A33B7D /* UIImage+iPhone5.m */; };
@@ -268,6 +270,10 @@
 		707862BB1629F33A00871260 /* AutoScrollLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AutoScrollLabel.m; path = ../../../../AutoScrollLabel/AutoScrollLabel.m; sourceTree = "<group>"; };
 		707862BD162C729300871260 /* TimeMagnifierViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeMagnifierViewController.h; sourceTree = "<group>"; };
 		707862BE162C729300871260 /* TimeMagnifierViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeMagnifierViewController.m; sourceTree = "<group>"; };
+		70864FC9170605960030210C /* AllAlbumsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllAlbumsCell.h; sourceTree = "<group>"; };
+		70864FCA170605960030210C /* AllAlbumsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllAlbumsCell.m; sourceTree = "<group>"; };
+		70864FCC17092B5B0030210C /* GenreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenreViewController.h; sourceTree = "<group>"; };
+		70864FCD17092B5B0030210C /* GenreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenreViewController.m; sourceTree = "<group>"; };
 		708BDA2416BF645400A42212 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
 		708BDA2A16C093E200A42212 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		708BDA2B16C093E400A42212 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
@@ -803,6 +809,8 @@
 				70ADDC1E1614178500219873 /* CollectionItem.m */,
 				70BAC6261701434000C39980 /* AllSongsCell.h */,
 				70BAC6271701434100C39980 /* AllSongsCell.m */,
+				70864FC9170605960030210C /* AllAlbumsCell.h */,
+				70864FCA170605960030210C /* AllAlbumsCell.m */,
 				70515C27160F986E00D96335 /* SongCell.h */,
 				70515C28160F986E00D96335 /* SongCell.m */,
 				70515C1E160CBE7600D96335 /* Song.h */,
@@ -830,6 +838,8 @@
 			children = (
 				70A13D841631AD8700244866 /* MediaGroupViewController.h */,
 				70A13D851631AD8700244866 /* MediaGroupViewController.m */,
+				70864FCC17092B5B0030210C /* GenreViewController.h */,
+				70864FCD17092B5B0030210C /* GenreViewController.m */,
 				70A13DD4163322A400244866 /* CollectionViewController.h */,
 				7049301B16E80A0D005A66C4 /* CollectionViewController.m */,
 				70BAC6231700C99E00C39980 /* AlbumViewController.h */,
@@ -1192,6 +1202,8 @@
 				709A578916F93B59000D1678 /* TapGestureRecognizer.m in Sources */,
 				70BAC6251700C9A100C39980 /* AlbumViewController.m in Sources */,
 				70BAC6281701434100C39980 /* AllSongsCell.m in Sources */,
+				70864FCB170605960030210C /* AllAlbumsCell.m in Sources */,
+				70864FCE17092B5B0030210C /* GenreViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,30 +1,30 @@
 //
-//  AlbumViewController.m
+//  GenreViewController.m
 //  MegaTunes Player
 //
-//  Created by Lori Hill on 3/25/13.
+//  Created by Lori Hill on 3/31/13.
 //
 //
 
+#import "GenreViewController.h"
 
-#import "AlbumViewController.h"
+#import "CollectionViewController.h"
 #import "CollectionItemCell.h"
 #import "CollectionItem.h"
 #import "SongViewController.h"
 #import "DTCustomColoredAccessory.h"
 #import "MainViewController.h"
 #import "InCellScrollView.h"
+#import "AlbumViewcontroller.h"
 
 
-@interface AlbumViewController ()
+@interface GenreViewController ()
 
 @end
 
-@implementation AlbumViewController
+@implementation GenreViewController
 
 @synthesize collectionTableView;
-//@synthesize allSongsLabel;
-//@synthesize allSongsCell;
 @synthesize collection;
 @synthesize collectionType;
 @synthesize collectionQueryType;
@@ -32,8 +32,8 @@
 @synthesize saveIndexPath;
 @synthesize iPodLibraryChanged;         //A flag indicating whether the library has been changed due to a sync
 @synthesize musicPlayer;
-@synthesize albumDataArray;
-@synthesize showAllSongsCell;
+@synthesize collectionDataArray;
+@synthesize albumCollection;
 
 - (void) viewDidLoad {
     
@@ -58,23 +58,11 @@
     
     [self registerForMediaPlayerNotifications];
     
-    //add an NSString @"All Songs" object to the beginning of the collection array, then use albumDataArray as data source for table - EXCEPT for Playlists and Podcasts - don't add it for playlists and podcasts
     
-    self.showAllSongsCell = YES;
+    self.collectionDataArray = [[NSMutableArray alloc] initWithCapacity: 20];
+    [self.collectionDataArray addObjectsFromArray: self.collection];
+//    [self.collectionDataArray insertObject: @"All Albums" atIndex: 0];
     
-    if ([self.collectionType isEqualToString: @"Playlists"]) {
-        self.showAllSongsCell = NO;
-    }
-    
-    if ([self.collectionType isEqualToString: @"Podcasts"]) {
-        self.showAllSongsCell = NO;
-    }
-
-    self.albumDataArray = [[NSMutableArray alloc] initWithCapacity: 20];
-    [self.albumDataArray addObjectsFromArray: self.collection];
-    if (showAllSongsCell) {
-        [self.albumDataArray insertObject: @"All Songs" atIndex: 0];
-    }
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -158,8 +146,7 @@
 
 - (NSInteger) tableView: (UITableView *) table numberOfRowsInSection: (NSInteger)section {
     
-    return [self.albumDataArray count];
-
+    return [self.collectionDataArray count];
 }
 //#pragma - TableView Index Scrolling
 //
@@ -208,51 +195,27 @@
 //}
 - (UITableViewCell *) tableView: (UITableView *) tableView cellForRowAtIndexPath: (NSIndexPath *) indexPath {
     
-    if (indexPath.row == 0 && showAllSongsCell) {
-        // dequeue and configure my static cell for indexPath.row
-        NSString *cellIdentifier = @"allSongsCell";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: cellIdentifier];
-        cell.textLabel.textColor = [UIColor whiteColor];
-        cell.textLabel.highlightedTextColor = [UIColor blueColor];
-        cell.textLabel.text = @"All Songs";
-        cell.textLabel.font = [UIFont boldSystemFontOfSize:44];
-        cell.textLabel.textColor = [UIColor whiteColor];
-        DTCustomColoredAccessory *accessory = [DTCustomColoredAccessory accessoryWithColor:cell.textLabel.textColor];
-        accessory.highlightedColor = [UIColor blueColor];
-        cell.accessoryView = accessory;
-        
-        return cell;
-    } 
-
 	CollectionItemCell *cell = (CollectionItemCell *)[tableView
                                                       dequeueReusableCellWithIdentifier:@"CollectionItemCell"];
     
     BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
-    MPMediaItemCollection *currentQueue = [MPMediaItemCollection collectionWithItems: [[self.albumDataArray objectAtIndex:indexPath.row] items]];
-
-    if ([self.collectionType isEqualToString: @"Playlists"]) {
-        MPMediaPlaylist  *mediaPlaylist = [self.albumDataArray objectAtIndex:indexPath.row];
-        cell.nameLabel.text = [mediaPlaylist valueForProperty: MPMediaPlaylistPropertyName];
-    } else {
-        if ([self.collectionType isEqualToString: @"Podcasts"]) {
-//            MPMediaPlaylist  *mediaPlaylist = [self.albumDataArray objectAtIndex:indexPath.row];
-            cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyPodcastTitle];
-        } else {
-        cell.durationLabel.text = @"";
-        cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyAlbumTitle];
-        }
-    }
     
+    //    if ([self.collectionType isEqualToString: @"Playlists"]) {
+    //        MPMediaPlaylist  *mediaPlaylist = [self.collectionDataArray objectAtIndex:indexPath.row];
+    //        cell.nameLabel.text = [mediaPlaylist valueForProperty: MPMediaPlaylistPropertyName];
+    //    }
+    
+    cell.durationLabel.text = @"";
+    
+        
+    MPMediaItemCollection *currentQueue = [MPMediaItemCollection collectionWithItems: [[self.collectionDataArray objectAtIndex:indexPath.row] items]];
+    cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyGenre];
+
     if (cell.nameLabel.text == nil) {
         cell.nameLabel.text = @"Unknown";
     }
-    if ([cell.nameLabel.text isEqualToString: @""]) {
-        cell.nameLabel.text = @"Unknown";
-    }
     
-        
     //get the duration of the the playlist
-
     if (isPortrait) {
         cell.durationLabel.hidden = YES;
     } else {
@@ -266,8 +229,7 @@
         cell.durationLabel.text = [NSString stringWithFormat:@"%2d:%02d", playlistMinutes, playlistSeconds];
         //            [cell.textLabel addSubView:cell.durationLabel];
     }
-
-        
+    
     //set the textLabel to the same thing - it is used if the text does not need to scroll
     UIFont *font = [UIFont systemFontOfSize:12];
     UIFont *newFont = [font fontWithSize:44];
@@ -343,9 +305,8 @@
         cell.scrollView.hidden = YES;
         cell.textLabel.hidden = NO;
     }
-
-    return cell;
     
+    return cell;
 }
 - (NSNumber *)calculatePlaylistDuration: (MPMediaItemCollection *) currentQueue {
     
@@ -380,75 +341,35 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     //    LogMethod();
-    NSIndexPath *indexPath = [ self.collectionTableView indexPathForCell:sender];
-
-	if ([segue.identifier isEqualToString:@"ViewAllSongs"])
-	{
-        SongViewController *songViewController = segue.destinationViewController;
-        songViewController.managedObjectContext = self.managedObjectContext;
-        
-        MPMediaQuery *myCollectionQuery = self.collectionQueryType;
-        
-        NSArray *songCollection = [myCollectionQuery items];
-        
-        NSMutableArray *songMutableArray = [[NSMutableArray alloc] init];
-        long playlistDuration = 0;
-        
-        // sort the song list into alphabetical order with the nuances of Apple's sorting - see createComparator below
-        for (MPMediaItem *song in songCollection) {
-            NSUInteger newIndex = [songMutableArray indexOfObject:song
-                                         inSortedRange:(NSRange){0, [songMutableArray count]}
-                                               options:NSBinarySearchingInsertionIndex
-                                                  usingComparator: [self createComparator]];
-            [songMutableArray insertObject:song atIndex:newIndex];
-
-            playlistDuration = (playlistDuration + [[song valueForProperty:MPMediaItemPropertyPlaybackDuration] longValue]);
-    //                NSString *songTitle =[song valueForProperty: MPMediaItemPropertyTitle];
-    //                NSLog (@"\t\t%@", songTitle);
-        }
-        
-        CollectionItem *collectionItem = [CollectionItem alloc];
-        collectionItem.duration = [NSNumber numberWithLong: playlistDuration];
-        collectionItem.collectionArray = songMutableArray;
-        
-        if ([self.collectionType isEqualToString: @"Albums"] || [self.collectionType isEqualToString: @"Compilations"]) {
-            songViewController.title = NSLocalizedString(@"Songs", nil);
-        } else {
-            collectionItem.name = self.title;
-            songViewController.title = NSLocalizedString(collectionItem.name, nil);
-        }
-        songViewController.collectionItem = collectionItem;
-        songViewController.iPodLibraryChanged = self.iPodLibraryChanged;
-            
-	}
+    //    NSIndexPath *indexPath = [ self.collectionTableView indexPathForCell:sender];
     
-	if ([segue.identifier isEqualToString:@"ViewSongs"])
+	if ([segue.identifier isEqualToString:@"ViewCollections"])
 	{
-        SongViewController *songViewController = segue.destinationViewController;
-        songViewController.managedObjectContext = self.managedObjectContext;
+        NSIndexPath *indexPath = [ self.collectionTableView indexPathForCell:sender];
+
+		CollectionViewController *collectionViewController = segue.destinationViewController;
+        collectionViewController.managedObjectContext = self.managedObjectContext;
         
         CollectionItemCell *cell = (CollectionItemCell*)[self.collectionTableView cellForRowAtIndexPath:indexPath];
 
-        CollectionItem *collectionItem = [CollectionItem alloc];
-        collectionItem.name = cell.nameLabel.text;
-//        collectionItem.duration = [self calculatePlaylistDuration: [self.collection objectAtIndex:indexPath.row]];
-        collectionItem.duration = [self calculatePlaylistDuration: [self.albumDataArray objectAtIndex:indexPath.row]];
-
-
+        //works more like Apple with AlbumArtist rather than just Artist
+        MPMediaQuery *myCollectionQuery = [[MPMediaQuery alloc] init];
         
-//        collectionItem.collection = [MPMediaItemCollection collectionWithItems: [[self.collection objectAtIndex:indexPath.row] items]];
-//        collectionItem.collectionArray = [NSMutableArray arrayWithArray:[[self.collection objectAtIndex:indexPath.row] items]];
-        collectionItem.collectionArray = [NSMutableArray arrayWithArray:[[self.albumDataArray objectAtIndex:indexPath.row] items]];
+        [myCollectionQuery addFilterPredicate: [MPMediaPropertyPredicate
+                                                predicateWithValue: cell.nameLabel.text
+                                                forProperty: MPMediaItemPropertyGenre]];
 
-        songViewController.iPodLibraryChanged = self.iPodLibraryChanged;
+        // Sets the grouping type for the media query
+        [myCollectionQuery setGroupingType: MPMediaGroupingAlbumArtist];
         
-        songViewController.title = collectionItem.name;
-        //        NSLog (@"collectionItem.name is %@", collectionItem.name);
-        
-        songViewController.collectionItem = collectionItem;
-//        }
+		collectionViewController.collection = [myCollectionQuery collections];
+        collectionViewController.collectionType = self.collectionType;
+        collectionViewController.collectionQueryType = myCollectionQuery;
+        collectionViewController.title = cell.nameLabel.text;
+        collectionViewController.iPodLibraryChanged = self.iPodLibraryChanged;
+
 	}
-    
+
     if ([segue.identifier isEqualToString:@"ViewNowPlaying"])
 	{
 		MainViewController *mainViewController = segue.destinationViewController;
@@ -459,102 +380,6 @@
         
     }
 }
--(NSComparator) createComparator {
-//omg this is crazy long, but necessary to make sort results like Apple's
-    NSComparator comparator = ^(id obj1, id obj2) {
-        NSString *string1 = [obj1 valueForProperty:MPMediaItemPropertyTitle];
-        NSString *string2 = [obj2 valueForProperty:MPMediaItemPropertyTitle];
-        
-        //titles that start with an apostrophe sort without the apostrophe  i.e. 'Tis sorts as Tis
-        NSCharacterSet *unwantedChars = [NSCharacterSet characterSetWithCharactersInString:@"'("];
-        
-        BOOL isPunct1 = [unwantedChars characterIsMember:[(NSString*)string1 characterAtIndex:0]];
-        BOOL isPunct2 = [unwantedChars characterIsMember:[(NSString*)string2 characterAtIndex:0]];
-        if (isPunct1) {
-            NSString *newString1 = [string1 substringFromIndex:1];
-            string1 = [[NSString alloc] initWithString: newString1];
-        }
-        if (isPunct2) {
-            NSString *newString2 = [string2 substringFromIndex:1];
-            string2 = [[NSString alloc] initWithString: newString2];
-            
-        }
-        //titles that start with "The " will sort with the first letter of the second word
-        if ([string1 length] > 4) {
-            BOOL containsThe1 = [[string1 substringWithRange: NSMakeRange(0,4)] isEqualToString: @"The "];
-            if (containsThe1) {
-                NSString *newString1 = [string1 substringFromIndex:4];
-                string1 = [[NSString alloc] initWithString: newString1];
-            }
-        }
-        if ([string2 length] > 4) {
-            BOOL containsThe2 = [[string2 substringWithRange: NSMakeRange(0,4)] isEqualToString: @"The "];
-            if (containsThe2) {
-                NSString *newString2 = [string2 substringFromIndex:4];
-                string2 = [[NSString alloc] initWithString: newString2];
-            }
-        }
-        
-        //titles that start with "A " will sort with the first letter of the second word
-        if ([string1 length] > 2) {
-            BOOL containsA1 = [[string1 substringWithRange: NSMakeRange(0,2)] isEqualToString: @"A "];
-            if (containsA1) {
-                NSString *newString1 = [string1 substringFromIndex:2];
-                string1 = [[NSString alloc] initWithString: newString1];
-            }
-        }
-        if ([string2 length] > 2) {
-            BOOL containsA2 = [[string2 substringWithRange: NSMakeRange(0,2)] isEqualToString: @"A "];
-            if (containsA2) {
-                NSString *newString2 = [string2 substringFromIndex:2];
-                string2 = [[NSString alloc] initWithString: newString2];
-            }
-        }
-        
-        //titles that start with "An " will sort with the first letter of the second word
-        if ([string1 length] > 3) {
-            BOOL containsAn1 = [[string1 substringWithRange: NSMakeRange(0,3)] isEqualToString: @"An "];
-            if (containsAn1) {
-                NSString *newString1 = [string1 substringFromIndex:3];
-                string1 = [[NSString alloc] initWithString: newString1];
-            }
-        }
-        if ([string2 length] > 3) {
-            BOOL containsAn2 = [[string2 substringWithRange: NSMakeRange(0,3)] isEqualToString: @"An "];
-            if (containsAn2) {
-                NSString *newString2 = [string2 substringFromIndex:3];
-                string2 = [[NSString alloc] initWithString: newString2];
-            }
-        }
-        //make titles that start with a lower case letter sort before the same capital letter titles
-        BOOL isLowerCase1 = [[NSCharacterSet lowercaseLetterCharacterSet] characterIsMember:[(NSString*)string1 characterAtIndex:0]];
-        BOOL isLowerCase2 = [[NSCharacterSet lowercaseLetterCharacterSet] characterIsMember:[(NSString*)string2 characterAtIndex:0]];
-        
-        if (isLowerCase1) {
-            NSString *stringy1 = [string1 stringByReplacingCharactersInRange:NSMakeRange(0,1) withString:[[string1  substringToIndex:1] capitalizedString]];
-            string1 = [[NSString alloc] initWithString: stringy1];
-        }
-        if (isLowerCase2) {
-            
-            NSString *stringy2 = [string2 stringByReplacingCharactersInRange:NSMakeRange(0,1) withString:[[string2  substringToIndex:1] capitalizedString]];
-            string2 = [[NSString alloc] initWithString: stringy2];
-        }
-        //make titles that start with numbers sort after alphabetic titles
-        BOOL isNumber1 = [[NSCharacterSet decimalDigitCharacterSet] characterIsMember:[(NSString*)string1 characterAtIndex:0]];
-        BOOL isNumber2 = [[NSCharacterSet decimalDigitCharacterSet] characterIsMember:[(NSString*)string2 characterAtIndex:0]];
-        
-        if (isNumber1 && !isNumber2) {
-            return NSOrderedDescending;
-        } else if (!isNumber1 && isNumber2) {
-            return NSOrderedAscending;
-        }
-        
-        return [(NSString *)string1 compare:string2 options:NSCaseInsensitiveSearch];
-        
-    };
-    return comparator;
-}
-
 - (IBAction)viewNowPlaying {
     
     [self performSegueWithIdentifier: @"ViewNowPlaying" sender: self];
