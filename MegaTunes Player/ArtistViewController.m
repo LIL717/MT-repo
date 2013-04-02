@@ -6,7 +6,7 @@
 //
 //
 
-#import "CollectionViewController.h"
+#import "ArtistViewController.h"
 #import "CollectionItemCell.h"
 #import "CollectionItem.h"
 #import "SongViewController.h"
@@ -16,11 +16,11 @@
 #import "AlbumViewcontroller.h"
 
 
-@interface CollectionViewController ()
+@interface ArtistViewController ()
 
 @end
 
-@implementation CollectionViewController
+@implementation ArtistViewController
 
 @synthesize collectionTableView;
 @synthesize collection;
@@ -30,7 +30,7 @@
 @synthesize saveIndexPath;
 @synthesize iPodLibraryChanged;         //A flag indicating whether the library has been changed due to a sync
 @synthesize musicPlayer;
-@synthesize collectionDataArray;
+@synthesize artistsDataArray;
 @synthesize albumCollection;
 @synthesize selectedIndexPath;
 
@@ -59,9 +59,9 @@
     
     //add an NSString @"All Songs" object to the beginning of the collection array, then use albumDataArray as data source for table
     
-    self.collectionDataArray = [[NSMutableArray alloc] initWithCapacity: 20];
-    [self.collectionDataArray addObjectsFromArray: self.collection];
-    [self.collectionDataArray insertObject: @"All Albums" atIndex: 0];
+    self.artistsDataArray = [[NSMutableArray alloc] initWithCapacity: 20];
+    [self.artistsDataArray addObjectsFromArray: self.collection];
+    [self.artistsDataArray insertObject: @"All Albums" atIndex: 0];
 
 }
 
@@ -124,6 +124,7 @@
         for (NSIndexPath *index in indexes) {
             if (index.row == 0) {
                 [self.collectionTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+
             }
         }
     }
@@ -146,7 +147,7 @@
 
 - (NSInteger) tableView: (UITableView *) table numberOfRowsInSection: (NSInteger)section {
         
-    return [self.collectionDataArray count];
+    return [self.artistsDataArray count];
 }
 //#pragma - TableView Index Scrolling
 //
@@ -223,9 +224,9 @@
     
     cell.durationLabel.text = @"";
 
-    if ([[self.collectionDataArray objectAtIndex:indexPath.row] count] > 0) {
+    if ([[self.artistsDataArray objectAtIndex:indexPath.row] count] > 0) {
 
-        MPMediaItemCollection *currentQueue = [MPMediaItemCollection collectionWithItems: [[self.collectionDataArray objectAtIndex:indexPath.row] items]];
+        MPMediaItemCollection *currentQueue = [MPMediaItemCollection collectionWithItems: [[self.artistsDataArray objectAtIndex:indexPath.row] items]];
 
         if ([self.collectionType isEqualToString: @"Artists"]) {
             cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyArtist];
@@ -266,6 +267,7 @@
     cell.textLabel.textColor = [UIColor whiteColor];
     cell.textLabel.highlightedTextColor = [UIColor blueColor];
     cell.textLabel.backgroundColor = [UIColor clearColor];
+//    cell.textLabel.lineBreakMode = NSLineBreakByClipping;
     cell.textLabel.text = cell.nameLabel.text;
     
     DTCustomColoredAccessory *accessory = [DTCustomColoredAccessory accessoryWithColor:cell.nameLabel.textColor];
@@ -294,7 +296,7 @@
     
     if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
         //14 just is the number that was needed to make the label scroll correctly within the scrollView
-        scrollViewWidth = (tableView.frame.size.width -14 - cell.accessoryView.frame.size.width);
+        scrollViewWidth = (tableView.frame.size.width -28 - cell.accessoryView.frame.size.width);
     } else {
 //        scrollViewWidth = (tableView.frame.size.width - durationLabelSize.width - cell.accessoryView.frame.size.width);
         // and 145 is the number that makes the scroll work right in landscape - don't try to figure it out
@@ -380,17 +382,23 @@
             }
         }
         
-//        MPMediaQuery *myCollectionQuery = [[MPMediaQuery alloc] init];
-        MPMediaQuery *myCollectionQuery = self.collectionQueryType;
+        MPMediaQuery *myCollectionQuery = [[MPMediaQuery alloc] init];
+//        MPMediaQuery *myCollectionQuery = self.collectionQueryType;
 
         
         [myCollectionQuery addFilterPredicate: [MPMediaPropertyPredicate
                                                 predicateWithValue: cell.nameLabel.text
                                                 forProperty: mediaItemProperty]];
+        
+        if ([self.collectionType isEqualToString: @"Genres"]) {
+            [myCollectionQuery addFilterPredicate: [MPMediaPropertyPredicate
+                                                    predicateWithValue: self.title
+                                                    forProperty: MPMediaItemPropertyGenre]];
+        }
         // Sets the grouping type for the media query
         [myCollectionQuery setGroupingType: MPMediaGroupingAlbum];
         
-        self.collectionQueryType = myCollectionQuery;
+//        self.collectionQueryType = myCollectionQuery;
         self.albumCollection = [myCollectionQuery collections];
         
 //        NSLog(@"album Collection count is %d", [self.albumCollection count]);

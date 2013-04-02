@@ -8,7 +8,7 @@
 
 #import "GenreViewController.h"
 
-#import "CollectionViewController.h"
+#import "ArtistViewController.h"
 #import "CollectionItemCell.h"
 #import "CollectionItem.h"
 #import "SongViewController.h"
@@ -265,7 +265,7 @@
     
     if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
         //14 just is the number that was needed to make the label scroll correctly within the scrollView
-        scrollViewWidth = (tableView.frame.size.width -14 - cell.accessoryView.frame.size.width);
+        scrollViewWidth = (tableView.frame.size.width -28 - cell.accessoryView.frame.size.width);
     } else {
         //        scrollViewWidth = (tableView.frame.size.width - durationLabelSize.width - cell.accessoryView.frame.size.width);
         // and 145 is the number that makes the scroll work right in landscape - don't try to figure it out
@@ -343,11 +343,11 @@
     //    LogMethod();
     //    NSIndexPath *indexPath = [ self.collectionTableView indexPathForCell:sender];
     
-	if ([segue.identifier isEqualToString:@"ViewCollections"])
+	if ([segue.identifier isEqualToString:@"ArtistCollections"])
 	{
         NSIndexPath *indexPath = [ self.collectionTableView indexPathForCell:sender];
 
-		CollectionViewController *collectionViewController = segue.destinationViewController;
+		ArtistViewController *collectionViewController = segue.destinationViewController;
         collectionViewController.managedObjectContext = self.managedObjectContext;
         
         CollectionItemCell *cell = (CollectionItemCell*)[self.collectionTableView cellForRowAtIndexPath:indexPath];
@@ -358,13 +358,14 @@
         [myCollectionQuery addFilterPredicate: [MPMediaPropertyPredicate
                                                 predicateWithValue: cell.nameLabel.text
                                                 forProperty: MPMediaItemPropertyGenre]];
+  
+        collectionViewController.collectionQueryType = myCollectionQuery;
 
         // Sets the grouping type for the media query
         [myCollectionQuery setGroupingType: MPMediaGroupingAlbumArtist];
         
 		collectionViewController.collection = [myCollectionQuery collections];
         collectionViewController.collectionType = self.collectionType;
-        collectionViewController.collectionQueryType = myCollectionQuery;
         collectionViewController.title = cell.nameLabel.text;
         collectionViewController.iPodLibraryChanged = self.iPodLibraryChanged;
 

@@ -7,7 +7,7 @@
 //
 @class CollectionItem;
 
-@interface CollectionViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MPMediaPickerControllerDelegate> {
+@interface ArtistViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MPMediaPickerControllerDelegate> {
 
     NSManagedObjectContext *managedObjectContext;
 }
@@ -20,7 +20,7 @@
 @property (nonatomic, strong)   NSIndexPath* saveIndexPath;
 @property (readwrite)           BOOL iPodLibraryChanged;
 @property (nonatomic, strong)	MPMusicPlayerController	*musicPlayer;
-@property (nonatomic, strong)   NSMutableArray *collectionDataArray;
+@property (nonatomic, strong)   NSMutableArray *artistsDataArray;
 @property (nonatomic, strong)   NSArray *albumCollection;
 @property (nonatomic, strong)   NSIndexPath *selectedIndexPath;
 

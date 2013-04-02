@@ -303,7 +303,7 @@
     
     if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
         //14 just is the number that was needed to make the label scroll correctly within the scrollView
-        scrollViewWidth = (tableView.frame.size.width -14 - cell.accessoryView.frame.size.width);
+        scrollViewWidth = (tableView.frame.size.width -28 - cell.accessoryView.frame.size.width);
     } else {
         //        scrollViewWidth = (tableView.frame.size.width - durationLabelSize.width - cell.accessoryView.frame.size.width);
         // and 145 is the number that makes the scroll work right in landscape - don't try to figure it out

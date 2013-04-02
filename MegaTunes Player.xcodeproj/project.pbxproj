@@ -35,7 +35,7 @@
 		7049301816E808E1005A66C4 /* DTCustomColoredAccessory.m in Sources */ = {isa = PBXBuildFile; fileRef = 7049301516E808E1005A66C4 /* DTCustomColoredAccessory.m */; };
 		7049301916E808E1005A66C4 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 7049301616E808E1005A66C4 /* Icon.png */; };
 		7049301A16E808E1005A66C4 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7049301716E808E1005A66C4 /* Icon@2x.png */; };
-		7049301C16E80A0D005A66C4 /* CollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7049301B16E80A0D005A66C4 /* CollectionViewController.m */; };
+		7049301C16E80A0D005A66C4 /* ArtistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7049301B16E80A0D005A66C4 /* ArtistViewController.m */; };
 		7049302016E81833005A66C4 /* megaMenu-bar.png in Resources */ = {isa = PBXBuildFile; fileRef = 7049301D16E81832005A66C4 /* megaMenu-bar.png */; };
 		7049302416E81893005A66C4 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7049302316E81893005A66C4 /* Default-568h@2x.png */; };
 		7049302616E81A18005A66C4 /* redWhitePlay57.png in Resources */ = {isa = PBXBuildFile; fileRef = 7049302516E81A17005A66C4 /* redWhitePlay57.png */; };
@@ -216,7 +216,7 @@
 		7049301516E808E1005A66C4 /* DTCustomColoredAccessory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTCustomColoredAccessory.m; sourceTree = "<group>"; };
 		7049301616E808E1005A66C4 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		7049301716E808E1005A66C4 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
-		7049301B16E80A0D005A66C4 /* CollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewController.m; sourceTree = "<group>"; };
+		7049301B16E80A0D005A66C4 /* ArtistViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArtistViewController.m; sourceTree = "<group>"; };
 		7049301D16E81832005A66C4 /* megaMenu-bar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "megaMenu-bar.png"; sourceTree = "<group>"; };
 		7049302316E81893005A66C4 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		7049302516E81A17005A66C4 /* redWhitePlay57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redWhitePlay57.png; sourceTree = "<group>"; };
@@ -335,7 +335,7 @@
 		70A13D8D1631B40300244866 /* MediaGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaGroup.m; sourceTree = "<group>"; };
 		70A13D8F1631BCC000244866 /* MediaGroupCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaGroupCell.h; sourceTree = "<group>"; };
 		70A13D901631BCC000244866 /* MediaGroupCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaGroupCell.m; sourceTree = "<group>"; };
-		70A13DD4163322A400244866 /* CollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewController.h; sourceTree = "<group>"; };
+		70A13DD4163322A400244866 /* ArtistViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArtistViewController.h; sourceTree = "<group>"; };
 		70A13DD816334B6D00244866 /* Song.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Song.m; sourceTree = "<group>"; };
 		70A13DE0163734CE00244866 /* ScrollLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollLabel.h; sourceTree = "<group>"; };
 		70A13DE1163734D000244866 /* ScrollLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScrollLabel.m; sourceTree = "<group>"; };
@@ -840,8 +840,8 @@
 				70A13D851631AD8700244866 /* MediaGroupViewController.m */,
 				70864FCC17092B5B0030210C /* GenreViewController.h */,
 				70864FCD17092B5B0030210C /* GenreViewController.m */,
-				70A13DD4163322A400244866 /* CollectionViewController.h */,
-				7049301B16E80A0D005A66C4 /* CollectionViewController.m */,
+				70A13DD4163322A400244866 /* ArtistViewController.h */,
+				7049301B16E80A0D005A66C4 /* ArtistViewController.m */,
 				70BAC6231700C99E00C39980 /* AlbumViewController.h */,
 				70BAC6241700C9A000C39980 /* AlbumViewController.m */,
 				70515C2A160FD2DC00D96335 /* SongViewController.h */,
@@ -1194,7 +1194,7 @@
 				70A6444F16CE08120059C561 /* ITunesCommentsViewController.m in Sources */,
 				70A6445216CE0FEE0059C561 /* UserInfoViewController.m in Sources */,
 				7049301816E808E1005A66C4 /* DTCustomColoredAccessory.m in Sources */,
-				7049301C16E80A0D005A66C4 /* CollectionViewController.m in Sources */,
+				7049301C16E80A0D005A66C4 /* ArtistViewController.m in Sources */,
 				7049302B16E82101005A66C4 /* SongInfoCell.m in Sources */,
 				70AA4D8516F27948002E9EE5 /* UINavigationController+MaskAll.m in Sources */,
 				70A0493116F6814700F70A90 /* OBSlider.m in Sources */,

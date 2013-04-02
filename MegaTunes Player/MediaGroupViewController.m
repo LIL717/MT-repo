@@ -7,7 +7,7 @@
 //
 
 #import "MediaGroupViewController.h"
-#import "CollectionViewController.h"
+#import "ArtistViewController.h"
 #import "MediaGroup.h"
 #import "MediaGroupCell.h"
 #import "SongViewController.h"
@@ -186,10 +186,10 @@
             MPMediaQuery *myCollectionQuery = [[MPMediaQuery alloc] init];
             [myCollectionQuery setGroupingType: MPMediaGroupingAlbumArtist];
             selectedGroup.queryType = myCollectionQuery;
-            [self performSegueWithIdentifier: @"ViewCollections" sender: self];
+            [self performSegueWithIdentifier: @"ArtistCollections" sender: self];
         } else {
             if ([selectedGroup.name isEqualToString:@"Composers"]) {
-                [self performSegueWithIdentifier: @"ViewCollections" sender: self];
+                [self performSegueWithIdentifier: @"ArtistCollections" sender: self];
             } else {
                 if ([selectedGroup.name isEqualToString:@"Genres"]) {
                     [self performSegueWithIdentifier: @"ViewGenres" sender: self];
@@ -213,7 +213,12 @@
         
         MPMediaQuery *myCollectionQuery = selectedGroup.queryType;
         
+        [myCollectionQuery addFilterPredicate: [MPMediaPropertyPredicate
+                                                predicateWithValue:[NSNumber numberWithInteger:MPMediaTypeMusic]
+                                                forProperty:MPMediaItemPropertyMediaType]];
+         
         self.collection = [myCollectionQuery collections];
+
 		genreViewController.collection = self.collection;
         genreViewController.collectionType = selectedGroup.name;
         genreViewController.collectionQueryType = selectedGroup.queryType;
@@ -221,19 +226,19 @@
         genreViewController.iPodLibraryChanged = self.iPodLibraryChanged;
 
 	}
-    if ([segue.identifier isEqualToString:@"ViewCollections"])
+    if ([segue.identifier isEqualToString:@"ArtistCollections"])
 	{
-		CollectionViewController *collectionViewController = segue.destinationViewController;
-        collectionViewController.managedObjectContext = self.managedObjectContext;
+		ArtistViewController *artistViewController = segue.destinationViewController;
+        artistViewController.managedObjectContext = self.managedObjectContext;
         
         MPMediaQuery *myCollectionQuery = selectedGroup.queryType;
         
         self.collection = [myCollectionQuery collections];
-		collectionViewController.collection = self.collection;
-        collectionViewController.collectionType = selectedGroup.name;
-        collectionViewController.collectionQueryType = selectedGroup.queryType;
-        collectionViewController.title = NSLocalizedString(selectedGroup.name, nil);
-        collectionViewController.iPodLibraryChanged = self.iPodLibraryChanged;
+		artistViewController.collection = self.collection;
+        artistViewController.collectionType = selectedGroup.name;
+        artistViewController.collectionQueryType = selectedGroup.queryType;
+        artistViewController.title = NSLocalizedString(selectedGroup.name, nil);
+        artistViewController.iPodLibraryChanged = self.iPodLibraryChanged;
         
 	}
 

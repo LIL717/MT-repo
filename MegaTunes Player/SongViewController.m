@@ -240,6 +240,7 @@
     cell.textLabel.textColor = [UIColor whiteColor];
     cell.textLabel.highlightedTextColor = [UIColor blueColor];
     cell.textLabel.backgroundColor = [UIColor clearColor];
+//    cell.textLabel.lineBreakMode = NSLineBreakByClipping;
     cell.textLabel.text = cell.nameLabel.text;
 
     [cell.scrollView removeConstraint:cell.centerXAlignmentConstraint];
@@ -256,7 +257,7 @@
     NSUInteger scrollViewWidth;
     
     if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
-        scrollViewWidth = (tableView.frame.size.width - 28 - cell.accessoryView.frame.size.width);
+        scrollViewWidth = (tableView.frame.size.width - 32 - cell.accessoryView.frame.size.width);
     } else {
         scrollViewWidth = (tableView.frame.size.width - 24 - 111 - cell.accessoryView.frame.size.width);
     }
