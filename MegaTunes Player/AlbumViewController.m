@@ -13,7 +13,7 @@
 #import "SongViewController.h"
 #import "DTCustomColoredAccessory.h"
 #import "MainViewController.h"
-#import "InCellScrollView.h"
+//#import "InCellScrollView.h"
 
 
 @interface AlbumViewController ()
@@ -34,6 +34,7 @@
 @synthesize musicPlayer;
 @synthesize albumDataArray;
 @synthesize showAllSongsCell;
+//@synthesize tapGestureRecognizer;
 
 - (void) viewDidLoad {
     
@@ -226,7 +227,8 @@
 
 	CollectionItemCell *cell = (CollectionItemCell *)[tableView
                                                       dequeueReusableCellWithIdentifier:@"CollectionItemCell"];
-    
+//    tableView.canCancelContentTouches = YES;
+//    cell.scrollView.canCancelContentTouches = YES;
     BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
     MPMediaItemCollection *currentQueue = [MPMediaItemCollection collectionWithItems: [[self.albumDataArray objectAtIndex:indexPath.row] items]];
 

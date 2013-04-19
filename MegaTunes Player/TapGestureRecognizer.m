@@ -22,6 +22,7 @@
 
 - (void)ignoreTouch:(UITouch*)touch forEvent:(UIEvent*)event {
     [super ignoreTouch:touch forEvent:event];
+    NSLog (@"Igggggnore touch in TapGestureRecognizer");
 }
 
 -(void)reset {
@@ -46,6 +47,7 @@
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
     [super touchesEnded:touches withEvent:event];
+        NSLog (@"END IT NOW touch in TapGestureRecognizer");
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event{

@@ -11,4 +11,6 @@
 
 @interface InCellScrollView : UIScrollView
 
+//property (strong, nonatomic) UITapGestureRecognizer *tapGestureRecognizer;
+
 @end

@@ -9,7 +9,7 @@
 #import "InfoTabBarController.h"
 #import "SongViewController.h"
 #import "SongCell.h"
-#import "inCellScrollView.h"
+//#import "inCellScrollView.h"
 #import "CollectionItem.h"
 #import "ItemCollection.h"
 #import "UIImage+AdditionalFunctionalities.h"
@@ -27,7 +27,7 @@
 
 - (void)viewDidLoad
 {
-//    LogMethod();
+    LogMethod();
     [super viewDidLoad];
     
     //set the backround image for the view
@@ -64,7 +64,7 @@
 
 - (void) viewWillAppear:(BOOL)animated
 {
-//    LogMethod();
+    LogMethod();
     [super viewWillAppear: animated];
     
     //set the navigation bar title
@@ -116,7 +116,7 @@
     
 }
 - (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
-//    LogMethod();
+    LogMethod();
     if (UIInterfaceOrientationIsPortrait(orientation)) {
         [self.songTableView setContentInset:UIEdgeInsetsMake(11,0,0,0)];
 
@@ -132,6 +132,7 @@
         }
     }
     [self.songTableView reloadData];
+    NSLog (@"NOW RELOADING TABLE");
 
 }
 - (void) viewWillLayoutSubviews {
@@ -437,7 +438,7 @@
 
 - (void)infoTabBarControllerDidCancel:(InfoTabBarController *)controller
 {
-    [self willAnimateRotationToInterfaceOrientation: self.interfaceOrientation duration: 1];
+//    [self willAnimateRotationToInterfaceOrientation: self.interfaceOrientation duration: 1];
     //need to add back observer for playbackStatechanged because it was removed before going to info in case user edits
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 	[notificationCenter addObserver: self

@@ -168,7 +168,7 @@ long songRemainingSeconds;
 // Configure the application.
 
 - (void) viewDidLoad {
-//    LogMethod();
+    LogMethod();
     [super viewDidLoad];
     
     [TestFlight passCheckpoint:@"MainViewController"];
@@ -347,7 +347,7 @@ long songRemainingSeconds;
     return label;
 }
 - (void)viewWillAppear:(BOOL)animated {
-//    LogMethod();
+    LogMethod();
     [super viewWillAppear: animated];
     
     self.playbackTimer = [NSTimer scheduledTimerWithTimeInterval:0.5
@@ -359,7 +359,7 @@ long songRemainingSeconds;
 }
 
 -(void) viewDidAppear:(BOOL)animated {
-//    LogMethod();
+    LogMethod();
 
     if (playNew) {
         [self setPlayNew: NO];
@@ -371,6 +371,7 @@ long songRemainingSeconds;
     }
     [self prepareNowPlayingLabel];
     [self.initialNowPlayingLabel removeFromSuperview];
+//    [self scrollNextSongLabel];
 
     [super viewDidAppear:(BOOL)animated];
 
@@ -397,7 +398,10 @@ long songRemainingSeconds;
     self.savedNowPlaying = [musicPlayer nowPlayingItem];
 }
 - (void) refreshNowPlayingLabel:  (id) notification {
+    LogMethod();
     [nowPlayingLabel  refreshLabels];
+//    [self prepareAllExceptNowPlaying];
+    
 //    NSLog (@"nowPlayingLabel refreshed");
 }
 - (void) prepareAllExceptNowPlaying {
@@ -444,6 +448,7 @@ long songRemainingSeconds;
     [self.nowPlayingLabel setFont: newFont];
 }
 - (void) prepareNextSongLabel {
+    LogMethod();
     //set up next-playing media item with duration
     NSUInteger nextPlayingIndex = [musicPlayer indexOfNowPlayingItem] + 1;
     
@@ -477,6 +482,9 @@ long songRemainingSeconds;
                                            constrainedToSize:CGSizeMake(INT16_MAX, CGRectGetHeight(nextSongScrollView.bounds))
                                                lineBreakMode:NSLineBreakByClipping];
     
+    //Make sure that label is aligned with scrollView
+    [nextSongScrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+
     //disable scroll if the content fits within the scrollView
     if (labelSize.width > nextSongScrollView.frame.size.width) {
         nextSongScrollView.scrollEnabled = YES;

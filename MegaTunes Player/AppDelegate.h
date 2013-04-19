@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 #import "ColorSwitcher.h"
+//#import "WindowSubClass.h"
 
 //#define PLAYER_TYPE_PREF_KEY @"player_type_preference"
 #define SHOW_PLAYLIST_REMAINING_KEY @"show_playlist_remaining"
@@ -18,7 +19,8 @@
     NSManagedObjectModel *managedObjectModel_;
 }
 
-@property (strong, nonatomic) UIWindow *window;
+//@property (strong, nonatomic) UIWindow *window;
+//@property (strong, nonatomic) WindowSubClass *window;
 @property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;

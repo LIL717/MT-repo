@@ -1104,7 +1104,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="list-background.png" translatesAutoresizingMaskIntoConstraints="NO" id="DQO-If-dVP" userLabel="bkgImage"/>
-                                        <scrollView clipsSubviews="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9aX-f3-0ln" userLabel="scrollView" customClass="InCellScrollView">
+                                        <scrollView clipsSubviews="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9aX-f3-0ln" userLabel="scrollView">
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="list-background.png" translatesAutoresizingMaskIntoConstraints="NO" id="P6x-zt-QXa"/>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Album Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FPI-Oo-UfO" userLabel="cTitleLabel">
@@ -1295,11 +1295,11 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="hot-4h-GjM"/>
-        <segue reference="ZlS-b1-pog"/>
-        <segue reference="SvT-2g-rDr"/>
-        <segue reference="oc8-HG-QrB"/>
+        <segue reference="e8t-PR-28l"/>
+        <segue reference="d9I-xW-lex"/>
+        <segue reference="DZa-SH-BVI"/>
+        <segue reference="pO3-jk-z6Z"/>
         <segue reference="uzR-Fh-xG0"/>
         <segue reference="AZe-Nd-Xxh"/>
-        <segue reference="d9I-xW-lex"/>
     </inferredMetricsTieBreakers>
 </document>

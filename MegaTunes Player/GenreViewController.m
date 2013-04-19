@@ -14,7 +14,7 @@
 #import "SongViewController.h"
 #import "DTCustomColoredAccessory.h"
 #import "MainViewController.h"
-#import "InCellScrollView.h"
+//#import "InCellScrollView.h"
 #import "AlbumViewcontroller.h"
 
 

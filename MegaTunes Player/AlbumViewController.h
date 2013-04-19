@@ -23,6 +23,8 @@
 @property (nonatomic, strong)	MPMusicPlayerController	*musicPlayer;
 @property (nonatomic, strong)   NSMutableArray *albumDataArray;
 @property (readwrite)           BOOL showAllSongsCell;
+//@property (strong, nonatomic)   UITapGestureRecognizer *tapGestureRecognizer;
+
 
 
 - (NSNumber *) calculatePlaylistDuration: (MPMediaItemCollection *) currentQueue;
