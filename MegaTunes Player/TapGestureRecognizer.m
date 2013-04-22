@@ -22,7 +22,6 @@
 
 - (void)ignoreTouch:(UITouch*)touch forEvent:(UIEvent*)event {
     [super ignoreTouch:touch forEvent:event];
-    NSLog (@"Igggggnore touch in TapGestureRecognizer");
 }
 
 -(void)reset {
@@ -42,6 +41,8 @@
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
+    [super touchesMoved:touches withEvent:event];
+    NSLog (@"TOUCH MOVED touch in TapGestureRecognizer");
 
 }
 

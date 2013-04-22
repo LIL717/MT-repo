@@ -18,6 +18,7 @@
 
 
 @synthesize window = _window;
+
 @synthesize colorSwitcher;
 @synthesize managedObjectContext = managedObjectContext_;
 @synthesize managedObjectModel = managedObjectModel_;

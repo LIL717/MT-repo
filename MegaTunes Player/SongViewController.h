@@ -8,7 +8,8 @@
 @class CollectionItem;
 #import "InfoTabBarController.h"
 
-@interface SongViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, InfoTabBarControllerDelegate,MPMediaPickerControllerDelegate> {
+
+@interface SongViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, InfoTabBarControllerDelegate, MPMediaPickerControllerDelegate> {
   
     NSManagedObjectContext *managedObjectContext;
 

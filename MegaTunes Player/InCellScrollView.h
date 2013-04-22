@@ -1,16 +1,13 @@
 //
-//  inCellScrollView.h
+//  InCellScrollView.h
 //  MegaTunes Player
 //
 //  Created by Lori Hill on 1/21/13.
 //
 //
 
-#import <UIKit/UIKit.h>
-//#import <UIKit/UIGestureRecognizerSubclass.h>
 
-@interface InCellScrollView : UIScrollView
+@interface InCellScrollView : UIScrollView <UIScrollViewDelegate> 
 
-//property (strong, nonatomic) UITapGestureRecognizer *tapGestureRecognizer;
 
 @end

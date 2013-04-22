@@ -10,54 +10,41 @@
 
 @implementation WindowSubClass
 
-@synthesize beganTouches;
-@synthesize cancelTouches;
-@synthesize endTouches;
-@synthesize moveTouches;
-@synthesize touchesObserver;
+@synthesize viewToObserve;
+@synthesize controllerThatObserves;
+@synthesize tapPoint;
+@synthesize pointValue;
 
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code
-    }
-    return self;
+- (void)forwardTouchBegan:(id)touch onView:(UIView*)aView {
+    [controllerThatObserves userTouchBegan:touch onView:aView];
 }
+- (void)forwardTouchMoved:(id)touch onView:(UIView*)aView {
+    [controllerThatObserves userTouchMoved:touch onView:aView];
+}
+- (void)forwardTouchEnded:(id)touch onView:(UIView*)aView {
+    [controllerThatObserves userTouchEnded:touch onView:aView];
+}
+
 - (void)sendEvent:(UIEvent *)event {
-	[super sendEvent:event];
-	
-	// only if it is a touch event type and we have observer
-	if ((touchesObserver) && (event.type == UIEventTypeTouches)) {
-        NSLog (@"here i am");
-		// empty sets
-		[beganTouches removeAllObjects];
-		[cancelTouches removeAllObjects];
-		[endTouches removeAllObjects];
-		[moveTouches removeAllObjects];
-		
-		// fill in sets
-		for (UITouch * touch in [event allTouches]) {
-			if (touch.phase == UITouchPhaseBegan) [beganTouches addObject:touch];
-			else if (touch.phase == UITouchPhaseCancelled) [cancelTouches addObject:touch];
-			else if (touch.phase == UITouchPhaseMoved) [moveTouches addObject:touch];
-			else if (touch.phase == UITouchPhaseEnded) [endTouches addObject:touch];
-		}
-		
-		// call methods
-		if ([beganTouches count] > 0) [touchesObserver touchesBegan:beganTouches withEvent:event];
-		if ([cancelTouches count] > 0) [touchesObserver touchesCancelled:cancelTouches withEvent:event];
-		if ([moveTouches count] > 0) [touchesObserver touchesMoved:moveTouches withEvent:event];
-		if ([endTouches count] > 0) [touchesObserver touchesEnded:endTouches withEvent:event];
-	}
+    [super sendEvent:event];
+    
+    if (viewToObserve == nil || controllerThatObserves == nil) return;
+    
+    NSSet *touches = [event allTouches];
+    UITouch *touch = [touches anyObject];
+    if ([touch.view isDescendantOfView:viewToObserve] == NO) return;
+    
+    self.tapPoint = [touch locationInView:viewToObserve];
+    self.pointValue = [NSValue valueWithCGPoint:self.tapPoint];
+    
+    if (touch.phase == UITouchPhaseBegan)
+        [self forwardTouchBegan:self.pointValue onView:touch.view];
+    else if (touch.phase == UITouchPhaseMoved)
+        [self forwardTouchMoved:self.pointValue onView:touch.view];
+    else if (touch.phase == UITouchPhaseEnded)
+        [self forwardTouchEnded:self.pointValue onView:touch.view];
+    else if (touch.phase == UITouchPhaseCancelled)
+        [self forwardTouchEnded:self.pointValue onView:touch.view];
 }
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
 
 @end

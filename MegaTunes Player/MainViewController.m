@@ -168,7 +168,7 @@ long songRemainingSeconds;
 // Configure the application.
 
 - (void) viewDidLoad {
-    LogMethod();
+//    LogMethod();
     [super viewDidLoad];
     
     [TestFlight passCheckpoint:@"MainViewController"];
@@ -321,8 +321,6 @@ long songRemainingSeconds;
         self.repeatButton.hidden = NO;
         self.shuffleButton.hidden = NO;
         self.volumeView.hidden = NO;
-        
-        [self scrollNextSongLabel];
 
 //        self.title = @"";
 //        self.navigationItem.titleView = [self customizeTitleView];
@@ -347,19 +345,24 @@ long songRemainingSeconds;
     return label;
 }
 - (void)viewWillAppear:(BOOL)animated {
-    LogMethod();
+//    LogMethod();
     [super viewWillAppear: animated];
-    
+
     self.playbackTimer = [NSTimer scheduledTimerWithTimeInterval:0.5
                                                           target:self
                                                         selector:@selector(updateTime)
                                                         userInfo:nil
                                                          repeats:YES];
+    //omg this needs to be here or it does nothing!!
+//    [self scrollNextSongLabel];
+    [self.nextSongScrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+
+
     
 }
 
 -(void) viewDidAppear:(BOOL)animated {
-    LogMethod();
+//    LogMethod();
 
     if (playNew) {
         [self setPlayNew: NO];
@@ -371,7 +374,6 @@ long songRemainingSeconds;
     }
     [self prepareNowPlayingLabel];
     [self.initialNowPlayingLabel removeFromSuperview];
-//    [self scrollNextSongLabel];
 
     [super viewDidAppear:(BOOL)animated];
 
@@ -381,7 +383,7 @@ long songRemainingSeconds;
 
 // When the now-playing item changes, update the now-playing label and the next label.
 - (void) handle_NowPlayingItemChanged: (id) notification {
-    LogMethod();
+//    LogMethod();
 
 // need to check if this method has already been executed because sometimes the notification gets sent twice for the same nowPlaying item, this workaround seems to solve the problem (check if the nowPlayingItem is the same as previous one)
     if (self.savedNowPlaying != [musicPlayer nowPlayingItem]) {
@@ -398,7 +400,7 @@ long songRemainingSeconds;
     self.savedNowPlaying = [musicPlayer nowPlayingItem];
 }
 - (void) refreshNowPlayingLabel:  (id) notification {
-    LogMethod();
+//    LogMethod();
     [nowPlayingLabel  refreshLabels];
 //    [self prepareAllExceptNowPlaying];
     
@@ -448,7 +450,7 @@ long songRemainingSeconds;
     [self.nowPlayingLabel setFont: newFont];
 }
 - (void) prepareNextSongLabel {
-    LogMethod();
+//    LogMethod();
     //set up next-playing media item with duration
     NSUInteger nextPlayingIndex = [musicPlayer indexOfNowPlayingItem] + 1;
     
@@ -469,28 +471,28 @@ long songRemainingSeconds;
         self.nextSongLabel.text = [NSString stringWithFormat: @"%@  %@",[[[self.userMediaItemCollection items] objectAtIndex: nextPlayingIndex] valueForProperty:  MPMediaItemPropertyTitle], formattedNextDuration];
         
         [self scrollNextSongLabel];
-        
+
         self.nextLabel.text = [NSString stringWithFormat: @"%@:", NSLocalizedString(@"Next", nil)];
         
     }
 }
 - (void) scrollNextSongLabel {
-    //    LogMethod();
+//    LogMethod();
     
     //calculate the label size to fit the text with the font size
     CGSize labelSize = [self.nextSongLabel.text sizeWithFont:self.nextSongLabel.font
-                                           constrainedToSize:CGSizeMake(INT16_MAX, CGRectGetHeight(nextSongScrollView.bounds))
+                                           constrainedToSize:CGSizeMake(INT16_MAX, CGRectGetHeight(self.nextSongScrollView.bounds))
                                                lineBreakMode:NSLineBreakByClipping];
     
     //Make sure that label is aligned with scrollView
-    [nextSongScrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+    [self.nextSongScrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
 
     //disable scroll if the content fits within the scrollView
-    if (labelSize.width > nextSongScrollView.frame.size.width) {
-        nextSongScrollView.scrollEnabled = YES;
+    if (labelSize.width > self.nextSongScrollView.frame.size.width) {
+        self.nextSongScrollView.scrollEnabled = YES;
     }
     else {
-        nextSongScrollView.scrollEnabled = NO;
+        self.nextSongScrollView.scrollEnabled = NO;
         
     }
 }
@@ -974,7 +976,7 @@ long songRemainingSeconds;
 }
 - (void)goBackClick
 {
-    LogMethod();
+//    LogMethod();
 
     //remove the swipe gesture from the nav bar  (doesn't work to wait until dealloc)
     [self.navigationController.navigationBar removeGestureRecognizer:self.swipeLeftRight];
@@ -1027,7 +1029,7 @@ long songRemainingSeconds;
 //		had finished or if this is the first time the user has chosen songs after app
 //		launch--in which case, invoke play.
 - (void) restorePlaybackState {
-    LogMethod();
+//    LogMethod();
 	if (musicPlayer.playbackState == MPMusicPlaybackStateStopped && userMediaItemCollection) {
 		
 		if (playedMusicOnce == NO) {
@@ -1146,7 +1148,7 @@ long songRemainingSeconds;
 
 - (void)textMagnifierViewControllerDidCancel:(TextMagnifierViewController *)controller
 {
-    LogMethod();
+//    LogMethod();
 
 	[controller dismissViewControllerAnimated:YES completion:nil];
     [self willAnimateRotationToInterfaceOrientation: self.interfaceOrientation duration: 1];
@@ -1202,7 +1204,7 @@ long songRemainingSeconds;
     
 }
 - (void) didReceiveMemoryWarning {
-    LogMethod();
+//    LogMethod();
 	// Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
     [self setNowPlayingLabel:nil];

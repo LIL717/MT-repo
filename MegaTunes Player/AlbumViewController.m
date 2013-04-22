@@ -13,7 +13,7 @@
 #import "SongViewController.h"
 #import "DTCustomColoredAccessory.h"
 #import "MainViewController.h"
-//#import "InCellScrollView.h"
+#import "InCellScrollView.h"
 
 
 @interface AlbumViewController ()
@@ -23,8 +23,6 @@
 @implementation AlbumViewController
 
 @synthesize collectionTableView;
-//@synthesize allSongsLabel;
-//@synthesize allSongsCell;
 @synthesize collection;
 @synthesize collectionType;
 @synthesize collectionQueryType;
@@ -34,7 +32,8 @@
 @synthesize musicPlayer;
 @synthesize albumDataArray;
 @synthesize showAllSongsCell;
-//@synthesize tapGestureRecognizer;
+
+BOOL cellScrolled;
 
 - (void) viewDidLoad {
     
@@ -58,6 +57,7 @@
     musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
     
     [self registerForMediaPlayerNotifications];
+    cellScrolled = NO;
     
     //add an NSString @"All Songs" object to the beginning of the collection array, then use albumDataArray as data source for table - EXCEPT for Playlists and Podcasts - don't add it for playlists and podcasts
     
@@ -80,7 +80,7 @@
 
 - (void) viewWillAppear:(BOOL)animated
 {
-    //    LogMethod();
+    LogMethod();
     [super viewWillAppear: animated];
     
     self.navigationItem.titleView = [self customizeTitleView];
@@ -101,6 +101,18 @@
         [self.navigationItem.rightBarButtonItem setBackgroundImage:menuBarImageLandscape forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
     } else {
         self.navigationItem.rightBarButtonItem= nil;
+    }
+    //    // if rows have been scrolled, they have been added to this array, so need to scroll them back to 0
+    //    YAY this works!!
+    if (cellScrolled) {
+        for (NSIndexPath *indexPath in [self.collectionTableView indexPathsForVisibleRows]) {
+            if (indexPath.row > 0) {
+//                NSLog (@" indexPath to scroll %@", indexPath);
+                CollectionItemCell *cell = (CollectionItemCell *)[self.collectionTableView cellForRowAtIndexPath:indexPath];
+                [cell.scrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+            }
+        }
+        cellScrolled = NO;
     }
     [self updateLayoutForNewOrientation: self.interfaceOrientation];
     
@@ -134,13 +146,15 @@
         [self.collectionTableView setContentInset:UIEdgeInsetsMake(23,0,0,0)];
         //if rotating to landscape and row 0 will be visible, need to scrollRectToVisible to align it correctly
         NSArray *indexes = [self.collectionTableView indexPathsForVisibleRows];
-        for (NSIndexPath *index in indexes) {
-            if (index.row == 0) {
-                [self.collectionTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-            }
+        //        NSLog (@"visible indexes %@", indexes);
+        NSIndexPath *index = [indexes objectAtIndex: 0];
+        if (index.row == 0) {
+            [self.collectionTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
         }
     }
     [self.collectionTableView reloadData];
+    cellScrolled = NO;
+
 }
 - (void) viewWillLayoutSubviews {
     //need this to pin portrait view to bounds otherwise if start in landscape, push to next view, rotate to portrait then pop back the original view in portrait - it will be too wide and "scroll" horizontally
@@ -227,8 +241,6 @@
 
 	CollectionItemCell *cell = (CollectionItemCell *)[tableView
                                                       dequeueReusableCellWithIdentifier:@"CollectionItemCell"];
-//    tableView.canCancelContentTouches = YES;
-//    cell.scrollView.canCancelContentTouches = YES;
     BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
     MPMediaItemCollection *currentQueue = [MPMediaItemCollection collectionWithItems: [[self.albumDataArray objectAtIndex:indexPath.row] items]];
 
@@ -335,7 +347,8 @@
     
     //Make sure that label is aligned with scrollView
     [cell.scrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-    
+    cell.scrollView.delegate = cell.scrollView;
+
     
     if (labelSize.width>scrollViewWidth) {
         cell.scrollView.hidden = NO;
@@ -594,6 +607,11 @@
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     
     [notificationCenter addObserver: self
+                           selector: @selector(receiveCellScrolledNotification:)
+                               name: @"CellScrolled"
+                             object: nil];
+    
+    [notificationCenter addObserver: self
 						   selector: @selector (handle_PlaybackStateChanged:)
 							   name: MPMusicPlayerControllerPlaybackStateDidChangeNotification
 							 object: musicPlayer];
@@ -607,6 +625,14 @@
     [musicPlayer beginGeneratingPlaybackNotifications];
     
 }
+- (void) receiveCellScrolledNotification:(NSNotification *) notification
+{
+//    LogMethod();
+    if ([[notification name] isEqualToString:@"CellScrolled"]) {
+        cellScrolled = YES;
+    }
+}
+
 - (void) handle_iPodLibraryChanged: (id) changeNotification {
     //    LogMethod();
 	// Implement this method to update cached collections of media items when the
@@ -627,6 +653,10 @@
 }
 - (void)dealloc {
     //    LogMethod();
+    
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                    name: @"CellScrolled"
+                                                  object: nil];
     
     [[NSNotificationCenter defaultCenter] removeObserver: self
                                                     name: MPMediaLibraryDidChangeNotification

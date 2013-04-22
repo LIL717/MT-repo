@@ -5,12 +5,11 @@
 //  Created by Lori Hill on 9/23/12.
 //
 //
-//@class InCellScrollView;
+@class InCellScrollView;
 
 @interface CollectionItemCell : UITableViewCell
 
-//@property (strong, nonatomic) IBOutlet InCellScrollView *scrollView;
-@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (strong, nonatomic) IBOutlet InCellScrollView *scrollView;
 
 @property (nonatomic, strong) IBOutlet UILabel *nameLabel;
 @property (nonatomic, strong) IBOutlet UILabel *durationLabel;

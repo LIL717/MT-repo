@@ -9,7 +9,7 @@
 #import "InfoTabBarController.h"
 #import "SongViewController.h"
 #import "SongCell.h"
-//#import "inCellScrollView.h"
+#import "InCellScrollView.h"
 #import "CollectionItem.h"
 #import "ItemCollection.h"
 #import "UIImage+AdditionalFunctionalities.h"
@@ -24,6 +24,9 @@
 @synthesize mediaItemForInfo;
 @synthesize itemToPlay;
 @synthesize iPodLibraryChanged;         //A flag indicating whether the library has been changed due to a sync
+
+//NSMutableArray *scrolledCellIndexArray;
+BOOL cellScrolled;
 
 - (void)viewDidLoad
 {
@@ -59,13 +62,14 @@
     //        NSLog (@"\t\t%@", songTitle);
     //    }
     [self registerForMediaPlayerNotifications];
+//    scrolledCellIndexArray = [[NSMutableArray alloc] initWithCapacity: 20];
+    cellScrolled = NO;
     
 }
 
 - (void) viewWillAppear:(BOOL)animated
 {
     LogMethod();
-    [super viewWillAppear: animated];
     
     //set the navigation bar title
     self.navigationItem.titleView = [self customizeTitleView];
@@ -89,8 +93,25 @@
     } else {
         self.navigationItem.rightBarButtonItem= nil;
     }
-    
+//    // if rows have been scrolled, they have been added to this array, so need to scroll them back to 0
+//    YAY this works!!
+//    if ([scrolledCellIndexArray count] > 0) {
+    if (cellScrolled) {
+//        for (NSIndexPath *indexPath in scrolledCellIndexArray) {
+        for (NSIndexPath *indexPath in [self.songTableView indexPathsForVisibleRows]) {
+
+//            NSLog (@" indexPath to scroll %@", indexPath);
+            SongCell *cell = (SongCell *)[self.songTableView cellForRowAtIndexPath:indexPath];
+            [cell.scrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+        }
+//        [self.songTableView reloadRowsAtIndexPaths:scrolledCellIndexArray withRowAnimation: UITableViewRowAnimationNone];
+
+//        [scrolledCellIndexArray removeAllObjects];
+        cellScrolled = NO;
+    }
     [self updateLayoutForNewOrientation: self.interfaceOrientation];
+
+    [super viewWillAppear: animated];
 
     return;
 }
@@ -124,20 +145,22 @@
         [self.songTableView setContentInset:UIEdgeInsetsMake(23,0,0,0)];
         //if rotating to landscape and row 0 will be visible, need to scrollRectToVisible to align it correctly
         NSArray *indexes = [self.songTableView indexPathsForVisibleRows];
-        for (NSIndexPath *index in indexes) {
-            if (index.row == 0) {
-                [self.songTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-            }
-            
+//        NSLog (@"visible indexes %@", indexes);
+        NSIndexPath *index = [indexes objectAtIndex: 0];
+        if (index.row == 0) {
+            [self.songTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
         }
     }
+
     [self.songTableView reloadData];
-    NSLog (@"NOW RELOADING TABLE");
+//    scrolledCellIndexArray = [[NSMutableArray alloc] initWithCapacity: 20];
+    cellScrolled = NO;
 
 }
 - (void) viewWillLayoutSubviews {
         //need this to pin portrait view to bounds otherwise if start in landscape, push to next view, rotate to portrait then pop back the original view in portrait - it will be too wide and "scroll" horizontally
     self.songTableView.contentSize = CGSizeMake(self.songTableView.frame.size.width, self.songTableView.contentSize.height);
+
     [super viewWillLayoutSubviews];
 }
 
@@ -264,7 +287,8 @@
     }
     //Make sure that label is aligned with scrollView
     [cell.scrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-
+    
+    cell.scrollView.delegate = cell.scrollView;
     cell.scrollView.scrollEnabled = YES;
     //        NSLog (@"scrollEnabled");
 
@@ -391,6 +415,11 @@
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     
     [notificationCenter addObserver: self
+                           selector: @selector(receiveCellScrolledNotification:)
+                               name: @"CellScrolled"
+                             object: nil];
+    
+    [notificationCenter addObserver: self
 						   selector: @selector (handle_NowPlayingItemChanged:)
 							   name: MPMusicPlayerControllerNowPlayingItemDidChangeNotification
 							 object: musicPlayer];
@@ -410,6 +439,38 @@
 
     
 }
+
+- (void) receiveCellScrolledNotification:(NSNotification *) notification
+{
+    if ([[notification name] isEqualToString:@"CellScrolled"]) {
+    
+//        NSDictionary *userInfo = notification.userInfo;
+//        
+//        UIEvent *touchEvent = [userInfo objectForKey:@"touchKey"];
+//        
+//        NSSet *touches = [touchEvent allTouches];
+//        UITouch *touch = [touches anyObject];
+//        CGPoint currentTouchPosition = [touch locationInView:self.songTableView];
+//        NSIndexPath *indexPath = [self.songTableView indexPathForRowAtPoint: currentTouchPosition];
+//
+//        NSLog (@" touch in indexPath %d", indexPath.row);
+//
+//        BOOL addIndexPath = YES;
+//        // Add to index path array
+//        if (indexPath) {
+//            for (NSIndexPath *existingIndexPath in scrolledCellIndexArray) {
+//                if (indexPath == existingIndexPath) {
+//                    addIndexPath = NO;
+//                }
+//            }
+//            if (addIndexPath) {
+//                [scrolledCellIndexArray addObject:indexPath];
+//            }
+//        }
+        cellScrolled = YES;
+    }
+}
+
 - (void) handle_iPodLibraryChanged: (id) changeNotification {
 //    LogMethod();
 	// Implement this method to update cached collections of media items when the
@@ -430,9 +491,12 @@
 }
 // When the now-playing item changes, update the now-playing indicator and reload table
 - (void) handle_NowPlayingItemChanged: (id) notification {
-//    LogMethod();
+    LogMethod();
 
     [self.songTableView reloadData];
+    cellScrolled = NO;
+//    scrolledCellIndexArray = [[NSMutableArray alloc] initWithCapacity: 20];
+
 }
 //#pragma mark - NotesTabBarControllerDelegate
 
@@ -448,6 +512,12 @@
 }
 - (void)dealloc {
 //    LogMethod();
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                    name: @"CellScrolled"
+                                                  object: nil];
+    
     [[NSNotificationCenter defaultCenter] removeObserver: self
                                                 name: MPMusicPlayerControllerNowPlayingItemDidChangeNotification
 												  object: musicPlayer];

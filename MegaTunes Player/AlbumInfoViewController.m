@@ -101,6 +101,12 @@
 - (void) viewWillAppear:(BOOL)animated
 {
 //    LogMethod();
+    for (NSIndexPath *indexPath in [self.infoTableView indexPathsForVisibleRows]) {
+        
+        //            NSLog (@" indexPath to scroll %@", indexPath);
+        SongInfoCell *cell = (SongInfoCell *)[self.infoTableView cellForRowAtIndexPath:indexPath];
+        [cell.scrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+    }
     [super viewWillAppear: animated];
 
 //    if (self.tabBarController.selectedIndex = 0) {
@@ -195,6 +201,8 @@
     //set the UIOutlet label's frame to the new sized frame
     cell.nameLabel.frame = newLabel.frame;
     
+    [cell.scrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+
 //    NSLog (@"cell.scrollView.contentSize.width is %f", cell.scrollView.contentSize.width);
 //    NSLog (@"cell.scrollView.frame.size.width is %f", cell.scrollView.frame.size.width);
     //enable scroll if the content will not fit within the scrollView
