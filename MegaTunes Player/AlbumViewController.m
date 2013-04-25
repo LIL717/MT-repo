@@ -32,6 +32,7 @@
 @synthesize musicPlayer;
 @synthesize albumDataArray;
 @synthesize showAllSongsCell;
+@synthesize sectionedArray;
 
 BOOL cellScrolled;
 
@@ -62,6 +63,9 @@ BOOL cellScrolled;
     //add an NSString @"All Songs" object to the beginning of the collection array, then use albumDataArray as data source for table - EXCEPT for Playlists and Podcasts - don't add it for playlists and podcasts
     
     self.showAllSongsCell = YES;
+//set to NO just to get indexing working - then change it back and figure out how to deal with the showAllSongsCell
+//    self.showAllSongsCell = NO;
+
     
     if ([self.collectionType isEqualToString: @"Playlists"]) {
         self.showAllSongsCell = NO;
@@ -74,8 +78,25 @@ BOOL cellScrolled;
     self.albumDataArray = [[NSMutableArray alloc] initWithCapacity: 20];
     [self.albumDataArray addObjectsFromArray: self.collection];
     if (showAllSongsCell) {
-        [self.albumDataArray insertObject: @"All Songs" atIndex: 0];
+        [self.albumDataArray insertObject: @" All Songs" atIndex: 0];
     }
+    
+//    MPMediaItemCollection *currentQueue = [MPMediaItemCollection collectionWithItems: self.collection];
+//
+//    self.currentQueue = self.mainViewController.userMediaItemCollection;
+//
+//    NSArray *returnedQueue = [currentQueue items];
+//
+//    for (MPMediaItem *album in returnedQueue) {
+//        NSLog(@"The key: %@",[MPMediaItem titlePropertyForGroupingType:MPMediaGroupingAlbum]);
+//    }
+//    
+//    for (MPMediaItemCollection *mediaItem in self.collection)
+//    {
+//        [self.albumDataArray addObject:[mediaItem representativeItem]];
+//    }
+//    
+//    self.sectionedArray = [self partitionObjects:self.albumDataArray collationStringSelector:@selector(albumTitle)];
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -162,65 +183,69 @@ BOOL cellScrolled;
     [super viewWillLayoutSubviews];
 }
 
-#pragma mark Table view methods________________________
+//- (NSArray *)partitionObjects:(NSArray *)array collationStringSelector:(SEL)selector
+//{
+//    UILocalizedIndexedCollation *collation = [UILocalizedIndexedCollation currentCollation];
+//    NSInteger sectionCount = [[collation sectionTitles] count];
+//    NSMutableArray *unsortedSections = [NSMutableArray arrayWithCapacity:sectionCount];
+//    for(int i = 0; i < sectionCount; i++)
+//    {
+//        [unsortedSections addObject:[NSMutableArray array]];
+//    }
+//    for (id object in array)
+//    {
+//        NSInteger index = [collation sectionForObject:object collationStringSelector:selector];
+//        [[unsortedSections objectAtIndex:index] addObject:object];
+//    }
+//    NSMutableArray *sections = [NSMutableArray arrayWithCapacity:sectionCount];
+//    for (NSMutableArray *section in unsortedSections)
+//    {
+//        [sections addObject:[collation sortedArrayFromArray:section collationStringSelector:selector]];
+//    }
+//    return sections;
+//}
+
+
+
+//#pragma mark Table view methods________________________
+//
+//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+//{
+//    return [[[UILocalizedIndexedCollation currentCollation] sectionTitles] objectAtIndex:section];
+//}
+//
+//- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
+//{
+//    return [[UILocalizedIndexedCollation currentCollation] sectionIndexTitles];
+//}
+//
+//- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
+//{
+//    return [[UILocalizedIndexedCollation currentCollation] sectionForSectionIndexTitleAtIndex:index];
+//}
+
+
+#pragma - TableView Index Scrolling
+
 // Configures the table view.
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
     return 1;
+//    return [[[UILocalizedIndexedCollation currentCollation] sectionTitles] count];
 }
 
 - (NSInteger) tableView: (UITableView *) table numberOfRowsInSection: (NSInteger)section {
     
     return [self.albumDataArray count];
+//    return [[[[UILocalizedIndexedCollation currentCollation] objectAtIndex: section] collectionSections] count];
+
+//     return [[self.sectionedArray objectAtIndex:section] count];
 
 }
-//#pragma - TableView Index Scrolling
-//
-//- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
-//
-////    if(searching)
-////        return nil;
-//
-//    NSMutableArray *tempArray = [[NSMutableArray alloc] init];
-//    [tempArray addObject:@"A"];
-//    [tempArray addObject:@"B"];
-//    [tempArray addObject:@"C"];
-//    [tempArray addObject:@"D"];
-//    [tempArray addObject:@"E"];
-//    [tempArray addObject:@"F"];
-//    [tempArray addObject:@"G"];
-//    [tempArray addObject:@"H"];
-//    [tempArray addObject:@"I"];
-//    [tempArray addObject:@"J"];
-//    [tempArray addObject:@"K"];
-//    [tempArray addObject:@"L"];
-//    [tempArray addObject:@"M"];
-//    [tempArray addObject:@"N"];
-//    [tempArray addObject:@"O"];
-//    [tempArray addObject:@"P"];
-//    [tempArray addObject:@"Q"];
-//    [tempArray addObject:@"R"];
-//    [tempArray addObject:@"S"];
-//    [tempArray addObject:@"T"];
-//    [tempArray addObject:@"U"];
-//    [tempArray addObject:@"V"];
-//    [tempArray addObject:@"W"];
-//    [tempArray addObject:@"Y"];
-//    [tempArray addObject:@"X"];
-//    [tempArray addObject:@"Z"];
-//
-//    return tempArray;
-//}
-//
-//- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index {
-//
-////    if(searching)
-////        return -1;
-////
-////    return index % 2;
-//}
+
+
 - (UITableViewCell *) tableView: (UITableView *) tableView cellForRowAtIndexPath: (NSIndexPath *) indexPath {
     
     if (indexPath.row == 0 && showAllSongsCell) {
@@ -242,18 +267,25 @@ BOOL cellScrolled;
 	CollectionItemCell *cell = (CollectionItemCell *)[tableView
                                                       dequeueReusableCellWithIdentifier:@"CollectionItemCell"];
     BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
+    //commented out while getting indexing to work
+
     MPMediaItemCollection *currentQueue = [MPMediaItemCollection collectionWithItems: [[self.albumDataArray objectAtIndex:indexPath.row] items]];
+//    MPMediaItemCollection *currentQueue = [[MPMediaItemCollection collectionWithItems: [[[self.sectionedArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row]  items]]];
+//    MPMediaItem *temp = [[self.sectionedArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 
     if ([self.collectionType isEqualToString: @"Playlists"]) {
         MPMediaPlaylist  *mediaPlaylist = [self.albumDataArray objectAtIndex:indexPath.row];
         cell.nameLabel.text = [mediaPlaylist valueForProperty: MPMediaPlaylistPropertyName];
     } else {
         if ([self.collectionType isEqualToString: @"Podcasts"]) {
-//            MPMediaPlaylist  *mediaPlaylist = [self.albumDataArray objectAtIndex:indexPath.row];
+            //commented out while getting indexing to work
             cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyPodcastTitle];
         } else {
         cell.durationLabel.text = @"";
+            //commented out while getting indexing to work
+
         cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyAlbumTitle];
+//            cell.textLabel.text = [temp valueForProperty:MPMediaItemPropertyAlbumTitle];
         }
     }
     
@@ -264,9 +296,9 @@ BOOL cellScrolled;
         cell.nameLabel.text = @"Unknown";
     }
     
-        
+    // commented out while getting indexing working
+//    
     //get the duration of the the playlist
-
     if (isPortrait) {
         cell.durationLabel.hidden = YES;
     } else {
@@ -290,10 +322,11 @@ BOOL cellScrolled;
     cell.textLabel.highlightedTextColor = [UIColor blueColor];
     cell.textLabel.backgroundColor = [UIColor clearColor];
     cell.textLabel.text = cell.nameLabel.text;
-    
+    //comment out for indexing
     DTCustomColoredAccessory *accessory = [DTCustomColoredAccessory accessoryWithColor:cell.nameLabel.textColor];
     accessory.highlightedColor = [UIColor blueColor];
     cell.accessoryView = accessory;
+    
     //    cell.accessoryType = UITableViewCellAccessoryNone;
     
     //size of duration Label is set at 130 to match the fixed size that it is set in interface builder

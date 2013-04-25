@@ -13,6 +13,8 @@
 }
 
 @property (strong, nonatomic)   IBOutlet UITableView *collectionTableView;
+@property (strong, nonatomic)   IBOutlet UIView *allAlbumsView;
+@property (strong, nonatomic)   IBOutlet UIButton *allAlbumsButton;
 @property (nonatomic, retain)   NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong)   NSArray *collection;
 @property (nonatomic, strong)   NSString *collectionType;
@@ -20,9 +22,9 @@
 @property (nonatomic, strong)   NSIndexPath* saveIndexPath;
 @property (readwrite)           BOOL iPodLibraryChanged;
 @property (nonatomic, strong)	MPMusicPlayerController	*musicPlayer;
-@property (nonatomic, strong)   NSMutableArray *artistsDataArray;
 @property (nonatomic, strong)   NSArray *albumCollection;
 @property (nonatomic, strong)   NSIndexPath *selectedIndexPath;
+
 
 
 - (NSNumber *) calculatePlaylistDuration: (MPMediaItemCollection *) currentQueue;

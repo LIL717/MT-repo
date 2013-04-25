@@ -66,7 +66,6 @@
 		707797F516EFF3B90026FD56 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 707797F116EFF3B90026FD56 /* README.md */; };
 		707797F616EFF3B90026FD56 /* release_notes.md in Resources */ = {isa = PBXBuildFile; fileRef = 707797F216EFF3B90026FD56 /* release_notes.md */; };
 		707797F816EFF4A90026FD56 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 707797F716EFF4A90026FD56 /* libz.dylib */; };
-		707862A31624D16E00871260 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 707862A21624D16E00871260 /* Settings.bundle */; };
 		707862A51626385700871260 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 707862A41626385700871260 /* CoreData.framework */; };
 		707862A81626391600871260 /* MegaTunes Player.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 707862A61626391600871260 /* MegaTunes Player.xcdatamodeld */; };
 		707862B21626631700871260 /* TextMagnifierViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 707862B11626631700871260 /* TextMagnifierViewController.m */; };
@@ -261,7 +260,6 @@
 		707797F216EFF3B90026FD56 /* release_notes.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = release_notes.md; sourceTree = "<group>"; };
 		707797F316EFF3B90026FD56 /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = "<group>"; };
 		707797F716EFF4A90026FD56 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
-		707862A21624D16E00871260 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Settings.bundle; path = ../Settings.bundle; sourceTree = "<group>"; };
 		707862A41626385700871260 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		707862A71626391600871260 /* MegaTunes Player.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "MegaTunes Player.xcdatamodel"; sourceTree = "<group>"; };
 		707862B01626631700871260 /* TextMagnifierViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextMagnifierViewController.h; sourceTree = "<group>"; };
@@ -560,7 +558,6 @@
 		7060523214F88D43001A1CDB /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				707862A21624D16E00871260 /* Settings.bundle */,
 				70515C47161126B400D96335 /* Localizable.strings */,
 				7060523314F88D43001A1CDB /* MegaTunes Player-Info.plist */,
 				7060523414F88D43001A1CDB /* InfoPlist.strings */,
@@ -1050,7 +1047,6 @@
 				7060523614F88D43001A1CDB /* InfoPlist.strings in Resources */,
 				7060523F14F88D43001A1CDB /* MainStoryboard.storyboard in Resources */,
 				70515C49161126B400D96335 /* Localizable.strings in Resources */,
-				707862A31624D16E00871260 /* Settings.bundle in Resources */,
 				70974B1A1630565100A33B7D /* back.png in Resources */,
 				70974B1B1630565100A33B7D /* back@2x.png in Resources */,
 				70974B64163071CE00A33B7D /* slider-fill.png in Resources */,

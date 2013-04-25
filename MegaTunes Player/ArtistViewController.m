@@ -17,12 +17,15 @@
 
 
 @interface ArtistViewController ()
-
+    @property (nonatomic, retain, readwrite) NSArray * collectionSections;
+    @property (nonatomic, retain, readwrite) NSArray * collectionSectionTitles;
 @end
 
 @implementation ArtistViewController
 
 @synthesize collectionTableView;
+@synthesize allAlbumsView;
+@synthesize allAlbumsButton;
 @synthesize collection;
 @synthesize collectionType;
 @synthesize collectionQueryType;
@@ -30,9 +33,10 @@
 @synthesize saveIndexPath;
 @synthesize iPodLibraryChanged;         //A flag indicating whether the library has been changed due to a sync
 @synthesize musicPlayer;
-@synthesize artistsDataArray;
 @synthesize albumCollection;
 @synthesize selectedIndexPath;
+
+NSArray *searchResults;
 
 BOOL cellScrolled;
 
@@ -60,11 +64,19 @@ BOOL cellScrolled;
     [self registerForMediaPlayerNotifications];
     cellScrolled = NO;
     
-    //add an NSString @"All Songs" object to the beginning of the collection array, then use albumDataArray as data source for table
+
+    self.allAlbumsButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    self.allAlbumsButton.contentEdgeInsets = UIEdgeInsetsMake(0, 4, 0, 0);
     
-    self.artistsDataArray = [[NSMutableArray alloc] initWithCapacity: 20];
-    [self.artistsDataArray addObjectsFromArray: self.collection];
-    [self.artistsDataArray insertObject: @"All Albums" atIndex: 0];
+    // format of collectionSections is <MPMediaQuerySection: 0x1cd34c80> title=B, range={0, 5}, sectionIndexTitleIndex=1,
+    self.collectionSections = [self.collectionQueryType collectionSections];
+    
+    NSMutableArray * titles = [NSMutableArray arrayWithCapacity:[self.collectionSections count]];
+    for (MPMediaQuerySection * sec in self.collectionSections) {
+        [titles addObject:sec.title];
+    }
+    self.collectionSectionTitles = [titles copy];
+    self.collectionTableView.sectionIndexMinimumDisplayRowCount = 20;
 
 }
 
@@ -96,11 +108,8 @@ BOOL cellScrolled;
     //    YAY this works!!
     if (cellScrolled) {
         for (NSIndexPath *indexPath in [self.collectionTableView indexPathsForVisibleRows]) {
-            if (indexPath.row > 0) {
-//                NSLog (@" indexPath to scroll %@", indexPath);
                 CollectionItemCell *cell = (CollectionItemCell *)[self.collectionTableView cellForRowAtIndexPath:indexPath];
                 [cell.scrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-            }
         }
         cellScrolled = NO;
     }
@@ -131,19 +140,29 @@ BOOL cellScrolled;
 - (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
     
     if (UIInterfaceOrientationIsPortrait(orientation)) {
-        [self.collectionTableView setContentInset:UIEdgeInsetsMake(11,0,0,0)];
+        [self.collectionTableView setContentInset:UIEdgeInsetsMake(11,0,0,0)]; 
+//        [self.collectionTableView setContentInset:UIEdgeInsetsMake(-44,0,0,0)];
+
     } else {
-        [self.collectionTableView setContentInset:UIEdgeInsetsMake(23,0,0,0)];
+        [self.collectionTableView setContentInset:UIEdgeInsetsMake(23,0,0,0)]; 
+//        [self.collectionTableView setContentInset:UIEdgeInsetsMake(-32,0,0,0)];
+
         //if rotating to landscape and row 0 will be visible, need to scrollRectToVisible to align it correctly
         NSArray *indexes = [self.collectionTableView indexPathsForVisibleRows];
         for (NSIndexPath *index in indexes) {
-            if (index.row == 0) {
+            if (index.section == 0 && index.row == 0) {
                 [self.collectionTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-
             }
         }
     }
+
+//    CGFloat searchBarHeight = CGRectGetHeight([[[self searchDisplayController] searchBar] frame]);
+    CGFloat tableViewHeaderHeight = self.allAlbumsView.frame.size.height;
+    if ([self.collectionTableView contentOffset].y < tableViewHeaderHeight) {
+        [self.collectionTableView setContentOffset:CGPointMake(0, tableViewHeaderHeight)];
+    }
     [self.collectionTableView reloadData];
+
     cellScrolled = NO;
 }
 - (void) viewWillLayoutSubviews {
@@ -152,106 +171,98 @@ BOOL cellScrolled;
     [super viewWillLayoutSubviews];
 }
 
-#pragma mark Table view methods________________________
-// Configures the table view.
+#pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 1;
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        return 1;
+    } else {
+        return [self.collectionSections count];
+    }
 }
 
-- (NSInteger) tableView: (UITableView *) table numberOfRowsInSection: (NSInteger)section {
-        
-    return [self.artistsDataArray count];
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    MPMediaQuerySection * sec = nil;
+    sec = self.collectionSections[section];
+    return sec.title;
 }
-//#pragma - TableView Index Scrolling
+
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
+{
+    return self.collectionSectionTitles;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
+{
+    return index;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    // Return the number of rows in the section.
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        return [searchResults count];
+    } else {
+        MPMediaQuerySection * sec = self.collectionSections[section];
+        return sec.range.length;
+    }
+}
+//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+//{
+//    NSString *sectionTitle = [self tableView:tableView titleForHeaderInSection:section];
+//    if (sectionTitle == nil) {
+//        return nil;
+//    }
+////    // Create label with section title
+////    UILabel *label = [[UILabel alloc] init];
+////    label.frame = CGRectMake(1, 1, 30, 20);
+////    label.backgroundColor = [UIColor clearColor];
+////    label.textColor = [UIColor whiteColor];
+////    label.font = [UIFont boldSystemFontOfSize:16];
+////    label.text = sectionTitle;
+//    
+//    UIView *sectionView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 10)];
+//    [sectionView setBackgroundColor:[UIColor whiteColor]];
+////    [sectionView addSubview:label];
 //
-//- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
-//    
-////    if(searching)
-////        return nil;
-//    
-//    NSMutableArray *tempArray = [[NSMutableArray alloc] init];
-//    [tempArray addObject:@"A"];
-//    [tempArray addObject:@"B"];
-//    [tempArray addObject:@"C"];
-//    [tempArray addObject:@"D"];
-//    [tempArray addObject:@"E"];
-//    [tempArray addObject:@"F"];
-//    [tempArray addObject:@"G"];
-//    [tempArray addObject:@"H"];
-//    [tempArray addObject:@"I"];
-//    [tempArray addObject:@"J"];
-//    [tempArray addObject:@"K"];
-//    [tempArray addObject:@"L"];
-//    [tempArray addObject:@"M"];
-//    [tempArray addObject:@"N"];
-//    [tempArray addObject:@"O"];
-//    [tempArray addObject:@"P"];
-//    [tempArray addObject:@"Q"];
-//    [tempArray addObject:@"R"];
-//    [tempArray addObject:@"S"];
-//    [tempArray addObject:@"T"];
-//    [tempArray addObject:@"U"];
-//    [tempArray addObject:@"V"];
-//    [tempArray addObject:@"W"];
-//    [tempArray addObject:@"Y"];
-//    [tempArray addObject:@"X"];
-//    [tempArray addObject:@"Z"];
-//    
-//    return tempArray;
+//    return sectionView;
 //}
-//
-//- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index {
-//    
-////    if(searching)
-////        return -1;
-////    
-////    return index % 2;
-//}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 0;
+}
+
 - (UITableViewCell *) tableView: (UITableView *) tableView cellForRowAtIndexPath: (NSIndexPath *) indexPath {
     
-    if (indexPath.row == 0) {
-        // dequeue and configure my static cell for indexPath.row
-        NSString *cellIdentifier = @"allAlbumsCell";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: cellIdentifier];
-        cell.textLabel.textColor = [UIColor whiteColor];
-        cell.textLabel.highlightedTextColor = [UIColor blueColor];
-        cell.textLabel.text = @"All Albums";
-        cell.textLabel.font = [UIFont boldSystemFontOfSize:44];
-        cell.textLabel.textColor = [UIColor whiteColor];
-        DTCustomColoredAccessory *accessory = [DTCustomColoredAccessory accessoryWithColor:cell.textLabel.textColor];
-        accessory.highlightedColor = [UIColor blueColor];
-        cell.accessoryView = accessory;
-        
-        return cell;
-    }
+    MPMediaQuerySection * sec = self.collectionSections[indexPath.section];
+    
+    NSLog (@" section is %d", indexPath.section);
 
 	CollectionItemCell *cell = (CollectionItemCell *)[tableView
                                           dequeueReusableCellWithIdentifier:@"CollectionItemCell"];
     
     BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
 
-//    if ([self.collectionType isEqualToString: @"Playlists"]) {
-//        MPMediaPlaylist  *mediaPlaylist = [self.collectionDataArray objectAtIndex:indexPath.row];
-//        cell.nameLabel.text = [mediaPlaylist valueForProperty: MPMediaPlaylistPropertyName];
-//    }
-    
     cell.durationLabel.text = @"";
+    
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        cell.nameLabel.text = [[[searchResults objectAtIndex:indexPath.row] representativeItem] valueForProperty: MPMediaItemPropertyAlbumArtist];
+        NSLog (@"cell.nameLabel.text is %@", cell.nameLabel.text);
+    } else {
 
-    if ([[self.artistsDataArray objectAtIndex:indexPath.row] count] > 0) {
-
-        MPMediaItemCollection *currentQueue = [MPMediaItemCollection collectionWithItems: [[self.artistsDataArray objectAtIndex:indexPath.row] items]];
+        MPMediaItemCollection * currentQueue = self.collection[sec.range.location + indexPath.row];
 
         if ([self.collectionType isEqualToString: @"Artists"]) {
-            cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyArtist];
+            cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyAlbumArtist];
         }
         if ([self.collectionType isEqualToString: @"Composers"]) {
             cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyComposer];
         }
         if ([self.collectionType isEqualToString: @"Genres"]) {
-            cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyArtist];
+            cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyAlbumArtist];
         }
         if ([self.collectionType isEqualToString: @"Podcasts"]) {
             cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyPodcastTitle];
@@ -259,7 +270,6 @@ BOOL cellScrolled;
         if (cell.nameLabel.text == nil) {
             cell.nameLabel.text = @"Unknown";
         }
-        
         //get the duration of the the playlist
         if (isPortrait) {
             cell.durationLabel.hidden = YES;
@@ -272,9 +282,9 @@ BOOL cellScrolled;
             int playlistMinutes = (playlistDuration / 60);     // Whole minutes
             int playlistSeconds = (playlistDuration % 60);                        // seconds
             cell.durationLabel.text = [NSString stringWithFormat:@"%2d:%02d", playlistMinutes, playlistSeconds];
-//            [cell.textLabel addSubView:cell.durationLabel];
-        }
+    //            [cell.textLabel addSubView:cell.durationLabel];
 
+        }
     }
     //set the textLabel to the same thing - it is used if the text does not need to scroll
     UIFont *font = [UIFont systemFontOfSize:12];
@@ -286,10 +296,11 @@ BOOL cellScrolled;
 //    cell.textLabel.lineBreakMode = NSLineBreakByClipping;
     cell.textLabel.text = cell.nameLabel.text;
     
-    DTCustomColoredAccessory *accessory = [DTCustomColoredAccessory accessoryWithColor:cell.nameLabel.textColor];
-    accessory.highlightedColor = [UIColor blueColor];
-    cell.accessoryView = accessory;
-//    cell.accessoryType = UITableViewCellAccessoryNone;
+    //commented out for indexing
+//    DTCustomColoredAccessory *accessory = [DTCustomColoredAccessory accessoryWithColor:cell.nameLabel.textColor];
+//    accessory.highlightedColor = [UIColor blueColor];
+//    cell.accessoryView = accessory;
+    cell.accessoryType = UITableViewCellAccessoryNone;
     
     //size of duration Label is set at 130 to match the fixed size that it is set in interface builder
     // note that cell.durationLabel.frame.size.width) = 0 here
@@ -312,7 +323,7 @@ BOOL cellScrolled;
     
     if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
         //14 just is the number that was needed to make the label scroll correctly within the scrollView
-        scrollViewWidth = (tableView.frame.size.width -28 - cell.accessoryView.frame.size.width);
+        scrollViewWidth = (tableView.frame.size.width -50 - cell.accessoryView.frame.size.width);
     } else {
 //        scrollViewWidth = (tableView.frame.size.width - durationLabelSize.width - cell.accessoryView.frame.size.width);
         // and 145 is the number that makes the scroll work right in landscape - don't try to figure it out
@@ -386,9 +397,9 @@ BOOL cellScrolled;
 	[tableView deselectRowAtIndexPath: indexPath animated: YES];
     
     //if there is more than one album, display albums, otherwise display songs in the album in song order
-    if (!indexPath.row == 0) {
+
         CollectionItemCell *cell = (CollectionItemCell*)[self.collectionTableView cellForRowAtIndexPath:indexPath];
-        
+    
         NSString *mediaItemProperty = [[NSString alloc] init];
         
         if ([self.collectionType isEqualToString: @"Artists"] || [self.collectionType isEqualToString: @"Genres"]) {
@@ -427,9 +438,47 @@ BOOL cellScrolled;
         } else {
             [self performSegueWithIdentifier: @"ViewSongs" sender: self];
         }
-    }
 }
+#pragma mark - Search Display methods
 
+- (void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope
+{
+    NSString *mediaItemProperty = [[NSString alloc] init];
+    
+    if ([self.collectionType isEqualToString: @"Artists"] || [self.collectionType isEqualToString: @"Genres"]) {
+        mediaItemProperty = MPMediaItemPropertyAlbumArtist;
+    } else {
+        if ([self.collectionType isEqualToString: @"Composers"]) {
+            mediaItemProperty = MPMediaItemPropertyComposer;
+        }
+    }
+    MPMediaPropertyPredicate *artistNamePredicate = [MPMediaPropertyPredicate predicateWithValue: searchText
+                                     forProperty: mediaItemProperty
+                                    comparisonType:MPMediaPredicateComparisonContains];
+    
+    MPMediaQuery *myArtistQuery = [[MPMediaQuery alloc] init];
+    [myArtistQuery addFilterPredicate: artistNamePredicate];
+    
+    searchResults = [myArtistQuery items];
+    
+     NSLog(@"%@", searchResults);
+//    
+//    NSPredicate *resultPredicate = [NSPredicate
+//                                    predicateWithFormat:@"SELF contains[cd] %@",
+//                                    searchText];
+//    
+//    searchResults = [self.collection filteredArrayUsingPredicate:resultPredicate];
+}
+-(BOOL)searchDisplayController:(UISearchDisplayController *)controller
+shouldReloadTableForSearchString:(NSString *)searchString
+{
+    [self filterContentForSearchText:searchString
+                               scope:[[self.searchDisplayController.searchBar scopeButtonTitles]
+                                      objectAtIndex:[self.searchDisplayController.searchBar
+                                                     selectedScopeButtonIndex]]];
+    
+    return YES;
+}
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
 //    LogMethod();

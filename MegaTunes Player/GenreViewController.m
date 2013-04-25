@@ -383,6 +383,12 @@ BOOL cellScrolled;
         collectionViewController.collectionType = self.collectionType;
         collectionViewController.title = cell.nameLabel.text;
         collectionViewController.iPodLibraryChanged = self.iPodLibraryChanged;
+        
+//        for (MPMediaItemCollection *artist in collectionViewController.collection) {
+//            NSLog (@"%@", [[artist representativeItem] valueForProperty: MPMediaItemPropertyAlbumArtist]);
+//        }
+
+        
 
 	}
 

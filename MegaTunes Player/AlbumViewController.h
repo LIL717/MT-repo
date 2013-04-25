@@ -23,6 +23,8 @@
 @property (nonatomic, strong)	MPMusicPlayerController	*musicPlayer;
 @property (nonatomic, strong)   NSMutableArray *albumDataArray;
 @property (readwrite)           BOOL showAllSongsCell;
+@property (nonatomic, retain)   NSArray *sectionedArray;
+
 
 - (NSNumber *) calculatePlaylistDuration: (MPMediaItemCollection *) currentQueue;
 
