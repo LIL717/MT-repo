@@ -268,10 +268,16 @@ BOOL cellScrolled;
                                                       dequeueReusableCellWithIdentifier:@"CollectionItemCell"];
     BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
     //commented out while getting indexing to work
-
-    MPMediaItemCollection *currentQueue = [MPMediaItemCollection collectionWithItems: [[self.albumDataArray objectAtIndex:indexPath.row] items]];
-//    MPMediaItemCollection *currentQueue = [[MPMediaItemCollection collectionWithItems: [[[self.sectionedArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row]  items]]];
-//    MPMediaItem *temp = [[self.sectionedArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    
+    BOOL emptyArray;
+    
+    MPMediaItemCollection *currentQueue = [MPMediaItemCollection alloc];
+    
+    if ([[self.albumDataArray objectAtIndex:indexPath.row] count] == 0) {
+        emptyArray = YES;
+    } else {
+        currentQueue = [MPMediaItemCollection collectionWithItems: [[self.albumDataArray objectAtIndex:indexPath.row] items]];
+    }
 
     if ([self.collectionType isEqualToString: @"Playlists"]) {
         MPMediaPlaylist  *mediaPlaylist = [self.albumDataArray objectAtIndex:indexPath.row];
@@ -288,6 +294,25 @@ BOOL cellScrolled;
 //            cell.textLabel.text = [temp valueForProperty:MPMediaItemPropertyAlbumTitle];
         }
     }
+
+    //get the duration of the the playlist
+    if (isPortrait) {
+        cell.durationLabel.hidden = YES;
+    } else {
+        cell.durationLabel.hidden = NO;
+        
+        if (emptyArray) {
+            cell.durationLabel.text = @"";
+        } else {
+            NSNumber *playlistDurationNumber = [self calculatePlaylistDuration: currentQueue];
+            long playlistDuration = [playlistDurationNumber longValue];
+            
+            int playlistMinutes = (playlistDuration / 60);     // Whole minutes
+            int playlistSeconds = (playlistDuration % 60);                        // seconds
+            cell.durationLabel.text = [NSString stringWithFormat:@"%2d:%02d", playlistMinutes, playlistSeconds];
+        //            [cell.textLabel addSubView:cell.durationLabel];
+        }
+    }
     
     if (cell.nameLabel.text == nil) {
         cell.nameLabel.text = @"Unknown";
@@ -295,25 +320,8 @@ BOOL cellScrolled;
     if ([cell.nameLabel.text isEqualToString: @""]) {
         cell.nameLabel.text = @"Unknown";
     }
-    
-    // commented out while getting indexing working
-//    
-    //get the duration of the the playlist
-    if (isPortrait) {
-        cell.durationLabel.hidden = YES;
-    } else {
-        cell.durationLabel.hidden = NO;
-        
-        NSNumber *playlistDurationNumber = [self calculatePlaylistDuration: currentQueue];
-        long playlistDuration = [playlistDurationNumber longValue];
-        
-        int playlistMinutes = (playlistDuration / 60);     // Whole minutes
-        int playlistSeconds = (playlistDuration % 60);                        // seconds
-        cell.durationLabel.text = [NSString stringWithFormat:@"%2d:%02d", playlistMinutes, playlistSeconds];
-        //            [cell.textLabel addSubView:cell.durationLabel];
-    }
+    NSLog (@"cell.nameLabel.text is %@", cell.nameLabel.text);
 
-        
     //set the textLabel to the same thing - it is used if the text does not need to scroll
     UIFont *font = [UIFont systemFontOfSize:12];
     UIFont *newFont = [font fontWithSize:44];

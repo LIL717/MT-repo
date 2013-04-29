@@ -95,6 +95,10 @@
 		70984C16163F964600CE7EA9 /* playing.png in Resources */ = {isa = PBXBuildFile; fileRef = 70984C14163F964600CE7EA9 /* playing.png */; };
 		70984C17163F964600CE7EA9 /* playing@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70984C15163F964600CE7EA9 /* playing@2x.png */; };
 		70984C221640C07A00CE7EA9 /* ItemCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 70984C211640C07A00CE7EA9 /* ItemCollection.m */; };
+		7098DEAF172DA8DA00A72F63 /* MTSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 7098DEAE172DA8DA00A72F63 /* MTSearchBar.m */; };
+		7098DEB2172DACF500A72F63 /* MTSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7098DEB1172DACF400A72F63 /* MTSearchViewController.m */; };
+		7098DEBC172E310900A72F63 /* searchIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 7098DEBB172E310900A72F63 /* searchIcon.png */; };
+		7098DEBE172E312200A72F63 /* searchIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7098DEBD172E312200A72F63 /* searchIcon@2x.png */; };
 		709A578916F93B59000D1678 /* TapGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 709A578816F93B59000D1678 /* TapGestureRecognizer.m */; };
 		709F238A16C329C000521158 /* MediaItemUserData.m in Sources */ = {isa = PBXBuildFile; fileRef = 709F238916C329C000521158 /* MediaItemUserData.m */; };
 		709F239016C3525400521158 /* bass_fx.chm in Resources */ = {isa = PBXBuildFile; fileRef = 709F238C16C3525400521158 /* bass_fx.chm */; };
@@ -317,6 +321,12 @@
 		70984C15163F964600CE7EA9 /* playing@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "playing@2x.png"; sourceTree = "<group>"; };
 		70984C201640C07A00CE7EA9 /* ItemCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemCollection.h; sourceTree = "<group>"; };
 		70984C211640C07A00CE7EA9 /* ItemCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemCollection.m; sourceTree = "<group>"; };
+		7098DEAD172DA8DA00A72F63 /* MTSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MTSearchBar.h; sourceTree = "<group>"; };
+		7098DEAE172DA8DA00A72F63 /* MTSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MTSearchBar.m; sourceTree = "<group>"; };
+		7098DEB0172DACF400A72F63 /* MTSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MTSearchViewController.h; sourceTree = "<group>"; };
+		7098DEB1172DACF400A72F63 /* MTSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MTSearchViewController.m; sourceTree = "<group>"; };
+		7098DEBB172E310900A72F63 /* searchIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = searchIcon.png; sourceTree = "<group>"; };
+		7098DEBD172E312200A72F63 /* searchIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "searchIcon@2x.png"; sourceTree = "<group>"; };
 		709A578716F93B59000D1678 /* TapGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TapGestureRecognizer.h; sourceTree = "<group>"; };
 		709A578816F93B59000D1678 /* TapGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TapGestureRecognizer.m; sourceTree = "<group>"; };
 		709F238816C329C000521158 /* MediaItemUserData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaItemUserData.h; sourceTree = "<group>"; };
@@ -800,6 +810,10 @@
 			isa = PBXGroup;
 			children = (
 				707862A61626391600871260 /* MegaTunes Player.xcdatamodeld */,
+				7098DEAD172DA8DA00A72F63 /* MTSearchBar.h */,
+				7098DEAE172DA8DA00A72F63 /* MTSearchBar.m */,
+				7098DEB0172DACF400A72F63 /* MTSearchViewController.h */,
+				7098DEB1172DACF400A72F63 /* MTSearchViewController.m */,
 				709F238816C329C000521158 /* MediaItemUserData.h */,
 				709F238916C329C000521158 /* MediaItemUserData.m */,
 				70984C201640C07A00CE7EA9 /* ItemCollection.h */,
@@ -938,6 +952,8 @@
 				70F9F1D216E591970061C05E /* redWhitePlay68@2x.png */,
 				7020E1D916B218D000BAB41E /* rightButtonBackground.png */,
 				7020E1DA16B218D000BAB41E /* rightButtonBackground@2x.png */,
+				7098DEBB172E310900A72F63 /* searchIcon.png */,
+				7098DEBD172E312200A72F63 /* searchIcon@2x.png */,
 				70C177A6166EC6B400792D8F /* selection-tab.png */,
 				70C177A4166EC67A00792D8F /* selection-tab@2x.png */,
 				70492FF416E71A9D005A66C4 /* shinyVolumeHandle.png */,
@@ -1131,6 +1147,8 @@
 				707797F616EFF3B90026FD56 /* release_notes.md in Resources */,
 				70A0493016F6814700F70A90 /* LICENSE.txt in Resources */,
 				70A0493716F6814700F70A90 /* README.mdown in Resources */,
+				7098DEBC172E310900A72F63 /* searchIcon.png in Resources */,
+				7098DEBE172E312200A72F63 /* searchIcon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1212,6 +1230,8 @@
 				70864FCE17092B5B0030210C /* GenreViewController.m in Sources */,
 				70864FD1170B789E0030210C /* UIScrollView+PassTouches.m in Sources */,
 				70864FD4170B93110030210C /* WindowSubClass.m in Sources */,
+				7098DEAF172DA8DA00A72F63 /* MTSearchBar.m in Sources */,
+				7098DEB2172DACF500A72F63 /* MTSearchViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

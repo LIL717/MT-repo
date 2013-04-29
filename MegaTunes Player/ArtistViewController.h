@@ -6,8 +6,10 @@
 //
 //
 @class CollectionItem;
+@class MTSearchBar;
+//@class MTSearchViewController;
 
-@interface ArtistViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MPMediaPickerControllerDelegate> {
+@interface ArtistViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MPMediaPickerControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate> {
 
     NSManagedObjectContext *managedObjectContext;
 }
@@ -15,6 +17,8 @@
 @property (strong, nonatomic)   IBOutlet UITableView *collectionTableView;
 @property (strong, nonatomic)   IBOutlet UIView *allAlbumsView;
 @property (strong, nonatomic)   IBOutlet UIButton *allAlbumsButton;
+@property (strong, nonatomic)   IBOutlet MTSearchBar *searchBar;
+//@property (strong, nonatomic)   IBOutlet MTSearchViewController *searchViewController;
 @property (nonatomic, retain)   NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong)   NSArray *collection;
 @property (nonatomic, strong)   NSString *collectionType;
@@ -23,7 +27,6 @@
 @property (readwrite)           BOOL iPodLibraryChanged;
 @property (nonatomic, strong)	MPMusicPlayerController	*musicPlayer;
 @property (nonatomic, strong)   NSArray *albumCollection;
-@property (nonatomic, strong)   NSIndexPath *selectedIndexPath;
 
 
 

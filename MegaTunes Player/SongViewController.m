@@ -30,7 +30,7 @@ BOOL cellScrolled;
 
 - (void)viewDidLoad
 {
-    LogMethod();
+//    LogMethod();
     [super viewDidLoad];
     
     //set the backround image for the view
@@ -69,7 +69,7 @@ BOOL cellScrolled;
 
 - (void) viewWillAppear:(BOOL)animated
 {
-    LogMethod();
+//    LogMethod();
     
     //set the navigation bar title
     self.navigationItem.titleView = [self customizeTitleView];
@@ -137,7 +137,7 @@ BOOL cellScrolled;
     
 }
 - (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
-    LogMethod();
+//    LogMethod();
     if (UIInterfaceOrientationIsPortrait(orientation)) {
         [self.songTableView setContentInset:UIEdgeInsetsMake(11,0,0,0)];
 

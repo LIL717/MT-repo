@@ -141,7 +141,7 @@
                             </label>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1000" translatesAutoresizingMaskIntoConstraints="NO" id="vBs-Pg-YLN" customClass="OBSlider">
                                 <constraints>
-                                    <constraint firstAttribute="width" priority="500" constant="190" type="user" id="OUB-yb-lG0"/>
+                                    <constraint firstAttribute="width" priority="500" constant="250" type="user" id="OUB-yb-lG0"/>
                                     <constraint firstAttribute="height" constant="23" type="user" id="rGt-3F-w2X"/>
                                 </constraints>
                                 <connections>
@@ -699,21 +699,21 @@
         <scene sceneID="GBo-sA-DAf">
             <objects>
                 <viewController id="DPV-A8-OP5" customClass="ArtistViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" rowHeight="55" sectionHeaderHeight="22" sectionFooterHeight="22" id="tE6-jE-hH7">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="55" sectionHeaderHeight="1" sectionFooterHeight="1" id="tE6-jE-hH7">
                         <rect key="frame" x="0.0" y="64" width="480" height="256"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
-                        <color key="separatorColor" white="0.80000000000000004" alpha="1" colorSpace="deviceWhite"/>
+                        <color key="separatorColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                         <view key="tableHeaderView" contentMode="scaleToFill" id="Wo4-4x-FC2" userLabel="AllAlbumsView">
                             <rect key="frame" x="0.0" y="0.0" width="480" height="100"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <searchBar contentMode="redraw" barStyle="blackTranslucent" translatesAutoresizingMaskIntoConstraints="NO" id="I0D-1g-CU0">
+                                <searchBar contentMode="redraw" barStyle="blackTranslucent" translatesAutoresizingMaskIntoConstraints="NO" id="I0D-1g-CU0" customClass="MTSearchBar">
                                     <constraints>
                                         <constraint firstAttribute="height" constant="44" type="user" id="Dbc-yR-09P"/>
                                     </constraints>
-                                    <textInputTraits key="textInputTraits"/>
+                                    <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                                     <connections>
                                         <outlet property="delegate" destination="DPV-A8-OP5" id="Gne-zb-WJp"/>
                                     </connections>
@@ -754,13 +754,17 @@
                         </view>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="CollectionItemCell" rowHeight="55" id="DFq-ZQ-3yg" userLabel="cell" customClass="CollectionItemCell">
-                                <rect key="frame" x="0.0" y="122" width="480" height="55"/>
+                                <rect key="frame" x="0.0" y="136" width="480" height="57"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="460" height="54"/>
+                                    <rect key="frame" x="10" y="1" width="440" height="54"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="list-background.png" translatesAutoresizingMaskIntoConstraints="NO" id="VCT-gA-fzU" userLabel="bkgImage"/>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="list-background.png" translatesAutoresizingMaskIntoConstraints="NO" id="VCT-gA-fzU" userLabel="bkgImage">
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="480" id="Rsp-e1-oul"/>
+                                            </constraints>
+                                        </imageView>
                                         <scrollView clipsSubviews="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BEu-UQ-vTB" userLabel="IBScrollView" customClass="InCellScrollView">
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="list-background.png" translatesAutoresizingMaskIntoConstraints="NO" id="An2-Fa-iiH"/>
@@ -787,6 +791,7 @@
                                         <label opaque="NO" clipsSubviews="YES" contentMode="left" text="000:00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="22" translatesAutoresizingMaskIntoConstraints="NO" id="jfz-Q5-l6V" userLabel="duration">
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="130" type="user" id="j4g-3A-jQa"/>
+                                                <constraint firstAttribute="height" constant="55" id="w7i-7P-PbD"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="44"/>
                                             <color key="textColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -796,24 +801,21 @@
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
                                 <constraints>
-                                    <constraint firstItem="jfz-Q5-l6V" firstAttribute="top" secondItem="DFq-ZQ-3yg" secondAttribute="top" type="user" id="3da-zu-BOE"/>
-                                    <constraint firstAttribute="trailing" secondItem="BEu-UQ-vTB" secondAttribute="trailing" constant="168" type="user" id="59C-m6-r2f"/>
-                                    <constraint firstItem="VCT-gA-fzU" firstAttribute="top" secondItem="DFq-ZQ-3yg" secondAttribute="top" type="default" id="7q2-y9-aQ7"/>
-                                    <constraint firstItem="VCT-gA-fzU" firstAttribute="leading" secondItem="DFq-ZQ-3yg" secondAttribute="leading" type="user" id="QWu-Ih-HGR"/>
-                                    <constraint firstItem="VCT-gA-fzU" firstAttribute="bottom" secondItem="DFq-ZQ-3yg" secondAttribute="bottom" type="default" id="YkK-CC-01Q"/>
-                                    <constraint firstItem="BEu-UQ-vTB" firstAttribute="leading" secondItem="DFq-ZQ-3yg" secondAttribute="leading" constant="10" type="user" id="Yo9-zM-iV7"/>
-                                    <constraint firstItem="VCT-gA-fzU" firstAttribute="trailing" secondItem="DFq-ZQ-3yg" secondAttribute="trailing" type="user" id="j4m-r7-qRl"/>
-                                    <constraint firstAttribute="bottom" secondItem="BEu-UQ-vTB" secondAttribute="bottom" type="user" id="pT9-MN-89o"/>
-                                    <constraint firstItem="jfz-Q5-l6V" firstAttribute="bottom" secondItem="DFq-ZQ-3yg" secondAttribute="bottom" type="default" id="qDx-rL-B69"/>
-                                    <constraint firstAttribute="trailing" secondItem="jfz-Q5-l6V" secondAttribute="trailing" constant="30" type="user" id="qs2-kx-eTI"/>
-                                    <constraint firstItem="BEu-UQ-vTB" firstAttribute="top" secondItem="DFq-ZQ-3yg" secondAttribute="top" type="user" id="wgG-IE-HJY"/>
+                                    <constraint firstItem="BEu-UQ-vTB" firstAttribute="top" secondItem="jfz-Q5-l6V" secondAttribute="top" type="default" id="I5Q-Si-ouM"/>
+                                    <constraint firstItem="BEu-UQ-vTB" firstAttribute="centerY" secondItem="DFq-ZQ-3yg" secondAttribute="centerY" type="default" id="JR8-ze-K4o"/>
+                                    <constraint firstAttribute="trailing" secondItem="jfz-Q5-l6V" secondAttribute="trailing" constant="20" type="default" id="PT9-46-hNg"/>
+                                    <constraint firstItem="jfz-Q5-l6V" firstAttribute="bottom" secondItem="BEu-UQ-vTB" secondAttribute="bottom" type="default" id="QFM-Fj-GVQ"/>
+                                    <constraint firstItem="BEu-UQ-vTB" firstAttribute="leading" secondItem="DFq-ZQ-3yg" secondAttribute="leading" constant="20" type="default" id="QhG-lr-3oi"/>
+                                    <constraint firstItem="jfz-Q5-l6V" firstAttribute="leading" secondItem="BEu-UQ-vTB" secondAttribute="trailing" constant="8" symbolic="YES" type="default" id="jsu-Dc-0hc"/>
+                                    <constraint firstItem="VCT-gA-fzU" firstAttribute="leading" secondItem="DFq-ZQ-3yg" secondAttribute="leading" constant="10" id="kQo-a4-soJ"/>
+                                    <constraint firstItem="VCT-gA-fzU" firstAttribute="top" secondItem="BEu-UQ-vTB" secondAttribute="top" type="default" id="psw-4d-Hn5"/>
+                                    <constraint firstItem="VCT-gA-fzU" firstAttribute="bottom" secondItem="jfz-Q5-l6V" secondAttribute="bottom" type="default" id="xPk-Sc-jKc"/>
                                 </constraints>
                                 <connections>
                                     <outlet property="centerXInScrollView" destination="6ic-Pe-rfj" id="baf-DM-fwq"/>
                                     <outlet property="durationLabel" destination="jfz-Q5-l6V" id="DwN-a5-MUD"/>
                                     <outlet property="nameLabel" destination="Ka0-Cb-Mfz" id="d6N-Fl-4iW"/>
                                     <outlet property="scrollView" destination="BEu-UQ-vTB" id="eXc-Sk-BCr"/>
-                                    <outlet property="scrollViewToCellConstraint" destination="59C-m6-r2f" id="YUl-gx-aJK"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -829,7 +831,8 @@
                         <outlet property="allAlbumsButton" destination="Y1n-zD-H2J" id="hPA-8s-STs"/>
                         <outlet property="allAlbumsView" destination="Wo4-4x-FC2" id="IIJ-HY-Dw1"/>
                         <outlet property="collectionTableView" destination="tE6-jE-hH7" id="ZjL-1M-vDP"/>
-                        <outlet property="searchDisplayController" destination="FfK-hu-gAG" id="7cx-Cv-eIz"/>
+                        <outlet property="searchBar" destination="I0D-1g-CU0" id="iDM-ED-5Bv"/>
+                        <outlet property="searchDisplayController" destination="FfK-hu-gAG" id="CR4-9k-tmG"/>
                         <segue destination="SKu-HW-GrJ" kind="push" identifier="ViewNowPlaying" id="nbU-Bw-UO3"/>
                         <segue destination="mNb-57-5Xm" kind="push" identifier="ViewSongs" id="kZ2-Sr-P63"/>
                         <segue destination="527-b6-fAN" kind="push" identifier="AlbumCollections" id="dXX-zY-4vR"/>
@@ -839,7 +842,6 @@
                 <searchDisplayController id="FfK-hu-gAG">
                     <connections>
                         <outlet property="delegate" destination="DPV-A8-OP5" id="p1n-4M-eSo"/>
-                        <outlet property="searchBar" destination="I0D-1g-CU0" id="0Da-ce-404"/>
                         <outlet property="searchContentsController" destination="DPV-A8-OP5" id="Nhg-dI-gZK"/>
                         <outlet property="searchResultsDataSource" destination="DPV-A8-OP5" id="ll2-OX-t6G"/>
                         <outlet property="searchResultsDelegate" destination="DPV-A8-OP5" id="8Sg-lW-qGF"/>
@@ -1349,6 +1351,7 @@
                 <relationship kind="outlet" name="allAlbumsButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="allAlbumsView" candidateClass="UIView"/>
                 <relationship kind="outlet" name="collectionTableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="searchBar" candidateClass="MTSearchBar"/>
             </relationships>
         </class>
         <class className="AutoScrollLabel" superclassName="UIScrollView">
@@ -1400,6 +1403,9 @@
         </class>
         <class className="MPVolumeView" superclassName="UIView">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/MPVolumeView.h"/>
+        </class>
+        <class className="MTSearchBar" superclassName="UISearchBar">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MTSearchBar.h"/>
         </class>
         <class className="MainViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/MainViewController.h"/>

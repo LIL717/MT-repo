@@ -271,8 +271,24 @@ long songRemainingSeconds;
         [self.view removeConstraint:self.verticalSpaceBetweenSliderAndRemainingTime];
         [self.view removeConstraint:self.verticalSpaceBetweenRewindAndReplay];
         [self.view removeConstraint:self.topSpaceToPlayButton];
+        self.playButtonToBottomSpace.constant = 70;
+
+        
+//        self.progressSlider.translatesAutoresizingMaskIntoConstraints = NO;
+//        self.elapsedTimeLabel.translatesAutoresizingMaskIntoConstraints = NO;
+//        self.remainingTimeLabel.translatesAutoresizingMaskIntoConstraints = NO;
+//        
+//        NSDictionary *viewsDictionary = NSDictionaryOfVariableBindings(progressSlider, elapsedTimeLabel, remainingTimeLabel);
+//        
+//        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[elapsedTimeLabel]-[progressSlider]-[remainingTimeLabel]-|" options: 0 metrics: 0 views:viewsDictionary]];
     } else {
-        [self.view removeConstraint:self.playButtonToBottomSpace];
+//        [self.view removeConstraint:self.playButtonToBottomSpace];
+
+        [self.view removeConstraint:self.topSpaceToPlayButton];
+        [self.view addConstraint: self.playButtonToBottomSpace];
+        self.playButtonToBottomSpace.constant = 190;
+
+
     }
     
     [self willAnimateRotationToInterfaceOrientation: self.interfaceOrientation duration: 1];
@@ -292,7 +308,8 @@ long songRemainingSeconds;
         [self.view removeConstraint:self.verticalSpaceBetweenSliderAndRemainingTime];
         [self.view removeConstraint:self.verticalSpaceBetweenRewindAndReplay];
         [self.view removeConstraint:self.topSpaceToPlayButton];
-        [self.view addConstraint:self.playButtonToBottomSpace];
+        self.playButtonToBottomSpace.constant = 70;
+
 
         self.repeatButton.hidden = YES;
         self.shuffleButton.hidden = YES;
@@ -314,8 +331,12 @@ long songRemainingSeconds;
         [self.view addConstraint:self.verticalSpaceBetweenSliderAndElapsedTime];
         [self.view addConstraint:self.verticalSpaceBetweenSliderAndRemainingTime];
         [self.view addConstraint:self.verticalSpaceBetweenRewindAndReplay];
-        [self.view removeConstraint:self.playButtonToBottomSpace];
-        [self.view addConstraint:self.topSpaceToPlayButton];
+//        [self.view removeConstraint:self.playButtonToBottomSpace];
+//        [self.view addConstraint:self.topSpaceToPlayButton];
+        [self.view removeConstraint:self.topSpaceToPlayButton];
+        [self.view addConstraint:self.playButtonToBottomSpace];
+
+        self.playButtonToBottomSpace.constant = 190;
 
 
         self.repeatButton.hidden = NO;
