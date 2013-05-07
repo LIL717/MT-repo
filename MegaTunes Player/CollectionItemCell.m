@@ -21,10 +21,6 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-//        UIFont *font = [UIFont systemFontOfSize:12];
-//        UIFont *newFont = [font fontWithSize:44];
-//        self.textLabel.font = newFont;
-//        self.textLabel.textColor = [UIColor whiteColor];
     }
     return self;
 }
