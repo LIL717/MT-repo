@@ -23,6 +23,8 @@
 @property (nonatomic, strong)	MPMusicPlayerController	*musicPlayer;
 @property (nonatomic, strong)   NSMutableArray *collectionDataArray;
 @property (nonatomic, strong)   NSArray *albumCollection;
+@property (nonatomic, strong)   UIBarButtonItem *rightBarButton;
+
 
 
 - (NSNumber *) calculatePlaylistDuration: (MPMediaItemCollection *) currentQueue;

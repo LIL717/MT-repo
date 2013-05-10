@@ -24,6 +24,8 @@
 @property (nonatomic, strong)   NSMutableArray *albumDataArray;
 @property (readwrite)           BOOL showAllSongsCell;
 @property (nonatomic, retain)   NSArray *sectionedArray;
+@property (nonatomic, strong)   UIBarButtonItem *rightBarButton;
+
 
 
 - (NSNumber *) calculatePlaylistDuration: (MPMediaItemCollection *) currentQueue;

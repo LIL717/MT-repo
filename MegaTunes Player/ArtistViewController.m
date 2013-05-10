@@ -35,6 +35,7 @@
 @synthesize iPodLibraryChanged;         //A flag indicating whether the library has been changed due to a sync
 @synthesize musicPlayer;
 @synthesize albumCollection;
+@synthesize rightBarButton;
 
 NSArray *searchResults;
 NSIndexPath *selectedIndexPath;
@@ -71,6 +72,17 @@ BOOL showDuration;
     [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage48 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage58 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
 
+    self.rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                          style:UIBarButtonItemStyleBordered
+                                                         target:self
+                                                         action:@selector(viewNowPlaying)];
+    
+    UIImage *menuBarImageDefault = [[UIImage imageNamed:@"redWhitePlay57.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    UIImage *menuBarImageLandscape = [[UIImage imageNamed:@"redWhitePlay68.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    
+    [self.rightBarButton setBackgroundImage:menuBarImageDefault forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [self.rightBarButton setBackgroundImage:menuBarImageLandscape forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
+    
     musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
     
     [self registerForMediaPlayerNotifications];
@@ -100,8 +112,6 @@ BOOL showDuration;
 
 //    self.searchDisplayController.searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
 
-
-
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -115,16 +125,7 @@ BOOL showDuration;
     
     if (playingItem) {
         //initWithTitle cannot be nil, must be @""
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                                  style:UIBarButtonItemStyleBordered
-                                                                                 target:self
-                                                                                 action:@selector(viewNowPlaying)];
-        
-        UIImage *menuBarImageDefault = [[UIImage imageNamed:@"redWhitePlay57.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-        UIImage *menuBarImageLandscape = [[UIImage imageNamed:@"redWhitePlay68.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-        
-        [self.navigationItem.rightBarButtonItem setBackgroundImage:menuBarImageDefault forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-        [self.navigationItem.rightBarButtonItem setBackgroundImage:menuBarImageLandscape forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
+        self.navigationItem.rightBarButtonItem = self.rightBarButton;
     } else {
         self.navigationItem.rightBarButtonItem= nil;
     }
@@ -190,7 +191,7 @@ BOOL showDuration;
     cellScrolled = NO;
 }
 - (void) viewWillLayoutSubviews {
-    LogMethod();
+//    LogMethod();
         //need this to pin portrait view to bounds otherwise if start in landscape, push to next view, rotate to portrait then pop back the original view in portrait - it will be too wide and "scroll" horizontally
     self.collectionTableView.contentSize = CGSizeMake(self.collectionTableView.frame.size.width, self.collectionTableView.contentSize.height);
     [super viewWillLayoutSubviews];
@@ -198,50 +199,27 @@ BOOL showDuration;
 #pragma mark - Search Display methods
 
 - (void)searchDisplayControllerDidBeginSearch:(UISearchDisplayController *)controller {
-//    LogMethod();
+    LogMethod();
     isSearching = YES;
-//    [[NSNotificationCenter defaultCenter] postNotificationName: @"Searching" object:nil];
-
 }
-//- (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller {
-//    LogMethod();
-//    isSearching = NO;
-//}
-- (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller {
-//    LogMethod();
+
+- (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller {
+    LogMethod();
     isSearching = NO;
+    
     //reload the original tableView otherwise section headers are not visible :(  this seems to be an Apple bug
-//    [self updateLayoutForNewOrientation: self.interfaceOrientation];
+
     CGFloat largeHeaderAdjustment;
     
     BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
 
     if (isPortrait) {
         largeHeaderAdjustment = 11;
-//        [self.collectionTableView setContentInset:UIEdgeInsetsMake(11,0,0,0)];
-        
     } else {
         largeHeaderAdjustment = 23;
-        [self.collectionTableView setContentInset:UIEdgeInsetsMake(23,0,0,0)];
-        //
-        //if rotating to landscape and row 0 will be visible, need to scrollRectToVisible to align it correctly
-        NSArray *indexes = [self.collectionTableView indexPathsForVisibleRows];
-        NSIndexPath *index = [indexes objectAtIndex: 0];
-        if (index.section == 0 && index.row == 0) {
-            [self.collectionTableView scrollRectToVisible:CGRectMake(23, 0, 1, 1) animated:NO];
-        }
     }
-    
-    CGFloat tableViewHeaderHeight = self.allAlbumsView.frame.size.height;
-    //    NSLog (@"tableViewHeaderHeight is %f", tableViewHeaderHeight);
-    //    NSLog (@"tableViewContentOffset.y is %f", [self.collectionTableView contentOffset].y);
-    if ([self.collectionTableView contentOffset].y < tableViewHeaderHeight) {
-        [self.collectionTableView setContentOffset:CGPointMake(0, tableViewHeaderHeight - largeHeaderAdjustment)];
-        [self.collectionTableView scrollRectToVisible:CGRectMake(23, 0, 1, 1) animated:NO];
+    [self.collectionTableView scrollRectToVisible:CGRectMake(largeHeaderAdjustment, 0, 1, 1) animated:YES];
 
-    }
-//    [self.collectionTableView reloadData];
-//    [self.collectionTableView reloadData];
 }
 - (void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope
 {
@@ -806,11 +784,6 @@ BOOL showDuration;
 //    LogMethod();
     
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-
-//    [notificationCenter addObserver: self
-//                           selector: @selector(receiveSearchDidBeginNotification:)
-//                               name: @"Searching"
-//                             object: nil];
     
     [notificationCenter addObserver: self
                            selector: @selector(receiveCellScrolledNotification:)
@@ -867,11 +840,7 @@ BOOL showDuration;
     
 }
 - (void)dealloc {
-//    LogMethod();
-//    [[NSNotificationCenter defaultCenter] removeObserver: self
-//                                                    name: @"Searching"
-//                                                  object: nil];
-    
+
     [[NSNotificationCenter defaultCenter] removeObserver: self
                                                     name: @"CellScrolled"
                                                   object: nil];

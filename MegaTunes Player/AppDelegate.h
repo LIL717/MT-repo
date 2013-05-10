@@ -5,7 +5,7 @@
 //  Created by Lori Hill on 2/24/12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
-#import "ColorSwitcher.h"
+//#import "ColorSwitcher.h"
 
 //#define PLAYER_TYPE_PREF_KEY @"player_type_preference"
 #define SHOW_PLAYLIST_REMAINING_KEY @"show_playlist_remaining"
@@ -24,7 +24,7 @@
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, retain) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
-@property (nonatomic, retain) ColorSwitcher *colorSwitcher;
+//@property (nonatomic, retain) ColorSwitcher *colorSwitcher;
 
 
 - (NSURL *)applicationDocumentsDirectory;

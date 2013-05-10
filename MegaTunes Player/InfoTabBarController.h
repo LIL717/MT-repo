@@ -35,6 +35,8 @@
 @property (readwrite)           BOOL                    iPodLibraryChanged;
 @property (readwrite)           BOOL                    viewingNowPlaying;
 @property (nonatomic, strong)   MPMediaItem             *mediaItemForInfo;
+@property (nonatomic, strong)   UIBarButtonItem         *rightBarButton;
+
 
 - (UILabel *) customizeTitleView;
 

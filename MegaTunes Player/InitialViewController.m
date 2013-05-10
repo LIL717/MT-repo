@@ -23,9 +23,9 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[appDelegate.colorSwitcher processImageWithName:@"background.png"]]];
+//    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[appDelegate.colorSwitcher processImageWithName:@"background.png"]]];
     [self.choosePlaylist setTitleColor: [UIColor whiteColor] forState: UIControlStateNormal];
     [self.choosePlaylist setBackgroundColor: [UIColor clearColor]];
 }

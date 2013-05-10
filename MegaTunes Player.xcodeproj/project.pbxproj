@@ -621,7 +621,6 @@
 				70A0491A16F6810000F70A90 /* 3rd Party */,
 				70974B251630698200A33B7D /* AppDelegate */,
 				70974B291630698200A33B7D /* Categories */,
-				70974B2D1630698200A33B7D /* ColorSwitcher */,
 			);
 			name = Classes;
 			path = "../../../../podradio/sample-project/podradio/Classes";
@@ -659,7 +658,7 @@
 				70974B2F1630698200A33B7D /* ColorSwitcher.m */,
 			);
 			name = ColorSwitcher;
-			path = Libraries/ColorSwitcher;
+			path = "../../../../podradio/sample-project/podradio/Classes/Libraries/ColorSwitcher";
 			sourceTree = "<group>";
 		};
 		709F238B16C3525400521158 /* bass_fx24-iphone */ = {
@@ -714,6 +713,7 @@
 		70A13D9216320F6500244866 /* Unused */ = {
 			isa = PBXGroup;
 			children = (
+				70974B2D1630698200A33B7D /* ColorSwitcher */,
 				7098DEB0172DACF400A72F63 /* MTSearchViewController.h */,
 				7098DEB1172DACF400A72F63 /* MTSearchViewController.m */,
 				709A578716F93B59000D1678 /* TapGestureRecognizer.h */,
@@ -1393,6 +1393,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = NO;
 			};
 			name = Debug;
 		};
@@ -1456,7 +1457,7 @@
 		7060525C14F88D44001A1CDB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MegaTunes Player/MegaTunes Player-Prefix.pch";
 				GCC_VERSION = "";

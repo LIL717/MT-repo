@@ -24,6 +24,8 @@
 @property (nonatomic, strong)   MPMediaItem *mediaItemForInfo;
 @property (nonatomic, strong)   MPMediaItem *itemToPlay;
 @property (readwrite)           BOOL iPodLibraryChanged;
+@property (nonatomic, strong)   UIBarButtonItem *rightBarButton;
+
 
 
 - (void) infoTabBarControllerDidCancel:(InfoTabBarController *)controller;

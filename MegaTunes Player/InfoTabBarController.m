@@ -32,6 +32,7 @@
 @synthesize iPodLibraryChanged;         //A flag indicating whether the library has been changed due to a sync
 @synthesize viewingNowPlaying;
 @synthesize mediaItemForInfo;
+@synthesize rightBarButton;
 
 
 - (void)viewDidLoad
@@ -55,6 +56,17 @@
     UIImage *menuBarImage58 = [[UIImage imageNamed:@"arrow_left_58_white.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
     [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage48 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage58 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
+    
+    self.rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                           style:UIBarButtonItemStyleBordered
+                                                          target:self
+                                                          action:@selector(viewNowPlaying)];
+    
+    UIImage *menuBarImageDefault = [[UIImage imageNamed:@"redWhitePlay57.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    UIImage *menuBarImageLandscape = [[UIImage imageNamed:@"redWhitePlay68.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    
+    [self.rightBarButton setBackgroundImage:menuBarImageDefault forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [self.rightBarButton setBackgroundImage:menuBarImageLandscape forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
     
     self.albumInfoViewController = [[self viewControllers] objectAtIndex:0];
     self.albumInfoViewController.mediaItemForInfo = self.mediaItemForInfo;
@@ -107,16 +119,7 @@
             self.navigationItem.rightBarButtonItem = nil;
         } else {
             //initWithTitle cannot be nil, must be @""
-            self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                                      style:UIBarButtonItemStyleBordered
-                                                                                     target:self
-                                                                                     action:@selector(viewNowPlaying)];
-            
-            UIImage *menuBarImageDefault = [[UIImage imageNamed:@"redWhitePlay57.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-            UIImage *menuBarImageLandscape = [[UIImage imageNamed:@"redWhitePlay68.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-            
-            [self.navigationItem.rightBarButtonItem setBackgroundImage:menuBarImageDefault forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-            [self.navigationItem.rightBarButtonItem setBackgroundImage:menuBarImageLandscape forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
+            self.navigationItem.rightBarButtonItem = self.rightBarButton;
         }
     } else {
         self.navigationItem.rightBarButtonItem= nil;

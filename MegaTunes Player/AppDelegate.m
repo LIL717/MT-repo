@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "ColorSwitcher.h"
+//#import "ColorSwitcher.h"
 #import "MediaGroupViewController.h"
 #import "MainViewcontroller.h"
 //#import "CustomNavigationBar.h"
@@ -19,7 +19,7 @@
 
 @synthesize window = _window;
 
-@synthesize colorSwitcher;
+//@synthesize colorSwitcher;
 @synthesize managedObjectContext = managedObjectContext_;
 @synthesize managedObjectModel = managedObjectModel_;
 @synthesize fetchedResultsController = fetchedResultsController_;
@@ -160,7 +160,7 @@ static const NSUInteger kNavigationBarHeight = 60;
     
     
 //    self.colorSwitcher = [[ColorSwitcher alloc] initWithScheme:@"maroon"];
-    self.colorSwitcher = [[ColorSwitcher alloc] initWithScheme:@"black"];
+//    self.colorSwitcher = [[ColorSwitcher alloc] initWithScheme:@"black"];
     
     [self customizeGlobalTheme];
     
@@ -176,13 +176,32 @@ static const NSUInteger kNavigationBarHeight = 60;
 
 - (void)customizeGlobalTheme {
     
-    UIImage *navBarDefaultImage = [colorSwitcher processImageWithName:@"megaMenu-bar.png"];
+//    UIImage *navBarDefaultImage = [colorSwitcher processImageWithName:@"megaMenu-bar.png"];
+    UIImage *navBarDefaultImage = [UIImage imageNamed:@"megaMenu-bar.png"];
+
     [[UINavigationBar appearance] setBackgroundImage:navBarDefaultImage forBarMetrics:UIBarMetricsDefault];
     
-    UIImage *navBarLandscapeImage = [colorSwitcher processImageWithName:@"megaMenu-bar-landscape.png"];
+//    UIImage *navBarLandscapeImage = [colorSwitcher processImageWithName:@"megaMenu-bar-landscape.png"];
+    UIImage *navBarLandscapeImage = [UIImage imageNamed:@"megaMenu-bar-landscape.png"];
+
     [[UINavigationBar appearance] setBackgroundImage:navBarLandscapeImage forBarMetrics:UIBarMetricsLandscapePhone];
     
-    UIImage* tabBarBackground = [colorSwitcher processImageWithName:@"tabbar.png"];    
+//    UIImage *menuBarImage48 = [[UIImage imageNamed:@"arrow_left_48_white.png"] imageWithAlignmentRectInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+//    UIImage *menuBarImage58 = [[UIImage imageNamed:@"arrow_left_58_white.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+//    //    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage48 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+//    //    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage58 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
+//        
+//    [[UIBarButtonItem appearance] setBackButtonBackgroundImage: menuBarImage48  forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+//    [[UIBarButtonItem appearance] setBackButtonBackgroundImage: menuBarImage48  forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
+//    [[UIBarButtonItem appearance] setBackButtonBackgroundImage: menuBarImage58  forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
+//        [[UIBarButtonItem appearance] setBackButtonBackgroundImage: menuBarImage58  forState:UIControlStateHighlighted barMetrics:UIBarMetricsLandscapePhone];
+//    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(menuBarImage48.size.width*2, menuBarImage48.size.height*2) forBarMetrics:UIBarMetricsDefault];
+//    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, menuBarImage58.size.height*2) forBarMetrics:UIBarMetricsLandscapePhone];
+
+    
+//    UIImage* tabBarBackground = [colorSwitcher processImageWithName:@"tabbar.png"];
+    UIImage* tabBarBackground = [UIImage imageNamed:@"tabbar.png"];
+
     [[UITabBar appearance] setBackgroundImage:tabBarBackground];
 
     [[UITabBar appearance] setSelectionIndicatorImage:[UIImage tallImageNamed:@"selection-tab.png"]];

@@ -26,6 +26,7 @@
 @property (readwrite)           BOOL iPodLibraryChanged;
 @property (nonatomic, strong)	MPMusicPlayerController	*musicPlayer;
 @property (nonatomic, strong)   NSArray *albumCollection;
+@property (nonatomic, strong)   UIBarButtonItem *rightBarButton;
 
 
 
