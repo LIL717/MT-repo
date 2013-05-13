@@ -127,7 +127,11 @@
 
     return;
 }
-
+-(void) viewDidAppear:(BOOL)animated {
+    //    LogMethod();
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    [super viewDidAppear:(BOOL)animated];
+}
 - (UILabel *) customizeTitleView
 {
     CGRect frame = CGRectMake(0, 0, [self.title sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 48);
@@ -236,6 +240,8 @@
 //            mainViewController.iPodLibraryChanged = YES;
 //        }
     }
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+
 }
 - (IBAction)viewNowPlaying {
     
@@ -245,6 +251,8 @@
 
 - (void)goBackClick
 {
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+
     if (iPodLibraryChanged) {
         [self.navigationController popToRootViewControllerAnimated:YES];
     } else {

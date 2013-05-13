@@ -400,6 +400,7 @@ long songRemainingSeconds;
     [self.initialNowPlayingLabel removeFromSuperview];
 
     [super viewDidAppear:(BOOL)animated];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 }
 
@@ -844,6 +845,7 @@ long songRemainingSeconds;
                                                       object: musicPlayer];
         
 	}
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
 }
 #pragma mark Music control________________________________
@@ -1003,6 +1005,8 @@ long songRemainingSeconds;
 //    LogMethod();
 
     //remove the swipe gesture from the nav bar  (doesn't work to wait until dealloc)
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+
     [self.navigationController.navigationBar removeGestureRecognizer:self.swipeLeftRight];
 
     if (iPodLibraryChanged) {

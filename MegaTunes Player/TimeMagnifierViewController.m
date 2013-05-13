@@ -67,10 +67,16 @@
                                                          repeats:YES];
     
 }
-
+-(void) viewDidAppear:(BOOL)animated {
+    //    LogMethod();
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    [super viewDidAppear:(BOOL)animated];
+}
 - (IBAction)cancel:(id)sender
 {
     //    LogMethod();
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+
     [self.delegate timeMagnifierViewControllerDidCancel:self];
     
 }

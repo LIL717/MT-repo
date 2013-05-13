@@ -38,27 +38,38 @@
 @synthesize rightBarButton;
 
 NSArray *searchResults;
+NSMutableArray *collectionDurations;
 NSIndexPath *selectedIndexPath;
 NSString *selectedName;
 NSString *searchMediaItemProperty;
 CGFloat constraintConstant;
+UIImage *backgroundImage;
 
 BOOL cellScrolled;
 BOOL isSearching;
 BOOL isIndexed;
 BOOL showDuration;
+//BOOL disableRotation;
 
 - (void) viewDidLoad {
     
     [super viewDidLoad];
-    LogMethod();
-	
+//    LogMethod();
+    
+    collectionDurations = [[NSMutableArray alloc] initWithCapacity: [self.collection count]];
+
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+    dispatch_async(queue, ^{
+        // Perform async operation
+        [self createDurationArray];
+    });
     //set up grouped table view to look like plain (so that section headers won't stick to top)
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
-    self.collectionTableView.backgroundColor = [UIColor clearColor];
+    self.collectionTableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]];
     self.collectionTableView.opaque = NO;
     self.collectionTableView.backgroundView = nil; // THIS ONE TRIPPED ME UP!
-    self.collectionTableView.separatorColor = [UIColor clearColor];
+    backgroundImage = [UIImage imageNamed: @"list-background.png"];
+
     
     self.navigationItem.hidesBackButton = YES; // Important
     //initWithTitle cannot be nil, must be @""
@@ -87,7 +98,6 @@ BOOL showDuration;
     
     [self registerForMediaPlayerNotifications];
     cellScrolled = NO;
-    
 
     self.allAlbumsButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     self.allAlbumsButton.contentEdgeInsets = UIEdgeInsetsMake(0, 4, 0, 0);
@@ -109,14 +119,31 @@ BOOL showDuration;
         [titles addObject:sec.title];
     }
     self.collectionSectionTitles = [titles copy];
+    
+
 
 //    self.searchDisplayController.searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
 
 }
+- (void) createDurationArray {
 
+    for (MPMediaItemCollection* currentQueue in self.collection) {
+
+        //get the duration of the the playlist
+            
+        NSNumber *playlistDurationNumber = [self calculatePlaylistDuration: currentQueue];
+        long playlistDuration = [playlistDurationNumber longValue];
+        
+        int playlistMinutes = (playlistDuration / 60);     // Whole minutes
+        int playlistSeconds = (playlistDuration % 60);                        // seconds
+        NSString *itemDuration = [NSString stringWithFormat:@"%2d:%02d", playlistMinutes, playlistSeconds];
+        [collectionDurations addObject: itemDuration];
+
+    }
+}
 - (void) viewWillAppear:(BOOL)animated
 {
-    LogMethod();
+//    LogMethod();
     [super viewWillAppear: animated];
     
     self.navigationItem.titleView = [self customizeTitleView];
@@ -142,7 +169,11 @@ BOOL showDuration;
 
     return;
 }
-
+-(void) viewDidAppear:(BOOL)animated {
+    //    LogMethod();
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    [super viewDidAppear:(BOOL)animated];
+}
 - (UILabel *) customizeTitleView
 {
     CGRect frame = CGRectMake(0, 0, [self.title sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 48);
@@ -155,15 +186,21 @@ BOOL showDuration;
     
     return label;
 }
-
+//- (BOOL)shouldAutorotate {
+//    if (disableRotation) {
+//        return NO;
+//    } else {
+//        return [self.navigationController.topViewController shouldAutorotate];
+//    }
+//}
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
-    
+//    LogMethod();
     [self updateLayoutForNewOrientation: orientation];
 }
 - (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
-    LogMethod();
+//    LogMethod();
     CGFloat largeHeaderAdjustment;
-    
+
     if (UIInterfaceOrientationIsPortrait(orientation)) {
         largeHeaderAdjustment = 11;
         [self.collectionTableView setContentInset:UIEdgeInsetsMake(11,0,0,0)]; 
@@ -171,24 +208,51 @@ BOOL showDuration;
     } else {
         largeHeaderAdjustment = 23;
         [self.collectionTableView setContentInset:UIEdgeInsetsMake(23,0,0,0)];
-//
-        //if rotating to landscape and row 0 will be visible, need to scrollRectToVisible to align it correctly
-        NSArray *indexes = [self.collectionTableView indexPathsForVisibleRows];
-        NSIndexPath *index = [indexes objectAtIndex: 0];
-        if (index.section == 0 && index.row == 0) {
-                [self.collectionTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-        }
     }
+    
+    //don't need to do this if the search table is showing
+    if (!isSearching) {
+
+        BOOL firstRowVisible = NO;
+        //visibleRows is always 0 the first time through here for a table, populated after that
+        NSArray *visibleRows = [self.collectionTableView indexPathsForVisibleRows];
+        NSIndexPath *index = [visibleRows objectAtIndex: 0];
+        if (index.section == 0 && index.row == 0) {
+            firstRowVisible = YES;
+        }
+        
+        // hide the search bar and All Albums cell
+        CGFloat tableViewHeaderHeight = self.allAlbumsView.frame.size.height;
+        CGFloat adjustedHeaderHeight = tableViewHeaderHeight - largeHeaderAdjustment;
+        NSInteger possibleRows = self.collectionTableView.frame.size.height / self.collectionTableView.rowHeight;
+//        NSLog (@"possibleRows = %d collection count = %d", possibleRows, [self.collection count]);
+        
+        //if the table won't fill the screen need to wait for delay in order for tableView header to hide properly - so ugly
+        if ([self.collection count] <= possibleRows) {
+            [self performSelector:@selector(updateContentOffset) withObject:nil afterDelay:0.0];
+        } else {
+            if (firstRowVisible) {
+    //        [self.collectionTableView scrollRectToVisible:CGRectMake(0, adjustedHeaderHeight, 1, 1) animated:NO];
+            [self.collectionTableView setContentOffset:CGPointMake(0, adjustedHeaderHeight)];
+            }
+        }
+
+        [self.collectionTableView reloadData];
+    }
+    cellScrolled = NO;
+}
+- (void)updateContentOffset {
+    //this is only necessary when screen will not be filled - this method is executed afterDelay because ContentOffset is probably not correct until after layoutSubviews happens
+    
+//    NSLog (@"tableView content size is %f %f",self.collectionTableView.contentSize.height, self.collectionTableView.contentSize.width);
+
+    BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
+    
+    CGFloat largeHeaderAdjustment = isPortrait ? 11 : 23;
 
     CGFloat tableViewHeaderHeight = self.allAlbumsView.frame.size.height;
-//    NSLog (@"tableViewHeaderHeight is %f", tableViewHeaderHeight);
-//    NSLog (@"tableViewContentOffset.y is %f", [self.collectionTableView contentOffset].y);
-    if ([self.collectionTableView contentOffset].y < tableViewHeaderHeight) {
-        [self.collectionTableView setContentOffset:CGPointMake(0, tableViewHeaderHeight - largeHeaderAdjustment)];
-    }
-    [self.collectionTableView reloadData];
 
-    cellScrolled = NO;
+    [self.collectionTableView setContentOffset:CGPointMake(0, tableViewHeaderHeight - largeHeaderAdjustment)];
 }
 - (void) viewWillLayoutSubviews {
 //    LogMethod();
@@ -199,27 +263,34 @@ BOOL showDuration;
 #pragma mark - Search Display methods
 
 - (void)searchDisplayControllerDidBeginSearch:(UISearchDisplayController *)controller {
-    LogMethod();
+//    LogMethod();
     isSearching = YES;
+//    [[NSNotificationCenter defaultCenter] postNotificationName: @"Searching" object:nil];
+
+}
+- (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller {
+    //this needs to be here rather than DidEndSearch to avoid flashing wrong data first
+
+//    [self.collectionTableView reloadData];
 }
 
 - (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller {
-    LogMethod();
+//    LogMethod();
     isSearching = NO;
-    
     //reload the original tableView otherwise section headers are not visible :(  this seems to be an Apple bug
-
+    
     CGFloat largeHeaderAdjustment;
     
     BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
-
+    
     if (isPortrait) {
         largeHeaderAdjustment = 11;
     } else {
         largeHeaderAdjustment = 23;
     }
-    [self.collectionTableView scrollRectToVisible:CGRectMake(largeHeaderAdjustment, 0, 1, 1) animated:YES];
 
+    [self.collectionTableView scrollRectToVisible:CGRectMake(largeHeaderAdjustment, 0, 1, 1) animated:YES];
+    [self.collectionTableView reloadData];
 }
 - (void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope
 {
@@ -325,7 +396,6 @@ BOOL showDuration;
 //    NSLog (@"SectionIndexTitle is %@ at index %d", title, index);
     //since search was added to the array, need to return index - 1 to get to correct title, for search, set content Offset to top of table :)
     if ([title isEqualToString: @"{search}"]) {
-//        tableView.contentOffset = CGPointMake(11,0);
         [tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
         return NSNotFound;
     } else {
@@ -370,7 +440,6 @@ BOOL showDuration;
         } else {
             sectionViewHeight = 0;
             sectionViewWidth = 0;
-//            sectionHeaderColor = [UIColor clearColor];
         }
         
         UIView *sectionView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, sectionViewWidth, sectionViewHeight)];
@@ -401,9 +470,11 @@ BOOL showDuration;
 
 - (UITableViewCell *) tableView: (UITableView *) tableView cellForRowAtIndexPath: (NSIndexPath *) indexPath {
     
-    CollectionItemCell *searchResultsCell = (CollectionItemCell *)[tableView dequeueReusableCellWithIdentifier:@"CollectionItemCell"];
+    //don't use CollectionItemCell for searchResultsCell won't respond to touches to scroll anyway and terrible performance on GoBackClick when autoRotated
+    static NSString *CellIdentifier = @"Cell";
+    UITableViewCell *searchResultsCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    
 	CollectionItemCell *cell = (CollectionItemCell *)[tableView dequeueReusableCellWithIdentifier:@"CollectionItemCell"];
-    searchResultsCell.durationLabel.text = @"";
     cell.durationLabel.text = @"";
 
     MPMediaQuerySection * sec = self.collectionSections[indexPath.section];
@@ -412,35 +483,35 @@ BOOL showDuration;
     BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
 
     if (tableView == self.searchDisplayController.searchResultsTableView) {
-        
-        //for search controller need to check if cell is nil, if it is create one since there won't be any to reuse to begin with
-        if (!searchResultsCell) {
-            searchResultsCell = (CollectionItemCell *)[self.collectionTableView dequeueReusableCellWithIdentifier:@"CollectionItemCell"];
 
-            DTCustomColoredAccessory *accessory = [DTCustomColoredAccessory accessoryWithColor:searchResultsCell.nameLabel.textColor];
+        if ( searchResultsCell == nil ) {
+            searchResultsCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+            searchResultsCell.selectionStyle = UITableViewCellSelectionStyleGray;            
+            searchResultsCell.selectedBackgroundView = [[UIImageView alloc] initWithImage:backgroundImage];
+            searchResultsCell.textLabel.font = [UIFont systemFontOfSize:44];
+            searchResultsCell.textLabel.textColor = [UIColor whiteColor];
+            searchResultsCell.textLabel.highlightedTextColor = [UIColor blueColor];
+            searchResultsCell.textLabel.lineBreakMode = NSLineBreakByClipping;
+            
+            DTCustomColoredAccessory *accessory = [DTCustomColoredAccessory accessoryWithColor:[UIColor whiteColor]];
             accessory.highlightedColor = [UIColor blueColor];
             searchResultsCell.accessoryView = accessory;
         }
-        
+
         MPMediaItemCollection *searchCollection = [searchResults objectAtIndex: indexPath.row];
         NSString *mediaItemName = [[searchCollection representativeItem] valueForProperty: searchMediaItemProperty];
-        
-//        NSArray *searchCollectionArray = [searchCollection items];
-//        for (MPMediaItem *item in searchCollectionArray) {
-////            NSLog (@" whatIsThis %@", [[artistCollection representativeItem] valueForProperty: MPMediaItemPropertyAlbumArtist]);
-//            NSLog (@" whatIsThis %@", [item valueForProperty: MPMediaItemPropertyAlbumArtist]);
-//
-//        }
-//        cell.textLabel.text = [[searchCollection representativeItem] valueForProperty: MPMediaItemPropertyAlbumArtist];
 
-//        NSLog (@"artistName is %@", artistName);
-//        NSLog (@"searchResultsCell.textLabel.text is %@", searchResultsCell.textLabel.text);
-        
-        searchResultsCell.nameLabel.text = mediaItemName;
-        showDuration = NO;
-//        constraintConstant = isPortrait ? 30 : 30;
-        
-        return [self handleCellScrolling: searchResultsCell inTableView: tableView];
+        searchResultsCell.textLabel.text = mediaItemName;
+
+        return searchResultsCell;
+
+////        NSArray *searchCollectionArray = [searchCollection items];
+////        for (MPMediaItem *item in searchCollectionArray) {
+//////            NSLog (@" whatIsThis %@", [[artistCollection representativeItem] valueForProperty: MPMediaItemPropertyAlbumArtist]);
+////            NSLog (@" whatIsThis %@", [item valueForProperty: MPMediaItemPropertyAlbumArtist]);
+////
+////        }
+
         
     } else {
 
@@ -470,26 +541,19 @@ BOOL showDuration;
             showDuration = YES;
             cell.durationLabel.hidden = NO;
             
-            NSNumber *playlistDurationNumber = [self calculatePlaylistDuration: currentQueue];
-            long playlistDuration = [playlistDurationNumber longValue];
-            
-            int playlistMinutes = (playlistDuration / 60);     // Whole minutes
-            int playlistSeconds = (playlistDuration % 60);                        // seconds
-            cell.durationLabel.text = [NSString stringWithFormat:@"%2d:%02d", playlistMinutes, playlistSeconds];
-    //            [cell.textLabel addSubView:cell.durationLabel];
+            //if the array has been populated in the background at least to the point of the index, then use the table otherwise calculate the playlistDuration here
+            if ([collectionDurations count] > (sec.range.location + indexPath.row)) {
+                cell.durationLabel.text = collectionDurations[sec.range.location + indexPath.row];
+            } else {
+                NSNumber *playlistDurationNumber = [self calculatePlaylistDuration: currentQueue];
+                long playlistDuration = [playlistDurationNumber longValue];
+                
+                int playlistMinutes = (playlistDuration / 60);     // Whole minutes
+                int playlistSeconds = (playlistDuration % 60);                        // seconds
+                cell.durationLabel.text = [NSString stringWithFormat:@"%2d:%02d", playlistMinutes, playlistSeconds];
+            }
 
         }
-//commented out for grouped tableview to see if they will line up
-        
-//        //set the textLabel to the same thing - it is used if the text does not need to scroll
-//        UIFont *font = [UIFont systemFontOfSize:12];
-//        UIFont *newFont = [font fontWithSize:44];
-//        cell.textLabel.font = newFont;
-//        cell.textLabel.textColor = [UIColor whiteColor];
-//        cell.textLabel.highlightedTextColor = [UIColor blueColor];
-//        cell.textLabel.backgroundColor = [UIColor clearColor];
-//    //    cell.textLabel.lineBreakMode = NSLineBreakByClipping;
-//        cell.textLabel.text = cell.nameLabel.text;
         
         //show accessory if not indexed
         if (isIndexed) {
@@ -499,6 +563,17 @@ BOOL showDuration;
             accessory.highlightedColor = [UIColor blueColor];
             cell.accessoryView = accessory;
         }
+
+        //this works because setFrame is subclassed in CollectionItemCell to move offset for grouped cells so they will line up with scrollview cells
+        //set the textLabel to the same thing - it is used if the text does not need to scroll
+//        cell.textLabel.font = [UIFont systemFontOfSize:44];
+//        cell.textLabel.textColor = [UIColor whiteColor];
+//        cell.textLabel.highlightedTextColor = [UIColor blueColor];
+//        cell.textLabel.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed: @"list-backwseparator.png"]];
+//        cell.textLabel.lineBreakMode = NSLineBreakByClipping;
+//        cell.textLabel.text = cell.nameLabel.text;
+        
+
         //size of duration Label is set at 130 to match the fixed size that it is set in interface builder
         // note that cell.durationLabel.frame.size.width) = 0 here
         //    NSLog (@"************************************width of durationLabel is %f", cell.durationLabel.frame.size.width);
@@ -514,13 +589,14 @@ BOOL showDuration;
 //        constraintConstant = isPortrait ? 30 : (30 + 130 + 5);
 
 //        NSLog (@"constraintConstant is %f", constraintConstant);
-        
+
         return [self handleCellScrolling: cell inTableView: tableView];
+
 
     }
 }
 - (NSNumber *)calculatePlaylistDuration: (MPMediaItemCollection *) currentQueue {
-
+//    LogMethod();
     NSArray *returnedQueue = [currentQueue items];
     
     long playlistDuration = 0;
@@ -528,20 +604,20 @@ BOOL showDuration;
 
     for (MPMediaItem *song in returnedQueue) {
         songDuration = [[song valueForProperty:MPMediaItemPropertyPlaybackDuration] longValue];
-        //if the  song has been deleted during a sync then pop to rootViewController
+        
+//        //if the  song has been deleted during a sync then pop to rootViewController
 
         if (songDuration == 0 && self.iPodLibraryChanged) {
             [self.navigationController popToRootViewControllerAnimated:YES];
             NSLog (@"BOOM");
         }
-//        playlistDuration = (playlistDuration + [[song valueForProperty:MPMediaItemPropertyPlaybackDuration] longValue]);
         playlistDuration = (playlistDuration + songDuration);
 
     }
     return [NSNumber numberWithLong: playlistDuration];
 }
-
 - (CollectionItemCell *) handleCellScrolling: (CollectionItemCell *) cell inTableView: (UITableView *) tableView {
+//    LogMethod();
     //size of duration Label is set at 130 to match the fixed size that it is set in interface builder
     // note that cell.durationLabel.frame.size.width) = 0 here
     //    NSLog (@"************************************width of durationLabel is %f", cell.durationLabel.frame.size.width);
@@ -573,21 +649,22 @@ BOOL showDuration;
     CGSize labelSize = [cell.nameLabel.text sizeWithFont:cell.nameLabel.font
                                        constrainedToSize:CGSizeMake(INT16_MAX,cell.frame.size.height)
                                            lineBreakMode:NSLineBreakByClipping];
-    
+
     //Make sure that label is aligned with scrollView
     [cell.scrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
     cell.scrollView.delegate = cell.scrollView;
     
 //    NSLog (@"labelSize.width is %f and scrollViewWidth is %d", labelSize.width, scrollViewWidth);
     if (labelSize.width>scrollViewWidth) {
-        //            cell.scrollView.hidden = NO;
-        //            cell.textLabel.hidden = YES;
+//        cell.scrollView.hidden = NO;
+//        cell.textLabel.hidden = YES;
         cell.scrollView.scrollEnabled = YES;
 //        NSLog (@"%@ is scrollable", cell.nameLabel.text);
+
     }
     else {
-        //            cell.scrollView.hidden = YES;
-        //            cell.textLabel.hidden = NO;
+//        cell.scrollView.hidden = YES;
+//        cell.textLabel.hidden = NO;
         cell.scrollView.scrollEnabled = NO;
         
     }
@@ -606,6 +683,7 @@ BOOL showDuration;
 //        NSLog (@"[self.searchDisplayController.searchResultsTableView indexPathForSelectedRow] is %@", [self.searchDisplayController.searchResultsTableView indexPathForSelectedRow]);
 
             selectedIndexPath = [self.searchDisplayController.searchResultsTableView indexPathForSelectedRow];
+        
 
 //        NSLog (@"selectedIndexPath.row is %d", selectedIndexPath.row);
 //        UITableViewCell *searchResultsCell = [self.searchDisplayController.searchResultsTableView cellForRowAtIndexPath:selectedIndexPath];
@@ -748,6 +826,7 @@ BOOL showDuration;
         mainViewController.iPodLibraryChanged = self.iPodLibraryChanged;
 
     }
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 }
 - (IBAction)viewNowPlaying {
     
@@ -759,7 +838,9 @@ BOOL showDuration;
 
 - (void)goBackClick
 {
-    //both actually go back to mediaGroupViewController 
+    //both actually go back to mediaGroupViewController
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+
     if (iPodLibraryChanged) {
         [self.navigationController popToRootViewControllerAnimated:YES];
     } else {
@@ -784,6 +865,11 @@ BOOL showDuration;
 //    LogMethod();
     
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    
+//    [notificationCenter addObserver: self
+//                           selector: @selector(receiveSearchingNotification:)
+//                               name: @"Searching"
+//                             object: nil];
     
     [notificationCenter addObserver: self
                            selector: @selector(receiveCellScrolledNotification:)
@@ -812,12 +898,12 @@ BOOL showDuration;
         cellScrolled = YES;
     }
 }
-//- (void) receiveSearchDidBeginNotification:(NSNotification *) notification
+//- (void) receiveSearchingNotification:(NSNotification *) notification
 //{
 //    //    LogMethod();
 //    if ([[notification name] isEqualToString:@"Searching"]) {
 //        
-//        isSearching = YES;
+//        disableRotation = YES;
 //    }
 //}
 
@@ -841,6 +927,10 @@ BOOL showDuration;
 }
 - (void)dealloc {
 
+//    [[NSNotificationCenter defaultCenter] removeObserver: self
+//                                                    name: @"Searching"
+//                                                  object: nil];
+    
     [[NSNotificationCenter defaultCenter] removeObserver: self
                                                     name: @"CellScrolled"
                                                   object: nil];

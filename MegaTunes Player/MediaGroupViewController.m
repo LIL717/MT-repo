@@ -32,6 +32,14 @@
 @synthesize iPodLibraryChanged;         //A flag indicating whether the library has been changed due to a sync
 @synthesize rightBarButton;
 
+BOOL initialView;
+
+//- (id)initWithCoder:(NSCoder *)aDecoder
+//{
+//	self = [super initWithCoder:aDecoder];
+//	
+//	return self;
+//}
 - (void)viewDidLoad
 {
     //    LogMethod();
@@ -54,7 +62,12 @@
     
     musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
 
+    id appDelegate = (id)[[UIApplication sharedApplication] delegate];
+    self.managedObjectContext = [appDelegate managedObjectContext];
+    
     [self registerForMediaPlayerNotifications];
+    
+    initialView = YES;
 }
 -(void) loadGroupingData
 {
@@ -95,8 +108,12 @@
     NSString *playingItem = [[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyTitle];
 
     if (playingItem) {
-        //initWithTitle cannot be nil, must be @""
+        if (initialView) {
+            initialView = NO;
+            [self viewNowPlaying];
+        } else {
         self.navigationItem.rightBarButtonItem = self.rightBarButton;
+        }
     } else {
         self.navigationItem.rightBarButtonItem= nil;
     }
@@ -104,6 +121,13 @@
 
     return;
 }
+-(void) viewDidAppear:(BOOL)animated {
+    //    LogMethod();
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    initialView = NO;
+    [super viewDidAppear:(BOOL)animated];
+}
+
 - (UILabel *) customizeTitleView
    {
        CGRect frame = CGRectMake(0, 0, [self.title sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 48);
@@ -300,6 +324,8 @@
         mainViewController.iPodLibraryChanged = self.iPodLibraryChanged;
 
     }
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+
 
 }
 - (IBAction)viewNowPlaying {

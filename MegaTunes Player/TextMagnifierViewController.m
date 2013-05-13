@@ -71,10 +71,16 @@
     // Center the label vertically in the window
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:magnifiedLabel attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0]];
 }
-
+-(void) viewDidAppear:(BOOL)animated {
+    //    LogMethod();
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    [super viewDidAppear:(BOOL)animated];
+}
 //    Tap to cancel
 - (IBAction)tapDetected:(UITapGestureRecognizer *)sender {
     
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+
     [self.delegate textMagnifierViewControllerDidCancel:self];
 
 }

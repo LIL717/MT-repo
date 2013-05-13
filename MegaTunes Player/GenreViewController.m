@@ -110,7 +110,11 @@ BOOL cellScrolled;
     
     return;
 }
-
+-(void) viewDidAppear:(BOOL)animated {
+    //    LogMethod();
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    [super viewDidAppear:(BOOL)animated];
+}
 - (UILabel *) customizeTitleView
 {
     CGRect frame = CGRectMake(0, 0, [self.title sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 48);
@@ -405,6 +409,8 @@ BOOL cellScrolled;
         mainViewController.iPodLibraryChanged = self.iPodLibraryChanged;
         
     }
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+
 }
 - (IBAction)viewNowPlaying {
     
@@ -416,6 +422,8 @@ BOOL cellScrolled;
 
 - (void)goBackClick
 {
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+
     //both actually go back to mediaGroupViewController
     if (iPodLibraryChanged) {
         [self.navigationController popToRootViewControllerAnimated:YES];

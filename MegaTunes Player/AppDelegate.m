@@ -18,6 +18,7 @@
 
 
 @synthesize window = _window;
+//@synthesize navigationController;
 
 //@synthesize colorSwitcher;
 @synthesize managedObjectContext = managedObjectContext_;
@@ -150,13 +151,29 @@ static const NSUInteger kNavigationBarHeight = 60;
     [TestFlight takeOff:@"3ec22a1e-ddac-483c-8152-21c537a9fb42"];
 
     //*** end of TestFlight code
-
-    UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
     
-    MediaGroupViewController *mediaGroupViewController = (MediaGroupViewController *)navigationController.topViewController;
-    mediaGroupViewController.managedObjectContext = self.managedObjectContext;
+//    [self.window setRootViewController:navigationController]; 
+    
+//    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+//    // Override point for customization after application launch.
+//    
+////    UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
+//    MediaGroupViewController *mediaGroupViewController = [[MediaGroupViewController alloc] initWithCoder:self];
+////    controller.managedObjectContext = self.managedObjectContext;
+////    return YES;
+//    
+//    self.navigationController = [[UINavigationController alloc] initWithRootViewController:mediaGroupViewController];
+//    self.window.rootViewController = navigationController;
+//    [self.window makeKeyAndVisible];
+//
+////    [self.window setRootViewController:navigationController];
+//
+//    UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
+//
+//    MediaGroupViewController *mediaGroupViewController = (MediaGroupViewController *)self.window.rootViewController;
+//    mediaGroupViewController.managedObjectContext = self.managedObjectContext;
 
-    [navigationController.navigationBar setTitleVerticalPositionAdjustment: 4 forBarMetrics: UIBarMetricsLandscapePhone];
+//    [navigationController.navigationBar setTitleVerticalPositionAdjustment: 4 forBarMetrics: UIBarMetricsLandscapePhone];
     
     
 //    self.colorSwitcher = [[ColorSwitcher alloc] initWithScheme:@"maroon"];
@@ -176,6 +193,7 @@ static const NSUInteger kNavigationBarHeight = 60;
 
 - (void)customizeGlobalTheme {
     
+
 //    UIImage *navBarDefaultImage = [colorSwitcher processImageWithName:@"megaMenu-bar.png"];
     UIImage *navBarDefaultImage = [UIImage imageNamed:@"megaMenu-bar.png"];
 
@@ -185,6 +203,9 @@ static const NSUInteger kNavigationBarHeight = 60;
     UIImage *navBarLandscapeImage = [UIImage imageNamed:@"megaMenu-bar-landscape.png"];
 
     [[UINavigationBar appearance] setBackgroundImage:navBarLandscapeImage forBarMetrics:UIBarMetricsLandscapePhone];
+    
+    [[UINavigationBar appearance] setTitleVerticalPositionAdjustment: 4 forBarMetrics: UIBarMetricsLandscapePhone];
+
     
 //    UIImage *menuBarImage48 = [[UIImage imageNamed:@"arrow_left_48_white.png"] imageWithAlignmentRectInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
 //    UIImage *menuBarImage58 = [[UIImage imageNamed:@"arrow_left_58_white.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];

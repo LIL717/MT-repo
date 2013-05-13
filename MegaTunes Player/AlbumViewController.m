@@ -35,15 +35,15 @@
 @synthesize sectionedArray;
 @synthesize rightBarButton;
 
-
 BOOL cellScrolled;
+//BOOL disableRotation;
+//UIActivityIndicatorView *spinner;
 
 - (void) viewDidLoad {
     
     [super viewDidLoad];
 	
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
-    
     
     self.navigationItem.hidesBackButton = YES; // Important
     //initWithTitle cannot be nil, must be @""
@@ -93,7 +93,8 @@ BOOL cellScrolled;
     if (showAllSongsCell) {
         [self.albumDataArray insertObject: @" All Songs" atIndex: 0];
     }
-    
+//    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+
 //    MPMediaItemCollection *currentQueue = [MPMediaItemCollection collectionWithItems: self.collection];
 //
 //    self.currentQueue = self.mainViewController.userMediaItemCollection;
@@ -143,7 +144,11 @@ BOOL cellScrolled;
     
     return;
 }
-
+-(void) viewDidAppear:(BOOL)animated {
+    //    LogMethod();
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    [super viewDidAppear:(BOOL)animated];
+}
 - (UILabel *) customizeTitleView
 {
     CGRect frame = CGRectMake(0, 0, [self.title sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 48);
@@ -158,7 +163,13 @@ BOOL cellScrolled;
     
     return label;
 }
-
+//- (BOOL)shouldAutorotate {
+//    if (disableRotation) {
+//        return NO;
+//    } else {
+//        return [self.navigationController.topViewController shouldAutorotate];
+//    }
+//}
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
     
     [self updateLayoutForNewOrientation: orientation];
@@ -179,6 +190,9 @@ BOOL cellScrolled;
     }
     [self.collectionTableView reloadData];
     cellScrolled = NO;
+    
+//    //recenter spinner
+//    [spinner setCenter: CGPointMake (self.view.bounds.size.width / 2, self.view.bounds.size.height / 2)];
 
 }
 - (void) viewWillLayoutSubviews {
@@ -518,6 +532,8 @@ BOOL cellScrolled;
         mainViewController.iPodLibraryChanged = self.iPodLibraryChanged;
         
     }
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+
 }
 -(NSComparator) createComparator {
 //omg this is crazy long, but necessary to make sort results like Apple's
@@ -625,11 +641,23 @@ BOOL cellScrolled;
 
 - (void)goBackClick
 {
-    //both actually go back to mediaGroupViewController
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+//    self.navigationItem.leftBarButtonItem.tintColor = [UIColor darkGrayColor];
+//    if (disableRotation) {
+//        [self.view addSubview:spinner]; // spinner is not visible until started
+//        [spinner startAnimating];
+//    }
+
     if (iPodLibraryChanged) {
         [self.navigationController popToRootViewControllerAnimated:YES];
     } else {
-        [self.navigationController popViewControllerAnimated:YES];
+        //delay so that networkActivityIndicator can be visible
+//            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 0.01 * NSEC_PER_SEC);
+//            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                [self.navigationController popViewControllerAnimated:YES];
+
+//            });
+        
     }
 }
 //// this subclassed to prevent scrollView from intrepretting half a tap as a tap (turning cell blue but not actually selecting until next selection
@@ -650,6 +678,11 @@ BOOL cellScrolled;
     //    LogMethod();
     
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    
+//    [notificationCenter addObserver: self
+//                           selector: @selector(receiveSearchingNotification:)
+//                               name: @"Searching"
+//                             object: nil];
     
     [notificationCenter addObserver: self
                            selector: @selector(receiveCellScrolledNotification:)
@@ -677,6 +710,13 @@ BOOL cellScrolled;
         cellScrolled = YES;
     }
 }
+//- (void) receiveSearchingNotification:(NSNotification *) notification
+//{
+//    //    LogMethod();
+//    if ([[notification name] isEqualToString:@"Searching"]) {
+//        disableRotation = YES;
+//    }
+//}
 
 - (void) handle_iPodLibraryChanged: (id) changeNotification {
     //    LogMethod();
@@ -698,6 +738,10 @@ BOOL cellScrolled;
 }
 - (void)dealloc {
     //    LogMethod();
+   
+//    [[NSNotificationCenter defaultCenter] removeObserver: self
+//                                                    name: @"Searching"
+//                                                  object: nil];
     
     [[NSNotificationCenter defaultCenter] removeObserver: self
                                                     name: @"CellScrolled"
