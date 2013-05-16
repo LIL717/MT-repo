@@ -56,8 +56,10 @@ BOOL showDuration;
     [super viewDidLoad];
 //    LogMethod();
     
+    //set up an array of durations to be used in landscape mode
     collectionDurations = [[NSMutableArray alloc] initWithCapacity: [self.collection count]];
 
+    //create the array in the background
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
     dispatch_async(queue, ^{
         // Perform async operation
@@ -199,14 +201,14 @@ BOOL showDuration;
 }
 - (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
 //    LogMethod();
-    CGFloat largeHeaderAdjustment;
+    CGFloat navBarAdjustment;
 
     if (UIInterfaceOrientationIsPortrait(orientation)) {
-        largeHeaderAdjustment = 11;
+        navBarAdjustment = 11;
         [self.collectionTableView setContentInset:UIEdgeInsetsMake(11,0,0,0)]; 
 
     } else {
-        largeHeaderAdjustment = 23;
+        navBarAdjustment = 23;
         [self.collectionTableView setContentInset:UIEdgeInsetsMake(23,0,0,0)];
     }
     
@@ -223,7 +225,7 @@ BOOL showDuration;
         
         // hide the search bar and All Albums cell
         CGFloat tableViewHeaderHeight = self.allAlbumsView.frame.size.height;
-        CGFloat adjustedHeaderHeight = tableViewHeaderHeight - largeHeaderAdjustment;
+        CGFloat adjustedHeaderHeight = tableViewHeaderHeight - navBarAdjustment;
         NSInteger possibleRows = self.collectionTableView.frame.size.height / self.collectionTableView.rowHeight;
 //        NSLog (@"possibleRows = %d collection count = %d", possibleRows, [self.collection count]);
         
@@ -263,7 +265,7 @@ BOOL showDuration;
 #pragma mark - Search Display methods
 
 - (void)searchDisplayControllerDidBeginSearch:(UISearchDisplayController *)controller {
-//    LogMethod();
+    LogMethod();
     isSearching = YES;
 //    [[NSNotificationCenter defaultCenter] postNotificationName: @"Searching" object:nil];
 
@@ -275,7 +277,7 @@ BOOL showDuration;
 }
 
 - (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller {
-//    LogMethod();
+    LogMethod();
     isSearching = NO;
     //reload the original tableView otherwise section headers are not visible :(  this seems to be an Apple bug
     
@@ -294,7 +296,7 @@ BOOL showDuration;
 }
 - (void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope
 {
-//    LogMethod();
+    LogMethod();
     searchMediaItemProperty = [[NSString alloc] init];
     MPMediaGrouping mediaGrouping = MPMediaGroupingAlbumArtist;
     
@@ -350,11 +352,7 @@ BOOL showDuration;
     [self.searchDisplayController.searchResultsTableView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
 
 }
-//-(IBAction)goToSearch:(id)sender {
-//    // If you're worried that your users might not catch on to the fact that a search bar is available if they scroll to reveal it, a search icon will help them
-//    // If you don't hide your search bar in your app, don’t include this, as it would be redundant
-//    [self.searchBar becomeFirstResponder];
-//}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -512,9 +510,7 @@ BOOL showDuration;
 ////
 ////        }
 
-        
     } else {
-
 
         MPMediaItemCollection * currentQueue = self.collection[sec.range.location + indexPath.row];
 

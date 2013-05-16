@@ -247,7 +247,7 @@ BOOL initialView;
 
 		genreViewController.collection = self.collection;
         genreViewController.collectionType = selectedGroup.name;
-        genreViewController.collectionQueryType = selectedGroup.queryType;
+        genreViewController.collectionQueryType = myCollectionQuery;
         genreViewController.title = NSLocalizedString(selectedGroup.name, nil);
         genreViewController.iPodLibraryChanged = self.iPodLibraryChanged;
 

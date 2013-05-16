@@ -16,8 +16,8 @@
 @property (strong, nonatomic)   IBOutlet UITableView *collectionTableView;
 @property (strong, nonatomic)   IBOutlet UIView *allAlbumsView;
 @property (strong, nonatomic)   IBOutlet UIButton *allAlbumsButton;
-
 @property (strong, nonatomic)   IBOutlet MTSearchBar *searchBar;
+
 @property (nonatomic, retain)   NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong)   NSArray *collection;
 @property (nonatomic, strong)   NSString *collectionType;
