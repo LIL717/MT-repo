@@ -34,7 +34,7 @@ UITouch *savedTouch;
 //    return result;
 //}
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
-    LogMethod();
+//    LogMethod();
     UITouch *touch = [[event allTouches] anyObject];
     savedTouch = touch;
     
@@ -53,7 +53,7 @@ UITouch *savedTouch;
     }
 }
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
-    LogMethod();
+//    LogMethod();
     
     //    UITouch *touch = [[event allTouches] anyObject];
     //
@@ -75,7 +75,7 @@ UITouch *savedTouch;
     }
 }
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-    LogMethod();
+//    LogMethod();
     
     UITouch *touch = [[event allTouches] anyObject];
     

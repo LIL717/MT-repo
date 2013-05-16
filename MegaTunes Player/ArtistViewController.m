@@ -31,7 +31,6 @@
 @synthesize collectionType;
 @synthesize collectionQueryType;
 @synthesize managedObjectContext;
-//@synthesize saveIndexPath;
 @synthesize iPodLibraryChanged;         //A flag indicating whether the library has been changed due to a sync
 @synthesize musicPlayer;
 @synthesize albumCollection;
@@ -49,7 +48,6 @@ BOOL cellScrolled;
 BOOL isSearching;
 BOOL isIndexed;
 BOOL showDuration;
-//BOOL disableRotation;
 
 - (void) viewDidLoad {
     
@@ -315,7 +313,6 @@ BOOL showDuration;
 
     
     MPMediaQuery *myArtistQuery = [[MPMediaQuery alloc] init];
-//    [myArtistQuery setGroupingType: MPMediaGroupingAlbumArtist];
     [myArtistQuery setGroupingType: mediaGrouping];
     [myArtistQuery addFilterPredicate: filterPredicate];
     
@@ -523,9 +520,9 @@ BOOL showDuration;
         if ([self.collectionType isEqualToString: @"Genres"]) {
             cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyAlbumArtist];
         }
-        if ([self.collectionType isEqualToString: @"Podcasts"]) {
-            cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyPodcastTitle];
-        }
+//        if ([self.collectionType isEqualToString: @"Podcasts"]) {
+//            cell.nameLabel.text = [[currentQueue representativeItem] valueForProperty: MPMediaItemPropertyPodcastTitle];
+//        }
         if (cell.nameLabel.text == nil) {
             cell.nameLabel.text = @"Unknown";
         }

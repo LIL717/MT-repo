@@ -103,7 +103,7 @@ BOOL showDuration;
     [self registerForMediaPlayerNotifications];
     cellScrolled = NO;
     
-    self.collectionTableView.sectionIndexMinimumDisplayRowCount = 10;
+    self.collectionTableView.sectionIndexMinimumDisplayRowCount = 20;
     
     if ([self.collection count] > self.collectionTableView.sectionIndexMinimumDisplayRowCount) {
         self.isIndexed = YES;

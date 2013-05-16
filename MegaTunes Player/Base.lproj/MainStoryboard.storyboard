@@ -726,7 +726,7 @@
                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                     <connections>
-                                        <segue destination="527-b6-fAN" kind="push" identifier="ViewAllAlbums" id="bKg-TN-uMc"/>
+                                        <segue destination="527-b6-fAN" kind="push" identifier="ViewAllAlbums" id="CZe-dj-i8N"/>
                                     </connections>
                                 </button>
                             </subviews>
@@ -1034,46 +1034,68 @@
         <scene sceneID="bwP-yX-pq9">
             <objects>
                 <viewController id="527-b6-fAN" customClass="AlbumViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" rowHeight="55" sectionHeaderHeight="22" sectionFooterHeight="22" id="oc8-bL-YeY">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="55" sectionHeaderHeight="1" sectionFooterHeight="1" id="oc8-bL-YeY">
                         <rect key="frame" x="0.0" y="64" width="480" height="256"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
-                        <color key="separatorColor" white="0.80000000000000004" alpha="1" colorSpace="deviceWhite"/>
+                        <color key="separatorColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <view key="tableHeaderView" contentMode="scaleToFill" id="r0d-qR-34G" userLabel="AllSongsView">
+                            <rect key="frame" x="0.0" y="0.0" width="480" height="110"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <searchBar contentMode="redraw" barStyle="blackOpaque" translatesAutoresizingMaskIntoConstraints="NO" id="8ig-hc-H4r" customClass="MTSearchBar">
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="55" type="user" id="I2P-2o-bXB"/>
+                                    </constraints>
+                                    <textInputTraits key="textInputTraits" autocorrectionType="no"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="527-b6-fAN" id="gWv-Qz-GoS"/>
+                                    </connections>
+                                </searchBar>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mBz-0Z-aws">
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="55" type="user" id="414-48-1oX"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" pointSize="44"/>
+                                    <state key="normal" title=" All Songs" backgroundImage="list-backwseparator.png">
+                                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <state key="highlighted">
+                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <segue destination="mNb-57-5Xm" kind="push" identifier="ViewAllSongs" id="TMr-tS-s6l"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <constraints>
+                                <constraint firstItem="mBz-0Z-aws" firstAttribute="top" secondItem="r0d-qR-34G" secondAttribute="top" constant="54" id="4lv-Ce-80r"/>
+                                <constraint firstItem="8ig-hc-H4r" firstAttribute="trailing" secondItem="r0d-qR-34G" secondAttribute="trailing" type="default" id="Jwj-jN-d28"/>
+                                <constraint firstItem="mBz-0Z-aws" firstAttribute="trailing" secondItem="r0d-qR-34G" secondAttribute="trailing" type="default" id="fj1-nz-tQP"/>
+                                <constraint firstItem="8ig-hc-H4r" firstAttribute="top" secondItem="r0d-qR-34G" secondAttribute="top" type="default" id="kDi-Of-EDG"/>
+                                <constraint firstItem="8ig-hc-H4r" firstAttribute="leading" secondItem="r0d-qR-34G" secondAttribute="leading" type="default" id="ku7-LD-ODr"/>
+                                <constraint firstItem="mBz-0Z-aws" firstAttribute="leading" secondItem="r0d-qR-34G" secondAttribute="leading" type="default" id="wQf-28-kTt"/>
+                            </constraints>
+                        </view>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="allSongsCell" rowHeight="55" id="lR8-La-SEb" userLabel="allSongsCell" customClass="AllSongsCell">
-                                <rect key="frame" x="0.0" y="22" width="480" height="55"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="460" height="54"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="list-background.png" translatesAutoresizingMaskIntoConstraints="NO" id="SFy-Xj-gc8" userLabel="bkgImage"/>
-                                    </subviews>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                </view>
-                                <constraints>
-                                    <constraint firstItem="SFy-Xj-gc8" firstAttribute="trailing" secondItem="lR8-La-SEb" secondAttribute="trailing" type="default" id="NIW-lq-AAk"/>
-                                    <constraint firstItem="SFy-Xj-gc8" firstAttribute="top" secondItem="lR8-La-SEb" secondAttribute="top" type="default" id="oIT-EZ-oe9"/>
-                                    <constraint firstItem="SFy-Xj-gc8" firstAttribute="leading" secondItem="lR8-La-SEb" secondAttribute="leading" type="user" id="vEz-8t-sRC"/>
-                                    <constraint firstItem="SFy-Xj-gc8" firstAttribute="bottom" secondItem="lR8-La-SEb" secondAttribute="bottom" type="default" id="zXT-c7-G8N"/>
-                                </constraints>
-                                <connections>
-                                    <segue destination="mNb-57-5Xm" kind="push" identifier="ViewAllSongs" id="e8t-PR-28l"/>
-                                </connections>
-                            </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="CollectionItemCell" rowHeight="55" id="WIN-8k-Cc9" userLabel="cell" customClass="CollectionItemCell">
-                                <rect key="frame" x="0.0" y="77" width="480" height="55"/>
+                                <rect key="frame" x="0.0" y="146" width="480" height="57"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="460" height="54"/>
+                                    <rect key="frame" x="10" y="1" width="440" height="54"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="list-background.png" translatesAutoresizingMaskIntoConstraints="NO" id="DQO-If-dVP" userLabel="bkgImage"/>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="list-backwseparator.png" translatesAutoresizingMaskIntoConstraints="NO" id="DQO-If-dVP" userLabel="bkgImage"/>
                                         <scrollView clipsSubviews="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9aX-f3-0ln" userLabel="IBScrollView" customClass="InCellScrollView">
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="list-background.png" translatesAutoresizingMaskIntoConstraints="NO" id="P6x-zt-QXa"/>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Album Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FPI-Oo-UfO" userLabel="cTitleLabel">
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="53" type="user" id="9xX-ZN-a0A"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="44"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                                     <color key="highlightedColor" red="0.070588238540000001" green="0.1176470667" blue="1" alpha="1" colorSpace="deviceRGB"/>
@@ -1082,20 +1104,21 @@
                                             <gestureRecognizers/>
                                             <constraints>
                                                 <constraint firstItem="FPI-Oo-UfO" firstAttribute="trailing" secondItem="9aX-f3-0ln" secondAttribute="trailing" type="default" id="0cZ-ZB-Gzr"/>
-                                                <constraint firstItem="P6x-zt-QXa" firstAttribute="bottom" secondItem="9aX-f3-0ln" secondAttribute="bottom" type="user" id="6hE-Bu-K3z"/>
-                                                <constraint firstAttribute="bottom" secondItem="FPI-Oo-UfO" secondAttribute="bottom" type="user" id="Jnr-Er-7gH"/>
+                                                <constraint firstAttribute="bottom" secondItem="P6x-zt-QXa" secondAttribute="bottom" constant="1" id="DP7-mW-SF5"/>
                                                 <constraint firstItem="FPI-Oo-UfO" firstAttribute="top" secondItem="9aX-f3-0ln" secondAttribute="top" type="user" id="L5q-lq-jfm"/>
                                                 <constraint firstItem="P6x-zt-QXa" firstAttribute="trailing" secondItem="9aX-f3-0ln" secondAttribute="trailing" type="default" id="X2s-fl-Yns"/>
                                                 <constraint firstItem="P6x-zt-QXa" firstAttribute="centerX" secondItem="9aX-f3-0ln" secondAttribute="centerX" type="user" id="YET-0a-hxf"/>
-                                                <constraint firstItem="FPI-Oo-UfO" firstAttribute="centerY" secondItem="9aX-f3-0ln" secondAttribute="centerY" type="user" id="d1u-T6-5nk"/>
                                                 <constraint firstItem="P6x-zt-QXa" firstAttribute="leading" secondItem="9aX-f3-0ln" secondAttribute="leading" type="user" id="exB-AM-U9u"/>
+                                                <constraint firstAttribute="height" constant="54" type="user" id="gfY-Bx-Xrk"/>
                                                 <constraint firstItem="P6x-zt-QXa" firstAttribute="top" secondItem="9aX-f3-0ln" secondAttribute="top" type="user" id="iYq-Qs-C89"/>
                                                 <constraint firstItem="FPI-Oo-UfO" firstAttribute="leading" secondItem="9aX-f3-0ln" secondAttribute="leading" type="default" id="mdY-vJ-Lmr"/>
+                                                <constraint firstItem="P6x-zt-QXa" firstAttribute="bottom" secondItem="FPI-Oo-UfO" secondAttribute="bottom" type="default" id="mqY-6y-wA7"/>
                                             </constraints>
                                         </scrollView>
                                         <label opaque="NO" clipsSubviews="YES" contentMode="left" text="000:00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="22" translatesAutoresizingMaskIntoConstraints="NO" id="P6Y-cL-7cG" userLabel="duration">
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="130" type="user" id="0eU-hn-3rg"/>
+                                                <constraint firstAttribute="height" constant="54" type="user" id="k4q-15-eVG"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="44"/>
                                             <color key="textColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1105,25 +1128,21 @@
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="9aX-f3-0ln" secondAttribute="trailing" constant="168" type="user" id="0PQ-s3-a9y"/>
-                                    <constraint firstItem="9aX-f3-0ln" firstAttribute="leading" secondItem="WIN-8k-Cc9" secondAttribute="leading" constant="10" id="3B6-Vu-aZz"/>
-                                    <constraint firstItem="P6Y-cL-7cG" firstAttribute="bottom" secondItem="WIN-8k-Cc9" secondAttribute="bottom" type="default" id="4Jj-z0-67p"/>
-                                    <constraint firstItem="DQO-If-dVP" firstAttribute="trailing" secondItem="WIN-8k-Cc9" secondAttribute="trailing" type="default" id="9ly-rx-GNM"/>
-                                    <constraint firstItem="DQO-If-dVP" firstAttribute="leading" secondItem="WIN-8k-Cc9" secondAttribute="leading" type="default" id="Gnd-4z-2Zg"/>
-                                    <constraint firstItem="P6Y-cL-7cG" firstAttribute="top" secondItem="WIN-8k-Cc9" secondAttribute="top" type="user" id="U4K-Er-Jbu"/>
-                                    <constraint firstItem="9aX-f3-0ln" firstAttribute="bottom" secondItem="WIN-8k-Cc9" secondAttribute="bottom" type="default" id="Uqa-Df-ESa"/>
-                                    <constraint firstItem="DQO-If-dVP" firstAttribute="top" secondItem="WIN-8k-Cc9" secondAttribute="top" type="default" id="VPb-Vi-wHm"/>
-                                    <constraint firstItem="9aX-f3-0ln" firstAttribute="top" secondItem="WIN-8k-Cc9" secondAttribute="top" type="user" id="iwf-B8-FhS"/>
-                                    <constraint firstItem="DQO-If-dVP" firstAttribute="bottom" secondItem="WIN-8k-Cc9" secondAttribute="bottom" type="default" id="nFd-kH-h9k"/>
-                                    <constraint firstAttribute="trailing" secondItem="P6Y-cL-7cG" secondAttribute="trailing" constant="30" type="user" id="pdm-aj-wYK"/>
+                                    <constraint firstAttribute="trailing" secondItem="9aX-f3-0ln" secondAttribute="trailing" constant="168" type="user" id="BkJ-IQ-P1V"/>
+                                    <constraint firstItem="9aX-f3-0ln" firstAttribute="top" secondItem="P6Y-cL-7cG" secondAttribute="top" type="user" id="DD7-Xz-xff"/>
+                                    <constraint firstItem="9aX-f3-0ln" firstAttribute="leading" secondItem="WIN-8k-Cc9" secondAttribute="leading" constant="10" type="user" id="F4R-kt-nVB"/>
+                                    <constraint firstItem="9aX-f3-0ln" firstAttribute="centerY" secondItem="WIN-8k-Cc9" secondAttribute="centerY" type="default" id="HKH-et-p0W"/>
+                                    <constraint firstItem="9aX-f3-0ln" firstAttribute="top" secondItem="DQO-If-dVP" secondAttribute="top" type="default" id="Jcl-vh-8b1"/>
+                                    <constraint firstItem="P6Y-cL-7cG" firstAttribute="leading" secondItem="9aX-f3-0ln" secondAttribute="trailing" constant="8" symbolic="YES" type="user" id="LfG-oK-2R8"/>
+                                    <constraint firstItem="DQO-If-dVP" firstAttribute="leading" secondItem="WIN-8k-Cc9" secondAttribute="leading" type="user" id="XWw-xo-oho"/>
+                                    <constraint firstItem="DQO-If-dVP" firstAttribute="trailing" secondItem="WIN-8k-Cc9" secondAttribute="trailing" type="default" id="jhx-PG-fTG"/>
                                 </constraints>
                                 <connections>
                                     <outlet property="centerXInScrollView" destination="YET-0a-hxf" id="m8C-I4-Leq"/>
                                     <outlet property="durationLabel" destination="P6Y-cL-7cG" id="2DI-eh-MKo"/>
                                     <outlet property="nameLabel" destination="FPI-Oo-UfO" id="sgD-IY-TXD"/>
                                     <outlet property="scrollView" destination="9aX-f3-0ln" id="dQs-8l-oOy"/>
-                                    <outlet property="scrollViewToCellConstraint" destination="0PQ-s3-a9y" id="WZb-ZF-wFe"/>
-                                    <segue destination="mNb-57-5Xm" kind="push" identifier="ViewSongs" id="Whi-Ye-4AG"/>
+                                    <outlet property="scrollViewToCellConstraint" destination="BkJ-IQ-P1V" id="U7j-W4-7Pg"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -1136,11 +1155,25 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <connections>
+                        <outlet property="allSongsButton" destination="mBz-0Z-aws" id="inC-uQ-WeV"/>
+                        <outlet property="allSongsView" destination="r0d-qR-34G" id="8gK-Rk-8zL"/>
                         <outlet property="collectionTableView" destination="oc8-bL-YeY" id="skv-hY-J8U"/>
+                        <outlet property="searchBar" destination="8ig-hc-H4r" id="6j3-Wg-B2Q"/>
+                        <outlet property="searchDisplayController" destination="jgK-0M-8hC" id="f4i-R0-8QS"/>
                         <segue destination="SKu-HW-GrJ" kind="push" identifier="ViewNowPlaying" id="M8w-G2-QEj"/>
+                        <segue destination="mNb-57-5Xm" kind="push" identifier="ViewSongs" id="pWB-et-bqe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="h82-kO-Sv2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <searchDisplayController id="jgK-0M-8hC">
+                    <connections>
+                        <outlet property="delegate" destination="527-b6-fAN" id="dpL-6l-nxX"/>
+                        <outlet property="searchBar" destination="8ig-hc-H4r" id="m7Q-lB-IZa"/>
+                        <outlet property="searchContentsController" destination="527-b6-fAN" id="otJ-2X-cSA"/>
+                        <outlet property="searchResultsDataSource" destination="527-b6-fAN" id="gHa-ak-tXL"/>
+                        <outlet property="searchResultsDelegate" destination="527-b6-fAN" id="ogb-nr-VHT"/>
+                    </connections>
+                </searchDisplayController>
             </objects>
             <point key="canvasLocation" x="-29" y="-839"/>
         </scene>
@@ -1299,11 +1332,11 @@
         <class className="AlbumViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/AlbumViewController.h"/>
             <relationships>
+                <relationship kind="outlet" name="allSongsButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="allSongsView" candidateClass="UIView"/>
                 <relationship kind="outlet" name="collectionTableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="searchBar" candidateClass="MTSearchBar"/>
             </relationships>
-        </class>
-        <class className="AllSongsCell" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/AllSongsCell.h"/>
         </class>
         <class className="ArtistViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/ArtistViewController.h"/>
@@ -1483,10 +1516,10 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="pO3-jk-z6Z"/>
-        <segue reference="nbU-Bw-UO3"/>
+        <segue reference="M8w-G2-QEj"/>
+        <segue reference="CZe-dj-i8N"/>
         <segue reference="iCw-Zw-zSF"/>
-        <segue reference="dXX-zY-4vR"/>
-        <segue reference="kZ2-Sr-P63"/>
+        <segue reference="TMr-tS-s6l"/>
         <segue reference="uzR-Fh-xG0"/>
         <segue reference="KOX-nP-ddu"/>
     </inferredMetricsTieBreakers>
