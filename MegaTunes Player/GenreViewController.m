@@ -19,8 +19,8 @@
 
 
 @interface GenreViewController ()
-@property (nonatomic, retain, readwrite) NSArray * collectionSections;
-@property (nonatomic, retain, readwrite) NSArray * collectionSectionTitles;
+@property (nonatomic, strong) NSArray * genreCollectionSections;
+@property (nonatomic, strong) NSArray * genreCollectionSectionTitles;
 @end
 
 @implementation GenreViewController
@@ -39,18 +39,20 @@
 @synthesize albumCollection;
 @synthesize rightBarButton;
 @synthesize isIndexed;
+@synthesize isSearching;
+@synthesize searchResults;
 
-NSArray *searchResults;
 NSMutableArray *collectionDurations;
 NSIndexPath *selectedIndexPath;
 NSString *selectedName;
 NSString *searchMediaItemProperty;
 CGFloat constraintConstant;
 UIImage *backgroundImage;
+MPMediaQuery *genreQuery;
+MPMediaQuery *selectedQuery;
+
 
 BOOL cellScrolled;
-BOOL isSearching;
-//BOOL isIndexed;
 BOOL showDuration;
 
 - (void) viewDidLoad {
@@ -113,13 +115,13 @@ BOOL showDuration;
     
     // format of collectionSections is <MPMediaQuerySection: 0x1cd34c80> title=B, range={0, 5}, sectionIndexTitleIndex=1,
     
-    self.collectionSections = [self.collectionQueryType collectionSections];
+    self.genreCollectionSections = [self.collectionQueryType collectionSections];
     
-    NSMutableArray * titles = [NSMutableArray arrayWithCapacity:[self.collectionSections count]];
-    for (MPMediaQuerySection * sec in self.collectionSections) {
+    NSMutableArray * titles = [NSMutableArray arrayWithCapacity:[self.genreCollectionSections count]];
+    for (MPMediaQuerySection * sec in self.genreCollectionSections) {
         [titles addObject:sec.title];
     }
-    self.collectionSectionTitles = [titles copy];
+    self.genreCollectionSectionTitles = [titles copy];
     
 }
 - (void) createDurationArray {
@@ -203,7 +205,7 @@ BOOL showDuration;
     }
     
     //don't need to do this if the search table is showing
-    if (!isSearching) {
+    if (!self.isSearching) {
         
         BOOL firstRowVisible = NO;
         //visibleRows is always 0 the first time through here for a table, populated after that
@@ -255,7 +257,7 @@ BOOL showDuration;
 
 - (void)searchDisplayControllerDidBeginSearch:(UISearchDisplayController *)controller {
     //    LogMethod();
-    isSearching = YES;
+    self.isSearching = YES;
     //    [[NSNotificationCenter defaultCenter] postNotificationName: @"Searching" object:nil];
     
 }
@@ -267,7 +269,7 @@ BOOL showDuration;
 
 - (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller {
     //    LogMethod();
-    isSearching = NO;
+    self.isSearching = NO;
     //reload the original tableView otherwise section headers are not visible :(  this seems to be an Apple bug
     
     CGFloat largeHeaderAdjustment;
@@ -293,13 +295,13 @@ BOOL showDuration;
                                                                                  forProperty: searchMediaItemProperty
                                                                               comparisonType:MPMediaPredicateComparisonContains];
     
-    MPMediaQuery *myGenreQuery = [[MPMediaQuery alloc] init];
+    genreQuery = [[MPMediaQuery alloc] init];
     //must copy otherwise adds the predicate to self.collectionQueryType too
-    myGenreQuery = [self.collectionQueryType copy];  
+    genreQuery = [self.collectionQueryType copy];
 
-    [myGenreQuery addFilterPredicate: filterPredicate];
+    [genreQuery addFilterPredicate: filterPredicate];
     
-    searchResults = [myGenreQuery collections];
+    searchResults = [genreQuery collections];
 
 }
 
@@ -329,7 +331,7 @@ BOOL showDuration;
     if (tableView == self.searchDisplayController.searchResultsTableView) {
         return 1;
     } else {
-        return [self.collectionSections count];
+        return [self.genreCollectionSections count];
     }
 }
 
@@ -338,7 +340,7 @@ BOOL showDuration;
     //    LogMethod();
     
     MPMediaQuerySection * sec = nil;
-    sec = self.collectionSections[section];
+    sec = self.genreCollectionSections[section];
     return sec.title;
 }
 
@@ -350,7 +352,7 @@ BOOL showDuration;
         return nil;
     } else {
         
-        return [[NSArray arrayWithObject:@"{search}"] arrayByAddingObjectsFromArray:self.collectionSectionTitles];
+        return [[NSArray arrayWithObject:@"{search}"] arrayByAddingObjectsFromArray:self.genreCollectionSectionTitles];
         //    return self.collectionSectionTitles;
     }
 }
@@ -377,7 +379,7 @@ BOOL showDuration;
         //        NSLog (@" searchResults count is %d", [searchResults count]);
         return [searchResults count];
     } else {
-        MPMediaQuerySection * sec = self.collectionSections[section];
+        MPMediaQuerySection * sec = self.genreCollectionSections[section];
         return sec.range.length;
     }
 }
@@ -386,7 +388,7 @@ BOOL showDuration;
     //    LogMethod();
     //this must be nil or the section headers of the original tableView are awkwardly visible
     // original table must be reloaded after search to get them back :(  this seems to be an Apple bug
-    if (isSearching) {
+    if (self.isSearching) {
         
         return nil;
         
@@ -419,7 +421,7 @@ BOOL showDuration;
 {
     //    LogMethod();
     
-    if (isSearching) {
+    if (self.isSearching) {
         
         //    if (tableView == self.searchDisplayController.searchResultsTableView) {
         
@@ -443,7 +445,7 @@ BOOL showDuration;
 	CollectionItemCell *cell = (CollectionItemCell *)[tableView dequeueReusableCellWithIdentifier:@"CollectionItemCell"];
     cell.durationLabel.text = @"";
     
-    MPMediaQuerySection * sec = self.collectionSections[indexPath.section];
+    MPMediaQuerySection * sec = self.genreCollectionSections[indexPath.section];
     //    NSLog (@" section is %d", indexPath.section);
     
     BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
@@ -605,10 +607,23 @@ BOOL showDuration;
         MPMediaItemCollection *searchCollection = [searchResults objectAtIndex: selectedIndexPath.row];
         NSString *mediaItemName = [[searchCollection representativeItem] valueForProperty: searchMediaItemProperty];
         selectedName = mediaItemName;
+        selectedQuery = genreQuery;
+
     } else {
         selectedIndexPath = indexPath;
         CollectionItemCell *cell = (CollectionItemCell*)[tableView cellForRowAtIndexPath:selectedIndexPath];
         selectedName = cell.nameLabel.text;
+        //works more like Apple with AlbumArtist rather than just Artist
+        MPMediaQuery *myArtistQuery = [[MPMediaQuery alloc] init];
+        
+        myArtistQuery = [self.collectionQueryType copy];
+        
+        [myArtistQuery addFilterPredicate: [MPMediaPropertyPredicate
+                                            predicateWithValue: selectedName
+                                            forProperty: MPMediaItemPropertyGenre]];
+        
+        selectedQuery = myArtistQuery;
+
     }
     [self performSegueWithIdentifier: @"ArtistCollections" sender: self];
 
@@ -627,23 +642,13 @@ BOOL showDuration;
 		ArtistViewController *artistViewController = segue.destinationViewController;
         artistViewController.managedObjectContext = self.managedObjectContext;
         
-//        CollectionItemCell *cell = (CollectionItemCell*)[self.collectionTableView cellForRowAtIndexPath:indexPath];
-
-        //works more like Apple with AlbumArtist rather than just Artist
-        MPMediaQuery *myArtistQuery = [[MPMediaQuery alloc] init];
-        
-        [myArtistQuery addFilterPredicate: [MPMediaPropertyPredicate
-                                                predicateWithValue: selectedName
-                                                forProperty: MPMediaItemPropertyGenre]];
-  
-        artistViewController.collectionQueryType = myArtistQuery;
-
         // Sets the grouping type for the media query
-        [myArtistQuery setGroupingType: MPMediaGroupingAlbumArtist];
+        [selectedQuery setGroupingType: MPMediaGroupingAlbumArtist];
         
-		artistViewController.collection = [myArtistQuery collections];
+		artistViewController.collection = [selectedQuery collections];
         artistViewController.collectionType = self.collectionType;
         artistViewController.title = selectedName;
+        artistViewController.collectionQueryType = [selectedQuery copy];
         artistViewController.iPodLibraryChanged = self.iPodLibraryChanged;
         
 //        for (MPMediaItemCollection *artist in collectionViewController.collection) {

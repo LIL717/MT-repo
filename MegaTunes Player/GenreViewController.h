@@ -30,6 +30,8 @@
 @property (nonatomic, strong)   NSArray *albumCollection;
 @property (nonatomic, strong)   UIBarButtonItem *rightBarButton;
 @property (readwrite)           BOOL isIndexed;
+@property (readwrite)           BOOL isSearching;
+@property (nonatomic, strong)   NSArray *searchResults;
 
 
 

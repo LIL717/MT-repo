@@ -44,9 +44,7 @@
     self.magnifiedLabel.textColor = [UIColor whiteColor];
     self.magnifiedLabel.backgroundColor = [UIColor clearColor];
 
-    UIFont *font = [UIFont systemFontOfSize:12];
-    UIFont *newFont = [font fontWithSize:144];
-    self.magnifiedLabel.font = newFont;
+    self.magnifiedLabel.font = [UIFont systemFontOfSize:144];
     self.magnifiedLabel.text = self.textToMagnify;
 
     //calculate the label size to fit the text with the font size

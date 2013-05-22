@@ -134,9 +134,7 @@ BOOL initialView;
        UILabel *label = [[UILabel alloc] initWithFrame:frame];
        label.backgroundColor = [UIColor clearColor];
        label.textAlignment = NSTextAlignmentCenter;
-       UIFont *font = [UIFont systemFontOfSize:12];
-       UIFont *newFont = [font fontWithSize:44];
-       label.font = newFont;
+       label.font = [UIFont systemFontOfSize:44];
        label.textColor = [UIColor yellowColor];
        label.text = self.title;
        
@@ -237,7 +235,7 @@ BOOL initialView;
 		GenreViewController *genreViewController = segue.destinationViewController;
         genreViewController.managedObjectContext = self.managedObjectContext;
         
-        MPMediaQuery *myCollectionQuery = selectedGroup.queryType;
+        MPMediaQuery *myCollectionQuery = [selectedGroup.queryType copy];
         
         [myCollectionQuery addFilterPredicate: [MPMediaPropertyPredicate
                                                 predicateWithValue:[NSNumber numberWithInteger:MPMediaTypeMusic]
@@ -262,7 +260,7 @@ BOOL initialView;
         self.collection = [myCollectionQuery collections];
 		artistViewController.collection = self.collection;
         artistViewController.collectionType = selectedGroup.name;
-        artistViewController.collectionQueryType = selectedGroup.queryType;
+        artistViewController.collectionQueryType = [selectedGroup.queryType copy];
         artistViewController.title = NSLocalizedString(selectedGroup.name, nil);
         artistViewController.iPodLibraryChanged = self.iPodLibraryChanged;
         
@@ -273,12 +271,12 @@ BOOL initialView;
 		AlbumViewController *albumViewController = segue.destinationViewController;
         albumViewController.managedObjectContext = self.managedObjectContext;
         
-        MPMediaQuery *myCollectionQuery = selectedGroup.queryType;
+//        MPMediaQuery *myCollectionQuery = selectedGroup.queryType;
         
-        self.collection = [myCollectionQuery collections];
+        self.collection = [selectedGroup.queryType collections];
 		albumViewController.collection = self.collection;
         albumViewController.collectionType = selectedGroup.name;
-        albumViewController.collectionQueryType = selectedGroup.queryType;
+        albumViewController.collectionQueryType = [selectedGroup.queryType copy];
         albumViewController.title = NSLocalizedString(selectedGroup.name, nil);
         albumViewController.iPodLibraryChanged = self.iPodLibraryChanged;
         
@@ -288,12 +286,12 @@ BOOL initialView;
         SongViewController *songViewController = segue.destinationViewController;
         songViewController.managedObjectContext = self.managedObjectContext;
 
-        MPMediaQuery *myCollectionQuery = selectedGroup.queryType;
-                
+//        MPMediaQuery *myCollectionQuery = selectedGroup.queryType;
+        
         NSMutableArray *songMutableArray = [[NSMutableArray alloc] init];
         long playlistDuration = 0;
 
-        NSArray *songs = [myCollectionQuery items];
+        NSArray *songs = [selectedGroup.queryType items];
 
 
         for (MPMediaItem *song in songs) {
@@ -312,6 +310,10 @@ BOOL initialView;
         songViewController.title = NSLocalizedString(collectionItem.name, nil);
         songViewController.collectionItem = collectionItem;
         songViewController.iPodLibraryChanged = self.iPodLibraryChanged;
+        songViewController.listIsAlphabetic = YES;
+        songViewController.collectionQueryType = [selectedGroup.queryType copy];
+        songViewController.collectionPredicate = nil;
+        songViewController.collectionType = selectedGroup.name;
 
         
 	}

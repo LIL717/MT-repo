@@ -24,10 +24,11 @@
 @property (nonatomic, strong)   MPMediaQuery *collectionQueryType;
 @property (nonatomic, strong)   NSIndexPath* saveIndexPath;
 @property (readwrite)           BOOL iPodLibraryChanged;
+@property (readwrite)           BOOL isSearching;
 @property (nonatomic, strong)	MPMusicPlayerController	*musicPlayer;
 @property (nonatomic, strong)   NSArray *albumCollection;
 @property (nonatomic, strong)   UIBarButtonItem *rightBarButton;
-
+@property (nonatomic, strong)   NSArray *searchResults;
 
 
 - (NSNumber *) calculatePlaylistDuration: (MPMediaItemCollection *) currentQueue;

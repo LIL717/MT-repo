@@ -8,15 +8,24 @@
 #import "MainViewController.h"
 #import "InfoTabBarController.h"
 #import "SongViewController.h"
+#import "DTCustomColoredAccessory.h"
 #import "SongCell.h"
 #import "InCellScrollView.h"
 #import "CollectionItem.h"
 #import "ItemCollection.h"
 #import "UIImage+AdditionalFunctionalities.h"
 
+@interface SongViewController ()
+@property (nonatomic, strong) NSArray * songSections;
+@property (nonatomic, strong) NSArray * songSectionTitles;
+@end
+
 @implementation SongViewController
 
 @synthesize songTableView;
+@synthesize shuffleView;
+@synthesize shuffleButton;
+@synthesize searchBar;
 @synthesize collectionItem;
 @synthesize collectionOfOne;
 @synthesize musicPlayer;
@@ -24,10 +33,27 @@
 @synthesize mediaItemForInfo;
 @synthesize itemToPlay;
 @synthesize iPodLibraryChanged;         //A flag indicating whether the library has been changed due to a sync
+@synthesize listIsAlphabetic;
+@synthesize isSearching;
+@synthesize songCollection;
 @synthesize rightBarButton;
+@synthesize collectionQueryType;        //used as base of query for search
+@synthesize collectionType;
+@synthesize searchResults;
 
-//NSMutableArray *scrolledCellIndexArray;
+NSMutableArray *songDurations;
+NSIndexPath *selectedIndexPath;
+MPMediaItem *selectedSong;
+NSString *searchMediaItemProperty;
+CGFloat constraintConstant;
+UIImage *backgroundImage;
+CollectionItem *collectionItemToSave;
+UIButton *infoButton;
+
 BOOL cellScrolled;
+BOOL isIndexed;
+BOOL showDuration;
+BOOL turnOnShuffle;
 
 
 - (void)viewDidLoad
@@ -35,8 +61,25 @@ BOOL cellScrolled;
 //    LogMethod();
     [super viewDidLoad];
     
-    //set the backround image for the view
+    //set up an array of durations to be used in landscape mode
+    songDurations = [[NSMutableArray alloc] initWithCapacity: [self.collectionItem.collectionArray count]];
+    
+    NSLog (@" count of collection array %d", [self.collectionItem.collectionArray count]);
+    
+    if ([self.collectionItem.collectionArray count] > 0) {
+    //create the array in the background
+        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+        dispatch_async(queue, ^{
+            // Perform async operation
+            [self createDurationArray];
+        });
+    }
+    //set up grouped table view to look like plain (so that section headers won't stick to top)
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
+    self.songTableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]];
+    self.songTableView.opaque = NO;
+    self.songTableView.backgroundView = nil; // THIS ONE TRIPPED ME UP!
+    backgroundImage = [UIImage imageNamed: @"list-background.png"];
     
     //make the back arrow for left bar button item
     
@@ -77,8 +120,68 @@ BOOL cellScrolled;
 //    scrolledCellIndexArray = [[NSMutableArray alloc] initWithCapacity: 20];
     cellScrolled = NO;
     
-}
+    if ([self.collectionItem.collectionArray count] > 1) {
+        self.shuffleButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        self.shuffleButton.contentEdgeInsets = UIEdgeInsetsMake(0, 14, 0, 0);
+        [self.shuffleButton setTitleColor:  [UIColor blueColor] forState: UIControlStateHighlighted];
+    } else {
+        self.shuffleButton.hidden = YES;
+        CGRect frame = self.shuffleView.frame;
+        frame.size.height = 55;
+        self.shuffleView.frame = frame;
+    }
+    
+    //list can be alphabetic - if All Songs was chosen or in track order, only index alphabetic with more than 20 rows
+    
+    self.songTableView.sectionIndexMinimumDisplayRowCount = 20;
+    isIndexed = NO;
+    
+    if (listIsAlphabetic) {
+        if ([self.collectionItem.collectionArray count] > self.songTableView.sectionIndexMinimumDisplayRowCount) {
+            isIndexed = YES;
+            // format of collectionSections is <MPMediaQuerySection: 0x1cd34c80> title=B, range={0, 5}, sectionIndexTitleIndex=1,
+            
+        } 
+    }
+    MPMediaQuery *query;
+    if ([self.collectionType isEqualToString: @"Podcasts"]) {
+        query = [[MPMediaQuery podcastsQuery] copy];
+        [query setGroupingType: MPMediaGroupingTitle];
+    } else {
+        query = [[MPMediaQuery songsQuery] copy];
+    }
+    
+    if (self.collectionPredicate) {
+        [query addFilterPredicate:self.collectionPredicate];
+    }
 
+    self.songSections = [query collectionSections];
+    NSLog (@"songSections %@", self.songSections);
+    NSLog (@"collection %@", self.collectionItem.collectionArray);
+    
+    NSMutableArray * titles = [NSMutableArray arrayWithCapacity:[self.songSections count]];
+    for (MPMediaQuerySection * sec in self.songSections) {
+        [titles addObject:sec.title];
+    }
+    self.songSectionTitles = [titles copy];
+    NSLog (@"songSectionTitles %@", self.songSectionTitles);
+
+    
+}
+- (void) createDurationArray {
+    
+    for (MPMediaItem *song in self.collectionItem.collectionArray) {
+        //get the duration of the the playlist
+        
+        long playbackDuration = [[song valueForProperty: MPMediaItemPropertyPlaybackDuration] longValue];
+
+        int playlistMinutes = (playbackDuration / 60);     // Whole minutes
+        int playlistSeconds = (playbackDuration % 60);                        // seconds
+        NSString *itemDuration = [NSString stringWithFormat:@"%2d:%02d", playlistMinutes, playlistSeconds];
+        [songDurations addObject: itemDuration];
+        
+    }
+}
 - (void) viewWillAppear:(BOOL)animated
 {
 //    LogMethod();
@@ -102,10 +205,12 @@ BOOL cellScrolled;
     if (cellScrolled) {
 //        for (NSIndexPath *indexPath in scrolledCellIndexArray) {
         for (NSIndexPath *indexPath in [self.songTableView indexPathsForVisibleRows]) {
+            if (indexPath.row > 0) {
 
 //            NSLog (@" indexPath to scroll %@", indexPath);
             SongCell *cell = (SongCell *)[self.songTableView cellForRowAtIndexPath:indexPath];
             [cell.scrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+            }
         }
 //        [self.songTableView reloadRowsAtIndexPaths:scrolledCellIndexArray withRowAnimation: UITableViewRowAnimationNone];
 
@@ -129,9 +234,7 @@ BOOL cellScrolled;
     UILabel *label = [[UILabel alloc] initWithFrame:frame];
     label.backgroundColor = [UIColor clearColor];
     label.textAlignment = NSTextAlignmentCenter;
-    UIFont *font = [UIFont systemFontOfSize:12];
-    UIFont *newFont = [font fontWithSize:44];
-    label.font = newFont;
+    label.font = [UIFont systemFontOfSize:44];
     label.textColor = [UIColor yellowColor];
     label.text = self.title;
     
@@ -145,24 +248,58 @@ BOOL cellScrolled;
 }
 - (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
 //    LogMethod();
+    CGFloat navBarAdjustment;
+
     if (UIInterfaceOrientationIsPortrait(orientation)) {
+        navBarAdjustment = 11;
         [self.songTableView setContentInset:UIEdgeInsetsMake(11,0,0,0)];
-
     } else {
+        navBarAdjustment = 23;
         [self.songTableView setContentInset:UIEdgeInsetsMake(23,0,0,0)];
-        //if rotating to landscape and row 0 will be visible, need to scrollRectToVisible to align it correctly
-        NSArray *indexes = [self.songTableView indexPathsForVisibleRows];
-//        NSLog (@"visible indexes %@", indexes);
-        NSIndexPath *index = [indexes objectAtIndex: 0];
-        if (index.row == 0) {
-            [self.songTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-        }
     }
-
-    [self.songTableView reloadData];
-//    scrolledCellIndexArray = [[NSMutableArray alloc] initWithCapacity: 20];
+//    //don't need to do this if the search table is showing
+//    if (!isSearching) {
+    
+        BOOL firstRowVisible = NO;
+        //visibleRows is always 0 the first time through here for a table, populated after that
+        NSArray *visibleRows = [self.songTableView indexPathsForVisibleRows];
+        NSIndexPath *index = [visibleRows objectAtIndex: 0];
+        if (index.section == 0 && index.row == 0) {
+            firstRowVisible = YES;
+        }
+        
+        // hide the search bar and All Songs cell
+        CGFloat tableViewHeaderHeight = self.shuffleView.frame.size.height;
+        CGFloat adjustedHeaderHeight = tableViewHeaderHeight - navBarAdjustment;
+        NSInteger possibleRows = self.songTableView.frame.size.height / self.songTableView.rowHeight;
+        //        NSLog (@"possibleRows = %d collection count = %d", possibleRows, [self.collection count]);
+        
+        //if the table won't fill the screen need to wait for delay in order for tableView header to hide properly - so ugly
+        if ([self.collectionItem.collectionArray count] <= possibleRows) {
+            [self performSelector:@selector(updateContentOffset) withObject:nil afterDelay:0.0];
+        } else {
+            if (firstRowVisible) {
+                //        [self.collectionTableView scrollRectToVisible:CGRectMake(0, adjustedHeaderHeight, 1, 1) animated:NO];
+                [self.songTableView setContentOffset:CGPointMake(0, adjustedHeaderHeight)];
+            }
+        }
+        [self.songTableView reloadData];
+//    }
     cellScrolled = NO;
 
+}
+- (void)updateContentOffset {
+    //this is only necessary when screen will not be filled - this method is executed afterDelay because ContentOffset is probably not correct until after layoutSubviews happens
+    
+    //    NSLog (@"tableView content size is %f %f",self.collectionTableView.contentSize.height, self.collectionTableView.contentSize.width);
+    
+    BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
+    
+    CGFloat largeHeaderAdjustment = isPortrait ? 11 : 23;
+    
+    CGFloat tableViewHeaderHeight = self.shuffleView.frame.size.height;
+    
+    [self.songTableView setContentOffset:CGPointMake(0, tableViewHeaderHeight - largeHeaderAdjustment)];
 }
 - (void) viewWillLayoutSubviews {
         //need this to pin portrait view to bounds otherwise if start in landscape, push to next view, rotate to portrait then pop back the original view in portrait - it will be too wide and "scroll" horizontally
@@ -170,166 +307,542 @@ BOOL cellScrolled;
 
     [super viewWillLayoutSubviews];
 }
+#pragma mark - Search Display methods
+
+- (void)searchDisplayControllerDidBeginSearch:(UISearchDisplayController *)controller {
+    LogMethod();
+    self.isSearching = YES;
+    //    [[NSNotificationCenter defaultCenter] postNotificationName: @"Searching" object:nil];
+    
+}
+- (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller {
+    //this needs to be here rather than DidEndSearch to avoid flashing wrong data first
+    
+    //    [self.collectionTableView reloadData];
+}
+
+- (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller {
+    LogMethod();
+    self.isSearching = NO;
+    //reload the original tableView otherwise section headers are not visible :(  this seems to be an Apple bug
+    
+    CGFloat largeHeaderAdjustment;
+    
+    BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
+    
+    if (isPortrait) {
+        largeHeaderAdjustment = 11;
+    } else {
+        largeHeaderAdjustment = 23;
+    }
+    
+    [self.songTableView scrollRectToVisible:CGRectMake(largeHeaderAdjustment, 0, 1, 1) animated:YES];
+    [self.songTableView reloadData];
+}
+- (void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope
+{
+    LogMethod();
+    
+    searchMediaItemProperty = MPMediaItemPropertyTitle;
+    
+//    NSLog (@"searchMediaItemProperty is %@", searchMediaItemProperty);
+    MPMediaPropertyPredicate *filterPredicate = [MPMediaPropertyPredicate predicateWithValue: searchText
+                                                                                 forProperty: searchMediaItemProperty
+                                                                              comparisonType:MPMediaPredicateComparisonContains];
+    
+    
+    MPMediaQuery *mySongQuery = [[MPMediaQuery alloc] init];
+    //must copy otherwise adds the predicate to self.collectionQueryType too
+    mySongQuery = [self.collectionQueryType copy];
+    [mySongQuery addFilterPredicate: filterPredicate];
+    
+    searchResults = [mySongQuery items];
+    
+    NSLog (@"searchResults %@", searchResults);
+           
+        
+}
+
+-(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
+
+{
+    //    LogMethod();
+    [self filterContentForSearchText:searchString
+                               scope:[[self.searchDisplayController.searchBar scopeButtonTitles]
+                                      objectAtIndex:[self.searchDisplayController.searchBar
+                                                     selectedScopeButtonIndex]]];
+    
+    return YES;
+}
+-(void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
+    //    LogMethod();
+    self.searchDisplayController.searchResultsTableView.rowHeight = 55;
+    //    self.searchDisplayController.searchResultsTableView.backgroundColor = [UIColor whiteColor];
+    [self.searchDisplayController.searchResultsTableView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
+    
+}
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    //    LogMethod();
+    LogMethod();
+
     // Return the number of sections.
-    return 1;
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        return 1;
+    } else {
+        return [self.songSections count];
+    }
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    LogMethod();
+    
+    MPMediaQuerySection * sec = nil;
+    sec = self.songSections[section];
+    return sec.title;
+}
+
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
+{
+    LogMethod();
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        return nil;
+    } else if (listIsAlphabetic) {
+        
+            return [[NSArray arrayWithObject:@"{search}"] arrayByAddingObjectsFromArray:self.songSectionTitles];
+        //    return self.collectionSectionTitles;
+    }  else {
+            return nil;
+    }
+    
+}
+
+- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
+{
+    LogMethod();
+    
+    NSLog (@"SectionIndexTitle is %@ at index %d", title, index);
+    //since search was added to the array, need to return index - 1 to get to correct title, for search, set content Offset to top of table :)
+    if ([title isEqualToString: @"{search}"]) {
+        [tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+        return NSNotFound;
+    } else {
+        return index -1;
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    LogMethod();
+
     // Return the number of rows in the section.
-    
-//    return [[self.collectionItem.collection items] count];
-    return [self.collectionItem.collectionArray count];
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        
+        //        NSLog (@" searchResults count is %d", [searchResults count]);
+        return [searchResults count];
+    } else {
+        MPMediaQuerySection * sec = self.songSections[section];
+        return sec.range.length;
+    }
+//    } else if (isIndexed) {
+//        MPMediaQuerySection * sec = self.songSections[section];
+//        return sec.range.length;
+//    } else {
+//        return [self.collectionItem.collectionArray count];
+//    }
 }
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    LogMethod();
+    //this must be nil or the section headers of the original tableView are awkwardly visible
+    // original table must be reloaded after search to get them back :(  this seems to be an Apple bug
+    if (self.isSearching) {
+        
+        return nil;
+        
+    } else {
+        NSString *sectionTitle = [self tableView:tableView titleForHeaderInSection:section];
+        if (sectionTitle == nil) {
+            return nil;
+        }
+        CGFloat sectionViewHeight;
+        CGFloat sectionViewWidth;
+        UIColor *sectionHeaderColor;
+        //if there aren't enough for indexing, dispense with the section headers
+        if (isIndexed) {
+            sectionViewHeight = 10;
+            sectionViewWidth = tableView.bounds.size.width;
+            sectionHeaderColor = [UIColor whiteColor];
+        } else {
+            sectionViewHeight = 0;
+            sectionViewWidth = 0;
+        }
+        
+        UIView *sectionView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, sectionViewWidth, sectionViewHeight)];
+        [sectionView setBackgroundColor:sectionHeaderColor];
+        //    [sectionView addSubview:label];
+        
+        return sectionView;
+    }
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+//    LogMethod();
+    
+    if (self.isSearching) {
+        
+        //    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        
+        return 0;
+    } else {
+        //if there aren't enough for indexing, dispense with the section headers
+        if (isIndexed) {
+            return 10;
+        } else {
+            return 0;
+        }
+    }
+}
+
+
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    LogMethod();
+
+    //don't use SongCell for searchResultsCell won't respond to touches to scroll anyway and terrible performance on GoBackClick when autoRotated
+    static NSString *CellIdentifier = @"Cell";
+    UITableViewCell *searchResultsCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    
 	SongCell *cell = (SongCell *)[tableView
                                           dequeueReusableCellWithIdentifier:@"SongCell"];
     
     cell.xOffset = 8.0;
-    MPMediaItem *song = [self.collectionItem.collectionArray objectAtIndex:indexPath.row];
+    
+    MPMediaQuerySection * sec = self.songSections[indexPath.section];
+    //    NSLog (@" section is %d", indexPath.section);
+    
+
     BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
+    
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        
+        if ( searchResultsCell == nil ) {
+            searchResultsCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+            searchResultsCell.selectionStyle = UITableViewCellSelectionStyleGray;
+            searchResultsCell.selectedBackgroundView = [[UIImageView alloc] initWithImage:backgroundImage];
+            searchResultsCell.textLabel.font = [UIFont systemFontOfSize:44];
+            searchResultsCell.textLabel.textColor = [UIColor whiteColor];
+            searchResultsCell.textLabel.highlightedTextColor = [UIColor blueColor];
+            searchResultsCell.textLabel.lineBreakMode = NSLineBreakByClipping;
+            
+            DTCustomColoredAccessory *accessory = [DTCustomColoredAccessory accessoryWithColor:[UIColor whiteColor]];
+            accessory.highlightedColor = [UIColor blueColor];
+            searchResultsCell.accessoryView = accessory;
+        }
+        NSString *mediaItemName;
+//        MPMediaItemCollection *searchCollection = [searchResults objectAtIndex: indexPath.row];
+
+        MPMediaItem  *item = [searchResults objectAtIndex: indexPath.row];
+        mediaItemName = [item valueForProperty: MPMediaItemPropertyTitle];
+
+        //        NSArray *searchCollectionArray = [searchCollection items];
+        //        for (MPMediaItem *item in searchCollectionArray) {
+        //            //            NSLog (@" whatIsThis %@", [[artistCollection representativeItem] valueForProperty: MPMediaItemPropertyAlbumArtist]);
+            NSLog (@" whatIsThis %@", [item valueForProperty: MPMediaItemPropertyTitle]);
+        //        }
+        searchResultsCell.textLabel.text = mediaItemName;
+        
+        return searchResultsCell;
+        
+    } else {
+
+//    MPMediaItem *song = [self.collectionItem.collectionArray objectAtIndex:indexPath.row];
+
+
+        MPMediaItem *song = self.collectionItem.collectionArray[sec.range.location + indexPath.row];
+        
+        NSLog (@"song******* %@", [song valueForProperty:  MPMediaItemPropertyTitle]);
+
+        cell.nameLabel.text = [song valueForProperty:  MPMediaItemPropertyTitle];
 
     //playback duration of the song
     
-    long playbackDuration = [[song valueForProperty: MPMediaItemPropertyPlaybackDuration] longValue];
-    
-    //if song has been deleted during a sync then pop to rootViewController
-    if (playbackDuration == 0 && self.iPodLibraryChanged) {
-        [self.navigationController popToRootViewControllerAnimated:YES];
-        NSLog (@"BOOM");
-    }
-    
-    if (isPortrait) {
-        cell.durationLabel.hidden = YES;
-    } else {
-        cell.durationLabel.hidden = NO;
+        if (isPortrait) {
+            showDuration = NO;
+            cell.durationLabel.hidden = YES;
+        } else {
+            showDuration = YES;
+            cell.durationLabel.hidden = NO;
+            
+            //if the array has been populated in the background at least to the point of the index, then use the table otherwise calculate the playlistDuration here
+            if ([songDurations count] > (sec.range.location + indexPath.row)) {
+                cell.durationLabel.text = songDurations[sec.range.location + indexPath.row];
+            } else {
+                long playbackDuration = [[song valueForProperty: MPMediaItemPropertyPlaybackDuration] longValue];
+                
+                int playbackHours = (playbackDuration / 3600);                         // returns number of whole hours fitted in totalSecs
+                int playbackMinutes = ((playbackDuration / 60) - playbackHours*60);     // Whole minutes
+                int playbackSeconds = (playbackDuration % 60);                        // seconds
+                cell.durationLabel.text = [NSString stringWithFormat:@"%2d:%02d", playbackMinutes, playbackSeconds];
+            }
+            
+        }
+                                                                
+        //show accessory if not indexed
+        if (isIndexed) {
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            [infoButton removeFromSuperview];
+        } else {
+            cell.accessoryType = UITableViewCellAccessoryNone;
 
-        int playbackHours = (playbackDuration / 3600);                         // returns number of whole hours fitted in totalSecs
-        int playbackMinutes = ((playbackDuration / 60) - playbackHours*60);     // Whole minutes
-        int playbackSeconds = (playbackDuration % 60);                        // seconds
-        cell.durationLabel.text = [NSString stringWithFormat:@"%2d:%02d", playbackMinutes, playbackSeconds];
+            //make the accessory view into a custom info button
+            
+            UIImage *image = [UIImage imageNamed: @"infoLightButtonImage.png"];
+            UIImage *backgroundImage = [UIImage imageNamed: @"infoSelectedButtonImage.png"];
+            
+            infoButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            
+            CGRect frame = CGRectMake(0.0, 0.0, image.size.width, image.size.height);
+            infoButton.frame = frame;
+            [infoButton setImage:image forState:UIControlStateNormal];
+            [infoButton setImage: backgroundImage forState:UIControlStateHighlighted];
+            [infoButton addTarget:self action:@selector(infoButtonTapped:event:)  forControlEvents:UIControlEventTouchUpInside];
+            infoButton.contentEdgeInsets = UIEdgeInsetsMake(0, 10, 0, -10);
+            
+            UIView *superview = cell.contentView;
+            
+            [infoButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+            
+            [superview addSubview:infoButton];
+            
+            NSLayoutConstraint *myConstraint = [NSLayoutConstraint
+                                                constraintWithItem:infoButton
+                                                attribute:NSLayoutAttributeTrailing
+                                                relatedBy:NSLayoutRelationEqual
+                                                toItem:superview
+                                                attribute:NSLayoutAttributeTrailing
+                                                multiplier:1.0
+                                                constant:0];
+            
+            [superview addConstraint:myConstraint];
+            
+            myConstraint = [NSLayoutConstraint
+                            constraintWithItem:infoButton
+                            attribute:NSLayoutAttributeTop
+                            relatedBy:NSLayoutRelationEqual
+                            toItem:superview
+                            attribute:NSLayoutAttributeTop
+                            multiplier:1.0
+                            constant:4];
+            
+            [superview addConstraint:myConstraint];
+
+        }
+
+            //    NSString *songTitle =[song valueForProperty: MPMediaItemPropertyTitle];
+            //    NSNumber *duration = [song valueForProperty: MPMediaItemPropertyPlaybackDuration];
+            //    NSLog (@"\t\t%@,%@", songTitle,duration);
+    
+        //set the red arrow on the row if this is the currently playing song
+        if ([musicPlayer nowPlayingItem] == song) {
+            cell.playingIndicator.image = [UIImage imageNamed:@"playing"];
+        } else {
+            cell.playingIndicator.image = [UIImage imageNamed:@"notPlaying"];
+        }
+        return [self handleCellScrolling: cell inTableView: tableView];
+//
+//        // Display text
+//
+//        //cell.durationLabel.frame.size.width = 111 - have to hard code because not calculated yet at this point
+//        
+//        CGFloat contraintConstant = isPortrait ? 50 : (50 + 111 + 5);
+//        
+//        cell.scrollViewToCellConstraint.constant = contraintConstant;
+//        
+//        cell.nameLabel.text = [song valueForProperty:  MPMediaItemPropertyTitle];
+//        //set the textLabel to the same thing - it is used if the text does not need to scroll
+//
+////        cell.textLabel.font = [UIFont systemFontOfSize:44];
+////        cell.textLabel.textColor = [UIColor whiteColor];
+////        cell.textLabel.highlightedTextColor = [UIColor blueColor];
+////        cell.textLabel.backgroundColor = [UIColor clearColor];
+////    //    cell.textLabel.lineBreakMode = NSLineBreakByClipping;
+////        cell.textLabel.text = cell.nameLabel.text;
+//
+//        [cell.scrollView removeConstraint:cell.centerXAlignmentConstraint];
+//        //calculate the label size to fit the text with the font size
+//        CGSize labelSize = [cell.nameLabel.text sizeWithFont:cell.nameLabel.font
+//                                           constrainedToSize:CGSizeMake(INT16_MAX, tableView.rowHeight)
+//                                               lineBreakMode:NSLineBreakByClipping];
+//
+//        //calculate the width of the actual scrollview
+//        //cell.playingIndicator is 20
+//        //durationLabelSize.width is 111
+//        //cell.accessoryView.frame.size.width is 42
+//        // so scrollViewWidth should be 480-24-98-42 = 316   or 320-28-42= 250
+//        NSUInteger scrollViewWidth;
+//        
+//        if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+//            scrollViewWidth = (tableView.frame.size.width - 32 - cell.accessoryView.frame.size.width);
+//        } else {
+//            scrollViewWidth = (tableView.frame.size.width - 24 - 111 - cell.accessoryView.frame.size.width);
+//        }
+//        //Make sure that label is aligned with scrollView
+//        [cell.scrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+//        
+//        cell.scrollView.delegate = cell.scrollView;
+//        cell.scrollView.scrollEnabled = YES;
+//        //        NSLog (@"scrollEnabled");
+//
+//        if (labelSize.width>scrollViewWidth) {
+////            cell.scrollView.hidden = NO;
+////            cell.textLabel.hidden = YES;
+//            cell.scrollView.scrollEnabled = YES;
+////            [cell.scrollView addConstraint:cell.centerYAlignmentConstraint];
+//
+//        }
+//        else {
+////            cell.scrollView.hidden = YES;
+////            cell.textLabel.hidden = NO;
+//            cell.scrollView.scrollEnabled = NO;
+////            [cell.scrollView removeConstraint:cell.centerYAlignmentConstraint];
+//
+//        }
+//        return cell;
+    }
+                                                                
+}
+- (NSNumber *)calculatePlaylistDuration: (MPMediaItemCollection *) currentQueue {
+    
+    NSArray *returnedQueue = [currentQueue items];
+    
+    long playlistDuration = 0;
+    long songDuration = 0;
+    
+    for (MPMediaItem *song in returnedQueue) {
+        songDuration = [[song valueForProperty:MPMediaItemPropertyPlaybackDuration] longValue];
+        //if the  song has been deleted during a sync then pop to rootViewController
+        
+        if (songDuration == 0 && self.iPodLibraryChanged) {
+            [self.navigationController popToRootViewControllerAnimated:YES];
+            NSLog (@"BOOM");
+        }
+        //        playlistDuration = (playlistDuration + [[song valueForProperty:MPMediaItemPropertyPlaybackDuration] longValue]);
+        playlistDuration = (playlistDuration + songDuration);
         
     }
+    return [NSNumber numberWithLong: playlistDuration];
+}
+- (SongCell *) handleCellScrolling: (SongCell *) cell inTableView: (UITableView *) tableView {
+    //    LogMethod();
     
-    //make the accessory view into a custom info button
+    cell.scrollViewToCellConstraint.constant = showDuration ? (30 + 130 + 5) : 48;
+    //    NSLog (@"constraintConstant is %f", cell.scrollViewToCellConstraint.constant);
     
-    UIImage *image = [UIImage imageNamed: @"infoLightButtonImage.png"];
-    UIImage *backgroundImage = [UIImage imageNamed: @"infoSelectedButtonImage.png"];
-
-    UIButton *infoButton = [UIButton buttonWithType:UIButtonTypeCustom];
-
-    CGRect frame = CGRectMake(0.0, 0.0, image.size.width, image.size.height);
-    infoButton.frame = frame;
-    [infoButton setBackgroundImage:image forState:UIControlStateNormal];
-    [infoButton setBackgroundImage: backgroundImage forState:UIControlStateHighlighted];
-    [infoButton addTarget:self action:@selector(infoButtonTapped:event:)  forControlEvents:UIControlEventTouchUpInside];
-    cell.accessoryView = infoButton;
-    
-    //this would need some work - crashes with auto layout issues
-//    [cell.infoBackground addSubview: button];
-//    
-//    cell.infoBackground.translatesAutoresizingMaskIntoConstraints = NO;
-//    button.translatesAutoresizingMaskIntoConstraints = NO;
-//    
-//    NSDictionary *viewsDictionary = NSDictionaryOfVariableBindings(cell.infoBackground, button);
-//    
-//    [cell.infoBackground addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[button]|" options:0 metrics: 0 views:viewsDictionary]];
-//    [cell.infoBackground addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[button]|" options:0 metrics: 0 views:viewsDictionary]];
-
-
-//    NSString *songTitle =[song valueForProperty: MPMediaItemPropertyTitle];
-//    NSNumber *duration = [song valueForProperty: MPMediaItemPropertyPlaybackDuration];
-//    NSLog (@"\t\t%@,%@", songTitle,duration);
-    
-    //set the red arrow on the row if this is the currently playing song
-    if ([musicPlayer nowPlayingItem] == song) {
-        cell.playingIndicator.image = [UIImage imageNamed:@"playing"];
-    } else {
-        cell.playingIndicator.image = [UIImage imageNamed:@"notPlaying"];
-    }
-    // Display text
-
-    //cell.durationLabel.frame.size.width = 111 - have to hard code because not calculated yet at this point
-    
-    CGFloat contraintConstant = isPortrait ? 50 : (50 + 111 + 5);
-    
-    cell.scrollViewToCellConstraint.constant = contraintConstant;
-    
-    cell.nameLabel.text = [song valueForProperty:  MPMediaItemPropertyTitle];
-    //set the textLabel to the same thing - it is used if the text does not need to scroll
-    UIFont *font = [UIFont systemFontOfSize:12];
-    UIFont *newFont = [font fontWithSize:44];
-    cell.textLabel.font = newFont;
-    cell.textLabel.textColor = [UIColor whiteColor];
-    cell.textLabel.highlightedTextColor = [UIColor blueColor];
-    cell.textLabel.backgroundColor = [UIColor clearColor];
-//    cell.textLabel.lineBreakMode = NSLineBreakByClipping;
-    cell.textLabel.text = cell.nameLabel.text;
-
-    [cell.scrollView removeConstraint:cell.centerXAlignmentConstraint];
-    //calculate the label size to fit the text with the font size
-    CGSize labelSize = [cell.nameLabel.text sizeWithFont:cell.nameLabel.font
-                                       constrainedToSize:CGSizeMake(INT16_MAX, tableView.rowHeight)
-                                           lineBreakMode:NSLineBreakByClipping];
-
-    //calculate the width of the actual scrollview
-    //cell.playingIndicator is 20
-    //durationLabelSize.width is 111
-    //cell.accessoryView.frame.size.width is 42
-    // so scrollViewWidth should be 480-24-98-42 = 316   or 320-28-42= 250
     NSUInteger scrollViewWidth;
     
-    if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
-        scrollViewWidth = (tableView.frame.size.width - 32 - cell.accessoryView.frame.size.width);
+    if (showDuration) {
+        //        scrollViewWidth = (tableView.frame.size.width - durationLabelSize.width - cell.accessoryView.frame.size.width);
+        scrollViewWidth = (tableView.frame.size.width - 178);
     } else {
-        scrollViewWidth = (tableView.frame.size.width - 24 - 111 - cell.accessoryView.frame.size.width);
+        scrollViewWidth = (tableView.frame.size.width - 61);
     }
+
+    [cell.scrollView removeConstraint:cell.centerXAlignmentConstraint];
+    
+    //calculate the label size to fit the text with the font size
+    CGSize labelSize = [cell.nameLabel.text sizeWithFont:cell.nameLabel.font
+                                       constrainedToSize:CGSizeMake(INT16_MAX,cell.frame.size.height)
+                                           lineBreakMode:NSLineBreakByClipping];
+    
     //Make sure that label is aligned with scrollView
     [cell.scrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-    
     cell.scrollView.delegate = cell.scrollView;
-    cell.scrollView.scrollEnabled = YES;
-    //        NSLog (@"scrollEnabled");
-
+    
+    //    NSLog (@"labelSize.width is %f and scrollViewWidth is %d", labelSize.width, scrollViewWidth);
     if (labelSize.width>scrollViewWidth) {
-        cell.scrollView.hidden = NO;
-        cell.textLabel.hidden = YES;
-        [cell.scrollView addConstraint:cell.centerYAlignmentConstraint];
-
+        //        cell.scrollView.hidden = NO;
+        //        cell.textLabel.hidden = YES;
+        cell.scrollView.scrollEnabled = YES;
+        //        NSLog (@"%@ is scrollable", cell.nameLabel.text);
+        
     }
     else {
-        cell.scrollView.hidden = YES;
-        cell.textLabel.hidden = NO;
-        [cell.scrollView removeConstraint:cell.centerYAlignmentConstraint];
-
+        //        cell.scrollView.hidden = YES;
+        //        cell.textLabel.hidden = NO;
+        cell.scrollView.scrollEnabled = NO;
+        
     }
+
+
+    
+
+    
     return cell;
 }
-
-
 #pragma mark - Table view delegate
 
 //	 To conform to the Human Interface Guidelines, selections should not be persistent --
 //	 deselect the row after it has been selected.
 - (void) tableView: (UITableView *) tableView didSelectRowAtIndexPath: (NSIndexPath *) indexPath {
     
+    if ([self.searchDisplayController isActive]) {
+        
+        //        NSLog (@"[self.searchDisplayController.searchResultsTableView indexPathForSelectedRow] is %@", [self.searchDisplayController.searchResultsTableView indexPathForSelectedRow]);
+        
+        selectedIndexPath = [self.searchDisplayController.searchResultsTableView indexPathForSelectedRow];
+        
+        
+        //        NSLog (@"selectedIndexPath.row is %d", selectedIndexPath.row);
+        //        UITableViewCell *searchResultsCell = [self.searchDisplayController.searchResultsTableView cellForRowAtIndexPath:selectedIndexPath];
+        //        selectedName = [searchResults objectAtIndex:selectedIndexPath.row];
+        //        NSLog (@"searchResults %@", searchResults);
+        
+        
+//        MPMediaItemCollection *searchCollection = [searchResults objectAtIndex: selectedIndexPath.row];
+//        NSString *mediaItemName = [[searchCollection representativeItem] valueForProperty: searchMediaItemProperty];
+        
+        MPMediaItem *searchMediaItem = [searchResults objectAtIndex: selectedIndexPath.row];
+//        NSString *mediaItemName = [item valueForProperty: MPMediaItemPropertyTitle];
+        //
+        //        //        NSArray *searchCollectionArray = [searchCollection items];
+        //        //        for (MPMediaItem *item in searchCollectionArray) {
+        //        ////            NSLog (@" whatIsThis %@", [[artistCollection representativeItem] valueForProperty: MPMediaItemPropertyAlbumArtist]);
+        //        //            NSLog (@" whatIsThis %@", [item valueForProperty: MPMediaItemPropertyAlbumArtist]);
+        //        //
+        //        //        }
+        //        //        cell.textLabel.text = [[searchCollection representativeItem] valueForProperty: MPMediaItemPropertyAlbumArtist];
+        selectedSong = searchMediaItem;
+        self.songCollection =  [MPMediaItemCollection collectionWithItems: searchResults];
+        
+        CollectionItem *searchCollectionItem = [CollectionItem alloc];
+        searchCollectionItem.name = [searchMediaItem valueForProperty: MPMediaItemPropertyTitle];
+        searchCollectionItem.duration = [self calculatePlaylistDuration: self.songCollection];
+        searchCollectionItem.collectionArray = [NSMutableArray arrayWithArray:[self.songCollection items]];
+        
+        collectionItemToSave = searchCollectionItem;
+        
+    } else {
+        
+        selectedIndexPath = indexPath;
+        
+        MPMediaQuerySection * sec = self.songSections[indexPath.section];
+        selectedSong = self.collectionItem.collectionArray[sec.range.location + indexPath.row];
+
+        self.songCollection = [MPMediaItemCollection collectionWithItems: self.collectionItem.collectionArray];
+
+        collectionItemToSave = self.collectionItem;
+        
+        //set the "nowPlaying indicator" as the view disappears (already selected play indicator is still there too :(
+        SongCell *cell = (SongCell*)[tableView cellForRowAtIndexPath:selectedIndexPath];
+        cell.playingIndicator.image = [UIImage imageNamed:@"playing"];
+    }
+    [self performSegueWithIdentifier: @"PlaySong" sender: self];
 	[tableView deselectRowAtIndexPath: indexPath animated: YES];
-//    UITableViewCell *selectedCell =[self.songTableView cellForRowAtIndexPath:indexPath];
-//    selectedCell.textLabel.highlighted = NO;
-    
-    //set the "nowPlaying indicator" as the view disappears (already selected play indicator is still there too :(
-    SongCell *cell = (SongCell *)[tableView cellForRowAtIndexPath:indexPath];
-    cell.playingIndicator.image = [UIImage imageNamed:@"playing"];
-//    cell.nameLabel.highlighted = NO;
-    
 
 }
 
@@ -352,26 +865,30 @@ BOOL cellScrolled;
                                                       object: musicPlayer];
         
 	}
-    	if ([segue.identifier isEqualToString:@"PlaySong"])
+    if ([segue.identifier isEqualToString:@"PlaySong"])
 	{
-        self.collectionItem.collection = [MPMediaItemCollection collectionWithItems: self.collectionItem.collectionArray];
+//        self.collectionItem.collection = [MPMediaItemCollection collectionWithItems: self.collectionItem.collectionArray];
 
         MainViewController *mainViewController = segue.destinationViewController;
         mainViewController.managedObjectContext = self.managedObjectContext;
-        NSIndexPath *indexPath = [self.songTableView indexPathForCell:sender];
-        mainViewController.itemToPlay = [[self.collectionItem.collection items] objectAtIndex:indexPath.row];
+        
+//        NSIndexPath *indexPath = [self.songTableView indexPathForCell:sender];
+//        mainViewController.itemToPlay = [[self.collectionItem.collection items] objectAtIndex:indexPath.row];
+        mainViewController.itemToPlay = selectedSong;
 
+//        mainViewController.userMediaItemCollection = self.collectionItem.collection;
+        mainViewController.userMediaItemCollection = self.songCollection;
 
-        mainViewController.userMediaItemCollection = self.collectionItem.collection;
         mainViewController.playNew = YES;
         mainViewController.iPodLibraryChanged = self.iPodLibraryChanged;
-
         
         //save collection in Core Data
         ItemCollection *itemCollection = [ItemCollection alloc];
         itemCollection.managedObjectContext = self.managedObjectContext;
         
-        [itemCollection addCollectionToCoreData: self.collectionItem];
+//        [itemCollection addCollectionToCoreData: self.collectionItem];
+        [itemCollection addCollectionToCoreData: collectionItemToSave];
+
 
     }
     if ([segue.identifier isEqualToString:@"ViewNowPlaying"])
@@ -409,6 +926,36 @@ BOOL cellScrolled;
     {
         [self tableView: self.songTableView accessoryButtonTappedForRowWithIndexPath: indexPath];
     }
+}
+
+- (IBAction)playWithShuffle:(id)sender {
+    LogMethod();
+    //Shuffle button selected
+    [musicPlayer setShuffleMode: MPMusicShuffleModeSongs];
+    
+    int min = 0; 
+    int max = [self.collectionItem.collectionArray count] -1;
+    int randNum = rand() % (max - min) + min; //create the random number.
+
+//    NSIndexPath *indexPath = [NSIndexPath indexPathWithIndex:randNum];
+    
+//    selectedIndexPath = indexPath;
+    
+//    MPMediaQuerySection * sec = self.songSections[indexPath.section];
+//    selectedSong = self.collectionItem.collectionArray[sec.range.location + indexPath.row];
+    selectedSong = [self.collectionItem.collectionArray objectAtIndex: randNum];
+
+    
+    self.songCollection = [MPMediaItemCollection collectionWithItems: self.collectionItem.collectionArray];
+    
+    collectionItemToSave = self.collectionItem;
+    
+    //set the "nowPlaying indicator" as the view disappears (already selected play indicator is still there too :(
+//    SongCell *cell = (SongCell*)[self.songTableView cellForRowAtIndexPath:selectedIndexPath];
+//    cell.playingIndicator.image = [UIImage imageNamed:@"playing"];
+    
+    [self performSegueWithIdentifier: @"PlaySong" sender: self];
+
 }
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
@@ -521,6 +1068,7 @@ BOOL cellScrolled;
 							   name: MPMusicPlayerControllerPlaybackStateDidChangeNotification
 							 object: musicPlayer];
 }
+
 - (void)dealloc {
 //    LogMethod();
     [[NSNotificationCenter defaultCenter] removeObserver:self];

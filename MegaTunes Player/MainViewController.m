@@ -359,9 +359,7 @@ long songRemainingSeconds;
     UILabel *label = [[UILabel alloc] initWithFrame:frame];
     label.backgroundColor = [UIColor clearColor];
     label.textAlignment = NSTextAlignmentCenter;
-    UIFont *font = [UIFont systemFontOfSize:12];
-    UIFont *newFont = [font fontWithSize:44];
-    label.font = newFont;
+    label.font = [UIFont systemFontOfSize:44];
     label.textColor = [UIColor yellowColor];
     label.lineBreakMode = NSLineBreakByClipping;
     label.text = self.title;
@@ -470,8 +468,7 @@ long songRemainingSeconds;
     
     [self.nowPlayingLabel setText: [[musicPlayer nowPlayingItem] valueForProperty:  MPMediaItemPropertyTitle]];
 //    NSLog (@"nowPlayingLabel.text is %@", self.nowPlayingLabel.text);
-    UIFont *font = [UIFont systemFontOfSize:12];
-    UIFont *newFont = [font fontWithSize:44];
+    UIFont *newFont = [UIFont systemFontOfSize:44];
     [self.nowPlayingLabel setFont: newFont];
 }
 - (void) prepareNextSongLabel {
@@ -739,7 +736,7 @@ long songRemainingSeconds;
                                                                                style: UIBarButtonItemStyleBordered
                                                                               target: self
                                                                               action: @selector(magnify)];
-            [durationButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [[UIFont systemFontOfSize:12] fontWithSize:44.0], UITextAttributeFont,nil] forState:UIControlStateNormal];
+            [durationButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIFont systemFontOfSize:44], UITextAttributeFont,nil] forState:UIControlStateNormal];
             [durationButton setBackgroundImage:[UIImage imageNamed:@"rightButtonBackground.png"] forState: UIControlStateNormal barMetrics:UIBarMetricsDefault];
 
             const CGFloat TextOffset = 10.0f;
