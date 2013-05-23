@@ -58,7 +58,10 @@
 @property (nonatomic, strong)   MPMediaItem             *mediaItemForInfo;
 @property (readwrite)           BOOL                    iPodLibraryChanged;
 @property (readwrite)           BOOL                    showPlaylistRemaining;
+@property (readwrite)           BOOL                    queueIsKnown;
+@property (readwrite)           BOOL                    initialView;
 @property (nonatomic, strong)   MPMediaItem             *savedNowPlaying;
+@property (nonatomic, strong)   MPMediaItem             *predictedNextItem;
 @property (nonatomic, strong)   UserInfoViewController  *userInfoViewController;
 @property (readwrite)           BOOL                    userIsScrubbing;
 @property (readwrite)           BOOL                    hasFinishedMoving;

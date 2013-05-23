@@ -148,15 +148,15 @@ BOOL turnOnShuffle;
     }
 
     self.songSections = [self.collectionQueryType collectionSections];
-    NSLog (@"songSections %@", self.songSections);
-    NSLog (@"collection %@", self.collectionItem.collectionArray);
+//    NSLog (@"songSections %@", self.songSections);
+//    NSLog (@"collection %@", self.collectionItem.collectionArray);
     
     NSMutableArray * titles = [NSMutableArray arrayWithCapacity:[self.songSections count]];
     for (MPMediaQuerySection * sec in self.songSections) {
         [titles addObject:sec.title];
     }
     self.songSectionTitles = [titles copy];
-    NSLog (@"songSectionTitles %@", self.songSectionTitles);
+//    NSLog (@"songSectionTitles %@", self.songSectionTitles);
 
     
 }

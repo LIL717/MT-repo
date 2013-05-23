@@ -116,7 +116,10 @@ void audioRouteChangeListenerCallback (
 @synthesize mediaItemForInfo;           // mediaItem which gets passed to info view controllers
 @synthesize iPodLibraryChanged;         //A flag indicating whether the library has been changed due to a sync
 @synthesize showPlaylistRemaining;      //A flag the captures the user's preference from setting whether to display the amount of time left in playlist
+@synthesize queueIsKnown;               //a flag the indicates whether the actually playing queue matches the queue that was saved
+@synthesize initialView;                //used with the process of figuring our whether playing queue matches queue that was saved
 @synthesize savedNowPlaying;             //for some reason a new song calls the handle_NowPlayingItemChanged: method twice, so this is used to save and compare
+@synthesize predictedNextItem;
 @synthesize userInfoViewController;
 //these lines came from player view controller
 @synthesize userIsScrubbing;
@@ -148,9 +151,6 @@ void audioRouteChangeListenerCallback (
 @synthesize verticalSpaceBetweenRewindAndReplay;
 @synthesize topSpaceToPlayButton;
 @synthesize playButtonToBottomSpace;
-
-
-
 
 @synthesize nextSongLabelWidthConstraint;
 @synthesize nowPlayingInfoButton;
@@ -229,18 +229,42 @@ long songRemainingSeconds;
     //        NSString *songTitle = [song valueForProperty: MPMediaItemPropertyTitle];
     //        NSLog (@"\t\t%@", songTitle);
     //    }
+    //assume queue is known until it is validated by checking nextSong when it becomes the nowPlaying
+    queueIsKnown = YES;
+    initialView = YES;
+
     if (self.itemToPlay == [musicPlayer nowPlayingItem]) {
         [self setPlayNew: NO];
     }
     if (playNew) {
         [musicPlayer setQueueWithItemCollection: self.userMediaItemCollection];
         [musicPlayer setNowPlayingItem: self.itemToPlay];
+
         [self playMusic];
 //        [self setPlayNew: NO];  this gets set in viewDidAppear instead
         
     } else if ([musicPlayer nowPlayingItem]) {
-        
+
         // Update the UI to reflect the now-playing item except nowPlayingLabel must be set in viewWillAppear instead of viewDidLoad or it appears from bottom
+        
+        MPMediaItem *currentItem = [musicPlayer nowPlayingItem];
+        //    NSLog (@" currentItem is %@", [currentItem valueForProperty: MPMediaItemPropertyTitle]);
+        //check the queue stored in Core Data to see if the nowPlaying song is in that queue
+        ItemCollection *itemCollection = [ItemCollection alloc];
+        itemCollection.managedObjectContext = self.managedObjectContext;
+        
+        //    self.collectionItem = [itemCollection containsItem: [currentItem valueForProperty: MPMediaItemPropertyTitle]];
+        self.collectionItem = [itemCollection containsItem: [currentItem valueForProperty:  MPMediaItemPropertyPersistentID]];
+        
+        self.userMediaItemCollection = collectionItem.collection;
+        
+        NSUInteger nextPlayingIndex = [musicPlayer indexOfNowPlayingItem] + 1;
+
+        if (nextPlayingIndex < self.userMediaItemCollection.count) {
+            predictedNextItem = [[self.userMediaItemCollection items] objectAtIndex: [musicPlayer indexOfNowPlayingItem] + 1 ];
+        } else {
+            predictedNextItem = nil;
+        }
         [self prepareAllExceptNowPlaying];
 
         if ([musicPlayer playbackState] == MPMusicPlaybackStatePaused) {
@@ -249,7 +273,9 @@ long songRemainingSeconds;
             [playPauseButton setImage: [UIImage imageNamed:@"bigpause.png"] forState:UIControlStateNormal];
             
         }
+        
     }
+
     //set the temp initialNowPlayingLabel so something is there when view loads, gets removed from view in viewDidAppear when autoScrollLabel is created
     self.initialNowPlayingLabel.text = [[musicPlayer nowPlayingItem] valueForProperty:  MPMediaItemPropertyTitle];
 
@@ -276,16 +302,7 @@ long songRemainingSeconds;
         [self.view removeConstraint:self.topSpaceToPlayButton];
         self.playButtonToBottomSpace.constant = 70;
 
-        
-//        self.progressSlider.translatesAutoresizingMaskIntoConstraints = NO;
-//        self.elapsedTimeLabel.translatesAutoresizingMaskIntoConstraints = NO;
-//        self.remainingTimeLabel.translatesAutoresizingMaskIntoConstraints = NO;
-//        
-//        NSDictionary *viewsDictionary = NSDictionaryOfVariableBindings(progressSlider, elapsedTimeLabel, remainingTimeLabel);
-//        
-//        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[elapsedTimeLabel]-[progressSlider]-[remainingTimeLabel]-|" options: 0 metrics: 0 views:viewsDictionary]];
     } else {
-//        [self.view removeConstraint:self.playButtonToBottomSpace];
 
         [self.view removeConstraint:self.topSpaceToPlayButton];
         [self.view addConstraint: self.playButtonToBottomSpace];
@@ -334,8 +351,7 @@ long songRemainingSeconds;
         [self.view addConstraint:self.verticalSpaceBetweenSliderAndElapsedTime];
         [self.view addConstraint:self.verticalSpaceBetweenSliderAndRemainingTime];
         [self.view addConstraint:self.verticalSpaceBetweenRewindAndReplay];
-//        [self.view removeConstraint:self.playButtonToBottomSpace];
-//        [self.view addConstraint:self.topSpaceToPlayButton];
+
         [self.view removeConstraint:self.topSpaceToPlayButton];
         [self.view addConstraint:self.playButtonToBottomSpace];
 
@@ -412,6 +428,27 @@ long songRemainingSeconds;
     if (self.savedNowPlaying != [musicPlayer nowPlayingItem]) {
 //        NSLog (@"actually handling it");
             //the next two methods are separated so that they can be executed separately in viewDidLoad and viewWillAppear the first time the view is loaded, afer that they can be executed together here
+        //check if the predictedNextSong is actually the song that will not play
+
+        if (initialView) {
+            //the first time through, just assume it is the right queue
+            queueIsKnown = YES;
+            initialView = NO;
+        } else {
+            if (predictedNextItem == [musicPlayer nowPlayingItem]) {
+                queueIsKnown = YES;
+            } else {
+                queueIsKnown = NO;
+            }
+        }
+        //now set the nextPlayingItem to new item
+        NSUInteger nextPlayingIndex = [musicPlayer indexOfNowPlayingItem] + 1;
+        
+        if (nextPlayingIndex < self.userMediaItemCollection.count) {
+            predictedNextItem = [[self.userMediaItemCollection items] objectAtIndex: [musicPlayer indexOfNowPlayingItem] + 1 ];
+        } else {
+            predictedNextItem = nil;
+        }
         [self prepareAllExceptNowPlaying];
         if (!playNew) {
             //don't do this here if playNew, it will happen in viewWillAppear
@@ -421,6 +458,7 @@ long songRemainingSeconds;
 
     }
     self.savedNowPlaying = [musicPlayer nowPlayingItem];
+
 }
 - (void) refreshNowPlayingLabel:  (id) notification {
 //    LogMethod();
@@ -432,21 +470,27 @@ long songRemainingSeconds;
 - (void) prepareAllExceptNowPlaying {
 //    LogMethod();
 
-    MPMediaItem *currentItem = [musicPlayer nowPlayingItem];
-//    NSLog (@" currentItem is %@", [currentItem valueForProperty: MPMediaItemPropertyTitle]);
-    //check the queue stored in Core Data to see if the nowPlaying song is in that queue
-    ItemCollection *itemCollection = [ItemCollection alloc];
-    itemCollection.managedObjectContext = self.managedObjectContext;
-    
-//    self.collectionItem = [itemCollection containsItem: [currentItem valueForProperty: MPMediaItemPropertyTitle]];
-    self.collectionItem = [itemCollection containsItem: [currentItem valueForProperty:  MPMediaItemPropertyPersistentID]];
-
-    NSLog (@" self.collectionItem is %@", self.collectionItem);
-    self.userMediaItemCollection = collectionItem.collection;
-    
+//    MPMediaItem *currentItem = [musicPlayer nowPlayingItem];
+////    NSLog (@" currentItem is %@", [currentItem valueForProperty: MPMediaItemPropertyTitle]);
+//    //check the queue stored in Core Data to see if the nowPlaying song is in that queue
+//    ItemCollection *itemCollection = [ItemCollection alloc];
+//    itemCollection.managedObjectContext = self.managedObjectContext;
+//    
+////    self.collectionItem = [itemCollection containsItem: [currentItem valueForProperty: MPMediaItemPropertyTitle]];
+//    self.collectionItem = [itemCollection containsItem: [currentItem valueForProperty:  MPMediaItemPropertyPersistentID]];
+//
+//    self.userMediaItemCollection = collectionItem.collection;
+    // the predicted next item is the next one in this app's saved queue, it might not actually be the next item, so save it and compare when playingItem changes
+//    NSUInteger nextPlayingIndex = [musicPlayer indexOfNowPlayingItem] + 1;
+//    
+//    if (nextPlayingIndex < self.userMediaItemCollection.count) {
+//        predictedNextItem = [[self.userMediaItemCollection items] objectAtIndex: [musicPlayer indexOfNowPlayingItem] + 1 ];
+//    } else {
+//        predictedNextItem = nil;
+//    }
     // set up data to pass to info page if chosen
     
-    self.mediaItemForInfo = currentItem;
+    self.mediaItemForInfo = [musicPlayer nowPlayingItem];
     
     self.nextSongLabel.text = [NSString stringWithFormat: @""];
     self.nextLabel.text = [NSString stringWithFormat:@""];
@@ -473,7 +517,10 @@ long songRemainingSeconds;
     [self.nowPlayingLabel setFont: newFont];
 }
 - (void) prepareNextSongLabel {
-//    LogMethod();
+    LogMethod();
+    if (!queueIsKnown) {
+        return;
+    }
     //set up next-playing media item with duration
     NSUInteger nextPlayingIndex = [musicPlayer indexOfNowPlayingItem] + 1;
     
@@ -610,7 +657,7 @@ long songRemainingSeconds;
 }
 
 - (void) playMusic {
-    
+    LogMethod();
     [musicPlayer play];
     [self prepareAllExceptNowPlaying];
 }
@@ -701,11 +748,11 @@ long songRemainingSeconds;
         collectionRemainingSeconds = 0;
     }
     
-    // don't show collectionRemaining if it is the same as songRemaining
-    if (collectionRemainingSeconds <= songRemainingSeconds) {
-        self.navigationItem.rightBarButtonItem=nil;
-        return;
-    }
+//    // don't show collectionRemaining if it is the same as songRemaining
+//    if (collectionRemainingSeconds <= songRemainingSeconds) {
+//        self.navigationItem.rightBarButtonItem=nil;
+//        return;
+//    }
     
     NSString *collectionRemaining;
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];

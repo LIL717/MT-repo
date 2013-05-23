@@ -187,9 +187,10 @@
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" contentMode="left" text="00:00" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jp7-Ow-fVH">
+                            <label opaque="NO" clipsSubviews="YES" contentMode="left" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jp7-Ow-fVH">
                                 <gestureRecognizers/>
                                 <constraints>
+                                    <constraint firstAttribute="height" constant="52" id="02w-z4-YmJ"/>
                                     <constraint firstAttribute="width" constant="126" type="user" id="yWZ-35-AQY"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="44"/>
@@ -211,7 +212,7 @@
                                     <action selector="handleScrubberTouchUp:" destination="SKu-HW-GrJ" eventType="touchUpInside" id="iAh-SQ-xkS"/>
                                 </connections>
                             </slider>
-                            <label opaque="NO" clipsSubviews="YES" contentMode="left" text="-00:00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r00-yo-I0n">
+                            <label opaque="NO" clipsSubviews="YES" contentMode="left" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r00-yo-I0n">
                                 <accessibility key="accessibilityConfiguration">
                                     <accessibilityTraits key="traits" none="YES" button="YES" staticText="YES"/>
                                 </accessibility>
@@ -371,6 +372,7 @@
                             <constraint firstItem="hvR-vh-6Bp" firstAttribute="leading" secondItem="AEk-F1-SJe" secondAttribute="leading" type="user" id="Fqk-pi-N1B"/>
                             <constraint firstItem="EYp-S6-Fep" firstAttribute="centerY" secondItem="U4I-PN-hea" secondAttribute="centerY" type="user" id="HZ6-vo-LI8"/>
                             <constraint firstItem="r00-yo-I0n" firstAttribute="top" secondItem="vBs-Pg-YLN" secondAttribute="bottom" constant="8" symbolic="YES" type="user" id="Koo-ag-u26"/>
+                            <constraint firstItem="r00-yo-I0n" firstAttribute="baseline" secondItem="jp7-Ow-fVH" secondAttribute="baseline" type="default" id="LDJ-yd-4v6"/>
                             <constraint firstItem="pNh-na-wBJ" firstAttribute="top" secondItem="jQh-tN-5vH" secondAttribute="bottom" constant="3" type="user" id="O12-EM-GNl"/>
                             <constraint firstAttribute="bottom" secondItem="U4I-PN-hea" secondAttribute="bottom" constant="70" type="user" id="PMR-ob-4eK"/>
                             <constraint firstItem="EYp-S6-Fep" firstAttribute="leading" secondItem="1ht-Bf-15S" secondAttribute="leading" constant="11" type="user" id="Qi8-Uh-bpY"/>
@@ -1269,7 +1271,7 @@
                         </view>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="CollectionItemCell" rowHeight="55" id="Kxz-v9-piZ" userLabel="cell" customClass="CollectionItemCell">
-                                <rect key="frame" x="0.0" y="91" width="480" height="56"/>
+                                <rect key="frame" x="0.0" y="91" width="480" height="57"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="10" y="1" width="440" height="54"/>
@@ -1579,12 +1581,12 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="KOX-nP-ddu"/>
-        <segue reference="nbU-Bw-UO3"/>
-        <segue reference="iCw-Zw-zSF"/>
         <segue reference="kZ2-Sr-P63"/>
+        <segue reference="iCw-Zw-zSF"/>
+        <segue reference="nbU-Bw-UO3"/>
         <segue reference="CZe-dj-i8N"/>
-        <segue reference="SvT-2g-rDr"/>
+        <segue reference="pO3-jk-z6Z"/>
         <segue reference="uzR-Fh-xG0"/>
+        <segue reference="KOX-nP-ddu"/>
     </inferredMetricsTieBreakers>
 </document>

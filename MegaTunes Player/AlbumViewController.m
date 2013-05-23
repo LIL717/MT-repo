@@ -148,10 +148,10 @@ BOOL showDuration;
         [titles addObject:sec.title];
     }
     self.albumCollectionSectionTitles = [titles copy];
-    
-    NSLog (@"albumCollectionSections %@", self.albumCollectionSections);
-    NSLog (@"collection %@", self.collection);
-    NSLog (@"albumCollectionSectionTitles %@", self.albumCollectionSectionTitles);
+//    
+//    NSLog (@"albumCollectionSections %@", self.albumCollectionSections);
+//    NSLog (@"collection %@", self.collection);
+//    NSLog (@"albumCollectionSectionTitles %@", self.albumCollectionSectionTitles);
     
     if ([self.collectionType isEqualToString: @"Playlists"]) {
         albumMediaItemProperty = MPMediaPlaylistPropertyName;
