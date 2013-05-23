@@ -14,6 +14,11 @@
     if ((self = [super initWithFrame:frame])) {
 		self.backgroundColor = [UIColor clearColor];
     }
+//    //move it over to the right 10 pixels
+//    CGRect r = frame;
+//    r.origin.x -= 10;
+//    frame = r;
+    
     return self;
 }
 
@@ -21,6 +26,8 @@
 {
 	DTCustomColoredAccessory *ret = [[DTCustomColoredAccessory alloc] initWithFrame:CGRectMake(0, 0, 11.0, 15.0)];
 	ret.accessoryColor = color;
+    
+
     
 	return ret;
 }
@@ -30,7 +37,7 @@
 	// (x,y) is the tip of the arrow
 	CGFloat x = CGRectGetMaxX(self.bounds)-3.0;;
 	CGFloat y = CGRectGetMidY(self.bounds);
-	const CGFloat R = 4.5;
+	const CGFloat R = 6.5;
 	CGContextRef ctxt = UIGraphicsGetCurrentContext();
 	CGContextMoveToPoint(ctxt, x-R, y-R);
 	CGContextAddLineToPoint(ctxt, x, y);

@@ -30,6 +30,8 @@
 @synthesize artist;
 @synthesize albumImage;
 
+#pragma mark - Initial Display methods
+
 - (void)viewDidLoad
 {
 //    LogMethod();

@@ -22,6 +22,8 @@
 @synthesize playbackTimer;
 @synthesize timeType;
 
+#pragma mark - Initial Display methods
+
 
 - (void)viewDidLoad
 {

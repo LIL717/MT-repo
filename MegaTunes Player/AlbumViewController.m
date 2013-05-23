@@ -40,6 +40,7 @@
 @synthesize songCollection;
 @synthesize rightBarButton;
 @synthesize searchResults;
+@synthesize collectionPredicate;
 
 NSMutableArray *collectionDurations;
 NSIndexPath *selectedIndexPath;
@@ -56,6 +57,7 @@ MPMediaPropertyPredicate *selectedPredicate;
 BOOL cellScrolled;
 BOOL showDuration;
 //UIActivityIndicatorView *spinner;
+#pragma mark - Initial Display methods
 
 - (void) viewDidLoad {
     
@@ -64,13 +66,16 @@ BOOL showDuration;
     
     //set up an array of durations to be used in landscape mode
     collectionDurations = [[NSMutableArray alloc] initWithCapacity: [self.collection count]];
-    
-    //create the array in the background
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-    dispatch_async(queue, ^{
-        // Perform async operation
-        [self createDurationArray];
-    });
+    NSLog (@" count of collection array %d", [self.collection count]);
+
+    if ([self.collection count] > 0) {
+        //create the array in the background
+        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+        dispatch_async(queue, ^{
+            // Perform async operation
+            [self createDurationArray];
+        });
+    }
     //set up grouped table view to look like plain (so that section headers won't stick to top)
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
     self.collectionTableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]];
@@ -135,7 +140,7 @@ BOOL showDuration;
     }
     
     // format of collectionSections is <MPMediaQuerySection: 0x1cd34c80> title=B, range={0, 5}, sectionIndexTitleIndex=1,
-    
+
     self.albumCollectionSections = [self.collectionQueryType collectionSections];
     
     NSMutableArray * titles = [NSMutableArray arrayWithCapacity:[self.albumCollectionSections count]];
@@ -727,12 +732,10 @@ BOOL showDuration;
         
     }
     selectedQuery = [self.collectionQueryType copy];
-    [selectedQuery addFilterPredicate: [MPMediaPropertyPredicate
-                                            predicateWithValue:selectedName
-                                            forProperty:albumMediaItemProperty]];
-    
     selectedPredicate = [MPMediaPropertyPredicate predicateWithValue: selectedName
                                                          forProperty: albumMediaItemProperty];
+    [selectedQuery addFilterPredicate: selectedPredicate];
+    [selectedQuery setGroupingType: MPMediaGroupingTitle];
     
     [self performSegueWithIdentifier: @"ViewSongs" sender: self];
 	[tableView deselectRowAtIndexPath: indexPath animated: YES];
@@ -781,13 +784,14 @@ BOOL showDuration;
             collectionItem.name = self.title;
             songViewController.title = NSLocalizedString(collectionItem.name, nil);
         }
+
         songViewController.collectionItem = collectionItem;
         songViewController.iPodLibraryChanged = self.iPodLibraryChanged;
         songViewController.listIsAlphabetic = YES;
+        
+        selectedQuery = [self.collectionQueryType copy];
+        [selectedQuery setGroupingType: MPMediaGroupingTitle];
         songViewController.collectionQueryType = selectedQuery;
-        songViewController.collectionPredicate = nil;
-        songViewController.collectionType = self.collectionType;
-
 
 	}
     
@@ -807,8 +811,6 @@ BOOL showDuration;
         songViewController.title = collectionItem.name;        
         songViewController.collectionItem = collectionItem;
         songViewController.collectionQueryType = selectedQuery;
-        songViewController.collectionPredicate = selectedPredicate;
-        songViewController.collectionType = self.collectionType;
 
 //        }
 	}

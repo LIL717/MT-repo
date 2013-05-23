@@ -42,6 +42,8 @@
 @synthesize saveBPM;
 //@synthesize infoTabBarController;
 
+#pragma mark - Initial Display methods
+
 - (void)viewDidLoad
 {
     LogMethod();

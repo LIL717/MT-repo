@@ -34,6 +34,7 @@
 
 @synthesize landscapeOffset;
 
+#pragma mark - Initial Display methods
 
 - (void)viewDidLoad
 {

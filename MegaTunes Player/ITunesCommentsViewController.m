@@ -24,6 +24,8 @@
 //@synthesize verticalSpaceToTop;
 //@synthesize verticalSpaceToTop28;
 
+#pragma mark - Initial Display methods
+
 - (void)viewDidLoad
 {
     LogMethod();

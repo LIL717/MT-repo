@@ -33,6 +33,7 @@
 @synthesize managedObjectContext;
 @synthesize iPodLibraryChanged;         //A flag indicating whether the library has been changed due to a sync
 @synthesize isSearching;
+@synthesize isIndexed;
 @synthesize musicPlayer;
 @synthesize albumCollection;
 @synthesize rightBarButton;
@@ -46,10 +47,12 @@ CGFloat constraintConstant;
 UIImage *backgroundImage;
 MPMediaQuery *selectedQuery;
 MPMediaQuery *artistQuery;
+MPMediaPropertyPredicate *selectedPredicate;
 
 BOOL cellScrolled;
-BOOL isIndexed;
 BOOL showDuration;
+
+#pragma mark - Initial Display methods
 
 - (void) viewDidLoad {
     
@@ -59,12 +62,14 @@ BOOL showDuration;
     //set up an array of durations to be used in landscape mode
     collectionDurations = [[NSMutableArray alloc] initWithCapacity: [self.collection count]];
 
-    //create the array in the background
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-    dispatch_async(queue, ^{
-        // Perform async operation
-        [self createDurationArray];
-    });
+    if ([self.collection count] > 0) {
+        //create the array in the background
+        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+        dispatch_async(queue, ^{
+            // Perform async operation
+            [self createDurationArray];
+        });
+    }
     //set up grouped table view to look like plain (so that section headers won't stick to top)
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
     self.collectionTableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]];
@@ -683,35 +688,35 @@ BOOL showDuration;
 
         selectedIndexPath = [self.searchDisplayController.searchResultsTableView indexPathForSelectedRow];
 
+//        MPMediaItemCollection *searchCollection = [searchResults objectAtIndex: selectedIndexPath.row];
         MPMediaItemCollection *searchCollection = [searchResults objectAtIndex: selectedIndexPath.row];
+
         NSString *mediaItemName = [[searchCollection representativeItem] valueForProperty: searchMediaItemProperty];
         selectedName = mediaItemName;
-        selectedQuery = artistQuery;
+//        selectedQuery = artistQuery;
+//        self.albumCollection = [searchCollection items];
     } else {
         selectedIndexPath = indexPath;
         CollectionItemCell *cell = (CollectionItemCell*)[tableView cellForRowAtIndexPath:selectedIndexPath];
         selectedName = cell.nameLabel.text;
-        MPMediaQuery *myAlbumQuery = [[MPMediaQuery alloc] init];
-        
-        myAlbumQuery = [self.collectionQueryType copy];
-        
-        NSString *mediaItemProperty = [[NSString alloc] init];
-        
-        if ([self.collectionType isEqualToString: @"Artists"] || [self.collectionType isEqualToString: @"Genres"]) {
-            mediaItemProperty = MPMediaItemPropertyAlbumArtist;
-        } else {
-            if ([self.collectionType isEqualToString: @"Composers"]) {
-                mediaItemProperty = MPMediaItemPropertyComposer;
-            }
-        }
-        [myAlbumQuery addFilterPredicate: [MPMediaPropertyPredicate
-                                                 predicateWithValue: selectedName
-                                                 forProperty: mediaItemProperty]];
-        selectedQuery = myAlbumQuery;
-
+        NSLog (@" name is %@", cell.nameLabel.text);
     }
     
-
+    NSString *mediaItemProperty = [[NSString alloc] init];
+    
+    if ([self.collectionType isEqualToString: @"Artists"] || [self.collectionType isEqualToString: @"Genres"]) {
+        mediaItemProperty = MPMediaItemPropertyAlbumArtist;
+    } else {
+        if ([self.collectionType isEqualToString: @"Composers"]) {
+            mediaItemProperty = MPMediaItemPropertyComposer;
+        }
+    }
+    selectedQuery = [self.collectionQueryType copy];
+    selectedPredicate = [MPMediaPropertyPredicate predicateWithValue: selectedName
+                                                             forProperty: mediaItemProperty];
+        
+    [selectedQuery addFilterPredicate: selectedPredicate];
+    
 //
 //    if ([self.collectionType isEqualToString: @"Genres"]) {
 //        [newCollectionQuery addFilterPredicate: [MPMediaPropertyPredicate
@@ -723,6 +728,9 @@ BOOL showDuration;
     
     self.albumCollection = [selectedQuery collections];
     
+    NSLog (@" albumCollection passed to albumViewController is %@", self.albumCollection);
+    
+
     if ([self.albumCollection count] > 1) {
         [self performSegueWithIdentifier: @"AlbumCollections" sender: self];
     } else {
@@ -742,10 +750,8 @@ BOOL showDuration;
 	{
 		AlbumViewController *albumViewController = segue.destinationViewController;
         albumViewController.managedObjectContext = self.managedObjectContext;
-        
-        MPMediaQuery *myCollectionQuery = [[MPMediaQuery alloc] init];
-        
-        myCollectionQuery = [self.collectionQueryType copy];
+                
+        selectedQuery = [self.collectionQueryType copy];
 
 //        if ([self.collectionType isEqualToString: @"Genres"]) {
 //            
@@ -753,17 +759,18 @@ BOOL showDuration;
 //                                                    predicateWithValue: self.title
 //                                                    forProperty: MPMediaItemPropertyGenre]];
 //            // Sets the grouping type for the media query
-            [myCollectionQuery setGroupingType: MPMediaGroupingAlbum];
+            [selectedQuery setGroupingType: MPMediaGroupingAlbum];
 //        } else {
 //            myCollectionQuery = [MPMediaQuery albumsQuery];
 //        }
         
-		albumViewController.collection = [myCollectionQuery collections];;
+		albumViewController.collection = [selectedQuery collections];;
         albumViewController.collectionType = @"Albums";
-        albumViewController.collectionQueryType = myCollectionQuery;
+        albumViewController.collectionQueryType = selectedQuery;
         albumViewController.title = NSLocalizedString(@"Albums", nil);
         albumViewController.iPodLibraryChanged = self.iPodLibraryChanged;
-        albumViewController.collectionQueryType = myCollectionQuery;
+        albumViewController.collectionPredicate = nil;
+
         
 	}
     //this is called if there is only one album - the songs for that album are displayed in track order
@@ -793,8 +800,6 @@ BOOL showDuration;
 
         songViewController.collectionItem = collectionItem;
         songViewController.collectionQueryType = selectedQuery;
-        songViewController.collectionType = self.collectionType;
-
 
 	}
     if ([segue.identifier isEqualToString:@"AlbumCollections"])
@@ -806,6 +811,8 @@ BOOL showDuration;
         albumViewController.collection = self.albumCollection;
         albumViewController.collectionType = self.collectionType;
         albumViewController.collectionQueryType = selectedQuery;
+        albumViewController.collectionPredicate = selectedPredicate;
+
         
         albumViewController.iPodLibraryChanged = self.iPodLibraryChanged;
 	}

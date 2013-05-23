@@ -54,6 +54,7 @@ MPMediaQuery *selectedQuery;
 
 BOOL cellScrolled;
 BOOL showDuration;
+#pragma mark - Initial Display methods
 
 - (void) viewDidLoad {
     
@@ -62,12 +63,14 @@ BOOL showDuration;
     //set up an array of durations to be used in landscape mode
     collectionDurations = [[NSMutableArray alloc] initWithCapacity: [self.collection count]];
     
-    //create the array in the background
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-    dispatch_async(queue, ^{
-        // Perform async operation
-        [self createDurationArray];
-    });
+    if ([self.collection count] > 0) {
+        //create the array in the background
+        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+        dispatch_async(queue, ^{
+            // Perform async operation
+            [self createDurationArray];
+        });
+    }
     //set up grouped table view to look like plain (so that section headers won't stick to top)
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
     self.collectionTableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]];
@@ -607,24 +610,24 @@ BOOL showDuration;
         MPMediaItemCollection *searchCollection = [searchResults objectAtIndex: selectedIndexPath.row];
         NSString *mediaItemName = [[searchCollection representativeItem] valueForProperty: searchMediaItemProperty];
         selectedName = mediaItemName;
-        selectedQuery = genreQuery;
+//        selectedQuery = genreQuery;
 
     } else {
         selectedIndexPath = indexPath;
         CollectionItemCell *cell = (CollectionItemCell*)[tableView cellForRowAtIndexPath:selectedIndexPath];
         selectedName = cell.nameLabel.text;
-        //works more like Apple with AlbumArtist rather than just Artist
-        MPMediaQuery *myArtistQuery = [[MPMediaQuery alloc] init];
-        
-        myArtistQuery = [self.collectionQueryType copy];
-        
-        [myArtistQuery addFilterPredicate: [MPMediaPropertyPredicate
-                                            predicateWithValue: selectedName
-                                            forProperty: MPMediaItemPropertyGenre]];
-        
-        selectedQuery = myArtistQuery;
-
     }
+    
+    //works more like Apple with AlbumArtist rather than just Artist    
+    selectedQuery = [self.collectionQueryType copy];
+
+    [selectedQuery addFilterPredicate: [MPMediaPropertyPredicate
+                                        predicateWithValue: selectedName
+                                        forProperty: MPMediaItemPropertyGenre]];
+    
+    // Sets the grouping type for the media query
+    [selectedQuery setGroupingType: MPMediaGroupingAlbumArtist];
+
     [self performSegueWithIdentifier: @"ArtistCollections" sender: self];
 
 	[tableView deselectRowAtIndexPath: indexPath animated: YES];
@@ -641,9 +644,6 @@ BOOL showDuration;
 
 		ArtistViewController *artistViewController = segue.destinationViewController;
         artistViewController.managedObjectContext = self.managedObjectContext;
-        
-        // Sets the grouping type for the media query
-        [selectedQuery setGroupingType: MPMediaGroupingAlbumArtist];
         
 		artistViewController.collection = [selectedQuery collections];
         artistViewController.collectionType = self.collectionType;

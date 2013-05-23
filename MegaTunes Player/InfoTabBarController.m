@@ -34,6 +34,7 @@
 @synthesize mediaItemForInfo;
 @synthesize rightBarButton;
 
+#pragma mark - Initial Display methods
 
 - (void)viewDidLoad
 {

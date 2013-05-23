@@ -40,27 +40,18 @@ CGFloat inset = -10;
 //    [super setFrame:frame];
 //    
 //}
-//- (void) layoutSubviews {
-//    [super layoutSubviews];
-//    
-//    BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
-//
-//    UILabel *newLabel = [[UILabel alloc] initWithFrame: self.textLabel.frame];
-//    CGRect myFrame = newLabel.frame;
-//    
-//    if (isPortrait) {
-//        myFrame.size.width -= 2 * inset;
-//        self.textLabel.frame = myFrame;
-//
-//    } else {
-//        myFrame.size.width -= 116;
-//        self.textLabel.frame = myFrame;
-//    }
-//    self.textLabel.font = [UIFont systemFontOfSize:44];
-//    self.textLabel.textColor = [UIColor whiteColor];
-//    self.textLabel.highlightedTextColor = [UIColor blueColor];
-//    self.textLabel.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed: @"list-backwseparator.png"]];
-//    self.textLabel.lineBreakMode = NSLineBreakByClipping;
-//
-//}
+- (void) layoutSubviews {
+    [super layoutSubviews];
+    //move the accessory cell over to the right 15 pixels because the grouped cells have too much trailing space
+    if (self.accessoryType != UITableViewCellAccessoryNone) {
+        UIView* defaultAccessoryView = [self.subviews lastObject];
+        
+        if (defaultAccessoryView){
+            CGRect r = defaultAccessoryView.frame;
+            r.origin.x += 15;
+            defaultAccessoryView.frame = r;
+        }
+    }
+
+}
 @end

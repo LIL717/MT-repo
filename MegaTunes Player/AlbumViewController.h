@@ -33,6 +33,8 @@
 @property (nonatomic, retain)   MPMediaItemCollection *songCollection;
 @property (nonatomic, strong)   UIBarButtonItem *rightBarButton;
 @property (nonatomic, strong)   NSArray *searchResults;
+@property (nonatomic, strong)   MPMediaPropertyPredicate *collectionPredicate;
+
 
 
 

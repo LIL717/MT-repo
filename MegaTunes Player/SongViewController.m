@@ -38,8 +38,10 @@
 @synthesize songCollection;
 @synthesize rightBarButton;
 @synthesize collectionQueryType;        //used as base of query for search
-@synthesize collectionType;
+//@synthesize collectionType;
 @synthesize searchResults;
+//@synthesize collectionPredicate;
+@synthesize collectionItemToSave;
 
 NSMutableArray *songDurations;
 NSIndexPath *selectedIndexPath;
@@ -47,13 +49,14 @@ MPMediaItem *selectedSong;
 NSString *searchMediaItemProperty;
 CGFloat constraintConstant;
 UIImage *backgroundImage;
-CollectionItem *collectionItemToSave;
 UIButton *infoButton;
 
 BOOL cellScrolled;
 BOOL isIndexed;
 BOOL showDuration;
 BOOL turnOnShuffle;
+
+#pragma mark - Initial Display methods
 
 
 - (void)viewDidLoad
@@ -143,19 +146,8 @@ BOOL turnOnShuffle;
             
         } 
     }
-    MPMediaQuery *query;
-    if ([self.collectionType isEqualToString: @"Podcasts"]) {
-        query = [[MPMediaQuery podcastsQuery] copy];
-        [query setGroupingType: MPMediaGroupingTitle];
-    } else {
-        query = [[MPMediaQuery songsQuery] copy];
-    }
-    
-    if (self.collectionPredicate) {
-        [query addFilterPredicate:self.collectionPredicate];
-    }
 
-    self.songSections = [query collectionSections];
+    self.songSections = [self.collectionQueryType collectionSections];
     NSLog (@"songSections %@", self.songSections);
     NSLog (@"collection %@", self.collectionItem.collectionArray);
     
@@ -386,7 +378,7 @@ BOOL turnOnShuffle;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    LogMethod();
+//    LogMethod();
 
     // Return the number of sections.
     if (tableView == self.searchDisplayController.searchResultsTableView) {
@@ -398,7 +390,7 @@ BOOL turnOnShuffle;
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    LogMethod();
+//    LogMethod();
     
     MPMediaQuerySection * sec = nil;
     sec = self.songSections[section];
@@ -407,7 +399,7 @@ BOOL turnOnShuffle;
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
 {
-    LogMethod();
+//    LogMethod();
     if (tableView == self.searchDisplayController.searchResultsTableView) {
         return nil;
     } else if (listIsAlphabetic) {
@@ -422,7 +414,7 @@ BOOL turnOnShuffle;
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
 {
-    LogMethod();
+//    LogMethod();
     
     NSLog (@"SectionIndexTitle is %@ at index %d", title, index);
     //since search was added to the array, need to return index - 1 to get to correct title, for search, set content Offset to top of table :)
@@ -436,7 +428,7 @@ BOOL turnOnShuffle;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    LogMethod();
+//    LogMethod();
 
     // Return the number of rows in the section.
     if (tableView == self.searchDisplayController.searchResultsTableView) {
@@ -456,7 +448,7 @@ BOOL turnOnShuffle;
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    LogMethod();
+//    LogMethod();
     //this must be nil or the section headers of the original tableView are awkwardly visible
     // original table must be reloaded after search to get them back :(  this seems to be an Apple bug
     if (self.isSearching) {
@@ -511,7 +503,7 @@ BOOL turnOnShuffle;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    LogMethod();
+//    LogMethod();
 
     //don't use SongCell for searchResultsCell won't respond to touches to scroll anyway and terrible performance on GoBackClick when autoRotated
     static NSString *CellIdentifier = @"Cell";
@@ -552,7 +544,7 @@ BOOL turnOnShuffle;
         //        NSArray *searchCollectionArray = [searchCollection items];
         //        for (MPMediaItem *item in searchCollectionArray) {
         //            //            NSLog (@" whatIsThis %@", [[artistCollection representativeItem] valueForProperty: MPMediaItemPropertyAlbumArtist]);
-            NSLog (@" whatIsThis %@", [item valueForProperty: MPMediaItemPropertyTitle]);
+//            NSLog (@" whatIsThis %@", [item valueForProperty: MPMediaItemPropertyTitle]);
         //        }
         searchResultsCell.textLabel.text = mediaItemName;
         
@@ -565,7 +557,7 @@ BOOL turnOnShuffle;
 
         MPMediaItem *song = self.collectionItem.collectionArray[sec.range.location + indexPath.row];
         
-        NSLog (@"song******* %@", [song valueForProperty:  MPMediaItemPropertyTitle]);
+//        NSLog (@"song******* %@", [song valueForProperty:  MPMediaItemPropertyTitle]);
 
         cell.nameLabel.text = [song valueForProperty:  MPMediaItemPropertyTitle];
 
@@ -777,11 +769,6 @@ BOOL turnOnShuffle;
         cell.scrollView.scrollEnabled = NO;
         
     }
-
-
-    
-
-    
     return cell;
 }
 #pragma mark - Table view delegate
@@ -791,40 +778,21 @@ BOOL turnOnShuffle;
 - (void) tableView: (UITableView *) tableView didSelectRowAtIndexPath: (NSIndexPath *) indexPath {
     
     if ([self.searchDisplayController isActive]) {
-        
-        //        NSLog (@"[self.searchDisplayController.searchResultsTableView indexPathForSelectedRow] is %@", [self.searchDisplayController.searchResultsTableView indexPathForSelectedRow]);
-        
+
         selectedIndexPath = [self.searchDisplayController.searchResultsTableView indexPathForSelectedRow];
-        
-        
-        //        NSLog (@"selectedIndexPath.row is %d", selectedIndexPath.row);
-        //        UITableViewCell *searchResultsCell = [self.searchDisplayController.searchResultsTableView cellForRowAtIndexPath:selectedIndexPath];
-        //        selectedName = [searchResults objectAtIndex:selectedIndexPath.row];
-        //        NSLog (@"searchResults %@", searchResults);
-        
-        
-//        MPMediaItemCollection *searchCollection = [searchResults objectAtIndex: selectedIndexPath.row];
-//        NSString *mediaItemName = [[searchCollection representativeItem] valueForProperty: searchMediaItemProperty];
-        
+
         MPMediaItem *searchMediaItem = [searchResults objectAtIndex: selectedIndexPath.row];
-//        NSString *mediaItemName = [item valueForProperty: MPMediaItemPropertyTitle];
-        //
-        //        //        NSArray *searchCollectionArray = [searchCollection items];
-        //        //        for (MPMediaItem *item in searchCollectionArray) {
-        //        ////            NSLog (@" whatIsThis %@", [[artistCollection representativeItem] valueForProperty: MPMediaItemPropertyAlbumArtist]);
-        //        //            NSLog (@" whatIsThis %@", [item valueForProperty: MPMediaItemPropertyAlbumArtist]);
-        //        //
-        //        //        }
-        //        //        cell.textLabel.text = [[searchCollection representativeItem] valueForProperty: MPMediaItemPropertyAlbumArtist];
+
         selectedSong = searchMediaItem;
         self.songCollection =  [MPMediaItemCollection collectionWithItems: searchResults];
         
         CollectionItem *searchCollectionItem = [CollectionItem alloc];
-        searchCollectionItem.name = [searchMediaItem valueForProperty: MPMediaItemPropertyTitle];
+        searchCollectionItem.name = [selectedSong valueForProperty: MPMediaItemPropertyTitle];
         searchCollectionItem.duration = [self calculatePlaylistDuration: self.songCollection];
         searchCollectionItem.collectionArray = [NSMutableArray arrayWithArray:[self.songCollection items]];
+        searchCollectionItem.collection = self.songCollection;
         
-        collectionItemToSave = searchCollectionItem;
+        self.collectionItemToSave = searchCollectionItem;
         
     } else {
         
@@ -832,10 +800,14 @@ BOOL turnOnShuffle;
         
         MPMediaQuerySection * sec = self.songSections[indexPath.section];
         selectedSong = self.collectionItem.collectionArray[sec.range.location + indexPath.row];
-
         self.songCollection = [MPMediaItemCollection collectionWithItems: self.collectionItem.collectionArray];
 
-        collectionItemToSave = self.collectionItem;
+        self.collectionItem.collection = self.songCollection;
+        
+        self.collectionItemToSave = self.collectionItem;
+        
+        NSLog (@" self.collectionItemToSave is %@", self.collectionItemToSave);
+
         
         //set the "nowPlaying indicator" as the view disappears (already selected play indicator is still there too :(
         SongCell *cell = (SongCell*)[tableView cellForRowAtIndexPath:selectedIndexPath];
@@ -871,12 +843,9 @@ BOOL turnOnShuffle;
 
         MainViewController *mainViewController = segue.destinationViewController;
         mainViewController.managedObjectContext = self.managedObjectContext;
-        
-//        NSIndexPath *indexPath = [self.songTableView indexPathForCell:sender];
-//        mainViewController.itemToPlay = [[self.collectionItem.collection items] objectAtIndex:indexPath.row];
+
         mainViewController.itemToPlay = selectedSong;
 
-//        mainViewController.userMediaItemCollection = self.collectionItem.collection;
         mainViewController.userMediaItemCollection = self.songCollection;
 
         mainViewController.playNew = YES;
@@ -887,7 +856,7 @@ BOOL turnOnShuffle;
         itemCollection.managedObjectContext = self.managedObjectContext;
         
 //        [itemCollection addCollectionToCoreData: self.collectionItem];
-        [itemCollection addCollectionToCoreData: collectionItemToSave];
+        [itemCollection addCollectionToCoreData: self.collectionItemToSave];
 
 
     }
@@ -937,22 +906,12 @@ BOOL turnOnShuffle;
     int max = [self.collectionItem.collectionArray count] -1;
     int randNum = rand() % (max - min) + min; //create the random number.
 
-//    NSIndexPath *indexPath = [NSIndexPath indexPathWithIndex:randNum];
-    
-//    selectedIndexPath = indexPath;
-    
-//    MPMediaQuerySection * sec = self.songSections[indexPath.section];
-//    selectedSong = self.collectionItem.collectionArray[sec.range.location + indexPath.row];
     selectedSong = [self.collectionItem.collectionArray objectAtIndex: randNum];
 
-    
     self.songCollection = [MPMediaItemCollection collectionWithItems: self.collectionItem.collectionArray];
+    self.collectionItem.collection = self.songCollection;
     
-    collectionItemToSave = self.collectionItem;
-    
-    //set the "nowPlaying indicator" as the view disappears (already selected play indicator is still there too :(
-//    SongCell *cell = (SongCell*)[self.songTableView cellForRowAtIndexPath:selectedIndexPath];
-//    cell.playingIndicator.image = [UIImage imageNamed:@"playing"];
+    self.collectionItemToSave = self.collectionItem;
     
     [self performSegueWithIdentifier: @"PlaySong" sender: self];
 
@@ -960,7 +919,6 @@ BOOL turnOnShuffle;
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
     
-//    MPMediaItem *song = [[self.collectionItem.collection items] objectAtIndex:indexPath.row];
     MPMediaItem *song = [self.collectionItem.collectionArray objectAtIndex:indexPath.row];
     self.mediaItemForInfo = song;
     

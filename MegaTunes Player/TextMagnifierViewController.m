@@ -27,6 +27,8 @@
 
 @synthesize delegate;
 
+#pragma mark - Initial Display methods
+
 - (void)viewDidLoad
 {
     LogMethod();

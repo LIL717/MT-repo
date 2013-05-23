@@ -34,6 +34,8 @@
 
 BOOL initialView;
 
+#pragma mark - Initial Display methods
+
 //- (id)initWithCoder:(NSCoder *)aDecoder
 //{
 //	self = [super initWithCoder:aDecoder];
@@ -279,6 +281,7 @@ BOOL initialView;
         albumViewController.collectionQueryType = [selectedGroup.queryType copy];
         albumViewController.title = NSLocalizedString(selectedGroup.name, nil);
         albumViewController.iPodLibraryChanged = self.iPodLibraryChanged;
+        albumViewController.collectionPredicate = nil;
         
 	}
     if ([segue.identifier isEqualToString:@"ViewSongCollection"])
@@ -312,9 +315,6 @@ BOOL initialView;
         songViewController.iPodLibraryChanged = self.iPodLibraryChanged;
         songViewController.listIsAlphabetic = YES;
         songViewController.collectionQueryType = [selectedGroup.queryType copy];
-        songViewController.collectionPredicate = nil;
-        songViewController.collectionType = selectedGroup.name;
-
         
 	}
    if ([segue.identifier isEqualToString:@"ViewNowPlaying"])

@@ -163,7 +163,7 @@ long collectionRemainingSeconds;
 long songRemainingSeconds;
 
 
-#pragma mark ViewDidLoad________________________________
+#pragma mark - Initial Display methods
 
 // Configure the application.
 
@@ -441,6 +441,7 @@ long songRemainingSeconds;
 //    self.collectionItem = [itemCollection containsItem: [currentItem valueForProperty: MPMediaItemPropertyTitle]];
     self.collectionItem = [itemCollection containsItem: [currentItem valueForProperty:  MPMediaItemPropertyPersistentID]];
 
+    NSLog (@" self.collectionItem is %@", self.collectionItem);
     self.userMediaItemCollection = collectionItem.collection;
     
     // set up data to pass to info page if chosen

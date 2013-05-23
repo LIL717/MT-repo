@@ -25,6 +25,7 @@
 @property (nonatomic, strong)   NSIndexPath* saveIndexPath;
 @property (readwrite)           BOOL iPodLibraryChanged;
 @property (readwrite)           BOOL isSearching;
+@property (readwrite)           BOOL isIndexed;
 @property (nonatomic, strong)	MPMusicPlayerController	*musicPlayer;
 @property (nonatomic, strong)   NSArray *albumCollection;
 @property (nonatomic, strong)   UIBarButtonItem *rightBarButton;
