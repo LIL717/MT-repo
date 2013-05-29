@@ -1,0 +1,63 @@
+
+/* Class = "IBUIViewController"; title = "Info"; ObjectID = "0BK-h9-5Yl"; */
+"0BK-h9-5Yl.title" = "Info";
+
+/* Class = "IBUIButton"; normalTitle = " Shuffle"; ObjectID = "852-3o-ZMl"; */
+"852-3o-ZMl.normalTitle" = " Shuffle";
+
+/* Class = "IBUILabel"; text = "00:00"; ObjectID = "9Je-hu-yhg"; */
+"9Je-hu-yhg.text" = "00:00";
+
+/* Class = "IBUIViewController"; title = "Notes"; ObjectID = "AeD-XN-WKi"; */
+"AeD-XN-WKi.title" = "Notes";
+
+/* Class = "IBUILabel"; text = "000:00"; ObjectID = "BuX-5J-yrU"; */
+"BuX-5J-yrU.text" = "000:00";
+
+/* Class = "IBUIButton"; accessibilityLabel = "rwbutton"; ObjectID = "EYp-S6-Fep"; */
+"EYp-S6-Fep.accessibilityLabel" = "rwbutton";
+
+/* Class = "IBUILabel"; text = "Album Title"; ObjectID = "FPI-Oo-UfO"; */
+"FPI-Oo-UfO.text" = "Album Title";
+
+/* Class = "IBUILabel"; text = "Genre Title"; ObjectID = "Ier-SO-V2D"; */
+"Ier-SO-V2D.text" = "Genre Title";
+
+/* Class = "IBUILabel"; text = "Group"; ObjectID = "Ohl-C1-tHe"; */
+"Ohl-C1-tHe.text" = "Group";
+
+/* Class = "IBUILabel"; text = "000:00"; ObjectID = "P6Y-cL-7cG"; */
+"P6Y-cL-7cG.text" = "000:00";
+
+/* Class = "IBUIViewController"; title = "Now Playing"; ObjectID = "SKu-HW-GrJ"; */
+"SKu-HW-GrJ.title" = "Now Playing";
+
+/* Class = "IBUIButton"; accessibilityLabel = "playButton"; ObjectID = "U4I-PN-hea"; */
+"U4I-PN-hea.accessibilityLabel" = "playButton";
+
+/* Class = "IBUITextField"; placeholder = "Enter Grouping"; ObjectID = "XJf-jC-nf6"; */
+"XJf-jC-nf6.placeholder" = "Enter Grouping";
+
+/* Class = "IBUIButton"; accessibilityLabel = "ffbutton"; ObjectID = "Xek-mb-ENQ"; */
+"Xek-mb-ENQ.accessibilityLabel" = "ffbutton";
+
+/* Class = "IBUIButton"; normalTitle = " All Albums"; ObjectID = "Y1n-zD-H2J"; */
+"Y1n-zD-H2J.normalTitle" = " All Albums";
+
+/* Class = "IBUITextView"; text = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda."; ObjectID = "ZTj-61-wl1"; */
+"ZTj-61-wl1.text" = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.";
+
+/* Class = "IBUINavigationItem"; title = "Info"; ObjectID = "g7c-jD-wRg"; */
+"g7c-jD-wRg.title" = "Info";
+
+/* Class = "IBUIViewController"; title = "Info"; ObjectID = "hnN-8I-0b9"; */
+"hnN-8I-0b9.title" = "Info";
+
+/* Class = "IBUILabel"; text = "Enter Notes"; ObjectID = "ib9-ir-2yk"; */
+"ib9-ir-2yk.text" = "Enter Notes";
+
+/* Class = "IBUIButton"; normalTitle = " All Songs"; ObjectID = "mBz-0Z-aws"; */
+"mBz-0Z-aws.normalTitle" = " All Songs";
+
+/* Class = "IBUINavigationItem"; title = "Info"; ObjectID = "xx4-kE-ulF"; */
+"xx4-kE-ulF.title" = "Info";
