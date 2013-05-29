@@ -153,6 +153,7 @@ void audioRouteChangeListenerCallback (
 @synthesize topSpaceToPlayButton;
 @synthesize playButtonToBottomSpace;
 
+@synthesize playerButtonConstraint;
 @synthesize nextSongLabelWidthConstraint;
 @synthesize nowPlayingInfoButton;
 
