@@ -845,7 +845,7 @@ BOOL turnOnShuffle;
         mainViewController.managedObjectContext = self.managedObjectContext;
 
         mainViewController.itemToPlay = selectedSong;
-
+        mainViewController.collectionItem = self.collectionItem;
         mainViewController.userMediaItemCollection = self.songCollection;
 
         mainViewController.playNew = YES;

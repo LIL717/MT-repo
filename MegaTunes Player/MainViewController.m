@@ -118,6 +118,7 @@ void audioRouteChangeListenerCallback (
 @synthesize showPlaylistRemaining;      //A flag the captures the user's preference from setting whether to display the amount of time left in playlist
 @synthesize queueIsKnown;               //a flag the indicates whether the actually playing queue matches the queue that was saved
 @synthesize initialView;                //used with the process of figuring our whether playing queue matches queue that was saved
+@synthesize skippedBack;                //set when shipBack used with predictedNextPlaying
 @synthesize savedNowPlaying;             //for some reason a new song calls the handle_NowPlayingItemChanged: method twice, so this is used to save and compare
 @synthesize predictedNextItem;
 @synthesize userInfoViewController;
@@ -156,8 +157,10 @@ void audioRouteChangeListenerCallback (
 @synthesize nowPlayingInfoButton;
 
 @synthesize currentPlaybackPosition;
+@synthesize savedPlaybackState;
 
 float savedHandleValue;
+float saveVolume;
 MPMusicPlaybackState savedPlaybackState;
 long collectionRemainingSeconds;
 long songRemainingSeconds;
@@ -168,7 +171,7 @@ long songRemainingSeconds;
 // Configure the application.
 
 - (void) viewDidLoad {
-//    LogMethod();
+    LogMethod();
     [super viewDidLoad];
     
     [TestFlight passCheckpoint:@"MainViewController"];
@@ -232,6 +235,7 @@ long songRemainingSeconds;
     //assume queue is known until it is validated by checking nextSong when it becomes the nowPlaying
     queueIsKnown = YES;
     initialView = YES;
+    skippedBack = NO;
 
     if (self.itemToPlay == [musicPlayer nowPlayingItem]) {
         [self setPlayNew: NO];
@@ -271,7 +275,6 @@ long songRemainingSeconds;
             [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
         } else if ([musicPlayer playbackState] == MPMusicPlaybackStatePlaying) {
             [playPauseButton setImage: [UIImage imageNamed:@"bigpause.png"] forState:UIControlStateNormal];
-            
         }
         
     }
@@ -383,7 +386,7 @@ long songRemainingSeconds;
     return label;
 }
 - (void)viewWillAppear:(BOOL)animated {
-//    LogMethod();
+    LogMethod();
     [super viewWillAppear: animated];
 
     self.playbackTimer = [NSTimer scheduledTimerWithTimeInterval:0.5
@@ -394,13 +397,17 @@ long songRemainingSeconds;
     //omg this needs to be here or it does nothing!!
 //    [self scrollNextSongLabel];
     [self.nextSongScrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-
+//    if ([musicPlayer playbackState] == MPMusicPlaybackStatePaused) {
+//        [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
+//    } else if ([musicPlayer playbackState] == MPMusicPlaybackStatePlaying) {
+//        [playPauseButton setImage: [UIImage imageNamed:@"bigpause.png"] forState:UIControlStateNormal];
+//    }
 
     
 }
 
 -(void) viewDidAppear:(BOOL)animated {
-//    LogMethod();
+    LogMethod();
 
     if (playNew) {
         [self setPlayNew: NO];
@@ -430,24 +437,34 @@ long songRemainingSeconds;
             //the next two methods are separated so that they can be executed separately in viewDidLoad and viewWillAppear the first time the view is loaded, afer that they can be executed together here
         //check if the predictedNextSong is actually the song that will not play
 
-        if (initialView) {
+        if (initialView == YES) {
             //the first time through, just assume it is the right queue
             queueIsKnown = YES;
             initialView = NO;
         } else {
-            if (predictedNextItem == [musicPlayer nowPlayingItem]) {
+            if (skippedBack) {
                 queueIsKnown = YES;
             } else {
-                queueIsKnown = NO;
+                NSLog (@"predictedNextItem is %@ and nowPlayingItem is %@", [predictedNextItem valueForProperty:  MPMediaItemPropertyTitle], [[musicPlayer nowPlayingItem] valueForProperty:  MPMediaItemPropertyTitle]);
+                if (predictedNextItem == [musicPlayer nowPlayingItem]) {
+
+
+                    queueIsKnown = YES;
+                } else {
+                    queueIsKnown = NO;
+                }
             }
         }
-        //now set the nextPlayingItem to new item
-        NSUInteger nextPlayingIndex = [musicPlayer indexOfNowPlayingItem] + 1;
-        
-        if (nextPlayingIndex < self.userMediaItemCollection.count) {
-            predictedNextItem = [[self.userMediaItemCollection items] objectAtIndex: [musicPlayer indexOfNowPlayingItem] + 1 ];
-        } else {
-            predictedNextItem = nil;
+        if (!skippedBack) {
+            //now set the nextPlayingItem to new item
+            NSUInteger nextPlayingIndex = [musicPlayer indexOfNowPlayingItem] + 1;
+            
+            if (nextPlayingIndex < self.userMediaItemCollection.count) {
+                predictedNextItem = [[self.userMediaItemCollection items] objectAtIndex: [musicPlayer indexOfNowPlayingItem] + 1 ];
+            } else {
+                predictedNextItem = nil;
+            }
+            NSLog (@"predictedNextItem is %@", [predictedNextItem valueForProperty:  MPMediaItemPropertyTitle]);
         }
         [self prepareAllExceptNowPlaying];
         if (!playNew) {
@@ -521,30 +538,48 @@ long songRemainingSeconds;
     if (!queueIsKnown) {
         return;
     }
-    //set up next-playing media item with duration
     NSUInteger nextPlayingIndex = [musicPlayer indexOfNowPlayingItem] + 1;
-    
-    if (nextPlayingIndex >= self.userMediaItemCollection.count) {
-//        self.nextSongLabel.text = [NSString stringWithFormat: @""];
-//        self.nextLabel.text = [NSString stringWithFormat:@""];
-        self.nextSongScrollView.hidden = YES;
-        self.nextSongLabel.hidden = YES;
-        self.nextLabel.hidden = YES;
+
+    MPMediaItem *nextPlayingItem;
+    if (skippedBack) {
+        nextPlayingItem = predictedNextItem;
     } else {
+        if (nextPlayingIndex < self.userMediaItemCollection.count) {
+            nextPlayingItem = [[self.userMediaItemCollection items] objectAtIndex: nextPlayingIndex];
+            predictedNextItem = nextPlayingItem;
+        } else {
+            self.nextSongScrollView.hidden = YES;
+            self.nextSongLabel.hidden = YES;
+            self.nextLabel.hidden = YES;
+            nextPlayingItem = nil;
+        }
+    }
+    //set up next-playing media item with duration
+    
+//    if (nextPlayingIndex >= self.userMediaItemCollection.count) {
+////        self.nextSongLabel.text = [NSString stringWithFormat: @""];
+////        self.nextLabel.text = [NSString stringWithFormat:@""];
+//        self.nextSongScrollView.hidden = YES;
+//        self.nextSongLabel.hidden = YES;
+//        self.nextLabel.hidden = YES;
+//    } else {
+    if (nextPlayingItem) {
         self.nextSongScrollView.hidden = NO;
         self.nextSongLabel.hidden = NO;
         self.nextLabel.hidden = NO;
         [self.nextSongLabel setUserInteractionEnabled:YES];
-        long nextDuration = [[[[self.userMediaItemCollection items] objectAtIndex: nextPlayingIndex] valueForProperty:MPMediaItemPropertyPlaybackDuration] floatValue];
+        long nextDuration = [[nextPlayingItem valueForProperty:MPMediaItemPropertyPlaybackDuration] floatValue];
         NSString *formattedNextDuration = [NSString stringWithFormat:@"%2lu:%02lu",nextDuration/60,nextDuration -(nextDuration/60)*60];
         
-        self.nextSongLabel.text = [NSString stringWithFormat: @"%@  %@",[[[self.userMediaItemCollection items] objectAtIndex: nextPlayingIndex] valueForProperty:  MPMediaItemPropertyTitle], formattedNextDuration];
+        self.nextSongLabel.text = [NSString stringWithFormat: @"%@  %@",[nextPlayingItem valueForProperty:  MPMediaItemPropertyTitle], formattedNextDuration];
         
         [self scrollNextSongLabel];
 
         self.nextLabel.text = [NSString stringWithFormat: @"%@:", NSLocalizedString(@"Next", nil)];
         
     }
+    [self setSkippedBack: NO];
+
 }
 - (void) scrollNextSongLabel {
 //    LogMethod();
@@ -947,6 +982,8 @@ long songRemainingSeconds;
     if ([musicPlayer currentPlaybackTime] > 5.0) {
         [musicPlayer skipToBeginning];
     } else {
+        predictedNextItem = [musicPlayer nowPlayingItem];
+        [self setSkippedBack: YES];
         [musicPlayer skipToPreviousItem];
     }
 }
@@ -957,7 +994,7 @@ long songRemainingSeconds;
 }
 
 - (IBAction)playPause:(id)sender {
-    //   LogMethod();
+   LogMethod();
 	MPMusicPlaybackState playbackState = [musicPlayer playbackState];
     
 	if (playbackState == MPMusicPlaybackStateStopped || playbackState == MPMusicPlaybackStatePaused) {
@@ -1017,6 +1054,7 @@ long songRemainingSeconds;
         UIImage *coloredImage = [self.shuffleButton.currentImage imageWithTint:[UIColor whiteColor]];
         [self.shuffleButton setImage: coloredImage forState:UIControlStateNormal];
         //show nextSongLabel when shuffle is off
+        queueIsKnown = YES;
         [self prepareNextSongLabel];
         
     }
@@ -1093,6 +1131,11 @@ long songRemainingSeconds;
                                name: MPMediaLibraryDidChangeNotification
                              object: nil];
     
+    [notificationCenter addObserver: self
+                           selector: @selector (handle_ApplicationDidBecomeActive:)
+                               name: UIApplicationDidBecomeActiveNotification
+                             object: nil];
+    
     [[MPMediaLibrary defaultMediaLibrary] beginGeneratingLibraryChangeNotifications];
     
 	[musicPlayer beginGeneratingPlaybackNotifications];
@@ -1102,7 +1145,7 @@ long songRemainingSeconds;
 //		had finished or if this is the first time the user has chosen songs after app
 //		launch--in which case, invoke play.
 - (void) restorePlaybackState {
-//    LogMethod();
+    LogMethod();
 	if (musicPlayer.playbackState == MPMusicPlaybackStateStopped && userMediaItemCollection) {
 		
 		if (playedMusicOnce == NO) {
@@ -1117,7 +1160,7 @@ long songRemainingSeconds;
 
 // When the playback state changes, set the play/pause button appropriately.
 - (void) handle_PlaybackStateChanged: (id) notification {
-//    LogMethod();
+    LogMethod();
     //    //temporary nslogs for debugging
     //
     //    NSLog (@"size of nextSongLabel is %f, %f", self.nextSongLabel.frame.size.width, self.nextSongLabel.frame.size.height);
@@ -1128,17 +1171,24 @@ long songRemainingSeconds;
     
         MPMusicPlaybackState playbackState = [musicPlayer playbackState];
         
+        NSLog (@" playbackState = %d", playbackState);
+        
         if (playbackState == MPMusicPlaybackStatePaused) {
             
             [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
-            
+            savedPlaybackState = playbackState;
+
         } else if (playbackState == MPMusicPlaybackStatePlaying) {
             
             [playPauseButton setImage: [UIImage imageNamed:@"bigpause.png"] forState:UIControlStateNormal];
-            
+            savedPlaybackState = playbackState;
+
+
         } else if (playbackState == MPMusicPlaybackStateStopped) {
                     
             [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
+            savedPlaybackState = playbackState;
+
             
             if (!playNew) {
                 // Even though stopped, invoking 'stop' ensures that the music player will play
@@ -1164,13 +1214,34 @@ long songRemainingSeconds;
     [self setIPodLibraryChanged: YES];
     
 }
+- (void) handle_ApplicationDidBecomeActive: (id) notification
+{
+    if (musicPlayer.playbackState == MPMusicPlaybackStateInterrupted) {
+        NSLog (@"savedPlaybackState is %d", savedPlaybackState);
+        if (savedPlaybackState == MPMusicPlaybackStatePlaying) {
+            [playPauseButton setImage:[UIImage imageNamed:@"bigpause.png"] forState:UIControlStateNormal];
+            [musicPlayer play];
+            NSLog (@"****************Playing");
+        } else {
+            [playPauseButton setImage:[UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
+            saveVolume = [musicPlayer volume];
+            [musicPlayer setVolume: 0.0];
+            [self performSelector:@selector(delayedPlay) withObject:nil afterDelay:0.0];            
+            NSLog (@"**************NOT Playing");
+        }
+    }
+}
+- (void) delayedPlay {
+    [musicPlayer play];
+    [musicPlayer pause];
+    [musicPlayer setVolume: saveVolume];
 
+}
 #pragma mark Application playback control_________________
 
-// delegate method for the audio route change alert view; follows the protocol specified
-//	in the UIAlertViewDelegate protocol.
+// //delegate method for the audio route change alert view; follows the protocol specified in the UIAlertViewDelegate protocol.
 //- (void) alertView: routeChangeAlertView clickedButtonAtIndex: buttonIndex {
-//
+//    LogMethod();
 //	if ((NSInteger) buttonIndex == 1) {
 //		[appSoundPlayer play];
 //	} else {
@@ -1178,7 +1249,7 @@ long songRemainingSeconds;
 //	}
 //
 //}
-//
+
 
 
 //#pragma mark AV Foundation delegate methods____________
@@ -1247,13 +1318,10 @@ long songRemainingSeconds;
     
 }
 - (void)viewWillDisappear:(BOOL)animated {
-//    LogMethod();
+    LogMethod();
     [super viewWillDisappear: animated];
     [self.playbackTimer invalidate];
     
-    [[NSNotificationCenter defaultCenter] removeObserver: self
-													name: UIApplicationDidBecomeActiveNotification
-												  object: nil];
 }
 - (void)dealloc {
 //       LogMethod();
@@ -1269,6 +1337,10 @@ long songRemainingSeconds;
     [[NSNotificationCenter defaultCenter] removeObserver: self
                                                     name: MPMediaLibraryDidChangeNotification
                                                   object: nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+													name: UIApplicationDidBecomeActiveNotification
+												  object: nil];
     
     [[MPMediaLibrary defaultMediaLibrary] endGeneratingLibraryChangeNotifications];
     

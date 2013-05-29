@@ -60,13 +60,14 @@
 @property (readwrite)           BOOL                    showPlaylistRemaining;
 @property (readwrite)           BOOL                    queueIsKnown;
 @property (readwrite)           BOOL                    initialView;
+@property (readwrite)           BOOL                    skippedBack;
 @property (nonatomic, strong)   MPMediaItem             *savedNowPlaying;
 @property (nonatomic, strong)   MPMediaItem             *predictedNextItem;
 @property (nonatomic, strong)   UserInfoViewController  *userInfoViewController;
 @property (readwrite)           BOOL                    userIsScrubbing;
 @property (readwrite)           BOOL                    hasFinishedMoving;
-@property (nonatomic)           BOOL scrubbing; // Whether the player is currently scrubbing
-
+@property (nonatomic)           BOOL                    scrubbing; // Whether the player is currently scrubbing
+@property (nonatomic)           MPMusicPlaybackState    savedPlaybackState;
 @property (strong, nonatomic) IBOutlet UILabel *initialNowPlayingLabel;
 @property (strong, nonatomic) IBOutlet AutoScrollLabel	*nowPlayingLabel;
 @property (strong, nonatomic) IBOutlet UILabel *elapsedTimeLabel;
