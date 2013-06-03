@@ -126,7 +126,9 @@ BOOL turnOnShuffle;
     if ([self.collectionItem.collectionArray count] > 1) {
         self.shuffleButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         self.shuffleButton.contentEdgeInsets = UIEdgeInsetsMake(0, 14, 0, 0);
+        [self.shuffleButton setTitleColor: [UIColor whiteColor] forState: UIControlStateNormal];
         [self.shuffleButton setTitleColor:  [UIColor blueColor] forState: UIControlStateHighlighted];
+        [self.shuffleButton setTitle: NSLocalizedString(@"Shuffle", nil) forState: UIControlStateNormal];
     } else {
         self.shuffleButton.hidden = YES;
         CGRect frame = self.shuffleView.frame;

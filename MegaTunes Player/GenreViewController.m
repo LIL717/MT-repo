@@ -80,7 +80,7 @@ BOOL showDuration;
     
     
     
-    self.navigationItem.hidesBackButton = YES; // Important
+    self.navigationItem.backBarButtonItem = nil; // Important
     //initWithTitle cannot be nil, must be @""
 	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
                                                                              style:UIBarButtonItemStyleBordered

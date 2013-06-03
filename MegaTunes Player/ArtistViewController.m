@@ -108,7 +108,9 @@ BOOL showDuration;
 
     self.allAlbumsButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     self.allAlbumsButton.contentEdgeInsets = UIEdgeInsetsMake(0, 4, 0, 0);
+    [self.allAlbumsButton setTitleColor:  [UIColor whiteColor] forState: UIControlStateNormal];
     [self.allAlbumsButton setTitleColor:  [UIColor blueColor] forState: UIControlStateHighlighted];
+    [self.allAlbumsButton setTitle: NSLocalizedString(@"All Albums", nil) forState:UIControlStateNormal];
 
     
     self.collectionTableView.sectionIndexMinimumDisplayRowCount = 20;

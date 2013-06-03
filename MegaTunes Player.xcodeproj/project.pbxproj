@@ -174,6 +174,26 @@
 		70DAEA6B1695619900479D61 /* infoLightButtonImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70DAEA691695619600479D61 /* infoLightButtonImage@2x.png */; };
 		70DAEA6E169564AB00479D61 /* infoSelectedButtonImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 70DAEA6C169564A500479D61 /* infoSelectedButtonImage.png */; };
 		70DAEA6F169564AB00479D61 /* infoSelectedButtonImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70DAEA6D169564A700479D61 /* infoSelectedButtonImage@2x.png */; };
+		70E8E8091759CDA10012CE74 /* MediaGroupCarouselViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70E8E8081759CD9F0012CE74 /* MediaGroupCarouselViewController.m */; };
+		70E8E80F175ABA2E0012CE74 /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 70E8E80E175ABA2E0012CE74 /* iCarousel.m */; };
+		70E8E814175AE12A0012CE74 /* AlbumsIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 70E8E810175AE12A0012CE74 /* AlbumsIcon.png */; };
+		70E8E815175AE12A0012CE74 /* AlbumsIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70E8E811175AE12A0012CE74 /* AlbumsIcon@2x.png */; };
+		70E8E816175AE12A0012CE74 /* ArtistsIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 70E8E812175AE12A0012CE74 /* ArtistsIcon.png */; };
+		70E8E817175AE12A0012CE74 /* ArtistsIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70E8E813175AE12A0012CE74 /* ArtistsIcon@2x.png */; };
+		70E8E81C175AE13E0012CE74 /* CompilationsIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 70E8E818175AE13E0012CE74 /* CompilationsIcon.png */; };
+		70E8E81D175AE13E0012CE74 /* CompilationsIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70E8E819175AE13E0012CE74 /* CompilationsIcon@2x.png */; };
+		70E8E81E175AE13E0012CE74 /* ComposersIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 70E8E81A175AE13E0012CE74 /* ComposersIcon.png */; };
+		70E8E81F175AE13E0012CE74 /* ComposersIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70E8E81B175AE13E0012CE74 /* ComposersIcon@2x.png */; };
+		70E8E822175AE1600012CE74 /* GenresIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 70E8E820175AE1600012CE74 /* GenresIcon.png */; };
+		70E8E823175AE1600012CE74 /* GenresIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70E8E821175AE1600012CE74 /* GenresIcon@2x.png */; };
+		70E8E828175AE1820012CE74 /* PlaylistsIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 70E8E824175AE1820012CE74 /* PlaylistsIcon.png */; };
+		70E8E829175AE1820012CE74 /* PlaylistsIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70E8E825175AE1820012CE74 /* PlaylistsIcon@2x.png */; };
+		70E8E82A175AE1820012CE74 /* SongsIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 70E8E826175AE1820012CE74 /* SongsIcon.png */; };
+		70E8E82B175AE1820012CE74 /* SongsIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70E8E827175AE1820012CE74 /* SongsIcon@2x.png */; };
+		70E8E82D175AE1C50012CE74 /* page.png in Resources */ = {isa = PBXBuildFile; fileRef = 70E8E82C175AE1C50012CE74 /* page.png */; };
+		70E8E836175B0B860012CE74 /* PodcastsIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 70E8E834175B0B7E0012CE74 /* PodcastsIcon.png */; };
+		70E8E839175C2AB80012CE74 /* page@2x in Resources */ = {isa = PBXBuildFile; fileRef = 70E8E838175C2AB60012CE74 /* page@2x */; };
+		70E8E83D175C5EAB0012CE74 /* PodcastsIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70E8E83C175C5EA70012CE74 /* PodcastsIcon@2x.png */; };
 		70F9F1D316E591980061C05E /* redWhitePlay68@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70F9F1D216E591970061C05E /* redWhitePlay68@2x.png */; };
 		70F9F1D516E592650061C05E /* redWhitePlay57@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70F9F1D416E592650061C05E /* redWhitePlay57@2x.png */; };
 /* End PBXBuildFile section */
@@ -427,10 +447,6 @@
 		70DAEA691695619600479D61 /* infoLightButtonImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "infoLightButtonImage@2x.png"; sourceTree = "<group>"; };
 		70DAEA6C169564A500479D61 /* infoSelectedButtonImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = infoSelectedButtonImage.png; sourceTree = "<group>"; };
 		70DAEA6D169564A700479D61 /* infoSelectedButtonImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "infoSelectedButtonImage@2x.png"; sourceTree = "<group>"; };
-		70E8E7A81755D19E0012CE74 /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/MainStoryboard.strings; sourceTree = "<group>"; };
-		70E8E7A91755D19E0012CE74 /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/Localizable.strings; sourceTree = "<group>"; };
-		70E8E7AA1755D19F0012CE74 /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		70E8E7AB1755D1A00012CE74 /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		70E8E7B71755D4090012CE74 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/MainStoryboard.strings; sourceTree = "<group>"; };
 		70E8E7B81755D4090012CE74 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
 		70E8E7B91755D40A0012CE74 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -471,6 +487,32 @@
 		70E8E7E21755D8220012CE74 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/MainStoryboard.strings; sourceTree = "<group>"; };
 		70E8E7E31755D8220012CE74 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		70E8E7E41755D8240012CE74 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		70E8E7E51756D8410012CE74 /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/MainStoryboard.strings; sourceTree = "<group>"; };
+		70E8E7E61756D8420012CE74 /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		70E8E7E71756D84A0012CE74 /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		70E8E7E81756D84C0012CE74 /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		70E8E8071759CD9B0012CE74 /* MediaGroupCarouselViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaGroupCarouselViewController.h; sourceTree = "<group>"; };
+		70E8E8081759CD9F0012CE74 /* MediaGroupCarouselViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaGroupCarouselViewController.m; sourceTree = "<group>"; };
+		70E8E80D175ABA2E0012CE74 /* iCarousel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCarousel.h; sourceTree = "<group>"; };
+		70E8E80E175ABA2E0012CE74 /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
+		70E8E810175AE12A0012CE74 /* AlbumsIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AlbumsIcon.png; sourceTree = "<group>"; };
+		70E8E811175AE12A0012CE74 /* AlbumsIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AlbumsIcon@2x.png"; sourceTree = "<group>"; };
+		70E8E812175AE12A0012CE74 /* ArtistsIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ArtistsIcon.png; sourceTree = "<group>"; };
+		70E8E813175AE12A0012CE74 /* ArtistsIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ArtistsIcon@2x.png"; sourceTree = "<group>"; };
+		70E8E818175AE13E0012CE74 /* CompilationsIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CompilationsIcon.png; sourceTree = "<group>"; };
+		70E8E819175AE13E0012CE74 /* CompilationsIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CompilationsIcon@2x.png"; sourceTree = "<group>"; };
+		70E8E81A175AE13E0012CE74 /* ComposersIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ComposersIcon.png; sourceTree = "<group>"; };
+		70E8E81B175AE13E0012CE74 /* ComposersIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ComposersIcon@2x.png"; sourceTree = "<group>"; };
+		70E8E820175AE1600012CE74 /* GenresIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GenresIcon.png; sourceTree = "<group>"; };
+		70E8E821175AE1600012CE74 /* GenresIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GenresIcon@2x.png"; sourceTree = "<group>"; };
+		70E8E824175AE1820012CE74 /* PlaylistsIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PlaylistsIcon.png; sourceTree = "<group>"; };
+		70E8E825175AE1820012CE74 /* PlaylistsIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PlaylistsIcon@2x.png"; sourceTree = "<group>"; };
+		70E8E826175AE1820012CE74 /* SongsIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SongsIcon.png; sourceTree = "<group>"; };
+		70E8E827175AE1820012CE74 /* SongsIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SongsIcon@2x.png"; sourceTree = "<group>"; };
+		70E8E82C175AE1C50012CE74 /* page.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = page.png; sourceTree = "<group>"; };
+		70E8E834175B0B7E0012CE74 /* PodcastsIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PodcastsIcon.png; sourceTree = "<group>"; };
+		70E8E838175C2AB60012CE74 /* page@2x */ = {isa = PBXFileReference; lastKnownFileType = file; path = "page@2x"; sourceTree = "<group>"; };
+		70E8E83C175C5EA70012CE74 /* PodcastsIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PodcastsIcon@2x.png"; sourceTree = "<group>"; };
 		70F9F1D216E591970061C05E /* redWhitePlay68@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "redWhitePlay68@2x.png"; sourceTree = "<group>"; };
 		70F9F1D416E592650061C05E /* redWhitePlay57@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "redWhitePlay57@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -675,6 +717,9 @@
 		70A0491A16F6810000F70A90 /* 3rd Party */ = {
 			isa = PBXGroup;
 			children = (
+				70E8E80C175ABA2E0012CE74 /* iCarousel */,
+				70E8E80B175AB9950012CE74 /* DTCustomColoredAccessory */,
+				70E8E80A175AB9530012CE74 /* MTSearchBar */,
 				70A0491B16F6814700F70A90 /* OBSlider-master */,
 				70A0493B16F6822E00F70A90 /* AutoScrollLabel */,
 				70A13DF9163DD02100244866 /* bass24-iphone */,
@@ -820,8 +865,6 @@
 			isa = PBXGroup;
 			children = (
 				707862A61626391600871260 /* MegaTunes Player.xcdatamodeld */,
-				7098DEAD172DA8DA00A72F63 /* MTSearchBar.h */,
-				7098DEAE172DA8DA00A72F63 /* MTSearchBar.m */,
 				709F238816C329C000521158 /* MediaItemUserData.h */,
 				709F238916C329C000521158 /* MediaItemUserData.m */,
 				70984C201640C07A00CE7EA9 /* ItemCollection.h */,
@@ -846,8 +889,6 @@
 				70A13DD816334B6D00244866 /* Song.m */,
 				7049302916E82101005A66C4 /* SongInfoCell.h */,
 				7049302A16E82101005A66C4 /* SongInfoCell.m */,
-				7049301416E808E1005A66C4 /* DTCustomColoredAccessory.h */,
-				7049301516E808E1005A66C4 /* DTCustomColoredAccessory.m */,
 				702B4156165743AB004A9265 /* UserDataForMediaItem.h */,
 				702B4157165743AB004A9265 /* UserDataForMediaItem.m */,
 			);
@@ -867,6 +908,8 @@
 			children = (
 				70A13D841631AD8700244866 /* MediaGroupViewController.h */,
 				70A13D851631AD8700244866 /* MediaGroupViewController.m */,
+				70E8E8071759CD9B0012CE74 /* MediaGroupCarouselViewController.h */,
+				70E8E8081759CD9F0012CE74 /* MediaGroupCarouselViewController.m */,
 				70864FCC17092B5B0030210C /* GenreViewController.h */,
 				70864FCD17092B5B0030210C /* GenreViewController.m */,
 				70A13DD4163322A400244866 /* ArtistViewController.h */,
@@ -898,26 +941,14 @@
 		70ADDC11161224BD00219873 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				70AB1EBB16E96B420019B789 /* selectedTabAlbumButton.png */,
-				70AB1EBC16E96B420019B789 /* selectedTabAlbumButton@2x.png */,
-				70AB1EBD16E96B430019B789 /* selectedTabCommentsButton.png */,
-				70AB1EBE16E96B430019B789 /* selectedTabCommentsButton@2x.png */,
-				70DAEA501695408400479D61 /* selectedTabInfoButton.png */,
-				70DAEA4C16953F2F00479D61 /* selectedTabInfoButton@2x.png */,
-				70AB1EB316E944FB0019B789 /* selectedTabUserButton.png */,
-				70AB1EB416E944FC0019B789 /* selectedTabUserButton@2x.png */,
-				70AB1EC316E96B5C0019B789 /* unselectedTabAlbumButton.png */,
-				70AB1EC416E96B5C0019B789 /* unselectedTabAlbumButton@2x.png */,
-				70AB1EC516E96B5D0019B789 /* unselectedTabCommentsButton.png */,
-				70AB1EC616E96B5D0019B789 /* unselectedTabCommentsButton@2x.png */,
-				70DAEA541695416800479D61 /* unselectedTabInfoButton.png */,
-				70DAEA4E16953F5500479D61 /* unselectedTabInfoButton@2x.png */,
-				70AB1EB716E9450D0019B789 /* unselectedTabUserButton.png */,
-				70AB1EB816E9450E0019B789 /* unselectedTabUserButton@2x.png */,
+				70E8E810175AE12A0012CE74 /* AlbumsIcon.png */,
+				70E8E811175AE12A0012CE74 /* AlbumsIcon@2x.png */,
 				70A4B73216974E9B00C84293 /* arrow_left_48_white.png */,
 				70AB1EA116E8560D0019B789 /* arrow_left_48_white@2x.png */,
 				70A4B73316974E9B00C84293 /* arrow_left_58_white.png */,
 				70AB1EA316E856200019B789 /* arrow_left_58_white@2x.png */,
+				70E8E812175AE12A0012CE74 /* ArtistsIcon.png */,
+				70E8E813175AE12A0012CE74 /* ArtistsIcon@2x.png */,
 				70974B701630A27200A33B7D /* background.png */,
 				70974B731630A3A700A33B7D /* background@2x.png */,
 				70974B721630A3A700A33B7D /* background-568h@2x.png */,
@@ -937,7 +968,13 @@
 				70AB1ECC16E982C40019B789 /* black-button@2x copy.png */,
 				701464AF17399FDB007FD617 /* cancel_white.png */,
 				701464B017399FDB007FD617 /* cancel_white@2x.png */,
+				70E8E818175AE13E0012CE74 /* CompilationsIcon.png */,
+				70E8E819175AE13E0012CE74 /* CompilationsIcon@2x.png */,
+				70E8E81A175AE13E0012CE74 /* ComposersIcon.png */,
+				70E8E81B175AE13E0012CE74 /* ComposersIcon@2x.png */,
 				7049302316E81893005A66C4 /* Default-568h@2x.png */,
+				70E8E820175AE1600012CE74 /* GenresIcon.png */,
+				70E8E821175AE1600012CE74 /* GenresIcon@2x.png */,
 				7049301616E808E1005A66C4 /* Icon.png */,
 				7049301716E808E1005A66C4 /* Icon@2x.png */,
 				70DAEA681695619300479D61 /* infoLightButtonImage.png */,
@@ -956,8 +993,14 @@
 				70AB1E9F16E855F00019B789 /* noAlbumImage320@2x.png */,
 				7005120116AFC65A0085B6F1 /* notPlaying.png */,
 				7005120216AFC65A0085B6F1 /* notPlaying@2x.png */,
+				70E8E82C175AE1C50012CE74 /* page.png */,
+				70E8E838175C2AB60012CE74 /* page@2x */,
 				70984C14163F964600CE7EA9 /* playing.png */,
 				70984C15163F964600CE7EA9 /* playing@2x.png */,
+				70E8E824175AE1820012CE74 /* PlaylistsIcon.png */,
+				70E8E825175AE1820012CE74 /* PlaylistsIcon@2x.png */,
+				70E8E834175B0B7E0012CE74 /* PodcastsIcon.png */,
+				70E8E83C175C5EA70012CE74 /* PodcastsIcon@2x.png */,
 				7049302516E81A17005A66C4 /* redWhitePlay57.png */,
 				70F9F1D416E592650061C05E /* redWhitePlay57@2x.png */,
 				70A4B73E16978C8100C84293 /* redWhitePlay68.png */,
@@ -966,6 +1009,14 @@
 				7020E1DA16B218D000BAB41E /* rightButtonBackground@2x.png */,
 				7098DEBB172E310900A72F63 /* searchIcon.png */,
 				7098DEBD172E312200A72F63 /* searchIcon@2x.png */,
+				70AB1EBB16E96B420019B789 /* selectedTabAlbumButton.png */,
+				70AB1EBC16E96B420019B789 /* selectedTabAlbumButton@2x.png */,
+				70AB1EBD16E96B430019B789 /* selectedTabCommentsButton.png */,
+				70AB1EBE16E96B430019B789 /* selectedTabCommentsButton@2x.png */,
+				70DAEA501695408400479D61 /* selectedTabInfoButton.png */,
+				70DAEA4C16953F2F00479D61 /* selectedTabInfoButton@2x.png */,
+				70AB1EB316E944FB0019B789 /* selectedTabUserButton.png */,
+				70AB1EB416E944FC0019B789 /* selectedTabUserButton@2x.png */,
 				70C177A6166EC6B400792D8F /* selection-tab.png */,
 				70C177A4166EC67A00792D8F /* selection-tab@2x.png */,
 				70492FF416E71A9D005A66C4 /* shinyVolumeHandle.png */,
@@ -978,10 +1029,49 @@
 				70974B63163071CE00A33B7D /* slider-track@2x.png */,
 				70A13DE8163A46CD00244866 /* slider-trackGray.png */,
 				70A13DE7163A46CC00244866 /* slider-trackGray@2x.png */,
+				70E8E826175AE1820012CE74 /* SongsIcon.png */,
+				70E8E827175AE1820012CE74 /* SongsIcon@2x.png */,
 				70C177A8166EC6D500792D8F /* tabbar.png */,
 				70C177A9166EC6D500792D8F /* tabbar@2x.png */,
+				70AB1EC316E96B5C0019B789 /* unselectedTabAlbumButton.png */,
+				70AB1EC416E96B5C0019B789 /* unselectedTabAlbumButton@2x.png */,
+				70AB1EC516E96B5D0019B789 /* unselectedTabCommentsButton.png */,
+				70AB1EC616E96B5D0019B789 /* unselectedTabCommentsButton@2x.png */,
+				70DAEA541695416800479D61 /* unselectedTabInfoButton.png */,
+				70DAEA4E16953F5500479D61 /* unselectedTabInfoButton@2x.png */,
+				70AB1EB716E9450D0019B789 /* unselectedTabUserButton.png */,
+				70AB1EB816E9450E0019B789 /* unselectedTabUserButton@2x.png */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		70E8E80A175AB9530012CE74 /* MTSearchBar */ = {
+			isa = PBXGroup;
+			children = (
+				7098DEAD172DA8DA00A72F63 /* MTSearchBar.h */,
+				7098DEAE172DA8DA00A72F63 /* MTSearchBar.m */,
+			);
+			name = MTSearchBar;
+			path = "../../../../Development Sandbox/MegaTunesPlayer/MegaTunes Player/MegaTunes Player";
+			sourceTree = "<group>";
+		};
+		70E8E80B175AB9950012CE74 /* DTCustomColoredAccessory */ = {
+			isa = PBXGroup;
+			children = (
+				7049301416E808E1005A66C4 /* DTCustomColoredAccessory.h */,
+				7049301516E808E1005A66C4 /* DTCustomColoredAccessory.m */,
+			);
+			name = DTCustomColoredAccessory;
+			path = "../../../../Development Sandbox/MegaTunesPlayer/MegaTunes Player/MegaTunes Player";
+			sourceTree = "<group>";
+		};
+		70E8E80C175ABA2E0012CE74 /* iCarousel */ = {
+			isa = PBXGroup;
+			children = (
+				70E8E80D175ABA2E0012CE74 /* iCarousel.h */,
+				70E8E80E175ABA2E0012CE74 /* iCarousel.m */,
+			);
+			path = iCarousel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1165,6 +1255,24 @@
 				701464AA173711C4007FD617 /* list-backwseparator@2x.png in Resources */,
 				701464B117399FDB007FD617 /* cancel_white.png in Resources */,
 				701464B217399FDB007FD617 /* cancel_white@2x.png in Resources */,
+				70E8E814175AE12A0012CE74 /* AlbumsIcon.png in Resources */,
+				70E8E815175AE12A0012CE74 /* AlbumsIcon@2x.png in Resources */,
+				70E8E816175AE12A0012CE74 /* ArtistsIcon.png in Resources */,
+				70E8E817175AE12A0012CE74 /* ArtistsIcon@2x.png in Resources */,
+				70E8E81C175AE13E0012CE74 /* CompilationsIcon.png in Resources */,
+				70E8E81D175AE13E0012CE74 /* CompilationsIcon@2x.png in Resources */,
+				70E8E81E175AE13E0012CE74 /* ComposersIcon.png in Resources */,
+				70E8E81F175AE13E0012CE74 /* ComposersIcon@2x.png in Resources */,
+				70E8E822175AE1600012CE74 /* GenresIcon.png in Resources */,
+				70E8E823175AE1600012CE74 /* GenresIcon@2x.png in Resources */,
+				70E8E828175AE1820012CE74 /* PlaylistsIcon.png in Resources */,
+				70E8E829175AE1820012CE74 /* PlaylistsIcon@2x.png in Resources */,
+				70E8E82A175AE1820012CE74 /* SongsIcon.png in Resources */,
+				70E8E82B175AE1820012CE74 /* SongsIcon@2x.png in Resources */,
+				70E8E82D175AE1C50012CE74 /* page.png in Resources */,
+				70E8E836175B0B860012CE74 /* PodcastsIcon.png in Resources */,
+				70E8E839175C2AB80012CE74 /* page@2x in Resources */,
+				70E8E83D175C5EAB0012CE74 /* PodcastsIcon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1248,6 +1356,8 @@
 				70864FD4170B93110030210C /* WindowSubClass.m in Sources */,
 				7098DEAF172DA8DA00A72F63 /* MTSearchBar.m in Sources */,
 				7098DEB2172DACF500A72F63 /* MTSearchViewController.m in Sources */,
+				70E8E8091759CDA10012CE74 /* MediaGroupCarouselViewController.m in Sources */,
+				70E8E80F175ABA2E0012CE74 /* iCarousel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1278,7 +1388,6 @@
 				708BDA2F16C093EF00A42212 /* zh-Hant */,
 				708BDA3316C0940100A42212 /* ko */,
 				708BDA3716C0941C00A42212 /* sv */,
-				70E8E7A91755D19E0012CE74 /* hr */,
 				70E8E7B81755D4090012CE74 /* it */,
 				70E8E7BC1755D46E0012CE74 /* fr */,
 				70E8E7C01755D4D40012CE74 /* de */,
@@ -1289,6 +1398,7 @@
 				70E8E7D41755D65F0012CE74 /* nb */,
 				70E8E7D81755D6AF0012CE74 /* pl */,
 				70E8E7E31755D8220012CE74 /* es */,
+				70E8E7E61756D8420012CE74 /* hr */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -1301,7 +1411,6 @@
 				708BDA3016C093F000A42212 /* zh-Hant */,
 				708BDA3416C0940100A42212 /* ko */,
 				708BDA3816C0941D00A42212 /* sv */,
-				70E8E7AA1755D19F0012CE74 /* hr */,
 				70E8E7B91755D40A0012CE74 /* it */,
 				70E8E7BD1755D46F0012CE74 /* fr */,
 				70E8E7C11755D4D50012CE74 /* de */,
@@ -1312,6 +1421,7 @@
 				70E8E7D51755D6600012CE74 /* nb */,
 				70E8E7D91755D6B00012CE74 /* pl */,
 				70E8E7E41755D8240012CE74 /* es */,
+				70E8E7E71756D84A0012CE74 /* hr */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -1324,7 +1434,6 @@
 				708BDA2E16C093EF00A42212 /* zh-Hant */,
 				708BDA3216C0940100A42212 /* ko */,
 				708BDA3616C0941C00A42212 /* sv */,
-				70E8E7A81755D19E0012CE74 /* hr */,
 				70E8E7B71755D4090012CE74 /* it */,
 				70E8E7BB1755D46E0012CE74 /* fr */,
 				70E8E7BF1755D4D40012CE74 /* de */,
@@ -1335,6 +1444,7 @@
 				70E8E7D31755D65F0012CE74 /* nb */,
 				70E8E7D71755D6AF0012CE74 /* pl */,
 				70E8E7E21755D8220012CE74 /* es */,
+				70E8E7E51756D8410012CE74 /* hr */,
 			);
 			name = MainStoryboard.storyboard;
 			sourceTree = "<group>";
@@ -1347,7 +1457,6 @@
 				708BDA3116C093F000A42212 /* zh-Hant */,
 				708BDA3516C0940200A42212 /* ko */,
 				708BDA3916C0941D00A42212 /* sv */,
-				70E8E7AB1755D1A00012CE74 /* hr */,
 				70E8E7BA1755D40B0012CE74 /* it */,
 				70E8E7BE1755D46F0012CE74 /* fr */,
 				70E8E7C21755D4D60012CE74 /* de */,
@@ -1358,6 +1467,7 @@
 				70E8E7D61755D6600012CE74 /* nb */,
 				70E8E7DA1755D6B00012CE74 /* pl */,
 				70E8E7E11755D8220012CE74 /* es */,
+				70E8E7E81756D84C0012CE74 /* hr */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";

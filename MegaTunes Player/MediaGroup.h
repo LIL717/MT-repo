@@ -12,9 +12,9 @@
 @interface MediaGroup : NSObject
 
 @property (nonatomic, copy) NSString *name;
+@property (nonatomic, copy) UIImage *collectionImage;
 @property (nonatomic, copy) MPMediaQuery *queryType;
 
--(id)initWithName:(NSString*)theName
-    andQueryType:(MPMediaQuery*)theQueryType;
+-(id)initWithName:(NSString*)theName andImage:(UIImage*)theImage andQueryType:(MPMediaQuery*)theQueryType;
 
 @end

@@ -11,10 +11,11 @@
 @implementation MediaGroup
 
 @synthesize name;
+@synthesize collectionImage;
 @synthesize queryType;
 
--(id)initWithName:(NSString*)theName
-    andQueryType:(MPMediaQuery*)theQueryType
+-(id)initWithName:(NSString*)theName andImage: (UIImage*) theCollectionImage
+     andQueryType:(MPMediaQuery*)theQueryType
 
 {
     
@@ -23,6 +24,7 @@
     if (self)
     {
         self.name = theName;
+        self.collectionImage = theCollectionImage;
         self.queryType = theQueryType;
     }
     

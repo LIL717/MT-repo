@@ -2,9 +2,6 @@
 /* Class = "IBUIViewController"; title = "Info"; ObjectID = "0BK-h9-5Yl"; */
 "0BK-h9-5Yl.title" = "Info";
 
-/* Class = "IBUIButton"; normalTitle = " Shuffle"; ObjectID = "852-3o-ZMl"; */
-"852-3o-ZMl.normalTitle" = " Shuffle";
-
 /* Class = "IBUILabel"; text = "00:00"; ObjectID = "9Je-hu-yhg"; */
 "9Je-hu-yhg.text" = "00:00";
 
@@ -41,9 +38,6 @@
 /* Class = "IBUIButton"; accessibilityLabel = "ffbutton"; ObjectID = "Xek-mb-ENQ"; */
 "Xek-mb-ENQ.accessibilityLabel" = "ffbutton";
 
-/* Class = "IBUIButton"; normalTitle = " All Albums"; ObjectID = "Y1n-zD-H2J"; */
-"Y1n-zD-H2J.normalTitle" = " All Albums";
-
 /* Class = "IBUITextView"; text = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda."; ObjectID = "ZTj-61-wl1"; */
 "ZTj-61-wl1.text" = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.";
 
@@ -55,9 +49,6 @@
 
 /* Class = "IBUILabel"; text = "Enter Notes"; ObjectID = "ib9-ir-2yk"; */
 "ib9-ir-2yk.text" = "Enter Notes";
-
-/* Class = "IBUIButton"; normalTitle = " All Songs"; ObjectID = "mBz-0Z-aws"; */
-"mBz-0Z-aws.normalTitle" = " All Songs";
 
 /* Class = "IBUINavigationItem"; title = "Info"; ObjectID = "xx4-kE-ulF"; */
 "xx4-kE-ulF.title" = "Info";

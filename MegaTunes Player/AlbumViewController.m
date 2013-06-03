@@ -125,6 +125,7 @@ BOOL showDuration;
         self.allSongsButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         self.allSongsButton.contentEdgeInsets = UIEdgeInsetsMake(0, 4, 0, 0);
         [self.allSongsButton setTitleColor:  [UIColor blueColor] forState: UIControlStateHighlighted];
+        [self.allSongsButton setTitle: NSLocalizedString(@"All Songs", nil) forState: UIControlStateNormal];
     } else {
         self.allSongsButton.hidden = YES;
         CGRect frame = self.allSongsView.frame;
