@@ -25,7 +25,6 @@
 @implementation MediaGroupCarouselViewController
 
 @synthesize carousel;
-//@synthesize mediaGroupItems;
 @synthesize collection;
 @synthesize groupingData;
 @synthesize selectedGroup;
@@ -33,57 +32,91 @@
 @synthesize managedObjectContext;
 @synthesize iPodLibraryChanged;         //A flag indicating whether the library has been changed due to a sync
 @synthesize rightBarButton;
-
-BOOL initialView;
+@synthesize initialView;
 
 #pragma mark - Initial Display methods
-
-- (void)viewDidLoad
+- (void)awakeFromNib
 {
-    //    LogMethod();
-    [super viewDidLoad];
+//    LogMethod();
+    [self loadGroupingData];
     
-//    [self loadGroupingData];
+//    //configure carousel
+//    carousel.type = iCarouselTypeCoverFlow2;
     
-    //configure carousel
-    carousel.type = iCarouselTypeCoverFlow2;
-    
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
-        
     self.rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
                                                            style:UIBarButtonItemStyleBordered
                                                           target:self
                                                           action:@selector(viewNowPlaying)];
     
+    UIImage *menuBarImageDefault = [[UIImage imageNamed:@"redWhitePlay57.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
     UIImage *menuBarImageLandscape = [[UIImage imageNamed:@"redWhitePlay68.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
     
+    [self.rightBarButton setBackgroundImage:menuBarImageDefault forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     [self.rightBarButton setBackgroundImage:menuBarImageLandscape forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
+    
+    [self.navigationItem setHidesBackButton: YES animated: NO];
+    //    self.navigationItem.leftBarButtonItem = nil;
+    
     
     musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
     
-//    id appDelegate = (id)[[UIApplication sharedApplication] delegate];
-//    self.managedObjectContext = [appDelegate managedObjectContext];
+    id appDelegate = (id)[[UIApplication sharedApplication] delegate];
+    self.managedObjectContext = [appDelegate managedObjectContext];
     
     [self registerForMediaPlayerNotifications];
     
-    initialView = YES;
 }
-
+- (void)viewDidLoad
+{
+//    LogMethod();
+    [super viewDidLoad];
+  
+    //configure carousel
+    carousel.type = iCarouselTypeCoverFlow2;
+    
+}
+-(void) loadGroupingData
+{
+    MediaGroup* group0 = [[MediaGroup alloc] initWithName:@"Playlists" andImage:[UIImage imageNamed:@"PlaylistsIcon.png"]andQueryType: [MPMediaQuery playlistsQuery]];
+    
+    MediaGroup* group1 = [[MediaGroup alloc] initWithName:@"Artists" andImage:[UIImage imageNamed:@"ArtistsIcon.png"]andQueryType: [MPMediaQuery artistsQuery]];
+    
+    MediaGroup* group2 = [[MediaGroup alloc] initWithName:@"Songs" andImage:[UIImage imageNamed:@"SongsIcon.png"]andQueryType: [MPMediaQuery songsQuery]];
+    
+    MediaGroup* group3 = [[MediaGroup alloc] initWithName:@"Albums" andImage:[UIImage imageNamed:@"AlbumsIcon.png"]andQueryType: [MPMediaQuery albumsQuery]];
+    
+    MediaGroup* group4 = [[MediaGroup alloc] initWithName:@"Compilations" andImage:[UIImage imageNamed:@"CompilationsIcon.png"]andQueryType: [MPMediaQuery compilationsQuery]];
+    
+    MediaGroup* group5 = [[MediaGroup alloc] initWithName:@"Composers" andImage:[UIImage imageNamed:@"ComposersIcon.png"]andQueryType: [MPMediaQuery composersQuery]];
+    
+    MediaGroup* group6 = [[MediaGroup alloc] initWithName:@"Genres" andImage:[UIImage imageNamed:@"GenresIcon.png"]andQueryType: [MPMediaQuery genresQuery]];
+    
+    MediaGroup* group7 = [[MediaGroup alloc] initWithName:@"Podcasts" andImage:[UIImage imageNamed:@"PodcastsIcon.png"]andQueryType: [MPMediaQuery podcastsQuery]];
+    
+    
+    self.groupingData = [NSArray arrayWithObjects:group0, group1, group2, group3, group4, group5, group6, group7, nil];
+    //    self.groupingData = [NSArray arrayWithObjects:group0, group1, group2, group3, group4, group5, group6, nil];
+    
+    
+    return;
+    
+}
 - (void) viewWillAppear:(BOOL)animated
 {
-    //    LogMethod();
+//    LogMethod();
     [super viewWillAppear: animated];
     
     [self setIPodLibraryChanged: NO];
     self.title = NSLocalizedString(@"Select Music", nil);
     self.navigationItem.titleView = [self customizeTitleView];
+    [self.navigationItem setHidesBackButton: YES animated: NO];
     
     
     NSString *playingItem = [[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyTitle];
     
     if (playingItem) {
-        if (initialView) {
-            initialView = NO;
+        if (self.initialView) {
+            self.initialView = NO;
             [self viewNowPlaying];
         } else {
             self.navigationItem.rightBarButtonItem = self.rightBarButton;
@@ -91,12 +124,13 @@ BOOL initialView;
     } else {
         self.navigationItem.rightBarButtonItem= nil;
     }
+
 //    [self updateLayoutForNewOrientation: self.interfaceOrientation];
-    
+
     return;
 }
 -(void) viewDidAppear:(BOOL)animated {
-    //    LogMethod();
+//    LogMethod();
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     initialView = NO;
     [super viewDidAppear:(BOOL)animated];
@@ -115,27 +149,6 @@ BOOL initialView;
     return label;
 }
 
-
-//- (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
-//    
-//    [self updateLayoutForNewOrientation: orientation];
-//    
-//}
-//- (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
-
-//    if (UIInterfaceOrientationIsPortrait(orientation)) {
-//        [self.groupTableView setContentInset:UIEdgeInsetsMake(11,0,0,0)];
-//    } else {
-//        [self.groupTableView setContentInset:UIEdgeInsetsMake(23,0,0,0)];
-//        [self.groupTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-//    }
-//}
-//- (void) viewWillLayoutSubviews {
-//    
-//    //need this to pin portrait view to bounds otherwise if start in landscape, push to next view, rotate to portrait then pop back the original view in portrait - it will be too wide and "scroll" horizontally
-//    self.groupTableView.contentSize = CGSizeMake(self.groupTableView.frame.size.width, self.groupTableView.contentSize.height);
-//    [super viewWillLayoutSubviews];
-//}
 #pragma mark -
 #pragma mark iCarousel methods
 
@@ -211,35 +224,8 @@ BOOL initialView;
     return value;
 }
 
-//#pragma mark - Table view data source
-//// Configures the table view.
-//
-//- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-//{
-//    // Return the number of sections.
-//    return 1;
-//}
-//
-//- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-//{
-//    // Return the number of rows in the section.
-//    return [self.groupingData count];
-//}
-//
-//- (UITableViewCell *) tableView: (UITableView *) tableView cellForRowAtIndexPath: (NSIndexPath *) indexPath {
-//    
-//	MediaGroupCell *cell = (MediaGroupCell *)[tableView
-//                                              dequeueReusableCellWithIdentifier:@"MediaGroupCell"];
-//    MediaGroup *group = [self.groupingData objectAtIndex:indexPath.row];
-//    cell.nameLabel.text = NSLocalizedString(group.name, nil);
-//    DTCustomColoredAccessory *accessory = [DTCustomColoredAccessory accessoryWithColor:cell.nameLabel.textColor];
-//    accessory.highlightedColor = [UIColor blueColor];
-//    cell.accessoryView = accessory;
-//    
-//    return cell;
-//}
 
-#pragma mark - Table view delegate
+#pragma mark - Carousel view delegate
 
 //	 To conform to the Human Interface Guidelines, selections should not be persistent --
 //	 deselect the row after it has been selected.
@@ -363,24 +349,24 @@ BOOL initialView;
         songViewController.collectionQueryType = [selectedGroup.queryType copy];
         
 	}
-//    if ([segue.identifier isEqualToString:@"ViewNowPlaying"])
-//	{
-//		MainViewController *mainViewController = segue.destinationViewController;
-//        mainViewController.managedObjectContext = self.managedObjectContext;
-//        
-//        mainViewController.playNew = NO;
-//        mainViewController.iPodLibraryChanged = self.iPodLibraryChanged;
-//        
-//    }
+    if ([segue.identifier isEqualToString:@"ViewNowPlaying"])
+	{
+		MainViewController *mainViewController = segue.destinationViewController;
+        mainViewController.managedObjectContext = self.managedObjectContext;
+        
+        mainViewController.playNew = NO;
+        mainViewController.iPodLibraryChanged = self.iPodLibraryChanged;
+        
+    }
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
     
 }
 - (IBAction)viewNowPlaying {
     
-    //    LogMethod();
+//    LogMethod();
     
-//    [self performSegueWithIdentifier: @"ViewNowPlaying" sender: self];
+    [self performSegueWithIdentifier: @"ViewNowPlaying" sender: self];
 }
 
 - (void) registerForMediaPlayerNotifications {
@@ -421,7 +407,7 @@ BOOL initialView;
     
 }
 - (void)dealloc {
-    //    LogMethod();
+//    LogMethod();
     //it's a good idea to set these to nil here to avoid
     //sending messages to a deallocated viewcontroller
     carousel.delegate = nil;

@@ -171,7 +171,7 @@ long songRemainingSeconds;
 // Configure the application.
 
 - (void) viewDidLoad {
-    LogMethod();
+//    LogMethod();
     [super viewDidLoad];
     
     [TestFlight passCheckpoint:@"MainViewController"];
@@ -386,7 +386,7 @@ long songRemainingSeconds;
     return label;
 }
 - (void)viewWillAppear:(BOOL)animated {
-    LogMethod();
+//    LogMethod();
     [super viewWillAppear: animated];
 
     self.playbackTimer = [NSTimer scheduledTimerWithTimeInterval:0.5
@@ -407,7 +407,7 @@ long songRemainingSeconds;
 }
 
 -(void) viewDidAppear:(BOOL)animated {
-    LogMethod();
+//    LogMethod();
 
     if (playNew) {
         [self setPlayNew: NO];
@@ -534,7 +534,7 @@ long songRemainingSeconds;
     [self.nowPlayingLabel setFont: newFont];
 }
 - (void) prepareNextSongLabel {
-    LogMethod();
+//    LogMethod();
     if (!queueIsKnown) {
         return;
     }
@@ -994,7 +994,7 @@ long songRemainingSeconds;
 }
 
 - (IBAction)playPause:(id)sender {
-   LogMethod();
+//   LogMethod();
 	MPMusicPlaybackState playbackState = [musicPlayer playbackState];
     
 	if (playbackState == MPMusicPlaybackStateStopped || playbackState == MPMusicPlaybackStatePaused) {
@@ -1160,7 +1160,7 @@ long songRemainingSeconds;
 
 // When the playback state changes, set the play/pause button appropriately.
 - (void) handle_PlaybackStateChanged: (id) notification {
-    LogMethod();
+//    LogMethod();
     //    //temporary nslogs for debugging
     //
     //    NSLog (@"size of nextSongLabel is %f, %f", self.nextSongLabel.frame.size.width, self.nextSongLabel.frame.size.height);
@@ -1171,7 +1171,7 @@ long songRemainingSeconds;
     
         MPMusicPlaybackState playbackState = [musicPlayer playbackState];
         
-        NSLog (@" playbackState = %d", playbackState);
+//        NSLog (@" playbackState = %d", playbackState);
         
         if (playbackState == MPMusicPlaybackStatePaused) {
             
@@ -1217,17 +1217,17 @@ long songRemainingSeconds;
 - (void) handle_ApplicationDidBecomeActive: (id) notification
 {
     if (musicPlayer.playbackState == MPMusicPlaybackStateInterrupted) {
-        NSLog (@"savedPlaybackState is %d", savedPlaybackState);
+//        NSLog (@"savedPlaybackState is %d", savedPlaybackState);
         if (savedPlaybackState == MPMusicPlaybackStatePlaying) {
             [playPauseButton setImage:[UIImage imageNamed:@"bigpause.png"] forState:UIControlStateNormal];
             [musicPlayer play];
-            NSLog (@"****************Playing");
+//            NSLog (@"****************Playing");
         } else {
             [playPauseButton setImage:[UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
             saveVolume = [musicPlayer volume];
             [musicPlayer setVolume: 0.0];
             [self performSelector:@selector(delayedPlay) withObject:nil afterDelay:0.0];            
-            NSLog (@"**************NOT Playing");
+//            NSLog (@"**************NOT Playing");
         }
     }
 }

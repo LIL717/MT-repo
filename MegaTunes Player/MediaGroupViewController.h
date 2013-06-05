@@ -7,8 +7,9 @@
 //
 
 #import "MediaGroup.h"
+@class MediaGroupCarouselViewController;
 
-@interface MediaGroupViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MPMediaPickerControllerDelegate> {
+@interface MediaGroupViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MPMediaPickerControllerDelegate, UINavigationControllerDelegate> {
 
     NSManagedObjectContext  *managedObjectContext;
 }
@@ -22,7 +23,9 @@
 @property (nonatomic, strong)	MPMusicPlayerController	*musicPlayer;
 @property (readwrite)           BOOL iPodLibraryChanged;
 @property (readwrite)           BOOL isShowingLandscapeView;
+@property (readwrite)           BOOL initialView;
 @property (nonatomic, strong)   UIBarButtonItem *rightBarButton;
+@property (nonatomic, strong)   MediaGroupCarouselViewController *mediaGroupCarouselViewController;
 
 
 

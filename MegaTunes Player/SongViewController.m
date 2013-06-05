@@ -67,7 +67,7 @@ BOOL turnOnShuffle;
     //set up an array of durations to be used in landscape mode
     songDurations = [[NSMutableArray alloc] initWithCapacity: [self.collectionItem.collectionArray count]];
     
-    NSLog (@" count of collection array %d", [self.collectionItem.collectionArray count]);
+//    NSLog (@" count of collection array %d", [self.collectionItem.collectionArray count]);
     
     if ([self.collectionItem.collectionArray count] > 0) {
     //create the array in the background

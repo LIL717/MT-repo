@@ -33,47 +33,27 @@
 @synthesize iPodLibraryChanged;         //A flag indicating whether the library has been changed due to a sync
 @synthesize isShowingLandscapeView;
 @synthesize rightBarButton;
+@synthesize initialView;
+@synthesize mediaGroupCarouselViewController;
+UIViewController *presentingViewController;
 
-BOOL initialView;
 
 #pragma mark - Initial Display methods
 
 - (void)awakeFromNib
 {
-    
-    isShowingLandscapeView = NO;
+    LogMethod();
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(orientationChanged:)
                                                  name:UIDeviceOrientationDidChangeNotification
                                                object:nil];
-}
-
-- (void)orientationChanged:(NSNotification *)notification
-{
-    UIDeviceOrientation deviceOrientation = [UIDevice currentDevice].orientation;
-    if (UIDeviceOrientationIsLandscape(deviceOrientation) &&
-        !isShowingLandscapeView)
-    {
-        [self performSegueWithIdentifier:@"DisplayCarouselView" sender:self];
-        isShowingLandscapeView = YES;
-    }
-    else if (UIDeviceOrientationIsPortrait(deviceOrientation) &&
-             isShowingLandscapeView)
-    {
-        [self dismissViewControllerAnimated:NO completion:nil];
-        isShowingLandscapeView = NO;
-    }
-}
-- (void)viewDidLoad
-{
-    //    LogMethod();
-    [super viewDidLoad];
     
+    [self.navigationController setDelegate: self];
     [self loadGroupingData];
-
+    
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
-
+    
     self.rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
                                                            style:UIBarButtonItemStyleBordered
                                                           target:self
@@ -86,14 +66,96 @@ BOOL initialView;
     [self.rightBarButton setBackgroundImage:menuBarImageLandscape forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
     
     musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
-
+    
     id appDelegate = (id)[[UIApplication sharedApplication] delegate];
     self.managedObjectContext = [appDelegate managedObjectContext];
     
     [self registerForMediaPlayerNotifications];
     
-    initialView = YES;
+    self.initialView = YES;
 }
+    // Called when a new view is shown.
+//- (void)navigationController:(UINavigationController *)navigationController
+//      willShowViewController:(UIViewController *)viewController
+//                    animated:(BOOL)animated
+//{
+//    LogMethod();
+//    // May be coming back from another controller to find we're
+//    // showing the wrong controller for the orientation.
+//    presentingViewController = (UIViewController *)viewController;
+//    [self removeViewIfNeeded];
+//}
+// Called when a new view is shown.
+- (void)navigationController:(UINavigationController *)navigationController
+       didShowViewController:(UIViewController *)viewController
+                    animated:(BOOL)animated
+{
+//    LogMethod();
+    // May be coming back from another controller to find we're
+    // showing the wrong controller for the orientation.
+//    presentingViewController = (UIViewController *)viewController;
+    [self swapControllersIfNeeded];
+}
+// Method to handle orientation changes.
+- (void)orientationChanged:(NSNotification *)notification
+{
+//    presentingViewController = self.navigationController.visibleViewController;
+    [self swapControllersIfNeeded];
+}
+//- (void)removeViewIfNeeded
+//{
+//    UIDeviceOrientation deviceOrientation = [UIDevice currentDevice].orientation;
+//    
+//    //If controllers will swap, remove content views so a black screen shows instead of wrong view for split second
+//    
+//    if (UIDeviceOrientationIsLandscape(deviceOrientation) &&
+//        presentingViewController == self)
+//    {
+//
+//        [self.groupTableView removeFromSuperview];
+//    }
+//    else if (UIDeviceOrientationIsPortrait(deviceOrientation) &&
+//             presentingViewController == self.mediaGroupCarouselViewController)
+//    {
+//        self.mediaGroupCarouselViewController =
+//        [self.storyboard instantiateViewControllerWithIdentifier:@"MediaGroupCarouselView"];
+//        [self.mediaGroupCarouselViewController.carousel removeFromSuperview];
+//
+//    }
+//}
+- (void)swapControllersIfNeeded
+{
+//    LogMethod();
+    UIDeviceOrientation deviceOrientation = [UIDevice currentDevice].orientation;
+    
+    // Check that we're not showing the wrong controller for the orientation.
+    if (UIDeviceOrientationIsLandscape(deviceOrientation) &&
+        self.navigationController.visibleViewController == self)
+    {
+        // Orientation is landscape but the visible controller is this one,
+        // which is the portrait one.
+        // Create new instance of landscape controller from the storyboard.
+        // Use a property to keep track of it because we need it for
+        // the check in the else branch.
+        self.mediaGroupCarouselViewController =
+        [self.storyboard instantiateViewControllerWithIdentifier:@"MediaGroupCarouselView"];
+        // TODO - Set the landscape controller's model from the model we have.
+        //self.mediaGroupCarouselViewController.model = self.model;
+        // Push the new controller rather than use a segue so that we can do it
+        // without animation.
+        [self.navigationController pushViewController:self.mediaGroupCarouselViewController
+                                             animated:NO];
+    }
+    else if (UIDeviceOrientationIsPortrait(deviceOrientation) &&
+             self.navigationController.visibleViewController == self.mediaGroupCarouselViewController)
+    {
+        // Orientation is portrait but the visible controller is
+        // the landscape controller. Pop the top controller, we
+        // know the portrait controller, self, is the next one down.
+        [self.navigationController popViewControllerAnimated:NO];
+    }
+}
+
 -(void) loadGroupingData
 {
     MediaGroup* group0 = [[MediaGroup alloc] initWithName:@"Playlists" andImage:[UIImage imageNamed:@"PlaylistsIcon.png"]andQueryType: [MPMediaQuery playlistsQuery]];
@@ -120,21 +182,27 @@ BOOL initialView;
     return;    
     
 }
+- (void)viewDidLoad
+{
+    LogMethod();
+    [super viewDidLoad];
+    
+    
+}
 - (void) viewWillAppear:(BOOL)animated
 {
-//    LogMethod();
+    LogMethod();
     [super viewWillAppear: animated];
 
     [self setIPodLibraryChanged: NO];
     self.title = NSLocalizedString(@"Select Music", nil);
     self.navigationItem.titleView = [self customizeTitleView];
 
-
     NSString *playingItem = [[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyTitle];
 
     if (playingItem) {
-        if (initialView) {
-            initialView = NO;
+        if (self.initialView) {
+            self.initialView = NO;
             [self viewNowPlaying];
         } else {
         self.navigationItem.rightBarButtonItem = self.rightBarButton;
@@ -147,7 +215,7 @@ BOOL initialView;
     return;
 }
 -(void) viewDidAppear:(BOOL)animated {
-    //    LogMethod();
+    LogMethod();
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     initialView = NO;
     [super viewDidAppear:(BOOL)animated];
@@ -167,22 +235,23 @@ BOOL initialView;
    }
 
 
-//- (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
-//    
-//    [self updateLayoutForNewOrientation: orientation];
-//
-//}
+- (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
+//    LogMethod();
+    [self updateLayoutForNewOrientation: orientation];
+
+}
 - (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
 
+//    LogMethod();
     if (UIInterfaceOrientationIsPortrait(orientation)) {
         [self.groupTableView setContentInset:UIEdgeInsetsMake(11,0,0,0)];
-//    } else {
-//        [self.groupTableView setContentInset:UIEdgeInsetsMake(23,0,0,0)];
-//        [self.groupTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+    } else {
+        [self.groupTableView setContentInset:UIEdgeInsetsMake(23,0,0,0)];
+        [self.groupTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
     }
 }
 - (void) viewWillLayoutSubviews {
-
+    LogMethod();
     //need this to pin portrait view to bounds otherwise if start in landscape, push to next view, rotate to portrait then pop back the original view in portrait - it will be too wide and "scroll" horizontally
     self.groupTableView.contentSize = CGSizeMake(self.groupTableView.frame.size.width, self.groupTableView.contentSize.height);
     [super viewWillLayoutSubviews];
@@ -255,16 +324,7 @@ BOOL initialView;
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
 //    LogMethod();
-    if ([segue.identifier isEqualToString:@"DisplayCarouselView"])
-	{
-		MediaGroupCarouselViewController *mediaGroupCarouselViewController = segue.destinationViewController;
-        mediaGroupCarouselViewController.managedObjectContext = self.managedObjectContext;
-        
-        mediaGroupCarouselViewController.groupingData = self.groupingData;
-        mediaGroupCarouselViewController.title = NSLocalizedString(self.title, nil);
-        mediaGroupCarouselViewController.iPodLibraryChanged = self.iPodLibraryChanged;
-        
-	}
+
 	if ([segue.identifier isEqualToString:@"ViewGenres"])
 	{
 		GenreViewController *genreViewController = segue.destinationViewController;
@@ -422,8 +482,8 @@ BOOL initialView;
                                                  name:UIDeviceOrientationDidChangeNotification
                                                object:nil];
     
-    [[MPMediaLibrary defaultMediaLibrary] endGeneratingLibraryChangeNotifications];
     [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
+    [[MPMediaLibrary defaultMediaLibrary] endGeneratingLibraryChangeNotifications];
     [musicPlayer endGeneratingPlaybackNotifications];
 
 }

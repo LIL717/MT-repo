@@ -66,7 +66,7 @@ BOOL showDuration;
     
     //set up an array of durations to be used in landscape mode
     collectionDurations = [[NSMutableArray alloc] initWithCapacity: [self.collection count]];
-    NSLog (@" count of collection array %d", [self.collection count]);
+//    NSLog (@" count of collection array %d", [self.collection count]);
 
     if ([self.collection count] > 0) {
         //create the array in the background
@@ -185,7 +185,7 @@ BOOL showDuration;
 }
 - (void) viewWillAppear:(BOOL)animated
 {
-    LogMethod();
+//    LogMethod();
     [super viewWillAppear: animated];
     
     self.navigationItem.titleView = [self customizeTitleView];

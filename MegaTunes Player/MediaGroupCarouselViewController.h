@@ -25,6 +25,8 @@
 @property (nonatomic, strong)	MPMusicPlayerController	*musicPlayer;
 @property (readwrite)           BOOL iPodLibraryChanged;
 @property (nonatomic, strong)   UIBarButtonItem *rightBarButton;
+@property (readwrite)           BOOL initialView;
+
 
 
 @end
