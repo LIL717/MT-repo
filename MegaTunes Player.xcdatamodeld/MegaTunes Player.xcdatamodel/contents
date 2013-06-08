@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2057" systemVersion="12C60" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2061" systemVersion="12D78" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="ItemCollection" representedClassName="ItemCollection" syncable="YES">
         <attribute name="collection" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="duration" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -13,8 +13,12 @@
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="userGrouping" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="UserGroupingData" syncable="YES">
+        <attribute name="groupingItem" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <elements>
         <element name="ItemCollection" positionX="0" positionY="0" width="128" height="105"/>
         <element name="MediaItemUserData" positionX="169" positionY="-27" width="128" height="120"/>
+        <element name="UserGroupingData" positionX="160" positionY="192" width="128" height="60"/>
     </elements>
 </model>

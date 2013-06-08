@@ -56,7 +56,7 @@
                         </view>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" restorationIdentifier="SongCell" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="SongCell" rowHeight="55" id="fy5-n4-fQP" userLabel="cell" customClass="SongCell">
-                                <rect key="frame" x="0.0" y="146" width="480" height="56"/>
+                                <rect key="frame" x="0.0" y="146" width="480" height="57"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="10" y="1" width="460" height="54"/>
@@ -994,6 +994,7 @@
                     <navigationItem key="navigationItem" id="BfA-rd-N1z"/>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <connections>
+                        <outlet property="backgroundView" destination="vYR-LN-30Z" id="b3F-jK-ZsR"/>
                         <outlet property="carousel" destination="Gbu-6N-ucw" id="0nI-VU-K5k"/>
                         <segue destination="DLM-JZ-gUa" kind="push" identifier="ViewGenres" id="E4Y-B8-RSc"/>
                         <segue destination="DPV-A8-OP5" kind="push" identifier="ArtistCollections" id="rM7-oN-wjy"/>
@@ -1189,7 +1190,7 @@
                         </view>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="CollectionItemCell" rowHeight="55" id="WIN-8k-Cc9" userLabel="cell" customClass="CollectionItemCell">
-                                <rect key="frame" x="0.0" y="146" width="480" height="56"/>
+                                <rect key="frame" x="0.0" y="146" width="480" height="57"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="10" y="1" width="440" height="54"/>
@@ -1316,7 +1317,7 @@
                         </view>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="CollectionItemCell" rowHeight="55" id="Kxz-v9-piZ" userLabel="cell" customClass="CollectionItemCell">
-                                <rect key="frame" x="0.0" y="91" width="480" height="56"/>
+                                <rect key="frame" x="0.0" y="91" width="480" height="57"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="10" y="1" width="440" height="54"/>

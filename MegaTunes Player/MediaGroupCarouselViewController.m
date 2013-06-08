@@ -16,6 +16,7 @@
 #import "MainViewController.h"
 #import "AlbumViewcontroller.h"
 #import "GenreViewController.h"
+#import "MediaGroupViewController.h"
 
 @interface MediaGroupCarouselViewController ()
 
@@ -25,6 +26,7 @@
 @implementation MediaGroupCarouselViewController
 
 @synthesize carousel;
+@synthesize backgroundView;
 @synthesize collection;
 @synthesize groupingData;
 @synthesize selectedGroup;
@@ -32,16 +34,15 @@
 @synthesize managedObjectContext;
 @synthesize iPodLibraryChanged;         //A flag indicating whether the library has been changed due to a sync
 @synthesize rightBarButton;
-@synthesize initialView;
+@synthesize initialLandscapeImage;
+@synthesize mediaGroupViewController;
+
 
 #pragma mark - Initial Display methods
 - (void)awakeFromNib
 {
 //    LogMethod();
     [self loadGroupingData];
-    
-//    //configure carousel
-//    carousel.type = iCarouselTypeCoverFlow2;
     
     self.rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
                                                            style:UIBarButtonItemStyleBordered
@@ -54,9 +55,7 @@
     [self.rightBarButton setBackgroundImage:menuBarImageDefault forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     [self.rightBarButton setBackgroundImage:menuBarImageLandscape forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
     
-    [self.navigationItem setHidesBackButton: YES animated: NO];
-    //    self.navigationItem.leftBarButtonItem = nil;
-    
+    [self.navigationItem setHidesBackButton: YES animated: NO];    
     
     musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
     
@@ -115,24 +114,16 @@
     NSString *playingItem = [[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyTitle];
     
     if (playingItem) {
-        if (self.initialView) {
-            self.initialView = NO;
-            [self viewNowPlaying];
-        } else {
-            self.navigationItem.rightBarButtonItem = self.rightBarButton;
-        }
+        self.navigationItem.rightBarButtonItem = self.rightBarButton;
     } else {
         self.navigationItem.rightBarButtonItem= nil;
     }
-
-//    [self updateLayoutForNewOrientation: self.interfaceOrientation];
 
     return;
 }
 -(void) viewDidAppear:(BOOL)animated {
 //    LogMethod();
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    initialView = NO;
     [super viewDidAppear:(BOOL)animated];
 }
 
@@ -207,7 +198,18 @@
     }
     [view addSubview:imageView];
 
-    
+    // need to create an image of the Playlist carousel item (index 0) to use as a placeholder when loading this after outside rotation
+    if (index == 0) {
+        UIGraphicsBeginImageContext((view.bounds.size));
+        
+        [view.layer renderInContext:UIGraphicsGetCurrentContext()];
+        
+        UIImage *playlistImage = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        
+        self.mediaGroupViewController.initialLandscapeImage = (playlistImage);
+
+    }
     return view;
 }
 

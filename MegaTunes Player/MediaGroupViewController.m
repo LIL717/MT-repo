@@ -35,14 +35,19 @@
 @synthesize rightBarButton;
 @synthesize initialView;
 @synthesize mediaGroupCarouselViewController;
+@synthesize pView;
+@synthesize lView;
+@synthesize initialPortraitImage;
+@synthesize initialLandscapeImage;
 UIViewController *presentingViewController;
+
 
 
 #pragma mark - Initial Display methods
 
 - (void)awakeFromNib
 {
-    LogMethod();
+//    LogMethod();
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(orientationChanged:)
@@ -50,6 +55,132 @@ UIViewController *presentingViewController;
                                                object:nil];
     
     [self.navigationController setDelegate: self];
+
+    self.pView =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background-568h.png"]];
+    self.lView =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"backgroundLandscape-568h.png"]];
+
+}
+    // Called when a new view is shown before viewDidAppear 
+
+- (void)navigationController:(UINavigationController *)navigationController
+      willShowViewController:(UIViewController *)viewController
+                    animated:(BOOL)animated
+{
+//    LogMethod();
+    // May be coming back from another controller to find we're
+    // showing the wrong controller for the orientation.
+    presentingViewController = (UIViewController *)viewController;
+    [self createTempBackgroundForSwap];
+}
+    // Called when a new view is shown. (
+- (void)navigationController:(UINavigationController *)navigationController
+       didShowViewController:(UIViewController *)viewController
+                    animated:(BOOL)animated
+{
+//    LogMethod();
+    // May be coming back from another controller to find we're
+    // showing the wrong controller for the orientation.
+    [self swapControllersIfNeeded];
+}
+// Method to handle orientation changes.
+- (void)orientationChanged:(NSNotification *)notification
+{
+    [self swapControllersIfNeeded];
+}
+- (void) createTempBackgroundForSwap
+{
+    UIDeviceOrientation deviceOrientation = [UIDevice currentDevice].orientation;
+    
+    if (UIDeviceOrientationIsLandscape(deviceOrientation) &&
+        presentingViewController == self)
+    {
+        // NOTE: PUSHING A NEW VIEW CONTROLLER BEFORE viewDidAppear causes issues for the pop later - so just instantiate and build background here, push after viewDidAppear in swapControllerIfNeeded method
+        
+        self.mediaGroupCarouselViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MediaGroupCarouselView"];
+        self.mediaGroupCarouselViewController.mediaGroupViewController = self;
+
+        //initialLandscapeImage is created from the Playlist carousel view the first time it is loaded
+        if (self.initialLandscapeImage) {
+            UIImageView *lImageView =[[UIImageView alloc] initWithImage: initialLandscapeImage];
+            CGRect frame = lImageView.frame;
+            frame.origin.x = (self.view.bounds.size.width / 2 - lImageView.frame.size.width / 2);
+            frame.origin.y = (self.view.bounds.size.height / 2 - lImageView.frame.size.height / 2 - 11);
+            lImageView.frame = frame;
+
+            [self.lView addSubview: lImageView];
+
+        }
+        [self.view addSubview: self.lView];
+    }
+
+    else if (UIDeviceOrientationIsPortrait(deviceOrientation) &&
+             presentingViewController == self.mediaGroupCarouselViewController)
+    {
+            //initialPortraitImage is a screen image of the portrait screen the first time it is loaded
+        
+        if (self.initialPortraitImage) {
+//            self.pView =[[UIImageView alloc] initWithImage: initialPortraitImage];
+//            CGRect frame = self.pView.frame;
+//            frame.origin.y = 11.0f;
+//            self.pView.frame = frame;
+            UIImageView *pImageView =[[UIImageView alloc] initWithImage: initialPortraitImage];
+            CGRect frame = pImageView.frame;
+//            frame.origin.x = (self.view.bounds.size.width / 2 - pImageView.frame.size.width / 2);
+//            frame.origin.y = (self.view.bounds.size.height / 2 - pImageView.frame.size.height / 2 - 11);
+            frame.origin.y = 11.0f;
+            pImageView.frame = frame;
+            
+            [self.pView addSubview: pImageView];
+        }
+        [self.mediaGroupCarouselViewController.view addSubview: self.pView];
+
+    }
+}
+- (void)swapControllersIfNeeded
+{
+//    LogMethod();
+    UIDeviceOrientation deviceOrientation = [UIDevice currentDevice].orientation;
+    
+    // Check that we're not showing the wrong controller for the orientation.
+    if (UIDeviceOrientationIsLandscape(deviceOrientation) &&
+        self.navigationController.visibleViewController == self)
+    {
+        // Orientation is landscape but the visible controller is this one,
+        // which is the portrait one.
+        // Create new instance of landscape controller from the storyboard.
+        // Use a property to keep track of it because we need it for
+        // the check in the else branch.
+        // If it was already instantiated in createTempBackgroundForSwap, then just push
+        if (!self.mediaGroupCarouselViewController) {
+            self.mediaGroupCarouselViewController =
+            [self.storyboard instantiateViewControllerWithIdentifier:@"MediaGroupCarouselView"];
+            self.mediaGroupCarouselViewController.mediaGroupViewController = self;
+        }
+        // Push the new controller rather than use a segue so that we can do it
+        // without animation.
+        [self.navigationController pushViewController:self.mediaGroupCarouselViewController
+                                                 animated:NO];
+        [self.lView removeFromSuperview];
+
+    }
+    else if (UIDeviceOrientationIsPortrait(deviceOrientation) &&
+             self.navigationController.visibleViewController == self.mediaGroupCarouselViewController)
+    {
+        // Orientation is portrait but the visible controller is
+        // the landscape controller. Pop the top controller, we
+        // know the portrait controller, self, is the next one down.
+//        [self.navigationController popViewControllerAnimated:NO];
+        [self.navigationController popToRootViewControllerAnimated:NO];
+        self.mediaGroupCarouselViewController = nil;
+        [self.pView removeFromSuperview];
+
+    }
+}
+
+- (void)viewDidLoad
+{
+//    LogMethod();
+    [super viewDidLoad];
     [self loadGroupingData];
     
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
@@ -73,87 +204,7 @@ UIViewController *presentingViewController;
     [self registerForMediaPlayerNotifications];
     
     self.initialView = YES;
-}
-    // Called when a new view is shown.
-//- (void)navigationController:(UINavigationController *)navigationController
-//      willShowViewController:(UIViewController *)viewController
-//                    animated:(BOOL)animated
-//{
-//    LogMethod();
-//    // May be coming back from another controller to find we're
-//    // showing the wrong controller for the orientation.
-//    presentingViewController = (UIViewController *)viewController;
-//    [self removeViewIfNeeded];
-//}
-// Called when a new view is shown.
-- (void)navigationController:(UINavigationController *)navigationController
-       didShowViewController:(UIViewController *)viewController
-                    animated:(BOOL)animated
-{
-//    LogMethod();
-    // May be coming back from another controller to find we're
-    // showing the wrong controller for the orientation.
-//    presentingViewController = (UIViewController *)viewController;
-    [self swapControllersIfNeeded];
-}
-// Method to handle orientation changes.
-- (void)orientationChanged:(NSNotification *)notification
-{
-//    presentingViewController = self.navigationController.visibleViewController;
-    [self swapControllersIfNeeded];
-}
-//- (void)removeViewIfNeeded
-//{
-//    UIDeviceOrientation deviceOrientation = [UIDevice currentDevice].orientation;
-//    
-//    //If controllers will swap, remove content views so a black screen shows instead of wrong view for split second
-//    
-//    if (UIDeviceOrientationIsLandscape(deviceOrientation) &&
-//        presentingViewController == self)
-//    {
-//
-//        [self.groupTableView removeFromSuperview];
-//    }
-//    else if (UIDeviceOrientationIsPortrait(deviceOrientation) &&
-//             presentingViewController == self.mediaGroupCarouselViewController)
-//    {
-//        self.mediaGroupCarouselViewController =
-//        [self.storyboard instantiateViewControllerWithIdentifier:@"MediaGroupCarouselView"];
-//        [self.mediaGroupCarouselViewController.carousel removeFromSuperview];
-//
-//    }
-//}
-- (void)swapControllersIfNeeded
-{
-//    LogMethod();
-    UIDeviceOrientation deviceOrientation = [UIDevice currentDevice].orientation;
-    
-    // Check that we're not showing the wrong controller for the orientation.
-    if (UIDeviceOrientationIsLandscape(deviceOrientation) &&
-        self.navigationController.visibleViewController == self)
-    {
-        // Orientation is landscape but the visible controller is this one,
-        // which is the portrait one.
-        // Create new instance of landscape controller from the storyboard.
-        // Use a property to keep track of it because we need it for
-        // the check in the else branch.
-        self.mediaGroupCarouselViewController =
-        [self.storyboard instantiateViewControllerWithIdentifier:@"MediaGroupCarouselView"];
-        // TODO - Set the landscape controller's model from the model we have.
-        //self.mediaGroupCarouselViewController.model = self.model;
-        // Push the new controller rather than use a segue so that we can do it
-        // without animation.
-        [self.navigationController pushViewController:self.mediaGroupCarouselViewController
-                                             animated:NO];
-    }
-    else if (UIDeviceOrientationIsPortrait(deviceOrientation) &&
-             self.navigationController.visibleViewController == self.mediaGroupCarouselViewController)
-    {
-        // Orientation is portrait but the visible controller is
-        // the landscape controller. Pop the top controller, we
-        // know the portrait controller, self, is the next one down.
-        [self.navigationController popViewControllerAnimated:NO];
-    }
+
 }
 
 -(void) loadGroupingData
@@ -173,25 +224,18 @@ UIViewController *presentingViewController;
     MediaGroup* group6 = [[MediaGroup alloc] initWithName:@"Genres" andImage:[UIImage imageNamed:@"GenresIcon.png"]andQueryType: [MPMediaQuery genresQuery]];
     
     MediaGroup* group7 = [[MediaGroup alloc] initWithName:@"Podcasts" andImage:[UIImage imageNamed:@"PodcastsIcon.png"]andQueryType: [MPMediaQuery podcastsQuery]];
-
+    
     
     self.groupingData = [NSArray arrayWithObjects:group0, group1, group2, group3, group4, group5, group6, group7, nil];
-//    self.groupingData = [NSArray arrayWithObjects:group0, group1, group2, group3, group4, group5, group6, nil];
-
+    //    self.groupingData = [NSArray arrayWithObjects:group0, group1, group2, group3, group4, group5, group6, nil];
     
-    return;    
     
-}
-- (void)viewDidLoad
-{
-    LogMethod();
-    [super viewDidLoad];
-    
+    return;
     
 }
 - (void) viewWillAppear:(BOOL)animated
 {
-    LogMethod();
+//    LogMethod();
     [super viewWillAppear: animated];
 
     [self setIPodLibraryChanged: NO];
@@ -215,12 +259,29 @@ UIViewController *presentingViewController;
     return;
 }
 -(void) viewDidAppear:(BOOL)animated {
-    LogMethod();
+//    LogMethod();
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     initialView = NO;
+    
+    UIDeviceOrientation deviceOrientation = [UIDevice currentDevice].orientation;
+
+    if (UIDeviceOrientationIsPortrait(deviceOrientation)) {
+        self.initialPortraitImage = ([self makeImage]);
+    }
     [super viewDidAppear:(BOOL)animated];
 }
+-(UIImage*) makeImage {
+    
+    UIGraphicsBeginImageContext(self.groupTableView.bounds.size);
+    
+    [self.groupTableView.layer renderInContext:UIGraphicsGetCurrentContext()];
+    
+    UIImage *portraitImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return portraitImage;
 
+}
 - (UILabel *) customizeTitleView
    {
        CGRect frame = CGRectMake(0, 0, [self.title sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 48);
@@ -251,7 +312,7 @@ UIViewController *presentingViewController;
     }
 }
 - (void) viewWillLayoutSubviews {
-    LogMethod();
+//    LogMethod();
     //need this to pin portrait view to bounds otherwise if start in landscape, push to next view, rotate to portrait then pop back the original view in portrait - it will be too wide and "scroll" horizontally
     self.groupTableView.contentSize = CGSizeMake(self.groupTableView.frame.size.width, self.groupTableView.contentSize.height);
     [super viewWillLayoutSubviews];

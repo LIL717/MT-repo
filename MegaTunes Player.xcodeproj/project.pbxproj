@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7004436F17614DC400DA8BB8 /* background-568h.png in Resources */ = {isa = PBXBuildFile; fileRef = 7004436E17614DC400DA8BB8 /* background-568h.png */; };
+		7004437117637DCB00DA8BB8 /* backgroundLandscape-568h.png in Resources */ = {isa = PBXBuildFile; fileRef = 7004437017637DCB00DA8BB8 /* backgroundLandscape-568h.png */; };
+		7004437317637FFE00DA8BB8 /* backgroundLandscape-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7004437217637FFE00DA8BB8 /* backgroundLandscape-568h@2x.png */; };
 		700511F216ADEA7F0085B6F1 /* InCellScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 700511F116ADEA7E0085B6F1 /* InCellScrollView.m */; };
 		700511FA16AF19240085B6F1 /* CustomSongCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 700511F916AF19240085B6F1 /* CustomSongCell.m */; };
 		7005120016AF2A9F0085B6F1 /* TemporaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 700511FF16AF2A9E0085B6F1 /* TemporaryViewController.m */; };
@@ -209,6 +212,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7004436E17614DC400DA8BB8 /* background-568h.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background-568h.png"; sourceTree = "<group>"; };
+		7004437017637DCB00DA8BB8 /* backgroundLandscape-568h.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "backgroundLandscape-568h.png"; sourceTree = "<group>"; };
+		7004437217637FFE00DA8BB8 /* backgroundLandscape-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "backgroundLandscape-568h@2x.png"; sourceTree = "<group>"; };
 		700511F016ADEA7E0085B6F1 /* InCellScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InCellScrollView.h; sourceTree = "<group>"; };
 		700511F116ADEA7E0085B6F1 /* InCellScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InCellScrollView.m; sourceTree = "<group>"; };
 		700511F816AF19240085B6F1 /* CustomSongCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomSongCell.h; sourceTree = "<group>"; };
@@ -951,7 +957,10 @@
 				70E8E813175AE12A0012CE74 /* ArtistsIcon@2x.png */,
 				70974B701630A27200A33B7D /* background.png */,
 				70974B731630A3A700A33B7D /* background@2x.png */,
+				7004436E17614DC400DA8BB8 /* background-568h.png */,
 				70974B721630A3A700A33B7D /* background-568h@2x.png */,
+				7004437017637DCB00DA8BB8 /* backgroundLandscape-568h.png */,
+				7004437217637FFE00DA8BB8 /* backgroundLandscape-568h@2x.png */,
 				70492FFC16E80509005A66C4 /* bigforward.png */,
 				70492FFD16E8050A005A66C4 /* bigforward@2x.png */,
 				7049300016E8071A005A66C4 /* bigpause.png */,
@@ -1273,6 +1282,9 @@
 				70E8E836175B0B860012CE74 /* PodcastsIcon.png in Resources */,
 				70E8E839175C2AB80012CE74 /* page@2x in Resources */,
 				70E8E83D175C5EAB0012CE74 /* PodcastsIcon@2x.png in Resources */,
+				7004436F17614DC400DA8BB8 /* background-568h.png in Resources */,
+				7004437117637DCB00DA8BB8 /* backgroundLandscape-568h.png in Resources */,
+				7004437317637FFE00DA8BB8 /* backgroundLandscape-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

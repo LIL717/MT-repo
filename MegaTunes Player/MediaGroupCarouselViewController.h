@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "iCarousel.h"
 #import "MediaGroup.h"
+@class MediaGroupViewController;
 
 
 @interface MediaGroupCarouselViewController : UIViewController <iCarouselDataSource, iCarouselDelegate, MPMediaPickerControllerDelegate> {
@@ -17,6 +18,7 @@
 }
 
 @property (strong, nonatomic) IBOutlet iCarousel *carousel;
+@property (strong, nonatomic) IBOutlet UIImageView *backgroundView;
 @property (nonatomic, retain)   NSManagedObjectContext *managedObjectContext;
 
 @property (nonatomic, strong)   NSArray  *collection;
@@ -25,8 +27,8 @@
 @property (nonatomic, strong)	MPMusicPlayerController	*musicPlayer;
 @property (readwrite)           BOOL iPodLibraryChanged;
 @property (nonatomic, strong)   UIBarButtonItem *rightBarButton;
-@property (readwrite)           BOOL initialView;
 
-
+@property (nonatomic, strong)   UIImage *initialLandscapeImage;
+@property (nonatomic, strong)   MediaGroupViewController *mediaGroupViewController;
 
 @end

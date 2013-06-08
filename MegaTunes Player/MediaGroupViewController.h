@@ -26,6 +26,11 @@
 @property (readwrite)           BOOL initialView;
 @property (nonatomic, strong)   UIBarButtonItem *rightBarButton;
 @property (nonatomic, strong)   MediaGroupCarouselViewController *mediaGroupCarouselViewController;
+@property (nonatomic, strong)   UIImageView *pView;
+@property (nonatomic, strong)   UIImageView *lView;
+
+@property (nonatomic, strong)   UIImage *initialPortraitImage;
+@property (nonatomic, strong)   UIImage *initialLandscapeImage;
 
 
 
