@@ -14,7 +14,7 @@
 
 @interface MediaGroupCarouselViewController : UIViewController <iCarouselDataSource, iCarouselDelegate, MPMediaPickerControllerDelegate> {
     
-    NSManagedObjectContext  *managedObjectContext;
+    NSManagedObjectContext  *managedObjectContext_;
 }
 
 @property (strong, nonatomic) IBOutlet iCarousel *carousel;

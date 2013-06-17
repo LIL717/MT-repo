@@ -13,7 +13,7 @@
 
 @interface SongViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, InfoTabBarControllerDelegate, MPMediaPickerControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate> {
   
-    NSManagedObjectContext *managedObjectContext;
+    NSManagedObjectContext *managedObjectContext_;
 
 }
 

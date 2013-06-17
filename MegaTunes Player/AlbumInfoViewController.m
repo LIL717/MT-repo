@@ -18,7 +18,7 @@
 
 @implementation AlbumInfoViewController
 
-@synthesize managedObjectContext;
+@synthesize managedObjectContext = managedObjectContext_;
 @synthesize musicPlayer;
 @synthesize mediaItemForInfo;
 

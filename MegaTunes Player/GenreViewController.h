@@ -12,7 +12,7 @@
 
 @interface GenreViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MPMediaPickerControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate> {
     
-    NSManagedObjectContext *managedObjectContext;
+    NSManagedObjectContext *managedObjectContext_;
 }
 
 @property (strong, nonatomic)   IBOutlet UITableView *collectionTableView;

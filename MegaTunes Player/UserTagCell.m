@@ -1,34 +1,26 @@
 //
-//  PlaylistCell.m
+//  UserTagCell.m
 //  MegaTunes Player
 //
-//  Created by Lori Hill on 9/23/12.
+//  Created by Lori Hill on 6/8/13.
 //
 //
 
-#import "SongCell.h"
+#import "UserTagCell.h"
 
-@implementation SongCell
+@implementation UserTagCell
 
-@synthesize playingIndicator;
-@synthesize scrollView;
-@synthesize nameLabel;
-@synthesize durationLabel;
-@synthesize infoBackground;
-//@synthesize BPM;
-@synthesize scrollViewToCellConstraint;
-@synthesize centerXAlignmentConstraint;
-//@synthesize centerYAlignmentConstraint;
+@synthesize cellBackgroundImageView;
+@synthesize tagLabel;
+//@synthesize centerXAlignmentConstraint;
 @synthesize xOffset;
-
-
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-
+        
     }
     return self;
 }
@@ -36,7 +28,7 @@
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
-
+    
     // Configure the view for the selected state
 }
 - (void) layoutSubviews

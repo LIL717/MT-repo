@@ -11,7 +11,7 @@
 
 @interface MediaGroupViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MPMediaPickerControllerDelegate, UINavigationControllerDelegate> {
 
-    NSManagedObjectContext  *managedObjectContext;
+    NSManagedObjectContext  *managedObjectContext_;
 }
 
 @property (strong, nonatomic)   IBOutlet UITableView *groupTableView;

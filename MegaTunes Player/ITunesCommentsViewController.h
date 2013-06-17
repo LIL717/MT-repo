@@ -6,7 +6,7 @@
 //
 //
 
-@interface ITunesCommentsViewController : UIViewController < MPMediaPickerControllerDelegate, NSFetchedResultsControllerDelegate> {
+@interface ITunesCommentsViewController : UIViewController < MPMediaPickerControllerDelegate> {
     
 }
 

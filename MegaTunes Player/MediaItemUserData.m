@@ -8,14 +8,16 @@
 
 #import "MediaItemUserData.h"
 #import "UserDataForMediaItem.h"
+#import "TagData.h"
 
 @implementation MediaItemUserData
 
 @dynamic title;
-@dynamic userGrouping;
+//@dynamic tagName;
 @dynamic comments;
 @dynamic persistentID;
 @dynamic bpm;
+@dynamic tagData;
 
 @synthesize fetchedResultsController = fetchedResultsController_;
 @synthesize managedObjectContext = managedObjectContext_;
@@ -28,6 +30,7 @@
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"MediaItemUserData"
                                               inManagedObjectContext:self.managedObjectContext];
     [fetchRequest setEntity:entity];
+    NSError *error = nil;
 
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"persistentID == %@", currentItemPersistentID];
 
@@ -35,7 +38,6 @@
     
 //    NSLog(@"entity retrieved is %@", entity);
 
-    NSError *error = nil;
     self.fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
 
     if (self.fetchedObjects == nil) {
@@ -50,24 +52,32 @@
         // if there is an object, need to return it
         return [self.fetchedObjects objectAtIndex:0];
     }
+
 }
-- (void) updateUserGroupingForItem: (UserDataForMediaItem *) userDataForMediaItem {
+- (void) updateTagForItem: (UserDataForMediaItem *) userDataForMediaItem {
     
     NSError * error = nil;
     
     if ([self containsItem: userDataForMediaItem.persistentID]) {
         //if the object is found, update its fields
-        [[self.fetchedObjects objectAtIndex:0] setValue: userDataForMediaItem.userGrouping forKey: @"userGrouping"];
+//        [[self.fetchedObjects objectAtIndex:0] setValue: userDataForMediaItem.tagName forKey: @"tagName"];
+        [[self.fetchedObjects objectAtIndex:0] setValue: userDataForMediaItem.tagData forKey: @"tagData"];
+
     } else {
         //if the object was not found in Core Data, add a new object
         NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:@"MediaItemUserData" inManagedObjectContext:self.managedObjectContext];
         [newManagedObject setValue: userDataForMediaItem.title forKey:@"title"];
-        [newManagedObject setValue: userDataForMediaItem.userGrouping forKey: @"userGrouping"];
         [newManagedObject setValue: userDataForMediaItem.persistentID forKey:@"persistentID"];
+        [newManagedObject setValue: userDataForMediaItem.tagData forKey: @"tagData"];
     }
     if (![self.managedObjectContext save:&error]) {
         NSLog(@"%s: Problem saving: %@", __PRETTY_FUNCTION__, error);
     }
+    
+//    TagData *tagData = [TagData alloc];
+//    tagData.managedObjectContext = self.managedObjectContext;
+//    
+//    [tagData updateItemForTag: userDataForMediaItem.tagData];
 }
 - (void) updateCommentsForItem: (UserDataForMediaItem *) userDataForMediaItem {
     
@@ -87,4 +97,24 @@
         NSLog(@"%s: Problem saving: %@", __PRETTY_FUNCTION__, error);
     }
 }
+
+- (void) listAll {
+// Test listing all tagData from the store
+
+    NSError * error = nil;
+
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"MediaItemUserData"
+                                              inManagedObjectContext:self.managedObjectContext];
+    [fetchRequest setEntity:entity];
+
+    NSArray *fetchedObjects2 = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    for (UserDataForMediaItem *uDFMI in fetchedObjects2) {
+        NSLog(@"title: %@", uDFMI.title);
+        NSLog(@"persistentID: %@", uDFMI.persistentID);
+        NSLog(@"comments: %@", uDFMI.comments);
+        NSLog(@"tagName: %@", uDFMI.tagData.tagName);
+    }
+}
+//end test
 @end

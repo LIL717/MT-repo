@@ -22,7 +22,7 @@
 
 @implementation InfoTabBarController
 
-@synthesize managedObjectContext;
+@synthesize managedObjectContext = managedObjectContext_;
 @synthesize musicPlayer;
 @synthesize albumInfoViewController;
 @synthesize iTunesInfoViewController;
@@ -172,7 +172,7 @@
 
 //        [self.userInfoViewController.view removeConstraint:self.userInfoViewController.verticalSpaceToTop28];
 //        [self.userInfoViewController.view addConstraint:self.userInfoViewController.verticalSpaceToTop];
-        self.userInfoViewController.verticalSpaceTopToGroupingConstraint.constant = 12;
+        self.userInfoViewController.verticalSpaceTopToTagConstraint.constant = 12;
         self.userInfoViewController.verticalSpaceTopToCommentsConstraint.constant = 66;
         
 
@@ -192,7 +192,7 @@
         [self.iTunesCommentsViewController.comments scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
         
         // Set top row spacing to superview top
-        self.userInfoViewController.verticalSpaceTopToGroupingConstraint.constant += self.userInfoViewController.landscapeOffset;
+        self.userInfoViewController.verticalSpaceTopToTagConstraint.constant += self.userInfoViewController.landscapeOffset;
         self.userInfoViewController.verticalSpaceTopToCommentsConstraint.constant += self.userInfoViewController.landscapeOffset;
     }
 }
@@ -316,7 +316,7 @@
             
             self.userInfoViewController.mediaItemForInfo = self.mediaItemForInfo;
             [self.userInfoViewController loadDataForView];
-            [self.userInfoViewController.userGrouping setNeedsDisplay];
+            [self.userInfoViewController.userTagButton setNeedsDisplay];
             [self.userInfoViewController.comments setNeedsDisplay];
             
             self.title = [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyTitle];

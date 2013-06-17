@@ -111,8 +111,7 @@
 @synthesize nowPlayingInfoCenter;
 @synthesize playNew;                    //Flag set if new song has been selected to play
 @synthesize itemToPlay;
-@synthesize fetchedResultsController = fetchedResultsController_;
-@synthesize managedObjectContext;
+@synthesize managedObjectContext = managedObjectContext_;
 @synthesize mediaItemForInfo;           // mediaItem which gets passed to info view controllers
 @synthesize iPodLibraryChanged;         //A flag indicating whether the library has been changed due to a sync
 @synthesize showPlaylistRemaining;      //A flag the captures the user's preference from setting whether to display the amount of time left in playlist

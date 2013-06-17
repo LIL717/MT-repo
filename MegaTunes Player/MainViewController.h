@@ -22,7 +22,7 @@
 #import "AutoScrollLabel.h"
 
 
-@interface MainViewController : UIViewController <MPMediaPickerControllerDelegate, AVAudioPlayerDelegate, TimeMagnifierViewControllerDelegate, TextMagnifierViewControllerDelegate, InfoTabBarControllerDelegate, NSFetchedResultsControllerDelegate> {
+@interface MainViewController : UIViewController <MPMediaPickerControllerDelegate, AVAudioPlayerDelegate, TimeMagnifierViewControllerDelegate, TextMagnifierViewControllerDelegate, InfoTabBarControllerDelegate> {
     
 	BOOL						playedMusicOnce;
     
@@ -36,8 +36,7 @@
     MPNowPlayingInfoCenter      *nowPlayingInfoCenter;
     BOOL                        playNew;
     MPMediaItem                 *itemToPlay;
-    NSFetchedResultsController  *fetchedResultsController;
-    NSManagedObjectContext      *managedObjectContext;
+    NSManagedObjectContext      *managedObjectContext_;
     BOOL                        iPodLibraryChanged;
 }
 @property (nonatomic, strong)	UINavigationBar			*navigationBar;
@@ -53,8 +52,7 @@
 @property (nonatomic, strong)   MPNowPlayingInfoCenter  *nowPlayingInfoCenter;
 @property (readwrite)           BOOL                    playNew;
 @property (nonatomic, strong)   MPMediaItem             *itemToPlay;
-@property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
-@property (nonatomic, retain) NSManagedObjectContext    *managedObjectContext;
+@property (nonatomic, retain)   NSManagedObjectContext  *managedObjectContext;
 @property (nonatomic, strong)   MPMediaItem             *mediaItemForInfo;
 @property (readwrite)           BOOL                    iPodLibraryChanged;
 @property (readwrite)           BOOL                    showPlaylistRemaining;

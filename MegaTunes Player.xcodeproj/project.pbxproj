@@ -10,6 +10,9 @@
 		7004436F17614DC400DA8BB8 /* background-568h.png in Resources */ = {isa = PBXBuildFile; fileRef = 7004436E17614DC400DA8BB8 /* background-568h.png */; };
 		7004437117637DCB00DA8BB8 /* backgroundLandscape-568h.png in Resources */ = {isa = PBXBuildFile; fileRef = 7004437017637DCB00DA8BB8 /* backgroundLandscape-568h.png */; };
 		7004437317637FFE00DA8BB8 /* backgroundLandscape-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7004437217637FFE00DA8BB8 /* backgroundLandscape-568h@2x.png */; };
+		700443761763B0D400DA8BB8 /* TagData.m in Sources */ = {isa = PBXBuildFile; fileRef = 700443751763B0D400DA8BB8 /* TagData.m */; };
+		700443791763B49900DA8BB8 /* UserTagViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 700443781763B49800DA8BB8 /* UserTagViewController.m */; };
+		7004437C1763C05D00DA8BB8 /* UserTagCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7004437B1763C05D00DA8BB8 /* UserTagCell.m */; };
 		700511F216ADEA7F0085B6F1 /* InCellScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 700511F116ADEA7E0085B6F1 /* InCellScrollView.m */; };
 		700511FA16AF19240085B6F1 /* CustomSongCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 700511F916AF19240085B6F1 /* CustomSongCell.m */; };
 		7005120016AF2A9F0085B6F1 /* TemporaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 700511FF16AF2A9E0085B6F1 /* TemporaryViewController.m */; };
@@ -83,6 +86,7 @@
 		70864FCE17092B5B0030210C /* GenreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70864FCD17092B5B0030210C /* GenreViewController.m */; };
 		70864FD1170B789E0030210C /* UIScrollView+PassTouches.m in Sources */ = {isa = PBXBuildFile; fileRef = 70864FD0170B789E0030210C /* UIScrollView+PassTouches.m */; };
 		70864FD4170B93110030210C /* WindowSubClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 70864FD3170B93100030210C /* WindowSubClass.m */; };
+		70890D2217663D2800D338A8 /* TagItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 70890D2117663D2800D338A8 /* TagItem.m */; };
 		70974B1A1630565100A33B7D /* back.png in Resources */ = {isa = PBXBuildFile; fileRef = 70974B181630565100A33B7D /* back.png */; };
 		70974B1B1630565100A33B7D /* back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70974B191630565100A33B7D /* back@2x.png */; };
 		70974B511630698200A33B7D /* UIImage+iPhone5.m in Sources */ = {isa = PBXBuildFile; fileRef = 70974B2C1630698200A33B7D /* UIImage+iPhone5.m */; };
@@ -169,6 +173,14 @@
 		70C177A7166EC6B400792D8F /* selection-tab.png in Resources */ = {isa = PBXBuildFile; fileRef = 70C177A6166EC6B400792D8F /* selection-tab.png */; };
 		70C177AA166EC6D500792D8F /* tabbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 70C177A8166EC6D500792D8F /* tabbar.png */; };
 		70C177AB166EC6D500792D8F /* tabbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70C177A9166EC6D500792D8F /* tabbar@2x.png */; };
+		70CF0BD1176A6561007AB6CF /* AddTagViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70CF0BD0176A655F007AB6CF /* AddTagViewController.m */; };
+		70CF0BD8176C0917007AB6CF /* KSLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 70CF0BD7176C0917007AB6CF /* KSLabel.m */; };
+		70CF0BEF176D33C2007AB6CF /* colorWheel.png in Resources */ = {isa = PBXBuildFile; fileRef = 70CF0BDE176D33C2007AB6CF /* colorWheel.png */; };
+		70CF0BF4176D33C2007AB6CF /* VBColorPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 70CF0BE7176D33C2007AB6CF /* VBColorPicker.m */; };
+		70CF0BFD176EC830007AB6CF /* add57.png in Resources */ = {isa = PBXBuildFile; fileRef = 70CF0BF9176EC82A007AB6CF /* add57.png */; };
+		70CF0BFF176EC830007AB6CF /* add68.png in Resources */ = {isa = PBXBuildFile; fileRef = 70CF0BFB176EC82C007AB6CF /* add68.png */; };
+		70CF0C03176ECCEA007AB6CF /* add57@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70CF0C01176ECCE3007AB6CF /* add57@2x.png */; };
+		70CF0C04176ECCEA007AB6CF /* add68@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70CF0C02176ECCE5007AB6CF /* add68@2x.png */; };
 		70DAEA4D16953F3200479D61 /* selectedTabInfoButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70DAEA4C16953F2F00479D61 /* selectedTabInfoButton@2x.png */; };
 		70DAEA4F16953F5700479D61 /* unselectedTabInfoButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70DAEA4E16953F5500479D61 /* unselectedTabInfoButton@2x.png */; };
 		70DAEA511695408500479D61 /* selectedTabInfoButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 70DAEA501695408400479D61 /* selectedTabInfoButton.png */; };
@@ -179,7 +191,6 @@
 		70DAEA6F169564AB00479D61 /* infoSelectedButtonImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70DAEA6D169564A700479D61 /* infoSelectedButtonImage@2x.png */; };
 		70E8E8091759CDA10012CE74 /* MediaGroupCarouselViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70E8E8081759CD9F0012CE74 /* MediaGroupCarouselViewController.m */; };
 		70E8E80F175ABA2E0012CE74 /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 70E8E80E175ABA2E0012CE74 /* iCarousel.m */; };
-		70E8E814175AE12A0012CE74 /* AlbumsIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 70E8E810175AE12A0012CE74 /* AlbumsIcon.png */; };
 		70E8E815175AE12A0012CE74 /* AlbumsIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70E8E811175AE12A0012CE74 /* AlbumsIcon@2x.png */; };
 		70E8E816175AE12A0012CE74 /* ArtistsIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 70E8E812175AE12A0012CE74 /* ArtistsIcon.png */; };
 		70E8E817175AE12A0012CE74 /* ArtistsIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70E8E813175AE12A0012CE74 /* ArtistsIcon@2x.png */; };
@@ -215,6 +226,12 @@
 		7004436E17614DC400DA8BB8 /* background-568h.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background-568h.png"; sourceTree = "<group>"; };
 		7004437017637DCB00DA8BB8 /* backgroundLandscape-568h.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "backgroundLandscape-568h.png"; sourceTree = "<group>"; };
 		7004437217637FFE00DA8BB8 /* backgroundLandscape-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "backgroundLandscape-568h@2x.png"; sourceTree = "<group>"; };
+		700443741763B0D300DA8BB8 /* TagData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TagData.h; sourceTree = "<group>"; };
+		700443751763B0D400DA8BB8 /* TagData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TagData.m; sourceTree = "<group>"; };
+		700443771763B49800DA8BB8 /* UserTagViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserTagViewController.h; sourceTree = "<group>"; };
+		700443781763B49800DA8BB8 /* UserTagViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserTagViewController.m; sourceTree = "<group>"; };
+		7004437A1763C05D00DA8BB8 /* UserTagCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserTagCell.h; sourceTree = "<group>"; };
+		7004437B1763C05D00DA8BB8 /* UserTagCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserTagCell.m; sourceTree = "<group>"; };
 		700511F016ADEA7E0085B6F1 /* InCellScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InCellScrollView.h; sourceTree = "<group>"; };
 		700511F116ADEA7E0085B6F1 /* InCellScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InCellScrollView.m; sourceTree = "<group>"; };
 		700511F816AF19240085B6F1 /* CustomSongCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomSongCell.h; sourceTree = "<group>"; };
@@ -316,6 +333,8 @@
 		70864FD0170B789E0030210C /* UIScrollView+PassTouches.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+PassTouches.m"; sourceTree = "<group>"; };
 		70864FD2170B93100030210C /* WindowSubClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowSubClass.h; sourceTree = "<group>"; };
 		70864FD3170B93100030210C /* WindowSubClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WindowSubClass.m; sourceTree = "<group>"; };
+		70890D2017663D2800D338A8 /* TagItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TagItem.h; sourceTree = "<group>"; };
+		70890D2117663D2800D338A8 /* TagItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TagItem.m; sourceTree = "<group>"; };
 		708BDA2416BF645400A42212 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
 		708BDA2A16C093E200A42212 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		708BDA2B16C093E400A42212 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
@@ -445,6 +464,17 @@
 		70C177A6166EC6B400792D8F /* selection-tab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "selection-tab.png"; sourceTree = "<group>"; };
 		70C177A8166EC6D500792D8F /* tabbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tabbar.png; sourceTree = "<group>"; };
 		70C177A9166EC6D500792D8F /* tabbar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabbar@2x.png"; sourceTree = "<group>"; };
+		70CF0BCF176A655D007AB6CF /* AddTagViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddTagViewController.h; sourceTree = "<group>"; };
+		70CF0BD0176A655F007AB6CF /* AddTagViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddTagViewController.m; sourceTree = "<group>"; };
+		70CF0BD6176C0917007AB6CF /* KSLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSLabel.h; sourceTree = "<group>"; };
+		70CF0BD7176C0917007AB6CF /* KSLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSLabel.m; sourceTree = "<group>"; };
+		70CF0BDE176D33C2007AB6CF /* colorWheel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = colorWheel.png; sourceTree = "<group>"; };
+		70CF0BE6176D33C2007AB6CF /* VBColorPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBColorPicker.h; sourceTree = "<group>"; };
+		70CF0BE7176D33C2007AB6CF /* VBColorPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBColorPicker.m; sourceTree = "<group>"; };
+		70CF0BF9176EC82A007AB6CF /* add57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add57.png; sourceTree = "<group>"; };
+		70CF0BFB176EC82C007AB6CF /* add68.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add68.png; sourceTree = "<group>"; };
+		70CF0C01176ECCE3007AB6CF /* add57@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add57@2x.png"; sourceTree = "<group>"; };
+		70CF0C02176ECCE5007AB6CF /* add68@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add68@2x.png"; sourceTree = "<group>"; };
 		70DAEA4C16953F2F00479D61 /* selectedTabInfoButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "selectedTabInfoButton@2x.png"; sourceTree = "<group>"; };
 		70DAEA4E16953F5500479D61 /* unselectedTabInfoButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "unselectedTabInfoButton@2x.png"; sourceTree = "<group>"; };
 		70DAEA501695408400479D61 /* selectedTabInfoButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = selectedTabInfoButton.png; sourceTree = "<group>"; };
@@ -501,7 +531,6 @@
 		70E8E8081759CD9F0012CE74 /* MediaGroupCarouselViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaGroupCarouselViewController.m; sourceTree = "<group>"; };
 		70E8E80D175ABA2E0012CE74 /* iCarousel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCarousel.h; sourceTree = "<group>"; };
 		70E8E80E175ABA2E0012CE74 /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
-		70E8E810175AE12A0012CE74 /* AlbumsIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AlbumsIcon.png; sourceTree = "<group>"; };
 		70E8E811175AE12A0012CE74 /* AlbumsIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AlbumsIcon@2x.png"; sourceTree = "<group>"; };
 		70E8E812175AE12A0012CE74 /* ArtistsIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ArtistsIcon.png; sourceTree = "<group>"; };
 		70E8E813175AE12A0012CE74 /* ArtistsIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ArtistsIcon@2x.png"; sourceTree = "<group>"; };
@@ -723,6 +752,8 @@
 		70A0491A16F6810000F70A90 /* 3rd Party */ = {
 			isa = PBXGroup;
 			children = (
+				70CF0BDB176D33C2007AB6CF /* VBColorPicker */,
+				70CF0BD5176C0917007AB6CF /* KSLabel */,
 				70E8E80C175ABA2E0012CE74 /* iCarousel */,
 				70E8E80B175AB9950012CE74 /* DTCustomColoredAccessory */,
 				70E8E80A175AB9530012CE74 /* MTSearchBar */,
@@ -875,6 +906,8 @@
 				709F238916C329C000521158 /* MediaItemUserData.m */,
 				70984C201640C07A00CE7EA9 /* ItemCollection.h */,
 				70984C211640C07A00CE7EA9 /* ItemCollection.m */,
+				700443741763B0D300DA8BB8 /* TagData.h */,
+				700443751763B0D400DA8BB8 /* TagData.m */,
 				70A13D8C1631B40300244866 /* MediaGroup.h */,
 				70A13D8D1631B40300244866 /* MediaGroup.m */,
 				70A13D8F1631BCC000244866 /* MediaGroupCell.h */,
@@ -897,6 +930,10 @@
 				7049302A16E82101005A66C4 /* SongInfoCell.m */,
 				702B4156165743AB004A9265 /* UserDataForMediaItem.h */,
 				702B4157165743AB004A9265 /* UserDataForMediaItem.m */,
+				7004437A1763C05D00DA8BB8 /* UserTagCell.h */,
+				7004437B1763C05D00DA8BB8 /* UserTagCell.m */,
+				70890D2017663D2800D338A8 /* TagItem.h */,
+				70890D2117663D2800D338A8 /* TagItem.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -940,6 +977,10 @@
 				70A6444E16CE08120059C561 /* ITunesCommentsViewController.m */,
 				70A6445016CE0FEE0059C561 /* UserInfoViewController.h */,
 				70A6445116CE0FEE0059C561 /* UserInfoViewController.m */,
+				700443771763B49800DA8BB8 /* UserTagViewController.h */,
+				700443781763B49800DA8BB8 /* UserTagViewController.m */,
+				70CF0BCF176A655D007AB6CF /* AddTagViewController.h */,
+				70CF0BD0176A655F007AB6CF /* AddTagViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -947,7 +988,10 @@
 		70ADDC11161224BD00219873 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				70E8E810175AE12A0012CE74 /* AlbumsIcon.png */,
+				70CF0BF9176EC82A007AB6CF /* add57.png */,
+				70CF0C01176ECCE3007AB6CF /* add57@2x.png */,
+				70CF0BFB176EC82C007AB6CF /* add68.png */,
+				70CF0C02176ECCE5007AB6CF /* add68@2x.png */,
 				70E8E811175AE12A0012CE74 /* AlbumsIcon@2x.png */,
 				70A4B73216974E9B00C84293 /* arrow_left_48_white.png */,
 				70AB1EA116E8560D0019B789 /* arrow_left_48_white@2x.png */,
@@ -1052,6 +1096,26 @@
 				70AB1EB816E9450E0019B789 /* unselectedTabUserButton@2x.png */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		70CF0BD5176C0917007AB6CF /* KSLabel */ = {
+			isa = PBXGroup;
+			children = (
+				70CF0BD6176C0917007AB6CF /* KSLabel.h */,
+				70CF0BD7176C0917007AB6CF /* KSLabel.m */,
+			);
+			path = KSLabel;
+			sourceTree = "<group>";
+		};
+		70CF0BDB176D33C2007AB6CF /* VBColorPicker */ = {
+			isa = PBXGroup;
+			children = (
+				70CF0BDE176D33C2007AB6CF /* colorWheel.png */,
+				70CF0BE6176D33C2007AB6CF /* VBColorPicker.h */,
+				70CF0BE7176D33C2007AB6CF /* VBColorPicker.m */,
+			);
+			name = VBColorPicker;
+			path = "VBColorPicker-master/VBColorPicker";
 			sourceTree = "<group>";
 		};
 		70E8E80A175AB9530012CE74 /* MTSearchBar */ = {
@@ -1264,7 +1328,6 @@
 				701464AA173711C4007FD617 /* list-backwseparator@2x.png in Resources */,
 				701464B117399FDB007FD617 /* cancel_white.png in Resources */,
 				701464B217399FDB007FD617 /* cancel_white@2x.png in Resources */,
-				70E8E814175AE12A0012CE74 /* AlbumsIcon.png in Resources */,
 				70E8E815175AE12A0012CE74 /* AlbumsIcon@2x.png in Resources */,
 				70E8E816175AE12A0012CE74 /* ArtistsIcon.png in Resources */,
 				70E8E817175AE12A0012CE74 /* ArtistsIcon@2x.png in Resources */,
@@ -1285,6 +1348,11 @@
 				7004436F17614DC400DA8BB8 /* background-568h.png in Resources */,
 				7004437117637DCB00DA8BB8 /* backgroundLandscape-568h.png in Resources */,
 				7004437317637FFE00DA8BB8 /* backgroundLandscape-568h@2x.png in Resources */,
+				70CF0BEF176D33C2007AB6CF /* colorWheel.png in Resources */,
+				70CF0BFD176EC830007AB6CF /* add57.png in Resources */,
+				70CF0BFF176EC830007AB6CF /* add68.png in Resources */,
+				70CF0C03176ECCEA007AB6CF /* add57@2x.png in Resources */,
+				70CF0C04176ECCEA007AB6CF /* add68@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1370,6 +1438,13 @@
 				7098DEB2172DACF500A72F63 /* MTSearchViewController.m in Sources */,
 				70E8E8091759CDA10012CE74 /* MediaGroupCarouselViewController.m in Sources */,
 				70E8E80F175ABA2E0012CE74 /* iCarousel.m in Sources */,
+				700443761763B0D400DA8BB8 /* TagData.m in Sources */,
+				700443791763B49900DA8BB8 /* UserTagViewController.m in Sources */,
+				7004437C1763C05D00DA8BB8 /* UserTagCell.m in Sources */,
+				70890D2217663D2800D338A8 /* TagItem.m in Sources */,
+				70CF0BD1176A6561007AB6CF /* AddTagViewController.m in Sources */,
+				70CF0BD8176C0917007AB6CF /* KSLabel.m in Sources */,
+				70CF0BF4176D33C2007AB6CF /* VBColorPicker.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

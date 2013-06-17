@@ -10,8 +10,7 @@
 
 @interface ITunesInfoViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MPMediaPickerControllerDelegate> {
     
-    NSFetchedResultsController *fetchedResultsController;
-    NSManagedObjectContext  *managedObjectContext;
+    NSManagedObjectContext  *managedObjectContext_;
 }
 
 @property (nonatomic, retain)   NSManagedObjectContext      *managedObjectContext;

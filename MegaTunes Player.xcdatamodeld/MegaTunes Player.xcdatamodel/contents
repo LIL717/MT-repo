@@ -7,18 +7,24 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="MediaItemUserData" representedClassName="MediaItemUserData" syncable="YES">
-        <attribute name="bpm" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="bmp" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="comments" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="persistentID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="userGrouping" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="tagData" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="TagData" inverseName="mediaItemUserData" inverseEntity="TagData" syncable="YES"/>
     </entity>
-    <entity name="UserGroupingData" syncable="YES">
-        <attribute name="groupingItem" optional="YES" attributeType="String" syncable="YES"/>
+    <entity name="TagData" representedClassName="TagData" syncable="YES">
+        <attribute name="sortOrder" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="tagColorAlpha" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="tagColorBlue" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="tagColorGreen" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="tagColorRed" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="tagName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="mediaItemUserData" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="MediaItemUserData" inverseName="tagData" inverseEntity="MediaItemUserData" syncable="YES"/>
     </entity>
     <elements>
         <element name="ItemCollection" positionX="0" positionY="0" width="128" height="105"/>
-        <element name="MediaItemUserData" positionX="169" positionY="-27" width="128" height="120"/>
-        <element name="UserGroupingData" positionX="160" positionY="192" width="128" height="60"/>
+        <element name="MediaItemUserData" positionX="153" positionY="189" width="128" height="118"/>
+        <element name="TagData" positionX="468" positionY="174" width="128" height="150"/>
     </elements>
 </model>

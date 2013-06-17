@@ -31,7 +31,7 @@
 @synthesize groupingData;
 @synthesize selectedGroup;
 @synthesize musicPlayer;
-@synthesize managedObjectContext;
+@synthesize managedObjectContext = managedObjectContext_;
 @synthesize iPodLibraryChanged;         //A flag indicating whether the library has been changed due to a sync
 @synthesize rightBarButton;
 @synthesize initialLandscapeImage;

@@ -10,6 +10,10 @@
 #import "MediaItemUserData.h"
 #import "UserDataForMediaItem.h"
 #import "UIImage+AdditionalFunctionalities.h"
+#import "UserTagViewController.h"
+//#import "TagItem.h"
+#import "TagData.h"
+#import "KSLabel.h"
 
 @interface UserInfoViewController ()
 
@@ -17,15 +21,18 @@
 
 @implementation UserInfoViewController
 
-@synthesize managedObjectContext;
+@synthesize fetchedResultsController = fetchedResultsController_;
+@synthesize managedObjectContext = managedObjectContext_;
+
 @synthesize musicPlayer;
 @synthesize mediaItemForInfo;
 
 @synthesize userDataForMediaItem;
-@synthesize userGrouping;
+@synthesize userTagButton;
+@synthesize tagLabel;
 @synthesize comments;
 
-@synthesize verticalSpaceTopToGroupingConstraint;
+@synthesize verticalSpaceTopToTagConstraint;
 @synthesize keyboardHeight;
 @synthesize verticalSpaceTopToCommentsConstraint;
 
@@ -47,7 +54,7 @@
     
     musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
     
-    landscapeOffset = 10.0;
+    landscapeOffset = 12.0;
     
     [self loadDataForView];
     
@@ -63,22 +70,46 @@
     MediaItemUserData *mediaItemUserData = [MediaItemUserData alloc];
     mediaItemUserData.managedObjectContext = self.managedObjectContext;
     
-    self.userDataForMediaItem = [mediaItemUserData containsItem: [mediaItemForInfo valueForProperty: MPMediaItemPropertyPersistentID]];
+    [mediaItemUserData listAll];
     
-    if (self.userDataForMediaItem.userGrouping) {
-        self.userGrouping.text = self.userDataForMediaItem.userGrouping;
-        self.userGrouping.textColor = [UIColor whiteColor];
+    self.tagLabel.textColor = [UIColor whiteColor];
+    [self.tagLabel setDrawOutline:YES];
+    [self.tagLabel setOutlineColor:[UIColor blackColor]];
+    [self.tagLabel setDrawGradient:NO];
+    self.tagLabel.font = [UIFont systemFontOfSize:44];
+    
+    self.userDataForMediaItem = [mediaItemUserData containsItem: [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyPersistentID]];
+    TagData *tagData = self.userDataForMediaItem.tagData;
+
+    if (self.userDataForMediaItem.tagData.tagName) {
+        
+        int red = [tagData.tagColorRed intValue];
+        int green = [tagData.tagColorGreen intValue];
+        int blue = [tagData.tagColorBlue intValue];
+        int alpha = [tagData.tagColorAlpha intValue];
+        
+        UIColor *tagColor = [UIColor colorWithRed:(red/255.0f) green:(green/255.0f) blue:(blue/255.0f) alpha:(alpha/255.0f)];
+        
+        UIImage *labelBackgroundImage = [UIImage imageNamed: @"list-background.png"];
+        UIImage *coloredImage = [labelBackgroundImage imageWithTint: tagColor];
+        
+        [self.userTagButton setBackgroundImage: coloredImage forState: UIControlStateNormal];
+        
+        self.tagLabel.text = tagData.tagName;
+
+        NSLog (@" tagData.tagName = %@", tagData.tagName);
 
     } else {
-        self.userGrouping.text = @"";
+        
+        UIImage *labelBackgroundImage = [UIImage imageNamed: @"list-background.png"];
+        [self.userTagButton setBackgroundImage: labelBackgroundImage forState: UIControlStateNormal];
+
+        self.tagLabel.textColor = [UIColor lightGrayColor];
+        self.tagLabel.text = NSLocalizedString(@"Select Tag", nil);
     }
-    
-    self.userGrouping.delegate = self;
-    [self.userGrouping addTarget:self
-                          action:@selector(textFieldFinished:)
-                forControlEvents:UIControlEventEditingDidEndOnExit];
-    
+
     self.comments.delegate = self;
+    
     if (self.userDataForMediaItem.comments) {
         self.comments.text = self.userDataForMediaItem.comments;
         [self.placeholderLabel setHidden:YES];
@@ -93,50 +124,50 @@
     if (UIInterfaceOrientationIsPortrait(orientation)) {
 //        NSLog (@"portrait");
 
-        self.verticalSpaceTopToGroupingConstraint.constant = 12;
-        self.verticalSpaceTopToCommentsConstraint.constant = 66;
+        self.verticalSpaceTopToTagConstraint.constant = 10;
+        self.verticalSpaceTopToCommentsConstraint.constant = 65;
         
     } else {
 //        NSLog (@"landscape");
-        self.verticalSpaceTopToGroupingConstraint.constant += landscapeOffset;
+        self.verticalSpaceTopToTagConstraint.constant += landscapeOffset;
         self.verticalSpaceTopToCommentsConstraint.constant += landscapeOffset;
     }
 }
 
 #pragma mark textField Delegate Methods________________________________
 
-- (void) textFieldDidBeginEditing: (UITextField *) textField {
-//    LogMethod();
-    [self setEditingUserInfo: YES];
-    
-    UIImage *coloredBackgroundImage = [[UIImage imageNamed: @"list-background.png"] imageWithTint:[UIColor darkGrayColor]];
-    [textField setBackgroundColor:[UIColor colorWithPatternImage: coloredBackgroundImage]];
-
-}
-
-- (void) textFieldDidEndEditing: (UITextField *) textField {
-//    LogMethod();
-
-    [textField setBackgroundColor: [UIColor clearColor]];
-    
-    //update or add object to Core Data
-    MediaItemUserData *mediaItemUserData = [MediaItemUserData alloc];
-    mediaItemUserData.managedObjectContext = self.managedObjectContext;
-    
-    self.userDataForMediaItem = [[UserDataForMediaItem alloc] init];
-    self.userDataForMediaItem.title = [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyTitle];
-    self.userDataForMediaItem.persistentID = [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyPersistentID];
-    self.userDataForMediaItem.userGrouping = self.userGrouping.text;
-    
-    [mediaItemUserData updateUserGroupingForItem: self.userDataForMediaItem];
-    [self setEditingUserInfo: NO];
-
-    
-}
-- (IBAction)textFieldFinished:(id)sender
-{
-    [sender resignFirstResponder];
-}
+//- (void) textFieldDidBeginEditing: (UITextField *) textField {
+////    LogMethod();
+//    [self setEditingUserInfo: YES];
+//    
+//    UIImage *coloredBackgroundImage = [[UIImage imageNamed: @"list-background.png"] imageWithTint:[UIColor darkGrayColor]];
+//    [textField setBackgroundColor:[UIColor colorWithPatternImage: coloredBackgroundImage]];
+//
+//}
+//
+//- (void) textFieldDidEndEditing: (UITextField *) textField {
+////    LogMethod();
+//
+//    [textField setBackgroundColor: [UIColor clearColor]];
+//    
+//    //update or add object to Core Data
+//    MediaItemUserData *mediaItemUserData = [MediaItemUserData alloc];
+//    mediaItemUserData.managedObjectContext = self.managedObjectContext;
+//    
+//    self.userDataForMediaItem = [[UserDataForMediaItem alloc] init];
+//    self.userDataForMediaItem.title = [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyTitle];
+//    self.userDataForMediaItem.persistentID = [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyPersistentID];
+//    self.userDataForMediaItem.tagItem.tagName = self.userTagButton.titleLabel;
+//    
+//    [mediaItemUserData updateTagForItem: self.userDataForMediaItem];
+//    [self setEditingUserInfo: NO];
+//
+//    
+//}
+//- (IBAction)textFieldFinished:(id)sender
+//{
+//    [sender resignFirstResponder];
+//}
 
 #pragma mark textView Delegate Methods________________________________
 
@@ -203,9 +234,9 @@
     // we need to set a negative constant value here.
     self.keyboardHeight.constant = -kbHeight;
     
-    //pull the field up to the top (over the userGrouping field while editing)
+    //pull the field up to the top (over the tagItem field while editing)
     
-    self.verticalSpaceTopToCommentsConstraint.constant -= (self.userGrouping.frame.size.height);
+    self.verticalSpaceTopToCommentsConstraint.constant -= (self.userTagButton.frame.size.height);
     [self.view setNeedsUpdateConstraints];
     
     [UIView animateWithDuration:animationDuration animations:^{
@@ -223,7 +254,7 @@
     
     self.keyboardHeight.constant = 0;
     
-    self.verticalSpaceTopToCommentsConstraint.constant += self.userGrouping.frame.size.height;
+    self.verticalSpaceTopToCommentsConstraint.constant += self.userTagButton.frame.size.height;
 
     [self.view setNeedsUpdateConstraints];
 
@@ -231,7 +262,48 @@
         [self.view layoutIfNeeded];
     }];
 }
+#pragma mark Prepare for Seque
 
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    //    LogMethod();
+        
+	if ([segue.identifier isEqualToString:@"SelectTag"])
+    {
+        [self setEditingUserInfo: YES];
+
+        UserTagViewController *userTagViewController = segue.destinationViewController;
+        userTagViewController.managedObjectContext = self.managedObjectContext;
+        
+        if (!self.userDataForMediaItem) {
+            self.userDataForMediaItem = [[UserDataForMediaItem alloc] init];
+            self.userDataForMediaItem.title = [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyTitle];
+            self.userDataForMediaItem.persistentID = [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyPersistentID];
+        }
+        
+        userTagViewController.userDataForMediaItem = self.userDataForMediaItem;
+        userTagViewController.userTagViewControllerDelegate = self;
+
+        
+    }
+
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    
+}
+- (void)userTagViewControllerDidCancel:(UserTagViewController *)controller
+{
+    //need to reload on return so that selected tag is shown
+    [self setEditingUserInfo: NO];
+//    [self.tagLabel removeFromSuperview];
+//    self.userTagButton.titleLabel.text = @"";
+
+
+    [self loadDataForView];
+    [self willAnimateRotationToInterfaceOrientation: self.interfaceOrientation duration: 1];
+    //need to add back observer for playbackStatechanged because it was removed before going to info in case user edits
+
+    
+}
 - (void)registerForKeyboardNotifications
 {
 //    LogMethod();
@@ -257,6 +329,7 @@
 													name: UIKeyboardWillHideNotification
 												  object: nil];
 }
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

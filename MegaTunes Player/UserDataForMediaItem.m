@@ -1,5 +1,5 @@
 //
-//  SongInfo.m
+//  UserDataForMediaItem.m
 //  MegaTunes Player
 //
 //  Created by Lori Hill on 11/16/12.
@@ -11,7 +11,8 @@
 @implementation UserDataForMediaItem
 
 @synthesize title;
-@synthesize userGrouping;
+//@synthesize tagName;
+@synthesize tagData;
 @synthesize comments;
 @synthesize persistentID;
 @synthesize bpm;

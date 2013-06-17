@@ -7,7 +7,8 @@
 //
 
 @interface AlbumInfoViewController : UIViewController  < UITableViewDelegate, UITableViewDataSource, MPMediaPickerControllerDelegate> {
-    NSManagedObjectContext *managedObjectContext;
+
+    NSManagedObjectContext *managedObjectContext_;
     
 }
 @property (nonatomic, retain)   NSManagedObjectContext *managedObjectContext;

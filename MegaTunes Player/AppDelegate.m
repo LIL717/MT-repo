@@ -11,6 +11,8 @@
 #import "MediaGroupViewController.h"
 #import "MainViewcontroller.h"
 //#import "CustomNavigationBar.h"
+#import "TagData.h"
+#import "TagItem.h"
 
 
 
@@ -21,8 +23,8 @@
 //@synthesize navigationController;
 
 //@synthesize colorSwitcher;
-@synthesize managedObjectContext = managedObjectContext_;
 @synthesize managedObjectModel = managedObjectModel_;
+@synthesize managedObjectContext = managedObjectContext_;
 @synthesize fetchedResultsController = fetchedResultsController_;
 @synthesize persistentStoreCoordinator = persistentStoreCoordinator_;
 
@@ -151,6 +153,38 @@ static const NSUInteger kNavigationBarHeight = 60;
     [TestFlight takeOff:@"3ec22a1e-ddac-483c-8152-21c537a9fb42"];
 
     //*** end of TestFlight code
+    
+    //Load a couple defaults to userTag Core Data if there aren't any objects in TagData
+    
+    TagData *tagData = [TagData alloc];
+    tagData.managedObjectContext = self.managedObjectContext;
+    
+    
+    if ([[tagData fetchTagList] count] == 0) {
+
+        TagItem *userTagItem = [TagItem alloc];
+        userTagItem.tagName = @"warmup";
+        
+        userTagItem.tagColorRed = [NSNumber numberWithInt: 68];
+        userTagItem.tagColorGreen = [NSNumber numberWithInt: 255];
+        userTagItem.tagColorBlue = [NSNumber numberWithInt: 57];
+        userTagItem.tagColorAlpha = [NSNumber numberWithInt: 255];
+        userTagItem.sortOrder = [NSNumber numberWithInt: 2];
+        
+        [tagData addTagItemToCoreData: userTagItem];
+        
+        userTagItem.tagName = @"cooldown";
+        
+        userTagItem.tagColorRed = [NSNumber numberWithInt: 56];
+        userTagItem.tagColorGreen = [NSNumber numberWithInt: 139];
+        userTagItem.tagColorBlue = [NSNumber numberWithInt: 255];
+        userTagItem.tagColorAlpha = [NSNumber numberWithInt: 255];
+        userTagItem.sortOrder = [NSNumber numberWithInt: 0];
+        
+        [tagData addTagItemToCoreData: userTagItem];
+    }
+    
+    [tagData listAll];
     
 //    [self.window setRootViewController:navigationController]; 
     

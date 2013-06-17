@@ -30,7 +30,7 @@
 @synthesize collection;
 @synthesize collectionType;
 @synthesize collectionQueryType;
-@synthesize managedObjectContext;
+@synthesize managedObjectContext = managedObjectContext_;
 //@synthesize saveIndexPath;
 @synthesize iPodLibraryChanged;         //A flag indicating whether the library has been changed due to a sync
 @synthesize musicPlayer;

@@ -20,7 +20,7 @@
 @end
 
 @interface InfoTabBarController : UITabBarController <MPMediaPickerControllerDelegate, UITabBarControllerDelegate> {
-    NSManagedObjectContext *managedObjectContext;
+    NSManagedObjectContext *managedObjectContext_;
 }
 @property (nonatomic, weak) id <InfoTabBarControllerDelegate> infoDelegate;
 
