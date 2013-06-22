@@ -34,10 +34,15 @@
 @property (strong, nonatomic) IBOutlet UIView *colorView;
 
 @property (readwrite)                  CGFloat landscapeOffset;
-
-//@property (nonatomic, strong) IBOutlet UIView *rect;
+@property (nonatomic) int lastObjectIndex;
+@property (nonatomic, strong) NSString *actionType;
 @property (nonatomic, strong) UIColor *pickedColor;
+@property (nonatomic, strong) NSString *nameToEdit;
 @property (nonatomic, strong) VBColorPicker *cPicker;
+@property (readwrite)       BOOL hasColor;
+@property (nonatomic, strong) NSNumber *sortOrder;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *rightBarButton;
+
 
 - (IBAction)saveTag:(id)sender;
 

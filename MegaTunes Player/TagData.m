@@ -41,7 +41,7 @@
     
     return allFetchedObjects;
 }
-- (TagItem *) containsItem: (NSString *) tagName {
+- (TagItem *) containsItem: (NSNumber *) sortOrder {
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"TagData"
@@ -49,7 +49,7 @@
     [fetchRequest setEntity:entity];
     NSError *error = nil;
     
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"tagName == %@", tagName];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"sortOrder == %@", sortOrder];
     
     [fetchRequest setPredicate:pred];
     
@@ -90,20 +90,24 @@
         NSLog(@"%s: Problem saving: %@", __PRETTY_FUNCTION__, error);
     }
 }
-//- (void) updateItemForTag: (TagData *) tagData {
-//    
-//    NSError * error = nil;
-//    
-//    if ([self containsItem: tagData.tagName]) {
-//        //if the object is found, update its fields
-//        //        [[self.fetchedObjects objectAtIndex:0] setValue: userDataForMediaItem.tagName forKey: @"tagName"];
-//        [[self.fetchedObjects objectAtIndex:0] setValue: tagData.mediaItemUserData forKey: @"mediaItemUserData"];
-//    }
-//    if (![self.managedObjectContext save:&error]) {
-//        NSLog(@"%s: Problem saving: %@", __PRETTY_FUNCTION__, error);
-//    }
-//
-//}
+- (void) updateTagItemInCoreData: (TagItem *) tagItem {
+    
+    NSError * error = nil;
+    
+    if ([self containsItem: tagItem.sortOrder]) {
+        //if the object is found, update its fields
+        [[self.fetchedObjects objectAtIndex:0] setValue: tagItem.tagName forKey: @"tagName"];
+        [[self.fetchedObjects objectAtIndex:0] setValue: tagItem.tagColorRed forKey:@"tagColorRed"];
+        [[self.fetchedObjects objectAtIndex:0] setValue: tagItem.tagColorGreen forKey:@"tagColorGreen"];
+        [[self.fetchedObjects objectAtIndex:0] setValue: tagItem.tagColorBlue forKey:@"tagColorBlue"];
+        [[self.fetchedObjects objectAtIndex:0] setValue: tagItem.tagColorAlpha forKey:@"tagColorAlpha"];
+//        [[self.fetchedObjects objectAtIndex:0] setValue: tagItem.sortOrder forKey:@"sortOrder"];
+    }
+    if (![self.managedObjectContext save:&error]) {
+        NSLog(@"%s: Problem saving: %@", __PRETTY_FUNCTION__, error);
+    }
+
+}
 - (void) listAll {
     // Test listing all tagItems from the store
     

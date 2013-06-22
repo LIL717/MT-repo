@@ -207,19 +207,12 @@ long songRemainingSeconds;
 
     [self setMusicPlayer: [MPMusicPlayerController iPodMusicPlayer]];
 
-//    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
- 
-    // get the user's preference from Settings whether to display Playlist Remaining Time
-//    if ([appDelegate showPlaylistRemaining]) {
-//        self.showPlaylistRemaining = YES;
-////        NSLog (@"show Playlist Remaining");
-//    } else {
-        self.showPlaylistRemaining = NO;
-        //title will only be displayed if playlist remaining is turned off
-        self.title = NSLocalizedString(@"Now Playing", nil);
-        self.navigationItem.titleView = [self customizeTitleView];
-//        NSLog (@"don't show Playlist Remaining");
-//    }
+
+    self.showPlaylistRemaining = NO;
+    //title will only be displayed if playlist remaining is turned off
+    self.title = NSLocalizedString(@"Now Playing", nil);
+    self.navigationItem.titleView = [self customizeTitleView];
+
 
     self.swipeLeftRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(togglePlaylistRemainingAndTitle:)];
     [self.swipeLeftRight setDirection:(UISwipeGestureRecognizerDirectionRight | UISwipeGestureRecognizerDirectionLeft )];

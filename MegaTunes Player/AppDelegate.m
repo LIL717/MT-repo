@@ -163,25 +163,26 @@ static const NSUInteger kNavigationBarHeight = 60;
     if ([[tagData fetchTagList] count] == 0) {
 
         TagItem *userTagItem = [TagItem alloc];
-        userTagItem.tagName = @"warmup";
+                userTagItem.tagName = @"warmup";
         
-        userTagItem.tagColorRed = [NSNumber numberWithInt: 68];
-        userTagItem.tagColorGreen = [NSNumber numberWithInt: 255];
-        userTagItem.tagColorBlue = [NSNumber numberWithInt: 57];
+        userTagItem.tagColorRed = [NSNumber numberWithInt: 26];
+        userTagItem.tagColorGreen = [NSNumber numberWithInt: 121];
+        userTagItem.tagColorBlue = [NSNumber numberWithInt: 23];
         userTagItem.tagColorAlpha = [NSNumber numberWithInt: 255];
-        userTagItem.sortOrder = [NSNumber numberWithInt: 2];
+        userTagItem.sortOrder = [NSNumber numberWithInt: 0];
         
         [tagData addTagItemToCoreData: userTagItem];
         
         userTagItem.tagName = @"cooldown";
         
-        userTagItem.tagColorRed = [NSNumber numberWithInt: 56];
-        userTagItem.tagColorGreen = [NSNumber numberWithInt: 139];
-        userTagItem.tagColorBlue = [NSNumber numberWithInt: 255];
+        userTagItem.tagColorRed = [NSNumber numberWithInt: 0];
+        userTagItem.tagColorGreen = [NSNumber numberWithInt: 0];
+        userTagItem.tagColorBlue = [NSNumber numberWithInt: 118];
         userTagItem.tagColorAlpha = [NSNumber numberWithInt: 255];
-        userTagItem.sortOrder = [NSNumber numberWithInt: 0];
+        userTagItem.sortOrder = [NSNumber numberWithInt: 1];
         
         [tagData addTagItemToCoreData: userTagItem];
+
     }
     
     [tagData listAll];

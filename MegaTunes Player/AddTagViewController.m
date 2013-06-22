@@ -22,6 +22,7 @@
 @synthesize addTagViewControllerDelegate;
 @synthesize tagName;
 @synthesize landscapeOffset;
+@synthesize lastObjectIndex;
 @synthesize colorView;
 @synthesize verticalSpaceTopToTagConstraint;
 @synthesize verticalSpaceTopToColorViewConstraint;
@@ -34,26 +35,28 @@
 //@synthesize rect=_rect;
 @synthesize cPicker=_cPicker;
 @synthesize pickedColor;
-BOOL hasColor;
+@synthesize actionType;
+@synthesize hasColor;
+@synthesize nameToEdit;
+@synthesize sortOrder;
+@synthesize rightBarButton;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
+//- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+//{
+//    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+//    if (self) {
+//        // Custom initialization
+//    }
+//    return self;
+//}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    landscapeOffset = 11.0;
-
-    self.title = @"Add Tag";
     
-    //set up grouped table view to look like plain (so that section headers won't stick to top)
+    landscapeOffset = 11.0;
+    
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
     [self.colorView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
     
@@ -71,7 +74,20 @@ BOOL hasColor;
     [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage48 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage58 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
     
-    self.tagName.delegate = self;
+    self.rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                           style:UIBarButtonItemStyleBordered
+                                                          target:self
+                                                          action:@selector(saveTag)];
+    
+    UIImage *menuBarImageDefault = [[UIImage imageNamed:@"save57.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    UIImage *menuBarImageLandscape = [[UIImage imageNamed:@"save68.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    
+    [self.rightBarButton setBackgroundImage:menuBarImageDefault forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [self.rightBarButton setBackgroundImage:menuBarImageLandscape forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
+    
+    self.navigationItem.rightBarButtonItem = self.rightBarButton;
+    
+    [self.tagName setDelegate: self];
     [self.tagName addTarget:self
                           action:@selector(textFieldFinished:)
                 forControlEvents:UIControlEventEditingDidEndOnExit];
@@ -87,7 +103,13 @@ BOOL hasColor;
         // set default YES!
         [_cPicker setHideAfterSelection:NO];
     }
-    hasColor = NO;
+    
+    if ([self.actionType isEqualToString: @"Edit"]) {
+        self.tagName.text = self.nameToEdit;
+        NSLog (@"self.tagName is %@", self.tagName.text);
+        UIImage *coloredBackgroundImage = [[UIImage imageNamed: @"list-background.png"] imageWithTint:pickedColor];
+        [self.tagName setBackgroundColor:[UIColor colorWithPatternImage: coloredBackgroundImage]];
+    }
 }
 - (void) viewWillAppear:(BOOL)animated
 {
@@ -165,7 +187,7 @@ BOOL hasColor;
 
 - (void) textFieldDidBeginEditing: (UITextField *) textField {
 //    LogMethod();
-    if (!hasColor) {
+    if (!self.hasColor) {
         UIImage *coloredBackgroundImage = [[UIImage imageNamed: @"list-background.png"] imageWithTint:[UIColor darkGrayColor]];
         [textField setBackgroundColor:[UIColor colorWithPatternImage: coloredBackgroundImage]];
     }
@@ -174,36 +196,46 @@ BOOL hasColor;
 - (void) textFieldDidEndEditing: (UITextField *) textField {
 //    LogMethod();
 
-    if (!hasColor) {
+    if (!self.hasColor) {
        [textField setBackgroundColor: [UIColor clearColor]];
     }
 }
 
-- (IBAction)saveTag:(id)sender {
+- (void)saveTag {
 
-    TagItem *newTagItem = [TagItem alloc];
-    newTagItem.tagName = self.tagName.text;
+    TagItem *tagItem = [TagItem alloc];
+    tagItem.tagName = self.tagName.text;
     
-    if (hasColor) {
+    if (self.hasColor) {
         CGFloat red = 0.0, green = 0.0, blue = 0.0, alpha = 0.0;
-
+        //        CGFloat hue = 0.0, saturation = 0.0, brightness = 0.0;
+        //        [self.pickedColor getHue: &hue saturation: &saturation brightness:&brightness alpha:&alpha];
         [self.pickedColor getRed:&red green:&green blue:&blue alpha:&alpha];
         
-        NSLog (@"pickedColor is %f %f %f %f", red, green, blue, alpha);
-    
-        newTagItem.tagColorRed = [NSNumber numberWithInt: (int) (red * 255)];
-        newTagItem.tagColorGreen = [NSNumber numberWithInt: (int) (green * 255)];
-        newTagItem.tagColorBlue = [NSNumber numberWithInt: (int) (blue * 255)];
-        newTagItem.tagColorAlpha = [NSNumber numberWithInt: (int) (alpha * 255)];
+        tagItem.tagColorRed = [NSNumber numberWithInt: (int) (red * 255)];
+        tagItem.tagColorGreen = [NSNumber numberWithInt: (int) (green * 255)];
+        tagItem.tagColorBlue = [NSNumber numberWithInt: (int) (blue * 255)];
+        tagItem.tagColorAlpha = [NSNumber numberWithInt: (int) (alpha * 255)];
     }
 
-    newTagItem.sortOrder = [NSNumber numberWithInt: 0];
-    
     TagData *tagData = [TagData alloc];
     tagData.managedObjectContext = self.managedObjectContext;
-    
-    [tagData addTagItemToCoreData: newTagItem];
-    
+
+    if ([actionType isEqualToString: @"Add"]) {
+        
+        //add 1 to the lastObject index and save that as the sortOrder
+//        NSLog (@"self.lastObjectIndex = %d", self.lastObjectIndex);
+        
+        self.lastObjectIndex += 1;
+        tagItem.sortOrder = [NSNumber numberWithInt: self.lastObjectIndex];
+        
+        [tagData addTagItemToCoreData: tagItem];
+    }
+    if ([actionType isEqualToString: @"Edit"]) {
+        
+        tagItem.sortOrder = self.sortOrder;
+        [tagData updateTagItemInCoreData: tagItem];
+    }
     [self goBackClick];
 }
 - (IBAction)textFieldFinished:(id)sender
@@ -222,9 +254,30 @@ BOOL hasColor;
 // set color from picker
 - (void) pickedColor:(UIColor *)color {
     self.pickedColor = color;
+    
+    CGFloat red = 0.0, green = 0.0, blue = 0.0, alpha = 0.0;
+//    CGFloat hue = 0.0, saturation = 0.0, brightness = 0.0;
+//    [self.pickedColor getHue: &hue saturation: &saturation brightness:&brightness alpha:&alpha];
+    [self.pickedColor getRed:&red green:&green blue:&blue alpha:&alpha];
+//    NSLog (@"pickedColor before saturation change is %f %f %f %f", red, green, blue, alpha);
+//    
+//    if (brightness > 0.7) {
+//        brightness = 0.5;
+//    }
+////    if (saturation < 0.7) {
+//        saturation = 1.0;
+////    }
+//
+//    self.pickedColor = [UIColor colorWithHue: hue
+//                                  saturation: saturation
+//                                  brightness: brightness
+//                                       alpha: alpha];
+//    [self.pickedColor getRed:&red green:&green blue:&blue alpha:&alpha];
+    NSLog (@"pickedColor after saturation change is %f %f %f %f", red, green, blue, alpha);
+    
     UIImage *coloredBackgroundImage = [[UIImage imageNamed: @"list-background.png"] imageWithTint:self.pickedColor];
     [self.tagName setBackgroundColor:[UIColor colorWithPatternImage: coloredBackgroundImage]];
-    hasColor = YES;
+    self.hasColor = YES;
 //    [_rect setBackgroundColor:color];
 //    [_cPicker hidePicker];
 }

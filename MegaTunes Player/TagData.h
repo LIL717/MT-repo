@@ -29,10 +29,10 @@
 
 
 - (NSArray *) fetchTagList;
-- (void)addTagItemToCoreData:(TagItem *) tagItem;
-//- (void) updateItemForTag: (TagData *) tagData;
+- (void) addTagItemToCoreData:(TagItem *) tagItem;
+- (void) updateTagItemInCoreData: (TagItem *) tagItem;
 - (void) listAll;
-- (TagItem *) containsItem: (NSString *) tagName;
+- (TagItem *) containsItem: (NSNumber *) sortOrder;
 //- (void)removeUGItemFromCoreData;
 
 @end

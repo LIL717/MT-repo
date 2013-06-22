@@ -36,12 +36,17 @@
 @synthesize listIsAlphabetic;
 @synthesize isSearching;
 @synthesize songCollection;
-@synthesize rightBarButton;
+@synthesize playBarButton;
+@synthesize tagBarButton;
 @synthesize collectionQueryType;        //used as base of query for search
 //@synthesize collectionType;
 @synthesize searchResults;
 //@synthesize collectionPredicate;
 @synthesize collectionItemToSave;
+@synthesize showTagButton;
+@synthesize showTags;
+@synthesize songViewTitle;
+@synthesize swipeLeftRight;
 
 NSMutableArray *songDurations;
 NSIndexPath *selectedIndexPath;
@@ -50,6 +55,7 @@ NSString *searchMediaItemProperty;
 CGFloat constraintConstant;
 UIImage *backgroundImage;
 UIButton *infoButton;
+
 
 BOOL cellScrolled;
 BOOL isIndexed;
@@ -63,6 +69,14 @@ BOOL turnOnShuffle;
 {
 //    LogMethod();
     [super viewDidLoad];
+    
+    self.songViewTitle = self.title;
+    self.showTagButton = NO;
+
+    
+    self.swipeLeftRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(toggleTagButtonAndTitle:)];
+    [self.swipeLeftRight setDirection:(UISwipeGestureRecognizerDirectionRight | UISwipeGestureRecognizerDirectionLeft )];
+    [self.navigationController.navigationBar addGestureRecognizer:self.swipeLeftRight];
     
     //set up an array of durations to be used in landscape mode
     songDurations = [[NSMutableArray alloc] initWithCapacity: [self.collectionItem.collectionArray count]];
@@ -98,7 +112,7 @@ BOOL turnOnShuffle;
     [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage48 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage58 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
   
-    self.rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
+    self.playBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
                                                            style:UIBarButtonItemStyleBordered
                                                           target:self
                                                           action:@selector(viewNowPlaying)];
@@ -106,9 +120,20 @@ BOOL turnOnShuffle;
     UIImage *menuBarImageDefault = [[UIImage imageNamed:@"redWhitePlay57.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
     UIImage *menuBarImageLandscape = [[UIImage imageNamed:@"redWhitePlay68.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
     
-    [self.rightBarButton setBackgroundImage:menuBarImageDefault forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    [self.rightBarButton setBackgroundImage:menuBarImageLandscape forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
+    [self.playBarButton setBackgroundImage:menuBarImageDefault forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [self.playBarButton setBackgroundImage:menuBarImageLandscape forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
 
+    self.tagBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                          style:UIBarButtonItemStyleBordered
+                                                         target:self
+                                                         action:@selector(showTagColors)];
+    
+    menuBarImageDefault = [[UIImage imageNamed:@"color57.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    menuBarImageLandscape = [[UIImage imageNamed:@"colog68.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    
+    [self.tagBarButton setBackgroundImage:menuBarImageDefault forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [self.tagBarButton setBackgroundImage:menuBarImageLandscape forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
+    
     musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
 
     //    self.currentQueue = self.mainViewController.userMediaItemCollection;
@@ -180,19 +205,11 @@ BOOL turnOnShuffle;
 {
 //    LogMethod();
     
+    [self buildRightNavBarArray];
+    
     //set the navigation bar title
     self.navigationItem.titleView = [self customizeTitleView];
-    
-    //if there is a currently playing item, add a right button to the nav bar
-    
-    NSString *playingItem = [[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyTitle];
-    
-    if (playingItem) {
-        //initWithTitle cannot be nil, must be @""
-        self.navigationItem.rightBarButtonItem = self.rightBarButton;
-    } else {
-        self.navigationItem.rightBarButtonItem= nil;
-    }
+
 //    // if rows have been scrolled, they have been added to this array, so need to scroll them back to 0
 //    YAY this works!!
 //    if ([scrolledCellIndexArray count] > 0) {
@@ -216,6 +233,28 @@ BOOL turnOnShuffle;
     [super viewWillAppear: animated];
 
     return;
+}
+-(void) buildRightNavBarArray {
+    //if there is a currently playing item, add a right button to the nav bar
+    
+    NSString *playingItem = [[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyTitle];
+    
+    if (playingItem && showTagButton) {
+        //initWithTitle cannot be nil, must be @""
+        //        self.navigationItem.rightBarButtonItem = self.playBarButton;
+        [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects:self.playBarButton, self.tagBarButton, nil]];
+        self.title = nil;
+    } else if (!playingItem && showTagButton) {
+        //        self.navigationItem.rightBarButtonItem= nil;
+        [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects: self.tagBarButton, nil]];
+        self.title = nil;
+    } else if (!showTagButton && playingItem) {
+        [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects: self.playBarButton, nil]];
+        self.title = NSLocalizedString(self.songViewTitle, nil);
+    } else if (!playingItem && !showTagButton) {
+        [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects: nil]];
+        self.title = NSLocalizedString(self.songViewTitle, nil);
+    }
 }
 -(void) viewDidAppear:(BOOL)animated {
     //    LogMethod();
@@ -877,6 +916,15 @@ BOOL turnOnShuffle;
     
     [self performSegueWithIdentifier: @"ViewNowPlaying" sender: self];
 }
+- (IBAction)showTagColors {
+    if (self.showTags) {
+        self.showTags = NO;
+        NSLog (@"don't show Tags ");
+    } else {
+        self.showTags = YES;
+        NSLog (@"show Tags");
+    }
+}
 - (void)goBackClick
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
@@ -926,7 +974,27 @@ BOOL turnOnShuffle;
     
     [self performSegueWithIdentifier: @"ViewInfo" sender: self];
 }
-
+- (IBAction) toggleTagButtonAndTitle:(id)sender {
+    if (showTagButton) {
+        self.showTagButton = NO;
+        [self buildRightNavBarArray];
+        //title will only be displayed if tag Button is not
+//        self.title = NSLocalizedString(self.songViewTitle, nil);
+        [UIView animateWithDuration:2.5 animations:^{
+//            self.navigationItem.rightBarButtonItem = nil;
+            self.navigationItem.titleView = [self customizeTitleView];
+        }];
+        NSLog (@"show Title ");
+    } else {
+        self.showTagButton = YES;
+        [self buildRightNavBarArray];
+        [UIView animateWithDuration:0.25 animations:^{
+//            self.title = nil;
+            self.navigationItem.titleView = nil;
+        }];
+        NSLog (@"show Tag Button");
+    }
+}
 - (void) registerForMediaPlayerNotifications {
 //    LogMethod();
     

@@ -7,6 +7,7 @@
 //
 
 #import "UserTagCell.h"
+#import "KSLabel.h"
 
 @implementation UserTagCell
 
@@ -38,5 +39,15 @@
     textLabelFrame.origin.x += self.xOffset;
     textLabelFrame.size.width -= self.xOffset;
     self.textLabel.frame = textLabelFrame;
+}
+- (void)prepareForMove
+{
+	[[self textLabel] setText:@""];
+	[[self detailTextLabel] setText:@""];
+	[[self imageView] setImage:nil];
+    [self.tagLabel setText: @""];
+    UIImage *cellBackgroundImage = [UIImage imageNamed: @"list-background.png"];
+    [self.cellBackgroundImageView  setImage: cellBackgroundImage];
+    
 }
 @end

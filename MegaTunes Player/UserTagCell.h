@@ -14,6 +14,7 @@
 //@property (strong, nonatomic) IBOutlet NSLayoutConstraint *centerXAlignmentConstraint;
 @property (nonatomic) CGFloat xOffset;
 
+- (void)prepareForMove;
 
 
 @end

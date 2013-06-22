@@ -33,12 +33,19 @@
 @property (readwrite)           BOOL listIsAlphabetic;
 @property (readwrite)           BOOL isSearching;
 @property (nonatomic, retain)   MPMediaItemCollection *songCollection;
-@property (nonatomic, strong)   UIBarButtonItem *rightBarButton;
+@property (nonatomic, strong)   UIBarButtonItem *playBarButton;
+@property (nonatomic, strong)   UIBarButtonItem *tagBarButton;
 //@property (nonatomic, strong)   NSString *collectionType;
 @property (nonatomic, strong)   MPMediaQuery *collectionQueryType;
 //@property (nonatomic, strong)   MPMediaPropertyPredicate *collectionPredicate;
 @property (nonatomic, strong)   NSArray *searchResults;
 @property (nonatomic, strong)   CollectionItem *collectionItemToSave;
+@property (readwrite)           BOOL showTagButton;
+@property (readwrite)           BOOL showTags;
+@property (nonatomic, strong)   NSString *songViewTitle;
+@property (strong, nonatomic) UISwipeGestureRecognizer *swipeLeftRight;
+
+
 
 
 
