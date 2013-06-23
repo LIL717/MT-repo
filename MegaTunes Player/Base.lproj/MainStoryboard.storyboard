@@ -55,7 +55,7 @@
                             </constraints>
                         </view>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" restorationIdentifier="SongCell" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="SongCell" rowHeight="55" id="fy5-n4-fQP" userLabel="cell" customClass="SongCell">
+                            <tableViewCell contentMode="scaleToFill" restorationIdentifier="SongCell" selectionStyle="gray" hidesAccessoryWhenEditing="NO" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="SongCell" rowHeight="55" id="fy5-n4-fQP" userLabel="cell" customClass="SongCell">
                                 <rect key="frame" x="0.0" y="146" width="480" height="56"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -156,14 +156,6 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RDZ-Zm-HIO" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <searchDisplayController id="fvc-i7-Nph">
-                    <connections>
-                        <outlet property="delegate" destination="mNb-57-5Xm" id="jAD-58-gaL"/>
-                        <outlet property="searchContentsController" destination="mNb-57-5Xm" id="zVz-5r-Pex"/>
-                        <outlet property="searchResultsDataSource" destination="mNb-57-5Xm" id="EjD-3z-5gw"/>
-                        <outlet property="searchResultsDelegate" destination="mNb-57-5Xm" id="LN3-RE-1cf"/>
-                    </connections>
-                </searchDisplayController>
                 <searchDisplayController id="gGh-Bj-P7U">
                     <connections>
                         <outlet property="delegate" destination="mNb-57-5Xm" id="V0F-vH-SFJ"/>
@@ -832,7 +824,7 @@
                         </view>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="CollectionItemCell" rowHeight="55" id="DFq-ZQ-3yg" userLabel="cell" customClass="CollectionItemCell">
-                                <rect key="frame" x="0.0" y="146" width="480" height="56"/>
+                                <rect key="frame" x="0.0" y="146" width="480" height="57"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="10" y="1" width="440" height="54"/>
@@ -1221,7 +1213,7 @@
                         </view>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="CollectionItemCell" rowHeight="55" id="WIN-8k-Cc9" userLabel="cell" customClass="CollectionItemCell">
-                                <rect key="frame" x="0.0" y="146" width="480" height="56"/>
+                                <rect key="frame" x="0.0" y="146" width="480" height="57"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="10" y="1" width="440" height="54"/>
@@ -1350,7 +1342,7 @@
                         </view>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="CollectionItemCell" rowHeight="55" id="Kxz-v9-piZ" userLabel="cell" customClass="CollectionItemCell">
-                                <rect key="frame" x="0.0" y="91" width="480" height="56"/>
+                                <rect key="frame" x="0.0" y="91" width="480" height="57"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="10" y="1" width="440" height="54"/>

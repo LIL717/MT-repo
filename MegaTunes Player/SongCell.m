@@ -40,20 +40,28 @@
 {
 
     [super setSelected:selected animated:animated];
-    if (selected) {
+
+    // Configure the view for the selected state
+}
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
+{
+    if (highlighted) {
+        self.nameLabel.textColor = [UIColor blueColor];
         NSLog(@"setSelected:YES");
+//        self.selectionStyle = UITableViewCellSelectionStyleGray;
+
         [self.cellBackgroundImageView  setImage: [UIImage imageNamed: @"list-background.png"]];
-        
+//        self.nameLabel.highlightedTextColor = [UIColor blueColor];
+
         CGRect frame = CGRectMake(0, 53, self.frame.size.width, 1);
         UIView *separatorLine = [[UILabel alloc] initWithFrame:frame];
         separatorLine.backgroundColor = [UIColor whiteColor];
         [self.cellBackgroundImageView addSubview: separatorLine];
-        
-        [self.scrollView.scrollViewImageView  setImage: [UIImage imageNamed: @"list-background.png"]];
-    }
-    [super setSelected:selected animated:animated];
 
-    // Configure the view for the selected state
+        [self.scrollView.scrollViewImageView  setImage: [UIImage imageNamed: @"list-background.png"]];
+    } else {
+        self.nameLabel.textColor = [UIColor whiteColor];
+    }
 }
 - (void) layoutSubviews
 {

@@ -114,6 +114,7 @@ BOOL showDuration;
 
     
     self.collectionTableView.sectionIndexMinimumDisplayRowCount = 20;
+    [self.collectionTableView setSectionIndexColor:[UIColor whiteColor]];
 
     if ([self.collection count] > self.collectionTableView.sectionIndexMinimumDisplayRowCount) {
         isIndexed = YES;

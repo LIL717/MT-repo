@@ -49,6 +49,7 @@
 @synthesize showTags;
 @synthesize songViewTitle;
 @synthesize swipeLeftRight;
+//@synthesize sectionIndexColor;
 
 NSMutableArray *songDurations;
 NSIndexPath *selectedIndexPath;
@@ -57,6 +58,7 @@ NSString *searchMediaItemProperty;
 CGFloat constraintConstant;
 //UIImage *backgroundImage;
 UIButton *infoButton;
+
 
 
 BOOL cellScrolled;
@@ -72,9 +74,10 @@ BOOL turnOnShuffle;
 //    LogMethod();
     [super viewDidLoad];
     
+        
     self.songViewTitle = self.title;
     self.showTagButton = NO;
-
+    self.songTableView.scrollsToTop = YES;
     
     self.swipeLeftRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(toggleTagButtonAndTitle:)];
     [self.swipeLeftRight setDirection:(UISwipeGestureRecognizerDirectionRight | UISwipeGestureRecognizerDirectionLeft )];
@@ -166,6 +169,8 @@ BOOL turnOnShuffle;
     //list can be alphabetic - if All Songs was chosen or in track order, only index alphabetic with more than 20 rows
     
     self.songTableView.sectionIndexMinimumDisplayRowCount = 20;
+    [self.songTableView setSectionIndexColor:[UIColor whiteColor]];
+
     isIndexed = NO;
     
     if (listIsAlphabetic) {
@@ -189,6 +194,7 @@ BOOL turnOnShuffle;
 
     
 }
+
 - (void) createDurationArray {
     
     for (MPMediaItem *song in self.collectionItem.collectionArray) {
@@ -614,12 +620,10 @@ BOOL turnOnShuffle;
     } else {
 
 //    MPMediaItem *song = [self.collectionItem.collectionArray objectAtIndex:indexPath.row];
-
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
 
         MPMediaItem *song = self.collectionItem.collectionArray[sec.range.location + indexPath.row];
         
-//        NSLog (@"song******* %@", [song valueForProperty:  MPMediaItemPropertyTitle]);
-
         cell.nameLabel.text = [song valueForProperty:  MPMediaItemPropertyTitle];
         cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed: @"list-background.png"]];
 
@@ -812,6 +816,7 @@ BOOL turnOnShuffle;
         return [UIColor blackColor];
     }
 }
+
 - (NSNumber *)calculatePlaylistDuration: (MPMediaItemCollection *) currentQueue {
     
     NSArray *returnedQueue = [currentQueue items];
@@ -873,10 +878,28 @@ BOOL turnOnShuffle;
         cell.scrollView.scrollEnabled = NO;
         
     }
+    //set to no to enable whole table to respond to scrollsToTop
+    
     return cell;
 }
 #pragma mark - Table view delegate
 
+//-(NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+//    
+//    SongCell *cell = (SongCell *)[tableView cellForRowAtIndexPath:indexPath];
+//    UIImage *cellBackgroundImage = [UIImage imageNamed: @"list-background.png"];
+//    [cell.cellBackgroundImageView  setImage: cellBackgroundImage];
+////    cell.nameLabel.highlightedTextColor = [UIColor blueColor];
+//    
+//    CGRect frame = CGRectMake(0, 53, self.songTableView.frame.size.width, 1);
+//    UIView *separatorLine = [[UILabel alloc] initWithFrame:frame];
+//    separatorLine.backgroundColor = [UIColor whiteColor];
+//    [cell.cellBackgroundImageView addSubview: separatorLine];
+//    
+//    [cell.scrollView.scrollViewImageView  setImage: cellBackgroundImage];
+//    
+//    return indexPath;
+//}
 //	 To conform to the Human Interface Guidelines, selections should not be persistent --
 //	 deselect the row after it has been selected.
 - (void) tableView: (UITableView *) tableView didSelectRowAtIndexPath: (NSIndexPath *) indexPath {

@@ -16,6 +16,11 @@
 
 UITouch *savedTouch;
 
+- (void) awakeFromNib {
+    //this must be NO to enable tables to scrollToTop with tap of status bar
+    self.scrollsToTop = NO;
+
+}
 
 #pragma mark - UIScrollView delegate
 
