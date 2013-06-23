@@ -12,6 +12,8 @@
 @implementation InCellScrollView
 
 //UIEvent *touchEvent;
+@synthesize scrollViewImageView;
+
 UITouch *savedTouch;
 
 

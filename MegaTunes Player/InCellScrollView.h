@@ -10,4 +10,6 @@
 @interface InCellScrollView : UIScrollView <UIScrollViewDelegate> 
 
 
+@property (nonatomic, strong) IBOutlet UIImageView *scrollViewImageView;
+
 @end

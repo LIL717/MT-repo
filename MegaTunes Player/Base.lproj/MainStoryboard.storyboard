@@ -19,14 +19,13 @@
                             <rect key="frame" x="0.0" y="0.0" width="480" height="110"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <searchBar contentMode="redraw" barStyle="blackOpaque" translatesAutoresizingMaskIntoConstraints="NO" id="KDv-is-mZG" customClass="MTSearchBar">
+                                <searchBar contentMode="redraw" barStyle="blackTranslucent" translatesAutoresizingMaskIntoConstraints="NO" id="l1i-Kb-yaE" customClass="MTSearchBar">
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="55" type="user" id="Ib0-kH-J04"/>
-                                        <constraint firstAttribute="width" constant="480" id="sq4-JB-fhW"/>
+                                        <constraint firstAttribute="height" constant="55" type="user" id="5Iq-b4-kea"/>
                                     </constraints>
                                     <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                                     <connections>
-                                        <outlet property="delegate" destination="mNb-57-5Xm" id="Myt-OC-pIP"/>
+                                        <outlet property="delegate" destination="mNb-57-5Xm" id="tmi-en-Jro"/>
                                     </connections>
                                 </searchBar>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="852-3o-ZMl">
@@ -47,10 +46,11 @@
                                 </button>
                             </subviews>
                             <constraints>
-                                <constraint firstItem="KDv-is-mZG" firstAttribute="trailing" secondItem="852-3o-ZMl" secondAttribute="trailing" type="default" id="SbG-ZW-8Ps"/>
-                                <constraint firstItem="KDv-is-mZG" firstAttribute="leading" secondItem="YP5-7A-NUT" secondAttribute="leading" type="default" id="ZcC-OE-AvN"/>
+                                <constraint firstItem="852-3o-ZMl" firstAttribute="trailing" secondItem="YP5-7A-NUT" secondAttribute="trailing" type="default" id="DP8-AJ-TXx"/>
+                                <constraint firstItem="l1i-Kb-yaE" firstAttribute="trailing" secondItem="YP5-7A-NUT" secondAttribute="trailing" type="default" id="caB-04-Pkx"/>
+                                <constraint firstItem="l1i-Kb-yaE" firstAttribute="leading" secondItem="YP5-7A-NUT" secondAttribute="leading" type="default" id="i4X-7r-8c9"/>
                                 <constraint firstItem="852-3o-ZMl" firstAttribute="leading" secondItem="YP5-7A-NUT" secondAttribute="leading" type="default" id="qoh-D3-UxH"/>
-                                <constraint firstItem="KDv-is-mZG" firstAttribute="bottom" secondItem="YP5-7A-NUT" secondAttribute="bottom" type="default" id="s3i-2r-5BH"/>
+                                <constraint firstItem="l1i-Kb-yaE" firstAttribute="top" secondItem="YP5-7A-NUT" secondAttribute="top" type="default" id="sRZ-Lw-1WI"/>
                                 <constraint firstItem="852-3o-ZMl" firstAttribute="top" secondItem="YP5-7A-NUT" secondAttribute="top" constant="55" type="user" id="wo3-sm-xHc"/>
                             </constraints>
                         </view>
@@ -62,11 +62,7 @@
                                     <rect key="frame" x="10" y="1" width="460" height="54"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="list-backwseparator.png" translatesAutoresizingMaskIntoConstraints="NO" id="7eR-Mq-JMU" userLabel="bkgImage">
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="480" id="sKe-TU-kwV"/>
-                                            </constraints>
-                                        </imageView>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="list-backwseparator.png" translatesAutoresizingMaskIntoConstraints="NO" id="7eR-Mq-JMU" userLabel="bkgImage"/>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2sQ-Rj-GH3" userLabel="nowPlayingIndicator">
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="20" type="user" id="M4D-Pr-Xbw"/>
@@ -100,6 +96,9 @@
                                                 <constraint firstItem="e09-6C-UeW" firstAttribute="centerX" secondItem="EZG-Q9-yHA" secondAttribute="centerX" type="user" id="t4W-KE-MKW"/>
                                                 <constraint firstItem="e09-6C-UeW" firstAttribute="top" secondItem="EZG-Q9-yHA" secondAttribute="top" type="user" id="vT9-BF-bZG"/>
                                             </constraints>
+                                            <connections>
+                                                <outlet property="scrollViewImageView" destination="SVb-KX-c1T" id="JTo-sC-17G"/>
+                                            </connections>
                                         </scrollView>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="00:00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Je-hu-yhg" userLabel="durationLabel">
                                             <constraints>
@@ -116,6 +115,8 @@
                                     <constraint firstItem="EZG-Q9-yHA" firstAttribute="leading" secondItem="2sQ-Rj-GH3" secondAttribute="trailing" constant="-2" type="user" id="7BY-cl-ev9"/>
                                     <constraint firstAttribute="trailing" secondItem="9Je-hu-yhg" secondAttribute="trailing" constant="44" id="Ep0-Qq-8eg"/>
                                     <constraint firstItem="7eR-Mq-JMU" firstAttribute="leading" secondItem="fy5-n4-fQP" secondAttribute="leading" type="user" id="K4l-Mh-Fuh"/>
+                                    <constraint firstItem="7eR-Mq-JMU" firstAttribute="bottom" secondItem="2sQ-Rj-GH3" secondAttribute="bottom" type="default" id="Mv6-AY-63Y"/>
+                                    <constraint firstItem="7eR-Mq-JMU" firstAttribute="trailing" secondItem="fy5-n4-fQP" secondAttribute="trailing" type="default" id="Oav-dK-3yy"/>
                                     <constraint firstItem="9Je-hu-yhg" firstAttribute="centerY" secondItem="2sQ-Rj-GH3" secondAttribute="centerY" type="user" id="Pd9-z5-md6"/>
                                     <constraint firstAttribute="bottom" secondItem="EZG-Q9-yHA" secondAttribute="bottom" constant="3" type="user" id="Vcc-eu-huw"/>
                                     <constraint firstItem="2sQ-Rj-GH3" firstAttribute="leading" secondItem="fy5-n4-fQP" secondAttribute="leading" type="user" id="ZpO-5f-739"/>
@@ -123,15 +124,16 @@
                                     <constraint firstItem="EZG-Q9-yHA" firstAttribute="top" secondItem="2sQ-Rj-GH3" secondAttribute="top" type="default" id="hJA-eb-Unv"/>
                                     <constraint firstItem="EZG-Q9-yHA" firstAttribute="top" secondItem="7eR-Mq-JMU" secondAttribute="top" type="user" id="j4d-cm-R0C"/>
                                     <constraint firstAttribute="bottom" secondItem="7eR-Mq-JMU" secondAttribute="bottom" constant="1" type="user" id="lcK-H6-Bou"/>
-                                    <constraint firstItem="7eR-Mq-JMU" firstAttribute="bottom" secondItem="9Je-hu-yhg" secondAttribute="bottom" type="default" id="lj5-YS-A8x"/>
-                                    <constraint firstAttribute="trailing" secondItem="EZG-Q9-yHA" secondAttribute="trailing" constant="168" id="v22-it-y6X"/>
+                                    <constraint firstAttribute="trailing" secondItem="EZG-Q9-yHA" secondAttribute="trailing" constant="168" type="user" id="v22-it-y6X"/>
                                 </constraints>
                                 <connections>
+                                    <outlet property="cellBackgroundImageView" destination="7eR-Mq-JMU" id="KFn-3Y-1vR"/>
                                     <outlet property="centerXAlignmentConstraint" destination="t4W-KE-MKW" id="gDa-ml-sTT"/>
                                     <outlet property="durationLabel" destination="9Je-hu-yhg" id="RmS-bV-NaJ"/>
                                     <outlet property="nameLabel" destination="e09-6C-UeW" id="3lF-FX-uw6"/>
                                     <outlet property="playingIndicator" destination="2sQ-Rj-GH3" id="O29-nE-7af"/>
                                     <outlet property="scrollView" destination="EZG-Q9-yHA" id="ToE-3F-60S"/>
+                                    <outlet property="scrollViewToCellConstraint" destination="v22-it-y6X" id="por-Fv-UMA"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -143,8 +145,8 @@
                     <navigationItem key="navigationItem" id="n9y-KG-rl2"/>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <connections>
-                        <outlet property="searchBar" destination="KDv-is-mZG" id="qOK-NH-nus"/>
-                        <outlet property="searchDisplayController" destination="fvc-i7-Nph" id="y1B-Dt-7vu"/>
+                        <outlet property="searchBar" destination="l1i-Kb-yaE" id="CLv-Jd-LFD"/>
+                        <outlet property="searchDisplayController" destination="gGh-Bj-P7U" id="pdf-Eb-3NC"/>
                         <outlet property="shuffleButton" destination="852-3o-ZMl" id="c9C-Oh-92s"/>
                         <outlet property="shuffleView" destination="YP5-7A-NUT" id="OvN-aE-P8F"/>
                         <outlet property="songTableView" destination="EmK-pd-wau" id="snT-SN-1Np"/>
@@ -157,10 +159,18 @@
                 <searchDisplayController id="fvc-i7-Nph">
                     <connections>
                         <outlet property="delegate" destination="mNb-57-5Xm" id="jAD-58-gaL"/>
-                        <outlet property="searchBar" destination="KDv-is-mZG" id="Zrj-dj-ihB"/>
                         <outlet property="searchContentsController" destination="mNb-57-5Xm" id="zVz-5r-Pex"/>
                         <outlet property="searchResultsDataSource" destination="mNb-57-5Xm" id="EjD-3z-5gw"/>
                         <outlet property="searchResultsDelegate" destination="mNb-57-5Xm" id="LN3-RE-1cf"/>
+                    </connections>
+                </searchDisplayController>
+                <searchDisplayController id="gGh-Bj-P7U">
+                    <connections>
+                        <outlet property="delegate" destination="mNb-57-5Xm" id="V0F-vH-SFJ"/>
+                        <outlet property="searchBar" destination="l1i-Kb-yaE" id="FHQ-Cm-nAT"/>
+                        <outlet property="searchContentsController" destination="mNb-57-5Xm" id="w9f-sz-isa"/>
+                        <outlet property="searchResultsDataSource" destination="mNb-57-5Xm" id="rss-b1-7Of"/>
+                        <outlet property="searchResultsDelegate" destination="mNb-57-5Xm" id="eJU-R0-c9C"/>
                     </connections>
                 </searchDisplayController>
             </objects>
@@ -1575,10 +1585,10 @@
     <inferredMetricsTieBreakers>
         <segue reference="OaX-wz-MBb"/>
         <segue reference="qWI-HD-eSG"/>
-        <segue reference="ZlS-b1-pog"/>
-        <segue reference="hot-4h-GjM"/>
+        <segue reference="kZ2-Sr-P63"/>
+        <segue reference="dXX-zY-4vR"/>
         <segue reference="SvT-2g-rDr"/>
-        <segue reference="5Lm-x9-p1k"/>
+        <segue reference="oc8-HG-QrB"/>
         <segue reference="hHs-2t-p2p"/>
         <segue reference="FyL-fq-fFG"/>
     </inferredMetricsTieBreakers>

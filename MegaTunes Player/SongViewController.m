@@ -14,6 +14,8 @@
 #import "CollectionItem.h"
 #import "ItemCollection.h"
 #import "UIImage+AdditionalFunctionalities.h"
+#import "UserDataForMediaItem.h"
+#import "MediaItemUserData.h"
 
 @interface SongViewController ()
 @property (nonatomic, strong) NSArray * songSections;
@@ -53,7 +55,7 @@ NSIndexPath *selectedIndexPath;
 MPMediaItem *selectedSong;
 NSString *searchMediaItemProperty;
 CGFloat constraintConstant;
-UIImage *backgroundImage;
+//UIImage *backgroundImage;
 UIButton *infoButton;
 
 
@@ -96,7 +98,7 @@ BOOL turnOnShuffle;
     self.songTableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]];
     self.songTableView.opaque = NO;
     self.songTableView.backgroundView = nil; // THIS ONE TRIPPED ME UP!
-    backgroundImage = [UIImage imageNamed: @"list-background.png"];
+//    backgroundImage = [UIImage imageNamed: @"list-background.png"];
     
     //make the back arrow for left bar button item
     
@@ -129,7 +131,7 @@ BOOL turnOnShuffle;
                                                          action:@selector(showTagColors)];
     
     menuBarImageDefault = [[UIImage imageNamed:@"color57.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    menuBarImageLandscape = [[UIImage imageNamed:@"colog68.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    menuBarImageLandscape = [[UIImage imageNamed:@"color68.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
     
     [self.tagBarButton setBackgroundImage:menuBarImageDefault forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     [self.tagBarButton setBackgroundImage:menuBarImageLandscape forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
@@ -566,7 +568,7 @@ BOOL turnOnShuffle;
         if ( searchResultsCell == nil ) {
             searchResultsCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
             searchResultsCell.selectionStyle = UITableViewCellSelectionStyleGray;
-            searchResultsCell.selectedBackgroundView = [[UIImageView alloc] initWithImage:backgroundImage];
+            searchResultsCell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed: @"list-background.png"]];
             searchResultsCell.textLabel.font = [UIFont systemFontOfSize:44];
             searchResultsCell.textLabel.textColor = [UIColor whiteColor];
             searchResultsCell.textLabel.highlightedTextColor = [UIColor blueColor];
@@ -581,6 +583,7 @@ BOOL turnOnShuffle;
 
         MPMediaItem  *item = [searchResults objectAtIndex: indexPath.row];
         mediaItemName = [item valueForProperty: MPMediaItemPropertyTitle];
+        
 
         //        NSArray *searchCollectionArray = [searchCollection items];
         //        for (MPMediaItem *item in searchCollectionArray) {
@@ -588,6 +591,23 @@ BOOL turnOnShuffle;
 //            NSLog (@" whatIsThis %@", [item valueForProperty: MPMediaItemPropertyTitle]);
         //        }
         searchResultsCell.textLabel.text = mediaItemName;
+        
+        UIColor *tagColor = [UIColor alloc];
+        
+        if (showTags) {
+            tagColor = [self retrieveTagColorForMediaItem: item];
+        } else {
+            tagColor = [UIColor blackColor];
+        }
+        
+        UIImage *cellBackgroundImage = [UIImage imageNamed: @"list-background.png"];
+        UIImage *coloredImage = [cellBackgroundImage imageWithTint: tagColor];
+//        [searchResultsCell.backgroundView  setImage: coloredImage];
+//        searchResultsCell.textLabel.backgroundColor = tagColor;
+        searchResultsCell.backgroundView = [[UIImageView alloc] initWithImage:coloredImage];
+        UIImage *coloredBackgroundImage = [[UIImage imageNamed: @"list-background.png"] imageWithTint:tagColor];
+        [searchResultsCell.textLabel setBackgroundColor:[UIColor colorWithPatternImage: coloredBackgroundImage]];
+
         
         return searchResultsCell;
         
@@ -601,6 +621,26 @@ BOOL turnOnShuffle;
 //        NSLog (@"song******* %@", [song valueForProperty:  MPMediaItemPropertyTitle]);
 
         cell.nameLabel.text = [song valueForProperty:  MPMediaItemPropertyTitle];
+        cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed: @"list-background.png"]];
+
+        UIColor *tagColor = [UIColor alloc];
+        
+        if (showTags) {
+            tagColor = [self retrieveTagColorForMediaItem: song];
+        } else {
+            tagColor = [UIColor blackColor];
+        }
+        UIImage *cellBackgroundImage = [UIImage imageNamed: @"list-background.png"];
+        UIImage *coloredImage = [cellBackgroundImage imageWithTint: tagColor];
+        [cell.cellBackgroundImageView  setImage: coloredImage];
+        
+        CGRect frame = CGRectMake(0, 53, self.songTableView.frame.size.width, 1);
+        UIView *separatorLine = [[UILabel alloc] initWithFrame:frame];
+        separatorLine.backgroundColor = [UIColor whiteColor];
+        [cell.cellBackgroundImageView addSubview: separatorLine];
+
+        [cell.scrollView.scrollViewImageView  setImage: coloredImage];
+
 
     //playback duration of the song
     
@@ -635,14 +675,14 @@ BOOL turnOnShuffle;
             //make the accessory view into a custom info button
             
             UIImage *image = [UIImage imageNamed: @"infoLightButtonImage.png"];
-            UIImage *backgroundImage = [UIImage imageNamed: @"infoSelectedButtonImage.png"];
+            UIImage *infoBackgroundImage = [UIImage imageNamed: @"infoSelectedButtonImage.png"];
             
             infoButton = [UIButton buttonWithType:UIButtonTypeCustom];
             
             CGRect frame = CGRectMake(0.0, 0.0, image.size.width, image.size.height);
             infoButton.frame = frame;
             [infoButton setImage:image forState:UIControlStateNormal];
-            [infoButton setImage: backgroundImage forState:UIControlStateHighlighted];
+            [infoButton setImage: infoBackgroundImage forState:UIControlStateHighlighted];
             [infoButton addTarget:self action:@selector(infoButtonTapped:event:)  forControlEvents:UIControlEventTouchUpInside];
             infoButton.contentEdgeInsets = UIEdgeInsetsMake(0, 10, 0, -10);
             
@@ -748,6 +788,29 @@ BOOL turnOnShuffle;
 //        return cell;
     }
                                                                 
+}
+- (UIColor *) retrieveTagColorForMediaItem: (MPMediaItem *) mediaItem {
+        
+    //check to see if there is user data for this media item
+    MediaItemUserData *mediaItemUserData = [MediaItemUserData alloc];
+    mediaItemUserData.managedObjectContext = self.managedObjectContext;
+    
+    UserDataForMediaItem *userDataForMediaItem = [mediaItemUserData containsItem: [mediaItem valueForProperty: MPMediaItemPropertyPersistentID]];
+    TagData *tagData = userDataForMediaItem.tagData;
+    
+    if (userDataForMediaItem.tagData.tagName) {
+        
+        int red = [tagData.tagColorRed intValue];
+        int green = [tagData.tagColorGreen intValue];
+        int blue = [tagData.tagColorBlue intValue];
+        int alpha = [tagData.tagColorAlpha intValue];
+        
+        UIColor *tagColor = [UIColor colorWithRed:(red/255.0f) green:(green/255.0f) blue:(blue/255.0f) alpha:(alpha/255.0f)];
+        
+        return tagColor;
+    } else {
+        return [UIColor blackColor];
+    }
 }
 - (NSNumber *)calculatePlaylistDuration: (MPMediaItemCollection *) currentQueue {
     
@@ -924,6 +987,7 @@ BOOL turnOnShuffle;
         self.showTags = YES;
         NSLog (@"show Tags");
     }
+    [self.songTableView reloadData];
 }
 - (void)goBackClick
 {

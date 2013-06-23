@@ -7,6 +7,7 @@
 //
 
 #import "SongCell.h"
+#import "InCellScrollView.h"
 
 @implementation SongCell
 
@@ -14,6 +15,8 @@
 @synthesize scrollView;
 @synthesize nameLabel;
 @synthesize durationLabel;
+@synthesize cellBackgroundImageView;
+
 @synthesize infoBackground;
 //@synthesize BPM;
 @synthesize scrollViewToCellConstraint;
@@ -35,6 +38,19 @@
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
+
+    [super setSelected:selected animated:animated];
+    if (selected) {
+        NSLog(@"setSelected:YES");
+        [self.cellBackgroundImageView  setImage: [UIImage imageNamed: @"list-background.png"]];
+        
+        CGRect frame = CGRectMake(0, 53, self.frame.size.width, 1);
+        UIView *separatorLine = [[UILabel alloc] initWithFrame:frame];
+        separatorLine.backgroundColor = [UIColor whiteColor];
+        [self.cellBackgroundImageView addSubview: separatorLine];
+        
+        [self.scrollView.scrollViewImageView  setImage: [UIImage imageNamed: @"list-background.png"]];
+    }
     [super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
