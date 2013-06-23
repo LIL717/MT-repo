@@ -44,6 +44,4 @@
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *rightBarButton;
 
 
-- (IBAction)saveTag:(id)sender;
-
 @end
