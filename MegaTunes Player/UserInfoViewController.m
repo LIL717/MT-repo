@@ -14,6 +14,7 @@
 //#import "TagItem.h"
 #import "TagData.h"
 #import "KSLabel.h"
+#import "UserTagCell.h"
 
 @interface UserInfoViewController ()
 
@@ -28,8 +29,7 @@
 @synthesize mediaItemForInfo;
 
 @synthesize userDataForMediaItem;
-@synthesize userTagButton;
-@synthesize tagLabel;
+@synthesize userInfoTagTable;
 @synthesize comments;
 
 @synthesize verticalSpaceTopToTagConstraint;
@@ -40,6 +40,8 @@
 @synthesize editingUserInfo;
 
 @synthesize landscapeOffset;
+@synthesize userInfoTagArray;
+@synthesize tagButton;
 
 #pragma mark - Initial Display methods
 
@@ -51,6 +53,7 @@
     [TestFlight passCheckpoint:@"UserInfoViewController"];
     
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
+    [self.userInfoTagTable setBackgroundColor: [UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
     
     musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
     
@@ -70,42 +73,61 @@
     MediaItemUserData *mediaItemUserData = [MediaItemUserData alloc];
     mediaItemUserData.managedObjectContext = self.managedObjectContext;
     
-    [mediaItemUserData listAll];
-    
-    self.tagLabel.textColor = [UIColor whiteColor];
-    [self.tagLabel setDrawOutline:YES];
-    [self.tagLabel setOutlineColor:[UIColor blackColor]];
-    [self.tagLabel setDrawGradient:NO];
-    self.tagLabel.font = [UIFont systemFontOfSize:44];
+//    [mediaItemUserData listAll];
     
     self.userDataForMediaItem = [mediaItemUserData containsItem: [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyPersistentID]];
     TagData *tagData = self.userDataForMediaItem.tagData;
 
-    if (self.userDataForMediaItem.tagData.tagName) {
-        
-        int red = [tagData.tagColorRed intValue];
-        int green = [tagData.tagColorGreen intValue];
-        int blue = [tagData.tagColorBlue intValue];
-        int alpha = [tagData.tagColorAlpha intValue];
-        
-        UIColor *tagColor = [UIColor colorWithRed:(red/255.0f) green:(green/255.0f) blue:(blue/255.0f) alpha:(alpha/255.0f)];
-        
-        UIImage *labelBackgroundImage = [UIImage imageNamed: @"list-background.png"];
-        UIImage *coloredImage = [labelBackgroundImage imageWithTint: tagColor];
-        
-        [self.userTagButton setBackgroundImage: coloredImage forState: UIControlStateNormal];
-        
-        self.tagLabel.text = tagData.tagName;
-
-        NSLog (@" tagData.tagName = %@", tagData.tagName);
-
+//    if (self.userDataForMediaItem.tagData.tagName) {
+//        
+//        int red = [tagData.tagColorRed intValue];
+//        int green = [tagData.tagColorGreen intValue];
+//        int blue = [tagData.tagColorBlue intValue];
+//        int alpha = [tagData.tagColorAlpha intValue];
+//        
+//        UIColor *tagColor = [UIColor colorWithRed:(red/255.0f) green:(green/255.0f) blue:(blue/255.0f) alpha:(alpha/255.0f)];
+//        
+//        UIImage *labelBackgroundImage = [UIImage imageNamed: @"list-background.png"];
+//        UIImage *coloredImage = [labelBackgroundImage imageWithTint: tagColor];
+//        
+//        [self.userTagButton setBackgroundImage: coloredImage forState: UIControlStateNormal];
+//        
+//        self.tagLabel.text = tagData.tagName;
+//
+//        NSLog (@" tagData.tagName = %@", tagData.tagName);
+//
+//    } else {
+//        
+//        UIImage *labelBackgroundImage = [UIImage imageNamed: @"list-background.png"];
+//        [self.userTagButton setBackgroundImage: labelBackgroundImage forState: UIControlStateNormal];
+//
+////        self.tagLabel.textColor = [UIColor lightGrayColor];
+////        tagData.tagName = NSLocalizedString(@"Select Tag", nil);
+//        self.tagLabel.textColor = [UIColor lightGrayColor];
+//        self.tagLabel.text = NSLocalizedString(@"Select Tag", nil);
+//    }
+    
+    if (tagData) {
+        self.userInfoTagArray = [NSArray arrayWithObjects: tagData, nil];
+        [self.tagButton removeFromSuperview];
     } else {
+        self.userInfoTagArray = [NSArray arrayWithObjects: nil];
         
-        UIImage *labelBackgroundImage = [UIImage imageNamed: @"list-background.png"];
-        [self.userTagButton setBackgroundImage: labelBackgroundImage forState: UIControlStateNormal];
+        self.tagButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [self.tagButton addTarget:self
+                   action:@selector(selectNewTag)
+         forControlEvents:UIControlEventTouchDown];
+        [self.tagButton setTitle:NSLocalizedString(@"Select Tag", nil) forState:UIControlStateNormal];
+        self.tagButton.frame = CGRectMake(0.0, 11.0, self.view.bounds.size.width, 55.0);
 
-        self.tagLabel.textColor = [UIColor lightGrayColor];
-        self.tagLabel.text = NSLocalizedString(@"Select Tag", nil);
+        UIImage *labelBackgroundImage = [UIImage imageNamed: @"list-background.png"];
+        UIImage *coloredImage = [labelBackgroundImage imageWithTint: [UIColor lightGrayColor]];
+        [self.tagButton setBackgroundImage: coloredImage forState: UIControlStateNormal];
+        [self.tagButton setTitleColor: [UIColor whiteColor] forState: UIControlStateNormal];
+        self.tagButton.titleLabel.font = [UIFont systemFontOfSize:44];
+        self.tagButton.titleLabel.textAlignment = NSTextAlignmentLeft;
+        
+        [self.view addSubview:tagButton];
     }
 
     self.comments.delegate = self;
@@ -118,6 +140,11 @@
         [self.placeholderLabel setHidden:NO];
     }
 
+}
+- (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
+    
+    [self updateLayoutForNewOrientation: orientation];
+    
 }
 - (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
     //executes this method on initial load and the one in InfoTabBarController after that, so they need to stay in synch with each other and with the constaint set in interface builder
@@ -132,6 +159,7 @@
         self.verticalSpaceTopToTagConstraint.constant += landscapeOffset;
         self.verticalSpaceTopToCommentsConstraint.constant += landscapeOffset;
     }
+    [self.userInfoTagTable reloadData];
 }
 
 #pragma mark textField Delegate Methods________________________________
@@ -236,7 +264,9 @@
     
     //pull the field up to the top (over the tagItem field while editing)
     
-    self.verticalSpaceTopToCommentsConstraint.constant -= (self.userTagButton.frame.size.height);
+//    self.verticalSpaceTopToCommentsConstraint.constant -= (self.userTagButton.frame.size.height);
+    self.verticalSpaceTopToCommentsConstraint.constant -= (self.userInfoTagTable.frame.size.height);
+
     [self.view setNeedsUpdateConstraints];
     
     [UIView animateWithDuration:animationDuration animations:^{
@@ -254,7 +284,9 @@
     
     self.keyboardHeight.constant = 0;
     
-    self.verticalSpaceTopToCommentsConstraint.constant += self.userTagButton.frame.size.height;
+//    self.verticalSpaceTopToCommentsConstraint.constant += self.userTagButton.frame.size.height;
+    self.verticalSpaceTopToCommentsConstraint.constant += self.userInfoTagTable.frame.size.height;
+
 
     [self.view setNeedsUpdateConstraints];
 
@@ -262,6 +294,131 @@
         [self.view layoutIfNeeded];
     }];
 }
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    //    LogMethod();
+    return 1;
+}
+
+- (NSInteger)tableView:(FMMoveTableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    //    LogMethod();
+    return [self.userInfoTagArray count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    //    LogMethod();
+    //don't use UserTagCell for searchResultsCell won't respond to touches to scroll anyway and terrible performance on GoBackClick when autoRotated
+    //    static NSString *CellIdentifier = @"Cell";
+    //    UITableViewCell *searchResultsCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    
+	UserTagCell *cell = (UserTagCell *)[tableView dequeueReusableCellWithIdentifier:@"UserTagCell"];
+    
+    [cell.tagLabel removeFromSuperview];
+    
+    cell.tagLabel = [[KSLabel alloc] initWithFrame:CGRectMake(6, 0, cell.frame.size.width - 6, 55)];
+    
+    cell.tagLabel.textColor = [UIColor whiteColor];
+    [cell.tagLabel setDrawOutline:YES];
+    [cell.tagLabel setOutlineColor:[UIColor blackColor]];
+    
+    [cell.tagLabel setDrawGradient:NO];
+    //        CGFloat colors [] = {
+    //            255.0f/255.0f, 255.0f/255.0f, 255.0f/255.0f, 1.0,
+    //            0.0f/255.0f, 0.0f/255.0f, 0.0f/255.0f, 1.0
+    //        };
+    //        [cell.tagLabel setGradientColors:colors];
+    
+    cell.tagLabel.font = [UIFont systemFontOfSize:44];
+
+    TagData *tagData = [self.userInfoTagArray objectAtIndex:indexPath.row];
+        cell.tagLabel.text = tagData.tagName;
+        
+        int red = [tagData.tagColorRed intValue];
+        int green = [tagData.tagColorGreen intValue];
+        int blue = [tagData.tagColorBlue intValue];
+        int alpha = [tagData.tagColorAlpha intValue];
+        
+    UIColor *tagColor = [UIColor colorWithRed:(red/255.0f) green:(green/255.0f) blue:(blue/255.0f) alpha:(alpha/255.0f)];
+//    }
+    [cell addSubview:cell.tagLabel];
+    UIImage *cellBackgroundImage = [UIImage imageNamed: @"list-background.png"];
+    UIImage *coloredImage = [cellBackgroundImage imageWithTint: tagColor];
+    
+    [cell.cellBackgroundImageView  setImage: coloredImage];
+    //        cell.tagLabel.backgroundColor = tagColor;
+    
+    return cell;
+    //    }
+}
+
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated {
+    [super setEditing:editing animated:animated];
+    [self.userInfoTagTable setEditing:editing animated:YES];
+}
+#pragma mark - Table view delegate
+
+//	 To conform to the Human Interface Guidelines, selections should not be persistent --
+//	 deselect the row after it has been selected.
+- (void) tableView: (UITableView *) tableView didSelectRowAtIndexPath: (NSIndexPath *) indexPath {    
+   
+    [self performSegueWithIdentifier: @"SelectTag" sender: self];
+
+    [tableView deselectRowAtIndexPath: indexPath animated: YES];
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    MediaItemUserData *mediaItemUserData = [MediaItemUserData alloc];
+    mediaItemUserData.managedObjectContext = self.managedObjectContext;
+    
+//    TagData *tagData = [self.userInfoTagArray objectAtIndex:indexPath.row];
+    self.userDataForMediaItem.tagData = nil;
+    [mediaItemUserData updateTagForItem: self.userDataForMediaItem];
+    
+    self.userInfoTagArray = [NSArray arrayWithObjects: nil];
+    [self loadDataForView];
+    
+}
+
+-(UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return UITableViewCellEditingStyleDelete;
+}
+
+
+
+//- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
+//    [self.userTagTableView beginUpdates];
+//}
+//
+//- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
+//    switch (type) {
+//        case NSFetchedResultsChangeInsert:
+//            [self.userTagTableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+//            //set a flag so that table can be scrolled after the updates happen other wise crashes with out of bounds index
+//            newTagInserted = YES;
+//            //            savedIndexPath = newIndexPath;
+//            //            [self.userTagTableView scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+//            break;
+//            
+//        case NSFetchedResultsChangeDelete:
+//            [self.userTagTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+//            break;
+//            
+//        case NSFetchedResultsChangeUpdate:
+//            [self.userTagTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+//            break;
+//    }
+//}
+//
+//- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+//    [self.userTagTableView endUpdates];
+//    
+//}
+
+
 #pragma mark Prepare for Seque
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -290,6 +447,12 @@
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
 }
+
+- (IBAction) selectNewTag {
+
+    [self performSegueWithIdentifier: @"SelectTag" sender: self];
+}
+
 - (void)userTagViewControllerDidCancel:(UserTagViewController *)controller
 {
     //need to reload on return so that selected tag is shown
@@ -297,7 +460,7 @@
 //    [self.tagLabel removeFromSuperview];
 //    self.userTagButton.titleLabel.text = @"";
 
-
+    self.userInfoTagArray = [NSArray arrayWithObjects: nil];
     [self loadDataForView];
     [self willAnimateRotationToInterfaceOrientation: self.interfaceOrientation duration: 1];
     //need to add back observer for playbackStatechanged because it was removed before going to info in case user edits

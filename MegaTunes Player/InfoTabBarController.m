@@ -316,7 +316,7 @@
             
             self.userInfoViewController.mediaItemForInfo = self.mediaItemForInfo;
             [self.userInfoViewController loadDataForView];
-            [self.userInfoViewController.userTagButton setNeedsDisplay];
+            [self.userInfoViewController.userInfoTagTable reloadData];
             [self.userInfoViewController.comments setNeedsDisplay];
             
             self.title = [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyTitle];

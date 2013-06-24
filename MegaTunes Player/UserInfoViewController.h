@@ -10,7 +10,7 @@
 @class KSLabel;
 #import "UserTagViewController.h"
 
-@interface UserInfoViewController : UIViewController <MPMediaPickerControllerDelegate, UITextFieldDelegate, UITextViewDelegate, UserTagViewControllerDelegate, NSFetchedResultsControllerDelegate> {
+@interface UserInfoViewController : UIViewController < UITableViewDelegate, UITableViewDataSource, MPMediaPickerControllerDelegate, UITextFieldDelegate, UITextViewDelegate, UserTagViewControllerDelegate, NSFetchedResultsControllerDelegate> {
     
     NSManagedObjectContext  *managedObjectContext_;
 }
@@ -20,9 +20,8 @@
 @property (nonatomic, strong)   MPMediaItem                 *mediaItemForInfo;
 
 @property (strong, nonatomic)  UserDataForMediaItem *userDataForMediaItem;
-@property (strong, nonatomic) IBOutlet UIButton *userTagButton;
+@property (strong, nonatomic) IBOutlet UITableView *userInfoTagTable;
 @property (strong, nonatomic) IBOutlet UITextView   *comments;
-@property (strong, nonatomic) IBOutlet KSLabel *tagLabel;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceTopToTagConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *keyboardHeight;
@@ -32,6 +31,9 @@
 @property (readwrite)         BOOL             editingUserInfo;
 
 @property (readwrite)                  CGFloat landscapeOffset;
+@property (nonatomic, strong)   NSArray *userInfoTagArray;
+@property (nonatomic, strong)   UIButton *tagButton;
+
 
 - (void) loadDataForView;
 - (void) userTagViewControllerDidCancel:(UserTagViewController *)controller;
