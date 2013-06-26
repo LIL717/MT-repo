@@ -207,12 +207,17 @@ long songRemainingSeconds;
 
     [self setMusicPlayer: [MPMusicPlayerController iPodMusicPlayer]];
 
+    self.showPlaylistRemaining = [[NSUserDefaults standardUserDefaults] boolForKey:@"showPlaylistRemaining"];
 
-    self.showPlaylistRemaining = NO;
     //title will only be displayed if playlist remaining is turned off
-    self.title = NSLocalizedString(@"Now Playing", nil);
-    self.navigationItem.titleView = [self customizeTitleView];
-
+    if (self.showPlaylistRemaining) {
+        self.title = nil;
+        self.navigationItem.titleView = nil;
+    } else {
+        self.title = NSLocalizedString(@"Now Playing", nil);
+        self.navigationItem.rightBarButtonItem = nil;
+        self.navigationItem.titleView = [self customizeTitleView];
+    }
 
     self.swipeLeftRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(togglePlaylistRemainingAndTitle:)];
     [self.swipeLeftRight setDirection:(UISwipeGestureRecognizerDirectionRight | UISwipeGestureRecognizerDirectionLeft )];
@@ -1070,6 +1075,9 @@ long songRemainingSeconds;
         }];
         //        NSLog (@"don't show Playlist Remaining");
     }
+    //showTags must persist so save to NSUserDefaults
+    NSUserDefaults * standardUserDefaults = [NSUserDefaults standardUserDefaults];
+    [standardUserDefaults setBool:self.showPlaylistRemaining forKey:@"showPlaylistRemaining"];
 }
 - (IBAction)magnify {
     

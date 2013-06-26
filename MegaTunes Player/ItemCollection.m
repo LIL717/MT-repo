@@ -15,6 +15,7 @@
 @dynamic duration;
 @dynamic lastPlayedDate;
 @dynamic collection;
+@dynamic inAppPlaylist;
 @synthesize fetchedResultsController = fetchedResultsController_;
 @synthesize managedObjectContext = managedObjectContext_;
 
@@ -32,6 +33,7 @@
     [newManagedObject setValue: collectionItem.duration forKey: @"duration"];
     [newManagedObject setValue: collectionItem.lastPlayedDate forKey: @"lastPlayedDate"];
     [newManagedObject setValue: collectionItem.collection forKey: @"collection"];
+    [newManagedObject setValue: [NSNumber numberWithBool:collectionItem.inAppPlaylist ] forKey: @"inAppPlaylist"];
     
 //    NSArray *collectionArray = [collectionItem.collection items];
 //

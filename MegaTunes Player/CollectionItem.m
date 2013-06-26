@@ -15,6 +15,7 @@
 @synthesize lastPlayedDate;
 @synthesize collection;
 @synthesize collectionArray;
+@synthesize inAppPlaylist;
 
 
 @end

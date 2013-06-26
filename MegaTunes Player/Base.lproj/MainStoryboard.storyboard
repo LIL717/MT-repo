@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12D78" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="1j9-19-lml">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12E55" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="1j9-19-lml">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
     </dependencies>
@@ -129,6 +129,7 @@
                                 <connections>
                                     <outlet property="cellBackgroundImageView" destination="7eR-Mq-JMU" id="KFn-3Y-1vR"/>
                                     <outlet property="centerXAlignmentConstraint" destination="t4W-KE-MKW" id="gDa-ml-sTT"/>
+                                    <outlet property="centerYAlignmentConstraint" destination="KvJ-jW-PKZ" id="trc-4d-p1v"/>
                                     <outlet property="durationLabel" destination="9Je-hu-yhg" id="RmS-bV-NaJ"/>
                                     <outlet property="durationToCellConstraint" destination="Ep0-Qq-8eg" id="J0a-R5-WoP"/>
                                     <outlet property="nameLabel" destination="e09-6C-UeW" id="3lF-FX-uw6"/>
@@ -1238,7 +1239,7 @@
                         </view>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="CollectionItemCell" rowHeight="55" id="WIN-8k-Cc9" userLabel="cell" customClass="CollectionItemCell">
-                                <rect key="frame" x="0.0" y="146" width="480" height="56"/>
+                                <rect key="frame" x="0.0" y="146" width="480" height="57"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="10" y="1" width="440" height="54"/>

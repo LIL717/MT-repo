@@ -21,7 +21,7 @@
 //@synthesize BPM;
 @synthesize scrollViewToCellConstraint;
 @synthesize centerXAlignmentConstraint;
-//@synthesize centerYAlignmentConstraint;
+@synthesize centerYAlignmentConstraint;
 @synthesize durationToCellConstraint;
 @synthesize textLabelOffset;
 @synthesize cellOffset;
@@ -78,6 +78,8 @@
 //    self.frame = cellFrame;
 }
 - (void)setFrame:(CGRect)frame {
+    
+    //do this to make cell the same width as ungrouped table cell - otherwise wastes space on right)
     frame.size.width += self.cellOffset;
     [super setFrame:frame];
 }

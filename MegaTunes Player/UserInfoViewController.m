@@ -129,7 +129,7 @@
             tagButtonY = 23.0;
         }
         
-        self.tagButton.frame = CGRectMake(0.0, tagButtonY, self.view.bounds.size.width, 55.0);
+        self.tagButton.frame = CGRectMake(0.0, tagButtonY, self.view.bounds.size.width, 54.0);
 
 
         UIImage *labelBackgroundImage = [UIImage imageNamed: @"list-background.png"];
@@ -141,8 +141,56 @@
         self.tagButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         //adjust the content left inset otherwise the text will touch the left border:
         self.tagButton.contentEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
+                
+        UIView *superview = self.view;
         
-        [self.view addSubview:tagButton];
+        [tagButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+        
+        [superview addSubview:tagButton];
+        
+        NSLayoutConstraint *myConstraint = [NSLayoutConstraint
+                                            constraintWithItem:tagButton
+                                            attribute:NSLayoutAttributeTrailing
+                                            relatedBy:NSLayoutRelationEqual
+                                            toItem:superview
+                                            attribute:NSLayoutAttributeTrailing
+                                            multiplier:1.0
+                                            constant:0];
+        
+        [superview addConstraint:myConstraint];
+        
+        myConstraint = [NSLayoutConstraint
+                        constraintWithItem:tagButton
+                        attribute:NSLayoutAttributeLeading
+                        relatedBy:NSLayoutRelationEqual
+                        toItem:superview
+                        attribute:NSLayoutAttributeLeading
+                        multiplier:1.0
+                        constant:0];
+        
+        [superview addConstraint:myConstraint];
+        
+        myConstraint = [NSLayoutConstraint
+                        constraintWithItem:tagButton
+                        attribute:NSLayoutAttributeTop
+                        relatedBy:NSLayoutRelationEqual
+                        toItem:superview
+                        attribute:NSLayoutAttributeTop
+                        multiplier:1.0
+                        constant:tagButtonY];
+        
+        [superview addConstraint:myConstraint];
+        
+        myConstraint = [NSLayoutConstraint
+                        constraintWithItem:tagButton
+                        attribute:NSLayoutAttributeHeight
+                        relatedBy:NSLayoutRelationEqual
+                        toItem:nil
+                        attribute:NSLayoutAttributeNotAnAttribute
+                        multiplier:1.0
+                        constant:54];
+        
+        [superview addConstraint:myConstraint];
     }
 
     self.comments.delegate = self;

@@ -193,7 +193,6 @@ BOOL turnOnShuffle;
     self.songSectionTitles = [titles copy];
 //    NSLog (@"songSectionTitles %@", self.songSectionTitles);
 
-    
 }
 
 - (void) createDurationArray {
@@ -434,7 +433,11 @@ BOOL turnOnShuffle;
     if (tableView == self.searchDisplayController.searchResultsTableView) {
         return 1;
     } else {
-        return [self.songSections count];
+//        if (isIndexed) {
+            return [self.songSections count];
+//        } else {
+//            return 1;
+//        }
     }
 }
 
@@ -562,7 +565,10 @@ BOOL turnOnShuffle;
 	SongCell *cell = (SongCell *)[tableView
                                           dequeueReusableCellWithIdentifier:@"SongCell"];
     
+    //these are necessary to make the grouped cell look like ungrouped (makes the cell wider like ungrouped)
     cell.textLabelOffset = 8.0;
+    
+    // the info button is not far enough to the left with grouped cell, adjust for it here
     if (isIndexed) {
         cell.cellOffset = 0.0;
     } else {
@@ -680,9 +686,11 @@ BOOL turnOnShuffle;
             cell.accessoryType = UITableViewCellAccessoryNone;
             [infoButton removeFromSuperview];
         } else {
-            cell.accessoryType = UITableViewCellAccessoryNone;
-            cell.durationToCellConstraint.constant = 54;
             //make the accessory view into a custom info button
+
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            // need to adjust for widened cell for info button
+            cell.durationToCellConstraint.constant = 54;
             
             UIImage *image = [UIImage imageNamed: @"infoLightButtonImage.png"];
             UIImage *infoBackgroundImage = [UIImage imageNamed: @"infoSelectedButtonImage.png"];
@@ -881,6 +889,9 @@ BOOL turnOnShuffle;
         //        cell.scrollView.hidden = NO;
         //        cell.textLabel.hidden = YES;
         cell.scrollView.scrollEnabled = YES;
+        //this code is needed to prevent scrollable song titles from "flying" around in their scrollview on the 3GS
+        [cell.scrollView addConstraint:cell.centerYAlignmentConstraint];
+
         //        NSLog (@"%@ is scrollable", cell.nameLabel.text);
         
     }
@@ -888,6 +899,8 @@ BOOL turnOnShuffle;
         //        cell.scrollView.hidden = YES;
         //        cell.textLabel.hidden = NO;
         cell.scrollView.scrollEnabled = NO;
+//        [cell.scrollView removeConstraint:cell.centerYAlignmentConstraint];
+
         
     }
     //set to no to enable whole table to respond to scrollsToTop
@@ -1044,12 +1057,25 @@ BOOL turnOnShuffle;
     UITouch *touch = [touches anyObject];
 //    NSLog (@"touch is %@" ,touch);
     CGPoint currentTouchPosition = [touch locationInView:self.songTableView];
+//    NSLog (@"touchpoint  is %f %f" , currentTouchPosition.x, currentTouchPosition.y);
+
     NSIndexPath *indexPath = [self.songTableView indexPathForRowAtPoint: currentTouchPosition];
-    
+        
     if (indexPath != nil)
     {
         [self tableView: self.songTableView accessoryButtonTappedForRowWithIndexPath: indexPath];
     }
+}
+
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
+    
+    MPMediaQuerySection * sec = self.songSections[indexPath.section];
+    MPMediaItem *song = self.collectionItem.collectionArray[sec.range.location + indexPath.row];
+//    MPMediaItem *song = [self.collectionItem.collectionArray objectAtIndex:indexPath.row];
+        
+    self.mediaItemForInfo = song;
+    
+    [self performSegueWithIdentifier: @"ViewInfo" sender: self];
 }
 
 - (IBAction)playWithShuffle:(id)sender {
@@ -1057,28 +1083,21 @@ BOOL turnOnShuffle;
     //Shuffle button selected
     [musicPlayer setShuffleMode: MPMusicShuffleModeSongs];
     
-    int min = 0; 
+    int min = 0;
     int max = [self.collectionItem.collectionArray count] -1;
     int randNum = rand() % (max - min) + min; //create the random number.
-
+    
     selectedSong = [self.collectionItem.collectionArray objectAtIndex: randNum];
-
+    
     self.songCollection = [MPMediaItemCollection collectionWithItems: self.collectionItem.collectionArray];
     self.collectionItem.collection = self.songCollection;
     
     self.collectionItemToSave = self.collectionItem;
     
     [self performSegueWithIdentifier: @"PlaySong" sender: self];
-
+    
 }
 
-- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
-    
-    MPMediaItem *song = [self.collectionItem.collectionArray objectAtIndex:indexPath.row];
-    self.mediaItemForInfo = song;
-    
-    [self performSegueWithIdentifier: @"ViewInfo" sender: self];
-}
 - (IBAction) toggleTagButtonAndTitle:(id)sender {
     if (showTagButton) {
         self.showTagButton = NO;
@@ -1098,6 +1117,7 @@ BOOL turnOnShuffle;
             self.navigationItem.titleView = nil;
         }];
         NSLog (@"show Tag Button");
+        
     }
 }
 - (void) registerForMediaPlayerNotifications {
