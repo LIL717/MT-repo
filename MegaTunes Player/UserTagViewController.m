@@ -16,7 +16,6 @@
 #import "AddTagViewController.h"
 #import "KSLabel.h"                  //black outline around text
 #import "FMMoveTableView.h"
-//#import "FMMoveTableViewCell.h"
 
 
 @interface UserTagViewController ()
@@ -26,22 +25,14 @@
 @implementation UserTagViewController
 
 @synthesize userTagTableView;
-//@synthesize searchView;
-//@synthesize searchBar;
+
 @synthesize fetchedResultsController = fetchedResultsController_;
 @synthesize managedObjectContext = managedObjectContext_;
 
 //@synthesize iPodLibraryChanged;         //A flag indicating whether the library has been changed due to a sync
-//@synthesize isSearching;
-//@synthesize searchResults;
-//@synthesize currentTagName;
 @synthesize userDataForMediaItem;
 @synthesize userTagViewControllerDelegate;
-//@synthesize gestureRecognizerDelegate;
 @synthesize rightBarButton;
-//@synthesize tapGestureRecognizer;
-//@synthesize tap1GestureRecognizer;
-
 
 NSIndexPath *selectedIndexPath;
 CGFloat constraintConstant;
@@ -65,14 +56,9 @@ NSString *actionType;
     [self listenForChanges];
     
     [self setupFetchedResultsController];
-    
-//    self.gestureRecognizerDelegate = self;
-//    self.tap1GestureRecognizer.delegate = self;
 
-//
-//    self.tagItemArray =  [self.managedObjectContext executeFetchRequest:self.fetchRequest error:&error];
-        NSError *error = nil;
-     NSArray *allFetchedObjects = [self.managedObjectContext executeFetchRequest:[self fetchRequest] error:&error];
+    NSError *error = nil;
+    NSArray *allFetchedObjects = [self.managedObjectContext executeFetchRequest:[self fetchRequest] error:&error];
     for (TagData *tagData in allFetchedObjects) {
         NSLog (@"tagData.tagName is %@", tagData.tagName);
         NSLog (@"tagData.sortOrder is %d", [tagData.sortOrder intValue]);
@@ -155,7 +141,7 @@ NSString *actionType;
     
     //set the navigation bar title
     self.navigationItem.titleView = [self customizeTitleView];
-
+    
     [self updateLayoutForNewOrientation: self.interfaceOrientation];
     
     [super viewWillAppear: animated];
@@ -166,6 +152,20 @@ NSString *actionType;
     //    LogMethod();
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     tapCount = 0;
+
+    if (newTagInserted) {
+        [self.userTagTableView reloadData];
+
+        NSInteger lastSectionIndex = [self.userTagTableView numberOfSections] - 1;
+        
+        // Then grab the number of rows in the last section
+        NSInteger lastRowIndex = [self.userTagTableView numberOfRowsInSection:lastSectionIndex] - 1;
+        
+        NSIndexPath *pathToLastRow = [NSIndexPath indexPathForRow:lastRowIndex inSection:lastSectionIndex];
+        [self.userTagTableView scrollToRowAtIndexPath:pathToLastRow atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        newTagInserted = NO;
+
+    }
     [super viewDidAppear:(BOOL)animated];
 }
 - (UILabel *) customizeTitleView
@@ -188,15 +188,18 @@ NSString *actionType;
 }
 - (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
     //    LogMethod();
-    CGFloat navBarAdjustment;
+//    CGFloat navBarAdjustment;
     
     if (UIInterfaceOrientationIsPortrait(orientation)) {
-        navBarAdjustment = 11;
+//        navBarAdjustment = 11;
         [self.userTagTableView setContentInset:UIEdgeInsetsMake(11,0,0,0)];
     } else {
-        navBarAdjustment = 23;
+//        navBarAdjustment = 23;
         [self.userTagTableView setContentInset:UIEdgeInsetsMake(23,0,0,0)];
+        [self.userTagTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+
     }
+//        [self.userTagTableView reloadData];
     
 //    //if the first View, and there is a current Tag for the media item, scroll to that tag
 //    if (scrollToTag) {
@@ -213,23 +216,8 @@ NSString *actionType;
 //            firstRowVisible = YES;
 //        }
 //        
-//        // hide the search bar
-//        CGFloat tableViewHeaderHeight = self.searchView.frame.size.height;
-//        CGFloat adjustedHeaderHeight = tableViewHeaderHeight - navBarAdjustment;
-//        NSInteger possibleRows = self.userTagTableView.frame.size.height / self.userTagTableView.rowHeight;
-//        //        NSLog (@"possibleRows = %d collection count = %d", possibleRows, [self.collection count]);
-//        
-//        //if the table won't fill the screen need to wait for delay in order for tableView header to hide properly - so ugly
-//        if ([self.fetchedResultsController.fetchedObjects count] <= possibleRows) {
-//            [self performSelector:@selector(updateContentOffset) withObject:nil afterDelay:0.0];
-//        } else {
-//            if (firstRowVisible) {
-//                //        [self.collectionTableView scrollRectToVisible:CGRectMake(0, adjustedHeaderHeight, 1, 1) animated:NO];
-//                [self.userTagTableView setContentOffset:CGPointMake(0, adjustedHeaderHeight)];
-//            }
-//        }
 //    }
-    [self.userTagTableView reloadData];
+
     //    }
     
 }
@@ -252,91 +240,13 @@ NSString *actionType;
     
     [super viewWillLayoutSubviews];
 }
-//#pragma mark - Search Display methods
-//
-//- (void)searchDisplayControllerDidBeginSearch:(UISearchDisplayController *)controller {
-//    LogMethod();
-//    self.isSearching = YES;    
-//}
-//- (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller {
-//    //this needs to be here rather than DidEndSearch to avoid flashing wrong data first
-//    
-//    //    [self.collectionTableView reloadData];
-//}
-//
-//- (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller {
-//    LogMethod();
-//    self.isSearching = NO;
-//    //reload the original tableView otherwise section headers are not visible :(  this seems to be an Apple bug
-//    
-//    CGFloat largeHeaderAdjustment;
-//    
-//    BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
-//    
-//    if (isPortrait) {
-//        largeHeaderAdjustment = 11;
-//    } else {
-//        largeHeaderAdjustment = 23;
-//    }
-//    
-//    [self.userTagTableView scrollRectToVisible:CGRectMake(largeHeaderAdjustment, 0, 1, 1) animated:YES];
-//    [self.userTagTableView reloadData];
-//}
-//
-//- (void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope
-//{
-//    LogMethod();
-//    
-//    NSString *query = searchText;
-//    
-//    if (query && query.length) {
-//        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"tagName contains[cd] %@", query];
-//        [self.fetchedResultsController.fetchRequest setPredicate:predicate];
-//        [self.fetchedResultsController.fetchRequest setFetchLimit:100]; // Optional, but with large datasets - this helps speed lots
-//    }
-//    
-//    NSError *error = nil;
-//    if (![self.fetchedResultsController performFetch:&error]) {
-//        NSLog(@"ERROR: %@", error);
-//        [[[UIAlertView alloc] initWithTitle:@"Error"
-//                                    message:@"Couldn't fetch search entries :("
-//                                   delegate:nil
-//                          cancelButtonTitle:@"OK"
-//                          otherButtonTitles:nil] show];
-//    }
-//    
-////  ??  [self.userTagTableView reloadData];
-//}
-//
-//-(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
-//
-//{
-//    //    LogMethod();
-//    [self filterContentForSearchText:searchString
-//                               scope:[[self.searchDisplayController.searchBar scopeButtonTitles]
-//                                      objectAtIndex:[self.searchDisplayController.searchBar
-//                                                     selectedScopeButtonIndex]]];
-//    
-//    return YES;
-//}
-//-(void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(FMMoveTableView *)tableView {
-//    //    LogMethod();
-//    self.searchDisplayController.searchResultsTableView.rowHeight = 55;
-//    [self.searchDisplayController.searchResultsTableView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
-//    
-//}
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     //    LogMethod();
-    
-    // Return the number of sections.
-//    if (tableView == self.searchDisplayController.searchResultsTableView) {
-//        return 1;
-//    } else {
-////        return 1;
+
         return [[self.fetchedResultsController sections] count];
 
 //    }
@@ -346,12 +256,6 @@ NSString *actionType;
 {
     //    LogMethod();
     // Return the number of rows in the section.
-//    if (tableView == self.searchDisplayController.searchResultsTableView) {
-//        
-//        //        NSLog (@" searchResults count is %d", [searchResults count]);
-//        return [searchResults count];
-//    } else {
-////        return [self.tagItemArray count];
     
     id sectionInfo = [self.fetchedResultsController sections][section];
     NSInteger numberOfRows = [sectionInfo numberOfObjects];
@@ -383,34 +287,9 @@ NSString *actionType;
 - (UITableViewCell *)tableView:(FMMoveTableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     //    LogMethod();
-    //don't use UserTagCell for searchResultsCell won't respond to touches to scroll anyway and terrible performance on GoBackClick when autoRotated
-//    static NSString *CellIdentifier = @"Cell";
-//    UITableViewCell *searchResultsCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
 	UserTagCell *cell = (UserTagCell *)[tableView dequeueReusableCellWithIdentifier:@"UserTagCell"];
     
-    cell.xOffset = 0.0;
-    
-    
-//    if (tableView == self.searchDisplayController.searchResultsTableView) {
-//        
-//        if ( searchResultsCell == nil ) {
-//            searchResultsCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-//            searchResultsCell.selectionStyle = UITableViewCellSelectionStyleGray;
-//            searchResultsCell.selectedBackgroundView = [[UIImageView alloc] initWithImage:backgroundImage];
-//            searchResultsCell.textLabel.font = [UIFont systemFontOfSize:44];
-//            searchResultsCell.textLabel.textColor = [UIColor whiteColor];
-//            searchResultsCell.textLabel.highlightedTextColor = [UIColor blueColor];
-//            searchResultsCell.textLabel.lineBreakMode = NSLineBreakByClipping;
-//        }
-//        TagData *tagData = [self.fetchedResultsController objectAtIndexPath:indexPath];
-//        //        NSString *tagName = [searchResults objectAtIndex: indexPath.row];
-//        //        searchResultsCell.textLabel.text = tagName;
-//        searchResultsCell.textLabel.text = tagData.tagName;
-//        return searchResultsCell;
-//        
-//    } else {
-        //    NSLog (@" section is %d", indexPath.section);
         
         /******************************** NOTE ********************************
          * Implement this check in your table view data source to ensure that the moving
@@ -433,18 +312,13 @@ NSString *actionType;
             
             [cell.tagLabel removeFromSuperview];
 
-            cell.tagLabel = [[KSLabel alloc] initWithFrame:CGRectMake(6, 0, cell.frame.size.width - 6, 55)];
-            
+            cell.tagLabel = [[KSLabel alloc] initWithFrame:CGRectMake(6, 0, self.userTagTableView.frame.size.width - 6, 55)];
+                        
             cell.tagLabel.textColor = [UIColor whiteColor];
             [cell.tagLabel setDrawOutline:YES];
             [cell.tagLabel setOutlineColor:[UIColor blackColor]];
             
             [cell.tagLabel setDrawGradient:NO];
-    //        CGFloat colors [] = {
-    //            255.0f/255.0f, 255.0f/255.0f, 255.0f/255.0f, 1.0,
-    //            0.0f/255.0f, 0.0f/255.0f, 0.0f/255.0f, 1.0
-    //        };
-    //        [cell.tagLabel setGradientColors:colors];
             
             cell.tagLabel.font = [UIFont systemFontOfSize:44];
             cell.tagLabel.text = tagData.tagName;
@@ -460,14 +334,11 @@ NSString *actionType;
             UIImage *cellBackgroundImage = [UIImage imageNamed: @"list-background.png"];
             UIImage *coloredImage = [cellBackgroundImage imageWithTint: tagColor];
             
-            [cell.cellBackgroundImageView  setImage: coloredImage];
-    //        cell.tagLabel.backgroundColor = tagColor;
-            
+            [cell.cellBackgroundImageView  setImage: coloredImage];            
 
         }
     
         return cell;
-//    }
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
@@ -562,37 +433,32 @@ NSString *actionType;
 }
 - (void)moveTableView:(FMMoveTableView *)tableView moveRowFromIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
 
-        NSMutableArray *tagDataArray = [[self.fetchedResultsController fetchedObjects] mutableCopy];
-        
-        // Grab the item we're moving.
-        TagData *tagData = [[self fetchedResultsController] objectAtIndexPath:sourceIndexPath];
-        
-        // Remove the object we're moving from the array.
-        [tagDataArray removeObject:tagData];
-        // Now re-insert it at the destination.
-        [tagDataArray insertObject:tagData atIndex:[destinationIndexPath row]];
-        
-        // All of the objects are now in their correct order. Update each
-        // object's sortOrder field by iterating through the array.
-        int i = 0;
-        for (TagData *td in tagDataArray)
-        {
-            [td setValue:[NSNumber numberWithInt:i++] forKey:@"sortOrder"];
-        }
-        
-        tagDataArray = nil;
-        
-        [self.managedObjectContext save:nil];
+    NSMutableArray *tagDataArray = [[self.fetchedResultsController fetchedObjects] mutableCopy];
+    
+    // Grab the item we're moving.
+    TagData *tagData = [[self fetchedResultsController] objectAtIndexPath:sourceIndexPath];
+    
+    // Remove the object we're moving from the array.
+    [tagDataArray removeObject:tagData];
+    // Now re-insert it at the destination.
+    [tagDataArray insertObject:tagData atIndex:[destinationIndexPath row]];
+    
+    // All of the objects are now in their correct order. Update each
+    // object's sortOrder field by iterating through the array.
+    int i = 0;
+    for (TagData *td in tagDataArray)
+    {
+        [td setValue:[NSNumber numberWithInt:i++] forKey:@"sortOrder"];
     }
-//- (NSIndexPath *)moveTableView:(FMMoveTableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath
-//{
-//	//	Uncomment these lines to enable moving a row just within it's current section
-//	if ([sourceIndexPath section] != [proposedDestinationIndexPath section]) {
-//		proposedDestinationIndexPath = sourceIndexPath;
-//	}
-//	
-//	return proposedDestinationIndexPath;
-//}
+    
+    tagDataArray = nil;
+    
+    [self.managedObjectContext save:nil];
+
+    [self.userTagTableView reloadData];
+
+}
+
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     return YES;
 }
@@ -692,20 +558,22 @@ NSString *actionType;
 }
 - (void)addTagViewControllerDidCancel:(AddTagViewController *)controller
 {
-
-    //maybe can delete this method
-    if (newTagInserted) {
-        // First figure out how many sections there are
-        NSInteger lastSectionIndex = [self.userTagTableView numberOfSections] - 1;
-        
-        // Then grab the number of rows in the last section
-        NSInteger lastRowIndex = [self.userTagTableView numberOfRowsInSection:lastSectionIndex] - 1;
-        
-        NSIndexPath *pathToLastRow = [NSIndexPath indexPathForRow:lastRowIndex inSection:lastSectionIndex];
-        [self.userTagTableView scrollToRowAtIndexPath:pathToLastRow atScrollPosition:UITableViewScrollPositionTop animated:YES];
-        newTagInserted = NO;
-    }
-    [self willAnimateRotationToInterfaceOrientation: self.interfaceOrientation duration: 1];    
+//    if (newTagInserted) {
+//        // First figure out how many sections there are
+//        NSInteger lastSectionIndex = [self.userTagTableView numberOfSections] - 1;
+//        
+//        // Then grab the number of rows in the last section
+//        NSInteger lastRowIndex = [self.userTagTableView numberOfRowsInSection:lastSectionIndex] - 1;
+//        
+//        NSIndexPath *pathToLastRow = [NSIndexPath indexPathForRow:lastRowIndex inSection:lastSectionIndex];
+//        [self.userTagTableView scrollToRowAtIndexPath:pathToLastRow atScrollPosition:UITableViewScrollPositionTop animated:YES];
+//        newTagInserted = NO;
+//        
+////        [self.userTagTableView reloadData];
+//
+//    }
+//    [self willAnimateRotationToInterfaceOrientation: self.interfaceOrientation duration: 1];
+    
     
 }
 

@@ -23,14 +23,14 @@
 @property (strong, nonatomic) IBOutlet UITableView *userInfoTagTable;
 @property (strong, nonatomic) IBOutlet UITextView   *comments;
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceTopToTagConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *keyboardHeight;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceTopToCommentsConstraint;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceTopToTableViewConstraint;
 
 @property (strong, nonatomic) IBOutlet UILabel *placeholderLabel;
 @property (readwrite)         BOOL             editingUserInfo;
 
-@property (readwrite)                  CGFloat landscapeOffset;
+@property (readwrite)           CGFloat landscapeOffset;
 @property (nonatomic, strong)   NSArray *userInfoTagArray;
 @property (nonatomic, strong)   UIButton *tagButton;
 

@@ -12,7 +12,6 @@
 @property (strong, nonatomic) IBOutlet UIImageView *cellBackgroundImageView;
 @property (nonatomic, strong) IBOutlet KSLabel *tagLabel;
 //@property (strong, nonatomic) IBOutlet NSLayoutConstraint *centerXAlignmentConstraint;
-@property (nonatomic) CGFloat xOffset;
 
 - (void)prepareForMove;
 

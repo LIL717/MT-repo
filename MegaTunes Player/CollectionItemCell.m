@@ -15,7 +15,7 @@
 @synthesize scrollViewToCellConstraint;
 @synthesize centerXInScrollView;
 
-CGFloat inset = -10;
+//CGFloat inset = -10;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {

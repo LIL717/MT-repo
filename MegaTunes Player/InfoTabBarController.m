@@ -156,7 +156,7 @@
         //executes the method in the individual view on initial load and the one here after that, so they need to stay in synch with each other and with the constaints set in interface builder
     
     if (UIInterfaceOrientationIsPortrait(orientation)) {
-        NSLog (@"portrait");
+//        NSLog (@"portrait");
         [self.albumInfoViewController.infoTableView setContentInset:UIEdgeInsetsMake(11,0,0,0)];
         [self.albumInfoViewController.infoTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
         
@@ -172,12 +172,14 @@
 
 //        [self.userInfoViewController.view removeConstraint:self.userInfoViewController.verticalSpaceToTop28];
 //        [self.userInfoViewController.view addConstraint:self.userInfoViewController.verticalSpaceToTop];
-        self.userInfoViewController.verticalSpaceTopToTagConstraint.constant = 12;
+        self.userInfoViewController.verticalSpaceTopToTableViewConstraint.constant = 11;
         self.userInfoViewController.verticalSpaceTopToCommentsConstraint.constant = 66;
+        [self.userInfoViewController loadDataForView];
+        [self.userInfoViewController.userInfoTagTable reloadData];
         
 
     } else {
-        NSLog (@"landscape");
+//        NSLog (@"landscape");
         [self.albumInfoViewController.infoTableView setContentInset:UIEdgeInsetsMake(23,0,0,0)];
         [self.albumInfoViewController.infoTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
         
@@ -192,8 +194,10 @@
         [self.iTunesCommentsViewController.comments scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
         
         // Set top row spacing to superview top
-        self.userInfoViewController.verticalSpaceTopToTagConstraint.constant += self.userInfoViewController.landscapeOffset;
-        self.userInfoViewController.verticalSpaceTopToCommentsConstraint.constant += self.userInfoViewController.landscapeOffset;
+        self.userInfoViewController.verticalSpaceTopToTableViewConstraint.constant = 23;
+        self.userInfoViewController.verticalSpaceTopToCommentsConstraint.constant = 78;
+        [self.userInfoViewController loadDataForView];
+        [self.userInfoViewController.userInfoTagTable reloadData];
     }
 }
 //#pragma mark UITabBarController Delegate Method

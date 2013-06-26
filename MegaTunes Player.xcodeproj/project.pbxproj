@@ -154,6 +154,7 @@
 		70A6445216CE0FEE0059C561 /* UserInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70A6445116CE0FEE0059C561 /* UserInfoViewController.m */; };
 		70AA4D8516F27948002E9EE5 /* UINavigationController+MaskAll.m in Sources */ = {isa = PBXBuildFile; fileRef = 70AA4D8416F27948002E9EE5 /* UINavigationController+MaskAll.m */; };
 		70AAA8E1177008DB00B14A46 /* FMMoveTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70AAA8DE177008DB00B14A46 /* FMMoveTableView.m */; };
+		70AAF9BC177A680900AA8C2F /* SongTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70AAF9BB177A680800AA8C2F /* SongTableView.m */; };
 		70AB1EA016E855F10019B789 /* noAlbumImage320@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70AB1E9F16E855F00019B789 /* noAlbumImage320@2x.png */; };
 		70AB1EA216E8560D0019B789 /* arrow_left_48_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70AB1EA116E8560D0019B789 /* arrow_left_48_white@2x.png */; };
 		70AB1EA416E856200019B789 /* arrow_left_58_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70AB1EA316E856200019B789 /* arrow_left_58_white@2x.png */; };
@@ -451,6 +452,8 @@
 		70AA4D8416F27948002E9EE5 /* UINavigationController+MaskAll.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+MaskAll.m"; sourceTree = "<group>"; };
 		70AAA8DD177008DB00B14A46 /* FMMoveTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMMoveTableView.h; sourceTree = "<group>"; };
 		70AAA8DE177008DB00B14A46 /* FMMoveTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMMoveTableView.m; sourceTree = "<group>"; };
+		70AAF9BA177A680700AA8C2F /* SongTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SongTableView.h; sourceTree = "<group>"; };
+		70AAF9BB177A680800AA8C2F /* SongTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SongTableView.m; sourceTree = "<group>"; };
 		70AB1E9F16E855F00019B789 /* noAlbumImage320@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "noAlbumImage320@2x.png"; sourceTree = "<group>"; };
 		70AB1EA116E8560D0019B789 /* arrow_left_48_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow_left_48_white@2x.png"; sourceTree = "<group>"; };
 		70AB1EA316E856200019B789 /* arrow_left_58_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow_left_58_white@2x.png"; sourceTree = "<group>"; };
@@ -817,6 +820,8 @@
 		70A13D9216320F6500244866 /* Unused */ = {
 			isa = PBXGroup;
 			children = (
+				70AAF9BA177A680700AA8C2F /* SongTableView.h */,
+				70AAF9BB177A680800AA8C2F /* SongTableView.m */,
 				70974B2D1630698200A33B7D /* ColorSwitcher */,
 				7098DEB0172DACF400A72F63 /* MTSearchViewController.h */,
 				7098DEB1172DACF400A72F63 /* MTSearchViewController.m */,
@@ -1495,6 +1500,7 @@
 				70CF0BD8176C0917007AB6CF /* KSLabel.m in Sources */,
 				70CF0BF4176D33C2007AB6CF /* VBColorPicker.m in Sources */,
 				70AAA8E1177008DB00B14A46 /* FMMoveTableView.m in Sources */,
+				70AAF9BC177A680900AA8C2F /* SongTableView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

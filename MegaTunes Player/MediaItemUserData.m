@@ -46,7 +46,7 @@
     }
     
     if ([self.fetchedObjects count] == 0) {
-        NSLog (@"no objects fetched");
+//        NSLog (@"no mediatItemUser objects fetched");
         return nil;
     } else {
         // if there is an object, need to return it

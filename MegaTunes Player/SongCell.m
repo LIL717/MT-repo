@@ -22,7 +22,9 @@
 @synthesize scrollViewToCellConstraint;
 @synthesize centerXAlignmentConstraint;
 //@synthesize centerYAlignmentConstraint;
-@synthesize xOffset;
+@synthesize durationToCellConstraint;
+@synthesize textLabelOffset;
+@synthesize cellOffset;
 
 
 
@@ -67,8 +69,16 @@
 {
     [super layoutSubviews];
     CGRect textLabelFrame = self.textLabel.frame;
-    textLabelFrame.origin.x += self.xOffset;
-    textLabelFrame.size.width -= self.xOffset;
+    textLabelFrame.origin.x += self.textLabelOffset;
+    textLabelFrame.size.width -= self.textLabelOffset;
     self.textLabel.frame = textLabelFrame;
+    
+//    CGRect cellFrame = self.frame;
+//    cellFrame.size.width += self.xOffset;
+//    self.frame = cellFrame;
+}
+- (void)setFrame:(CGRect)frame {
+    frame.size.width += self.cellOffset;
+    [super setFrame:frame];
 }
 @end

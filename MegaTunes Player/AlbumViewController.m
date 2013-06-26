@@ -665,7 +665,7 @@ BOOL showDuration;
     
     if (showDuration) {
         //        scrollViewWidth = (tableView.frame.size.width - durationLabelSize.width - cell.accessoryView.frame.size.width);
-        scrollViewWidth = (tableView.frame.size.width - 166);
+        scrollViewWidth = (tableView.frame.size.width - 168);
     } else {
         scrollViewWidth = (tableView.frame.size.width - 38);
     }

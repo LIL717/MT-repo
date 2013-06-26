@@ -32,7 +32,7 @@
 @synthesize userInfoTagTable;
 @synthesize comments;
 
-@synthesize verticalSpaceTopToTagConstraint;
+@synthesize verticalSpaceTopToTableViewConstraint;
 @synthesize keyboardHeight;
 @synthesize verticalSpaceTopToCommentsConstraint;
 
@@ -107,9 +107,10 @@
 //        self.tagLabel.text = NSLocalizedString(@"Select Tag", nil);
 //    }
     
+    [self.tagButton removeFromSuperview];
+    
     if (tagData) {
         self.userInfoTagArray = [NSArray arrayWithObjects: tagData, nil];
-        [self.tagButton removeFromSuperview];
     } else {
         self.userInfoTagArray = [NSArray arrayWithObjects: nil];
         
@@ -118,14 +119,28 @@
                    action:@selector(selectNewTag)
          forControlEvents:UIControlEventTouchDown];
         [self.tagButton setTitle:NSLocalizedString(@"Select Tag", nil) forState:UIControlStateNormal];
-        self.tagButton.frame = CGRectMake(0.0, 11.0, self.view.bounds.size.width, 55.0);
+        BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
+
+        CGFloat tagButtonY = 11.0;
+
+        if (isPortrait) {
+            tagButtonY = 11.0;
+        } else {
+            tagButtonY = 23.0;
+        }
+        
+        self.tagButton.frame = CGRectMake(0.0, tagButtonY, self.view.bounds.size.width, 55.0);
+
 
         UIImage *labelBackgroundImage = [UIImage imageNamed: @"list-background.png"];
-        UIImage *coloredImage = [labelBackgroundImage imageWithTint: [UIColor lightGrayColor]];
+        UIImage *coloredImage = [labelBackgroundImage imageWithTint: [UIColor darkGrayColor]];
         [self.tagButton setBackgroundImage: coloredImage forState: UIControlStateNormal];
         [self.tagButton setTitleColor: [UIColor whiteColor] forState: UIControlStateNormal];
         self.tagButton.titleLabel.font = [UIFont systemFontOfSize:44];
-        self.tagButton.titleLabel.textAlignment = NSTextAlignmentLeft;
+//        self.tagButton.titleLabel.textAlignment = NSTextAlignmentLeft;
+        self.tagButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        //adjust the content left inset otherwise the text will touch the left border:
+        self.tagButton.contentEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
         
         [self.view addSubview:tagButton];
     }
@@ -151,15 +166,17 @@
     if (UIInterfaceOrientationIsPortrait(orientation)) {
 //        NSLog (@"portrait");
 
-        self.verticalSpaceTopToTagConstraint.constant = 10;
-        self.verticalSpaceTopToCommentsConstraint.constant = 65;
+        self.verticalSpaceTopToTableViewConstraint.constant = 11;
+        self.verticalSpaceTopToCommentsConstraint.constant = 66;
         
     } else {
 //        NSLog (@"landscape");
-        self.verticalSpaceTopToTagConstraint.constant += landscapeOffset;
-        self.verticalSpaceTopToCommentsConstraint.constant += landscapeOffset;
+        self.verticalSpaceTopToTableViewConstraint.constant = 23;
+        self.verticalSpaceTopToCommentsConstraint.constant = 78;
     }
+    [self loadDataForView];
     [self.userInfoTagTable reloadData];
+
 }
 
 #pragma mark textField Delegate Methods________________________________
@@ -319,7 +336,7 @@
     
     [cell.tagLabel removeFromSuperview];
     
-    cell.tagLabel = [[KSLabel alloc] initWithFrame:CGRectMake(6, 0, cell.frame.size.width - 6, 55)];
+    cell.tagLabel = [[KSLabel alloc] initWithFrame:CGRectMake(8, 0, cell.frame.size.width - 8, 55)];
     
     cell.tagLabel.textColor = [UIColor whiteColor];
     [cell.tagLabel setDrawOutline:YES];

@@ -14,7 +14,6 @@
 @synthesize cellBackgroundImageView;
 @synthesize tagLabel;
 //@synthesize centerXAlignmentConstraint;
-@synthesize xOffset;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -36,8 +35,6 @@
 {
     [super layoutSubviews];
     CGRect textLabelFrame = self.textLabel.frame;
-    textLabelFrame.origin.x += self.xOffset;
-    textLabelFrame.size.width -= self.xOffset;
     self.textLabel.frame = textLabelFrame;
 }
 - (void)prepareForMove

@@ -18,6 +18,7 @@
 }
 
 @property (strong, nonatomic) IBOutlet UITableView *songTableView;
+
 @property (strong, nonatomic)   IBOutlet UIView *shuffleView;
 @property (strong, nonatomic)   IBOutlet UIButton *shuffleButton;
 @property (strong, nonatomic)   IBOutlet MTSearchBar *searchBar;

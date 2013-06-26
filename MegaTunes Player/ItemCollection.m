@@ -68,7 +68,7 @@
     itemFound = NO;
     //if there are no objects, set itemFound to NO
     if ([fetchedObjects count] == 0) {
-        NSLog (@"no objects fetched");
+        NSLog (@"no collection item objects fetched");
     } else {
             // if there is an object, need to see if song is in the list
             MPMediaItemCollection *mediaItemCollection = [[fetchedObjects objectAtIndex:0] valueForKey: @"collection"];

@@ -60,7 +60,6 @@ CGFloat constraintConstant;
 UIButton *infoButton;
 
 
-
 BOOL cellScrolled;
 BOOL isIndexed;
 BOOL showDuration;
@@ -78,6 +77,8 @@ BOOL turnOnShuffle;
     self.songViewTitle = self.title;
     self.showTagButton = NO;
     self.songTableView.scrollsToTop = YES;
+    self.showTags = [[NSUserDefaults standardUserDefaults] boolForKey:@"showTags"];
+
     
     self.swipeLeftRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(toggleTagButtonAndTitle:)];
     [self.swipeLeftRight setDirection:(UISwipeGestureRecognizerDirectionRight | UISwipeGestureRecognizerDirectionLeft )];
@@ -561,7 +562,12 @@ BOOL turnOnShuffle;
 	SongCell *cell = (SongCell *)[tableView
                                           dequeueReusableCellWithIdentifier:@"SongCell"];
     
-    cell.xOffset = 8.0;
+    cell.textLabelOffset = 8.0;
+    if (isIndexed) {
+        cell.cellOffset = 0.0;
+    } else {
+        cell.cellOffset = 10.0;
+    }
     
     MPMediaQuerySection * sec = self.songSections[indexPath.section];
     //    NSLog (@" section is %d", indexPath.section);
@@ -675,7 +681,7 @@ BOOL turnOnShuffle;
             [infoButton removeFromSuperview];
         } else {
             cell.accessoryType = UITableViewCellAccessoryNone;
-
+            cell.durationToCellConstraint.constant = 54;
             //make the accessory view into a custom info button
             
             UIImage *image = [UIImage imageNamed: @"infoLightButtonImage.png"];
@@ -684,11 +690,11 @@ BOOL turnOnShuffle;
             infoButton = [UIButton buttonWithType:UIButtonTypeCustom];
             
             CGRect frame = CGRectMake(0.0, 0.0, image.size.width, image.size.height);
+
             infoButton.frame = frame;
             [infoButton setImage:image forState:UIControlStateNormal];
             [infoButton setImage: infoBackgroundImage forState:UIControlStateHighlighted];
-            [infoButton addTarget:self action:@selector(infoButtonTapped:event:)  forControlEvents:UIControlEventTouchUpInside];
-            infoButton.contentEdgeInsets = UIEdgeInsetsMake(0, 10, 0, -10);
+            [infoButton addTarget:self action:@selector(infoButtonTapped:event:)  forControlEvents:UIControlEventTouchUpInside];            
             
             UIView *superview = cell.contentView;
             
@@ -714,7 +720,7 @@ BOOL turnOnShuffle;
                             toItem:superview
                             attribute:NSLayoutAttributeTop
                             multiplier:1.0
-                            constant:4];
+                            constant:-3];
             
             [superview addConstraint:myConstraint];
 
@@ -841,16 +847,22 @@ BOOL turnOnShuffle;
 - (SongCell *) handleCellScrolling: (SongCell *) cell inTableView: (UITableView *) tableView {
     //    LogMethod();
     
-    cell.scrollViewToCellConstraint.constant = showDuration ? (30 + 130 + 5) : 48;
+//    cell.scrollViewToCellConstraint.constant = showDuration ? (30 + 130 + 5) : 48;
+    cell.scrollViewToCellConstraint.constant = showDuration ? (30 + 130 + 5 + cell.cellOffset) : (48 + cell.cellOffset);
+
     //    NSLog (@"constraintConstant is %f", cell.scrollViewToCellConstraint.constant);
     
     NSUInteger scrollViewWidth;
     
     if (showDuration) {
         //        scrollViewWidth = (tableView.frame.size.width - durationLabelSize.width - cell.accessoryView.frame.size.width);
-        scrollViewWidth = (tableView.frame.size.width - 178);
+//        scrollViewWidth = (tableView.frame.size.width - 178);
+        scrollViewWidth = (tableView.frame.size.width - 178 + cell.cellOffset);
+
     } else {
-        scrollViewWidth = (tableView.frame.size.width - 61);
+//        scrollViewWidth = (tableView.frame.size.width - 61);
+        scrollViewWidth = (tableView.frame.size.width - 61 + cell.cellOffset);
+
     }
 
     [cell.scrollView removeConstraint:cell.centerXAlignmentConstraint];
@@ -903,7 +915,7 @@ BOOL turnOnShuffle;
 //	 To conform to the Human Interface Guidelines, selections should not be persistent --
 //	 deselect the row after it has been selected.
 - (void) tableView: (UITableView *) tableView didSelectRowAtIndexPath: (NSIndexPath *) indexPath {
-    
+//    LogMethod();
     if ([self.searchDisplayController isActive]) {
 
         selectedIndexPath = [self.searchDisplayController.searchResultsTableView indexPathForSelectedRow];
@@ -1010,6 +1022,11 @@ BOOL turnOnShuffle;
         self.showTags = YES;
         NSLog (@"show Tags");
     }
+    //showTags must persist so save to NSUserDefaults
+    NSUserDefaults * standardUserDefaults = [NSUserDefaults standardUserDefaults];
+    [standardUserDefaults setBool:self.showTags forKey:@"showTags"];
+//    [standardUserDefaults synchronize];
+    
     [self.songTableView reloadData];
 }
 - (void)goBackClick
@@ -1025,6 +1042,7 @@ BOOL turnOnShuffle;
 - (IBAction)infoButtonTapped:(id)sender event:(id)event {
     NSSet *touches = [event allTouches];
     UITouch *touch = [touches anyObject];
+//    NSLog (@"touch is %@" ,touch);
     CGPoint currentTouchPosition = [touch locationInView:self.songTableView];
     NSIndexPath *indexPath = [self.songTableView indexPathForRowAtPoint: currentTouchPosition];
     
