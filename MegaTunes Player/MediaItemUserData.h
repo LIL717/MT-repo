@@ -19,6 +19,8 @@
 @property (nonatomic, retain) NSNumber * persistentID;
 @property (nonatomic, retain) NSNumber * bpm;
 @property (nonatomic, retain) TagData  * tagData;
+@property (nonatomic, retain) NSDate *lastPlayedDate;
+
 
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;

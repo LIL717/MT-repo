@@ -18,6 +18,7 @@
 @dynamic persistentID;
 @dynamic bpm;
 @dynamic tagData;
+@dynamic lastPlayedDate;
 
 @synthesize fetchedResultsController = fetchedResultsController_;
 @synthesize managedObjectContext = managedObjectContext_;

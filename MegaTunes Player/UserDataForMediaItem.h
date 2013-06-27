@@ -16,5 +16,6 @@
 @property (nonatomic, retain) NSString * comments;
 @property (nonatomic, retain) NSNumber * persistentID;
 @property (nonatomic, retain) NSNumber * bpm;
+@property (nonatomic, retain) NSDate *lastPlayedDate;
 
 @end

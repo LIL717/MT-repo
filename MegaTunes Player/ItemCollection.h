@@ -16,6 +16,8 @@
 @property (nonatomic, retain) NSDate *lastPlayedDate;
 @property (nonatomic, retain) MPMediaItemCollection *collection;
 @property (nonatomic)         BOOL inAppPlaylist;
+@property (nonatomic, retain) NSNumber *sortOrder;
+
 
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;

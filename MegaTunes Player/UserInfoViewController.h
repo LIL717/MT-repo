@@ -10,7 +10,7 @@
 @class KSLabel;
 #import "UserTagViewController.h"
 
-@interface UserInfoViewController : UIViewController < UITableViewDelegate, UITableViewDataSource, MPMediaPickerControllerDelegate, UITextFieldDelegate, UITextViewDelegate, UserTagViewControllerDelegate, NSFetchedResultsControllerDelegate> {
+@interface UserInfoViewController : UIViewController < UITableViewDelegate, UITableViewDataSource, MPMediaPickerControllerDelegate,  UITextViewDelegate, UserTagViewControllerDelegate, NSFetchedResultsControllerDelegate> {
     
     NSManagedObjectContext  *managedObjectContext_;
 }

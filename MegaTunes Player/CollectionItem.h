@@ -15,6 +15,7 @@
 @property (nonatomic, copy) NSDate *lastPlayedDate;
 @property (nonatomic, copy) MPMediaItemCollection *collection;
 @property (readwrite)       BOOL inAppPlaylist;
+@property (nonatomic, copy) NSNumber *sortOrder;
 //need to pass data in the collectionArray until it is certain that the array will not have 0 items, then data is copied into the MPMediaItemCollection   collection is saved in Core Data, collectionArray is not
 @property (nonatomic, copy) NSMutableArray *collectionArray;
 @end

@@ -16,5 +16,6 @@
 @synthesize comments;
 @synthesize persistentID;
 @synthesize bpm;
+@synthesize lastPlayedDate;
 
 @end

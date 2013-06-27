@@ -6,10 +6,12 @@
         <attribute name="inAppPlaylist" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="lastPlayedDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sortOrder" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
     </entity>
     <entity name="MediaItemUserData" representedClassName="MediaItemUserData" syncable="YES">
         <attribute name="bmp" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="comments" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lastPlayedDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="persistentID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="tagData" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="TagData" inverseName="mediaItemUserData" inverseEntity="TagData" syncable="YES"/>
@@ -24,8 +26,8 @@
         <relationship name="mediaItemUserData" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="MediaItemUserData" inverseName="tagData" inverseEntity="MediaItemUserData" syncable="YES"/>
     </entity>
     <elements>
-        <element name="ItemCollection" positionX="0" positionY="0" width="128" height="120"/>
-        <element name="MediaItemUserData" positionX="153" positionY="189" width="128" height="118"/>
+        <element name="ItemCollection" positionX="0" positionY="0" width="128" height="135"/>
+        <element name="MediaItemUserData" positionX="153" positionY="189" width="128" height="135"/>
         <element name="TagData" positionX="468" positionY="174" width="128" height="150"/>
     </elements>
 </model>

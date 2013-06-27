@@ -16,6 +16,7 @@
 @synthesize collection;
 @synthesize collectionArray;
 @synthesize inAppPlaylist;
+@synthesize sortOrder;
 
 
 @end

@@ -15,7 +15,7 @@
 
 @end
 
-@interface AddTagViewController : UIViewController <VBColorPickerDelegate> {
+@interface AddTagViewController : UIViewController <VBColorPickerDelegate, UITextFieldDelegate> {
     
     NSManagedObjectContext *managedObjectContext_;
 }

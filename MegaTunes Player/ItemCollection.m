@@ -16,6 +16,8 @@
 @dynamic lastPlayedDate;
 @dynamic collection;
 @dynamic inAppPlaylist;
+@dynamic sortOrder;
+
 @synthesize fetchedResultsController = fetchedResultsController_;
 @synthesize managedObjectContext = managedObjectContext_;
 
@@ -34,6 +36,7 @@
     [newManagedObject setValue: collectionItem.lastPlayedDate forKey: @"lastPlayedDate"];
     [newManagedObject setValue: collectionItem.collection forKey: @"collection"];
     [newManagedObject setValue: [NSNumber numberWithBool:collectionItem.inAppPlaylist ] forKey: @"inAppPlaylist"];
+    [newManagedObject setValue: collectionItem.sortOrder forKey:@"sortOrder"];
     
 //    NSArray *collectionArray = [collectionItem.collection items];
 //
