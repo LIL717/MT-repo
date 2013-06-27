@@ -1044,8 +1044,11 @@ BOOL turnOnShuffle;
 }
 - (IBAction)goBackClick
 {
+    //remove the swipe gesture from the nav bar  (doesn't work to wait until dealloc)
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
+    
+    [self.navigationController.navigationBar removeGestureRecognizer:self.swipeLeftRight];
+    
     if (iPodLibraryChanged) {
         [self.navigationController popToRootViewControllerAnimated:YES];
     } else {
