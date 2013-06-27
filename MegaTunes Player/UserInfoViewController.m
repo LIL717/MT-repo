@@ -144,12 +144,12 @@
                 
         UIView *superview = self.view;
         
-        [tagButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+        [self.tagButton setTranslatesAutoresizingMaskIntoConstraints:NO];
         
-        [superview addSubview:tagButton];
+        [superview addSubview:self.tagButton];
         
         NSLayoutConstraint *myConstraint = [NSLayoutConstraint
-                                            constraintWithItem:tagButton
+                                            constraintWithItem:self.tagButton
                                             attribute:NSLayoutAttributeTrailing
                                             relatedBy:NSLayoutRelationEqual
                                             toItem:superview
@@ -160,7 +160,7 @@
         [superview addConstraint:myConstraint];
         
         myConstraint = [NSLayoutConstraint
-                        constraintWithItem:tagButton
+                        constraintWithItem:self.tagButton
                         attribute:NSLayoutAttributeLeading
                         relatedBy:NSLayoutRelationEqual
                         toItem:superview
@@ -171,7 +171,7 @@
         [superview addConstraint:myConstraint];
         
         myConstraint = [NSLayoutConstraint
-                        constraintWithItem:tagButton
+                        constraintWithItem:self.tagButton
                         attribute:NSLayoutAttributeTop
                         relatedBy:NSLayoutRelationEqual
                         toItem:superview
@@ -182,7 +182,7 @@
         [superview addConstraint:myConstraint];
         
         myConstraint = [NSLayoutConstraint
-                        constraintWithItem:tagButton
+                        constraintWithItem:self.tagButton
                         attribute:NSLayoutAttributeHeight
                         relatedBy:NSLayoutRelationEqual
                         toItem:nil
@@ -301,6 +301,11 @@
     self.userDataForMediaItem.comments = self.comments.text;
     
     [mediaItemUserData updateCommentsForItem: self.userDataForMediaItem];
+    
+    //this will re-setup the button
+    if (!self.userDataForMediaItem.tagData) {
+        [self loadDataForView];
+    }
     [self unregisterForKeyboardNotifications];
     [self setEditingUserInfo: NO];
 
@@ -329,6 +334,10 @@
     
     //pull the field up to the top (over the tagItem field while editing)
     
+    //if there is no tagData need to remove the button temporarily
+    if (!self.userDataForMediaItem.tagData) {
+        [self.tagButton removeFromSuperview];
+    }
 //    self.verticalSpaceTopToCommentsConstraint.constant -= (self.userTagButton.frame.size.height);
     self.verticalSpaceTopToCommentsConstraint.constant -= (self.userInfoTagTable.frame.size.height);
 
@@ -352,12 +361,13 @@
 //    self.verticalSpaceTopToCommentsConstraint.constant += self.userTagButton.frame.size.height;
     self.verticalSpaceTopToCommentsConstraint.constant += self.userInfoTagTable.frame.size.height;
 
-
     [self.view setNeedsUpdateConstraints];
 
     [UIView animateWithDuration:animationDuration animations:^{
         [self.view layoutIfNeeded];
     }];
+    
+    
 }
 #pragma mark - Table view data source
 

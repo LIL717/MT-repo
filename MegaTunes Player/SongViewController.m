@@ -865,11 +865,11 @@ BOOL turnOnShuffle;
     if (showDuration) {
         //        scrollViewWidth = (tableView.frame.size.width - durationLabelSize.width - cell.accessoryView.frame.size.width);
 //        scrollViewWidth = (tableView.frame.size.width - 178);
-        scrollViewWidth = (tableView.frame.size.width - 178 + cell.cellOffset);
+        scrollViewWidth = (tableView.frame.size.width - 178 - cell.cellOffset);
 
     } else {
 //        scrollViewWidth = (tableView.frame.size.width - 61);
-        scrollViewWidth = (tableView.frame.size.width - 61 + cell.cellOffset);
+        scrollViewWidth = (tableView.frame.size.width - 61 - cell.cellOffset);
 
     }
 
@@ -1042,7 +1042,7 @@ BOOL turnOnShuffle;
     
     [self.songTableView reloadData];
 }
-- (void)goBackClick
+- (IBAction)goBackClick
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
