@@ -109,6 +109,7 @@
         SongInfoCell *cell = (SongInfoCell *)[self.infoTableView cellForRowAtIndexPath:indexPath];
         [cell.scrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
     }
+    
     [super viewWillAppear: animated];
 
 //    if (self.tabBarController.selectedIndex = 0) {

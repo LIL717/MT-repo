@@ -29,6 +29,7 @@
 
 @property (strong, nonatomic) IBOutlet UILabel *placeholderLabel;
 @property (readwrite)         BOOL             editingUserInfo;
+@property (readwrite)           BOOL            showCheckMarkButton;
 
 @property (readwrite)           CGFloat landscapeOffset;
 @property (nonatomic, strong)   NSArray *userInfoTagArray;
@@ -37,4 +38,6 @@
 
 - (void) loadDataForView;
 - (void) userTagViewControllerDidCancel:(UserTagViewController *)controller;
+//- (void) saveTextViewData;
+
 @end

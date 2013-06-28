@@ -268,7 +268,7 @@ long songRemainingSeconds;
         }
         [self prepareAllExceptNowPlaying];
 
-        if ([musicPlayer playbackState] == MPMusicPlaybackStatePaused) {
+        if ([musicPlayer playbackState] != MPMusicPlaybackStatePlaying) {
             [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
         } else if ([musicPlayer playbackState] == MPMusicPlaybackStatePlaying) {
             [playPauseButton setImage: [UIImage imageNamed:@"bigpause.png"] forState:UIControlStateNormal];
@@ -280,6 +280,7 @@ long songRemainingSeconds;
     self.initialNowPlayingLabel.text = [[musicPlayer nowPlayingItem] valueForProperty:  MPMediaItemPropertyTitle];
 
     if (musicPlayer.shuffleMode == MPMusicShuffleModeOff) {
+
         
         UIImage *coloredImage = [self.shuffleButton.currentImage imageWithTint:[UIColor whiteColor]];
         [self.shuffleButton setImage: coloredImage forState:UIControlStateNormal];
@@ -994,7 +995,8 @@ long songRemainingSeconds;
 //   LogMethod();
 	MPMusicPlaybackState playbackState = [musicPlayer playbackState];
     
-	if (playbackState == MPMusicPlaybackStateStopped || playbackState == MPMusicPlaybackStatePaused) {
+//	if (playbackState == MPMusicPlaybackStateStopped || playbackState == MPMusicPlaybackStatePaused) {
+    if (playbackState != MPMusicPlaybackStatePlaying) {
         [self playMusic];
         
 	} else if (playbackState == MPMusicPlaybackStatePlaying) {
@@ -1173,7 +1175,7 @@ long songRemainingSeconds;
         
 //        NSLog (@" playbackState = %d", playbackState);
         
-        if (playbackState == MPMusicPlaybackStatePaused) {
+        if (playbackState != MPMusicPlaybackStatePlaying) {
             
             [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
             savedPlaybackState = playbackState;
@@ -1184,10 +1186,11 @@ long songRemainingSeconds;
             savedPlaybackState = playbackState;
 
 
-        } else if (playbackState == MPMusicPlaybackStateStopped) {
+        }
+        if (playbackState == MPMusicPlaybackStateStopped) {
                     
-            [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
-            savedPlaybackState = playbackState;
+//            [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
+//            savedPlaybackState = playbackState;
 
             
             if (!playNew) {

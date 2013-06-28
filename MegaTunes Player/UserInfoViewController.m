@@ -42,6 +42,7 @@
 @synthesize landscapeOffset;
 @synthesize userInfoTagArray;
 @synthesize tagButton;
+@synthesize showCheckMarkButton;
 
 #pragma mark - Initial Display methods
 
@@ -62,6 +63,7 @@
     [self loadDataForView];
     
     [self setEditingUserInfo: NO];
+    [self setShowCheckMarkButton: NO];
 
     [self updateLayoutForNewOrientation: self.interfaceOrientation];
 
@@ -77,35 +79,6 @@
     
     self.userDataForMediaItem = [mediaItemUserData containsItem: [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyPersistentID]];
     TagData *tagData = self.userDataForMediaItem.tagData;
-
-//    if (self.userDataForMediaItem.tagData.tagName) {
-//        
-//        int red = [tagData.tagColorRed intValue];
-//        int green = [tagData.tagColorGreen intValue];
-//        int blue = [tagData.tagColorBlue intValue];
-//        int alpha = [tagData.tagColorAlpha intValue];
-//        
-//        UIColor *tagColor = [UIColor colorWithRed:(red/255.0f) green:(green/255.0f) blue:(blue/255.0f) alpha:(alpha/255.0f)];
-//        
-//        UIImage *labelBackgroundImage = [UIImage imageNamed: @"list-background.png"];
-//        UIImage *coloredImage = [labelBackgroundImage imageWithTint: tagColor];
-//        
-//        [self.userTagButton setBackgroundImage: coloredImage forState: UIControlStateNormal];
-//        
-//        self.tagLabel.text = tagData.tagName;
-//
-//        NSLog (@" tagData.tagName = %@", tagData.tagName);
-//
-//    } else {
-//        
-//        UIImage *labelBackgroundImage = [UIImage imageNamed: @"list-background.png"];
-//        [self.userTagButton setBackgroundImage: labelBackgroundImage forState: UIControlStateNormal];
-//
-////        self.tagLabel.textColor = [UIColor lightGrayColor];
-////        tagData.tagName = NSLocalizedString(@"Select Tag", nil);
-//        self.tagLabel.textColor = [UIColor lightGrayColor];
-//        self.tagLabel.text = NSLocalizedString(@"Select Tag", nil);
-//    }
     
     [self.tagButton removeFromSuperview];
     
@@ -197,6 +170,8 @@
     
     if (self.userDataForMediaItem.comments) {
         self.comments.text = self.userDataForMediaItem.comments;
+        [self.comments setContentOffset:CGPointMake(0, 0) animated:YES];
+
         [self.placeholderLabel setHidden:YES];
     } else {
         self.comments.text = @"";
@@ -204,6 +179,7 @@
     }
 
 }
+
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
     
     [self updateLayoutForNewOrientation: orientation];
@@ -227,48 +203,15 @@
 
 }
 
-#pragma mark textField Delegate Methods________________________________
-
-//- (void) textFieldDidBeginEditing: (UITextField *) textField {
-////    LogMethod();
-//    [self setEditingUserInfo: YES];
-//    
-//    UIImage *coloredBackgroundImage = [[UIImage imageNamed: @"list-background.png"] imageWithTint:[UIColor darkGrayColor]];
-//    [textField setBackgroundColor:[UIColor colorWithPatternImage: coloredBackgroundImage]];
-//
-//}
-//
-//- (void) textFieldDidEndEditing: (UITextField *) textField {
-////    LogMethod();
-//
-//    [textField setBackgroundColor: [UIColor clearColor]];
-//    
-//    //update or add object to Core Data
-//    MediaItemUserData *mediaItemUserData = [MediaItemUserData alloc];
-//    mediaItemUserData.managedObjectContext = self.managedObjectContext;
-//    
-//    self.userDataForMediaItem = [[UserDataForMediaItem alloc] init];
-//    self.userDataForMediaItem.title = [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyTitle];
-//    self.userDataForMediaItem.persistentID = [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyPersistentID];
-//    self.userDataForMediaItem.tagItem.tagName = self.userTagButton.titleLabel;
-//    
-//    [mediaItemUserData updateTagForItem: self.userDataForMediaItem];
-//    [self setEditingUserInfo: NO];
-//
-//    
-//}
-//- (IBAction)textFieldFinished:(id)sender
-//{
-//    [sender resignFirstResponder];
-//}
-
 #pragma mark textView Delegate Methods________________________________
 
 - (void) textViewDidBeginEditing: (UITextView *) textView {
 //    LogMethod();
 
     [self setEditingUserInfo: YES];
+    [self setShowCheckMarkButton: YES];
 
+    
     [self registerForKeyboardNotifications];
 
     UIImage *coloredBackgroundImage = [[UIImage imageNamed: @"background.png"] imageWithTint:[UIColor darkGrayColor]];
@@ -278,16 +221,16 @@
         [self.placeholderLabel setHidden:YES];
     }
 }
-- (BOOL) textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
-    if([text isEqualToString:@"\n"]){
-        [textView resignFirstResponder];
-        return NO;
-    }else{
-        return YES;
-    }
-}
+//- (BOOL) textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+//    if([text isEqualToString:@"\n"]){
+//        [textView resignFirstResponder];
+//        return NO;
+//    }else{
+//        return YES;
+//    }
+//}
 - (void) textViewDidEndEditing: (UITextView *) textView {
-//    LogMethod();
+    LogMethod();
 
     [textView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
     
@@ -308,8 +251,11 @@
     }
     [self unregisterForKeyboardNotifications];
     [self setEditingUserInfo: NO];
+    [self setShowCheckMarkButton: NO];
+
 
 }
+
 // Called when the UIKeyboardDidShowNotification is sent.
 - (void)keyboardWasShown:(NSNotification*)aNotification
 {

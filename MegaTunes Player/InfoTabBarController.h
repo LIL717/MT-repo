@@ -35,10 +35,18 @@
 @property (readwrite)           BOOL                    iPodLibraryChanged;
 @property (readwrite)           BOOL                    viewingNowPlaying;
 @property (nonatomic, strong)   MPMediaItem             *mediaItemForInfo;
-@property (nonatomic, strong)   UIBarButtonItem         *rightBarButton;
+@property (nonatomic, strong)   UIBarButtonItem         *playBarButton;
+@property (strong, nonatomic)   UIBarButtonItem         *checkMarkButton;
+
+@property (readwrite)           BOOL                    showPlayButton;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem  *rightBarButton;
+
+
 
 
 - (UILabel *) customizeTitleView;
+- (void) saveTextViewData;
+
 
 
 @end
