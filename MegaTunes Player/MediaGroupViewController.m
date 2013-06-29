@@ -17,6 +17,10 @@
 #import "AlbumViewcontroller.h"
 #import "GenreViewController.h"
 #import "MediaGroupCarouselViewController.h"
+#import "TagData.h"
+#import "MediaItemUserData.h"
+#import "UserDataForMediaItem.h"
+#import "TaggedSongViewController.h"
 
 @interface MediaGroupViewController ()
 
@@ -215,18 +219,21 @@ UIViewController *presentingViewController;
     
     MediaGroup* group2 = [[MediaGroup alloc] initWithName:@"Songs" andImage:[UIImage imageNamed:@"SongsIcon.png"]andQueryType: [MPMediaQuery songsQuery]];
     
-    MediaGroup* group3 = [[MediaGroup alloc] initWithName:@"Albums" andImage:[UIImage imageNamed:@"AlbumsIcon.png"]andQueryType: [MPMediaQuery albumsQuery]];
+    MediaGroup* group3 = [[MediaGroup alloc] initWithName:@"Tagged" andImage:[UIImage imageNamed:@"TagsIcon.png"]andQueryType: [MPMediaQuery songsQuery]];
     
-    MediaGroup* group4 = [[MediaGroup alloc] initWithName:@"Compilations" andImage:[UIImage imageNamed:@"CompilationsIcon.png"]andQueryType: [MPMediaQuery compilationsQuery]];
+    MediaGroup* group4= [[MediaGroup alloc] initWithName:@"Albums" andImage:[UIImage imageNamed:@"AlbumsIcon.png"]andQueryType: [MPMediaQuery albumsQuery]];
     
-    MediaGroup* group5 = [[MediaGroup alloc] initWithName:@"Composers" andImage:[UIImage imageNamed:@"ComposersIcon.png"]andQueryType: [MPMediaQuery composersQuery]];
+    MediaGroup* group5 = [[MediaGroup alloc] initWithName:@"Compilations" andImage:[UIImage imageNamed:@"CompilationsIcon.png"]andQueryType: [MPMediaQuery compilationsQuery]];
     
-    MediaGroup* group6 = [[MediaGroup alloc] initWithName:@"Genres" andImage:[UIImage imageNamed:@"GenresIcon.png"]andQueryType: [MPMediaQuery genresQuery]];
+    MediaGroup* group6 = [[MediaGroup alloc] initWithName:@"Composers" andImage:[UIImage imageNamed:@"ComposersIcon.png"]andQueryType: [MPMediaQuery composersQuery]];
     
-    MediaGroup* group7 = [[MediaGroup alloc] initWithName:@"Podcasts" andImage:[UIImage imageNamed:@"PodcastsIcon.png"]andQueryType: [MPMediaQuery podcastsQuery]];
+    MediaGroup* group7 = [[MediaGroup alloc] initWithName:@"Genres" andImage:[UIImage imageNamed:@"GenresIcon.png"]andQueryType: [MPMediaQuery genresQuery]];
     
+    MediaGroup* group8 = [[MediaGroup alloc] initWithName:@"Podcasts" andImage:[UIImage imageNamed:@"PodcastsIcon.png"]andQueryType: [MPMediaQuery podcastsQuery]];
     
-    self.groupingData = [NSArray arrayWithObjects:group0, group1, group2, group3, group4, group5, group6, group7, nil];
+
+    
+    self.groupingData = [NSArray arrayWithObjects:group0, group1, group2, group3, group4, group5, group6, group7, group8, nil];
     //    self.groupingData = [NSArray arrayWithObjects:group0, group1, group2, group3, group4, group5, group6, nil];
     
     
@@ -357,24 +364,28 @@ UIViewController *presentingViewController;
     
     //self.selectedGroup is a MediaGroup with a name and a querytype
     self.selectedGroup = [self.groupingData objectAtIndex:indexPath.row];
-    if ([selectedGroup.name isEqualToString: @"Songs"]) {
-        [self performSegueWithIdentifier: @"ViewSongCollection" sender: self];
+    if (([selectedGroup.name isEqualToString: @"Tagged"])) {
+        [self performSegueWithIdentifier: @"ViewTaggedSongCollection" sender: self];
     } else {
-        if ([selectedGroup.name isEqualToString:@"Artists"]) {
-            //works more like Apple with AlbumArtist rather than just Artist
-            MPMediaQuery *myCollectionQuery = [[MPMediaQuery alloc] init];
-            [myCollectionQuery setGroupingType: MPMediaGroupingAlbumArtist];
-            selectedGroup.queryType = myCollectionQuery;
-            [self performSegueWithIdentifier: @"ArtistCollections" sender: self];
+        if ([selectedGroup.name isEqualToString: @"Songs"]) {
+            [self performSegueWithIdentifier: @"ViewSongCollection" sender: self];
         } else {
-            if ([selectedGroup.name isEqualToString:@"Composers"]) {
+            if ([selectedGroup.name isEqualToString:@"Artists"]) {
+                //works more like Apple with AlbumArtist rather than just Artist
+                MPMediaQuery *myCollectionQuery = [[MPMediaQuery alloc] init];
+                [myCollectionQuery setGroupingType: MPMediaGroupingAlbumArtist];
+                selectedGroup.queryType = myCollectionQuery;
                 [self performSegueWithIdentifier: @"ArtistCollections" sender: self];
             } else {
-                if ([selectedGroup.name isEqualToString:@"Genres"]) {
-                    [self performSegueWithIdentifier: @"ViewGenres" sender: self];
+                if ([selectedGroup.name isEqualToString:@"Composers"]) {
+                    [self performSegueWithIdentifier: @"ArtistCollections" sender: self];
                 } else {
-                    // Playlists, Albums, Compilations, Podcasts go to albumCollections
-                    [self performSegueWithIdentifier:@"AlbumCollections" sender:self];
+                    if ([selectedGroup.name isEqualToString:@"Genres"]) {
+                        [self performSegueWithIdentifier: @"ViewGenres" sender: self];
+                    } else {
+                        // Playlists, Albums, Compilations, Podcasts go to albumCollections
+                        [self performSegueWithIdentifier:@"AlbumCollections" sender:self];
+                    }
                 }
             }
         }
@@ -471,6 +482,59 @@ UIViewController *presentingViewController;
         songViewController.collectionQueryType = [selectedGroup.queryType copy];
         
 	}
+    if ([segue.identifier isEqualToString:@"ViewTaggedSongCollection"])
+	{
+        TaggedSongViewController *songViewController = segue.destinationViewController;
+        songViewController.managedObjectContext = self.managedObjectContext;
+        
+        //        MPMediaQuery *myCollectionQuery = selectedGroup.queryType;
+        
+        NSMutableArray *songDictMutableArray = [[NSMutableArray alloc] init];
+        long playlistDuration = 0;
+        
+        NSArray *songs = [selectedGroup.queryType items];
+        
+        
+        for (MPMediaItem *song in songs) {
+            TagData *tagData = [self retrieveTagForMediaItem: song];
+            if (tagData) {
+                NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys: song, @"Song", tagData, @"TagData", nil];
+
+                [songDictMutableArray addObject: dict];
+            playlistDuration = (playlistDuration + [[song valueForProperty:MPMediaItemPropertyPlaybackDuration] longValue]);
+            //                NSString *songTitle =[song valueForProperty: MPMediaItemPropertyTitle];
+            //                NSLog (@"\t\t%@", songTitle);
+            }
+        }
+        
+        NSArray *sortedArray;
+        sortedArray = [songDictMutableArray sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
+            TagData *firstTagData = [(NSDictionary *)a objectForKey: @"TagData"];
+            TagData *secondTagData = [(NSDictionary *)b objectForKey: @"TagData"];
+            return [firstTagData.sortOrder compare: secondTagData.sortOrder];
+        }];
+        
+        for (NSDictionary *dict in sortedArray) {
+            TagData *tagData = [dict objectForKey: @"TagData"];
+            MPMediaItem *song = [dict objectForKey: @"Song"];
+            NSString *title = [song valueForProperty: MPMediaItemPropertyTitle];
+            NSLog (@"tag  is %@ song is %@", tagData.tagName, title);
+        }
+        
+        CollectionItem *collectionItem = [CollectionItem alloc];
+        collectionItem.name = selectedGroup.name;
+        collectionItem.duration = [NSNumber numberWithLong: playlistDuration];
+        //        collectionItem.collection = [MPMediaItemCollection collectionWithItems: songMutableArray];
+        [collectionItem.collectionArray arrayByAddingObjectsFromArray: sortedArray];
+        
+        songViewController.title = NSLocalizedString(collectionItem.name, nil);
+        songViewController.collectionItem = collectionItem;
+        songViewController.iPodLibraryChanged = self.iPodLibraryChanged;
+        songViewController.listIsAlphabetic = YES;
+        songViewController.taggedList = YES;
+        songViewController.collectionQueryType = [selectedGroup.queryType copy];
+        
+	}
    if ([segue.identifier isEqualToString:@"ViewNowPlaying"])
 	{
 		MainViewController *mainViewController = segue.destinationViewController;
@@ -481,8 +545,16 @@ UIViewController *presentingViewController;
 
     }
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
-
+}
+- (TagData *) retrieveTagForMediaItem: (MPMediaItem *) mediaItem {
+    
+    //check to see if there is user data for this media item
+    MediaItemUserData *mediaItemUserData = [MediaItemUserData alloc];
+    mediaItemUserData.managedObjectContext = self.managedObjectContext;
+    
+    UserDataForMediaItem *userDataForMediaItem = [mediaItemUserData containsItem: [mediaItem valueForProperty: MPMediaItemPropertyPersistentID]];
+    return userDataForMediaItem.tagData;
+    
 }
 - (IBAction)viewNowPlaying {
     

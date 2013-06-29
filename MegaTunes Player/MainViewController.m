@@ -268,14 +268,16 @@ long songRemainingSeconds;
         }
         [self prepareAllExceptNowPlaying];
 
-        if ([musicPlayer playbackState] != MPMusicPlaybackStatePlaying) {
-            [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
-        } else if ([musicPlayer playbackState] == MPMusicPlaybackStatePlaying) {
-            [playPauseButton setImage: [UIImage imageNamed:@"bigpause.png"] forState:UIControlStateNormal];
-        }
+
         
     }
 
+    if ([musicPlayer playbackState] != MPMusicPlaybackStatePlaying) {
+        [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
+    } else if ([musicPlayer playbackState] == MPMusicPlaybackStatePlaying) {
+        [playPauseButton setImage: [UIImage imageNamed:@"bigpause.png"] forState:UIControlStateNormal];
+    }
+    
     //set the temp initialNowPlayingLabel so something is there when view loads, gets removed from view in viewDidAppear when autoScrollLabel is created
     self.initialNowPlayingLabel.text = [[musicPlayer nowPlayingItem] valueForProperty:  MPMediaItemPropertyTitle];
 

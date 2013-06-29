@@ -1,20 +1,21 @@
 //
-//  SongViewController.h
+//  TaggedSongViewController.h
 //  MegaTunes Player
 //
-//  Created by Lori Hill on 9/23/12.
+//  Created by Lori Hill on 6/28/13.
 //
 //
+
 @class CollectionItem;
 @class MTSearchBar;
 
 #import "InfoTabBarController.h"
 
 
-@interface SongViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, InfoTabBarControllerDelegate, MPMediaPickerControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate> {
-  
+@interface TaggedSongViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, InfoTabBarControllerDelegate, MPMediaPickerControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate> {
+    
     NSManagedObjectContext *managedObjectContext_;
-
+    
 }
 
 @property (strong, nonatomic) IBOutlet UITableView *songTableView;
@@ -32,6 +33,7 @@
 @property (nonatomic, strong)   MPMediaItem *itemToPlay;
 @property (readwrite)           BOOL iPodLibraryChanged;
 @property (readwrite)           BOOL listIsAlphabetic;
+@property (readwrite)           BOOL taggedList;
 @property (readwrite)           BOOL isSearching;
 @property (nonatomic, retain)   MPMediaItemCollection *songCollection;
 @property (nonatomic, strong)   UIBarButtonItem *playBarButton;
