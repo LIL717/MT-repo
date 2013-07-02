@@ -17,9 +17,9 @@
 #import "AlbumViewcontroller.h"
 #import "GenreViewController.h"
 #import "MediaGroupCarouselViewController.h"
-#import "TagData.h"
-#import "MediaItemUserData.h"
-#import "UserDataForMediaItem.h"
+//#import "TagData.h"
+//#import "MediaItemUserData.h"
+//#import "UserDataForMediaItem.h"
 #import "TaggedSongViewController.h"
 
 @interface MediaGroupViewController ()
@@ -487,45 +487,25 @@ UIViewController *presentingViewController;
         TaggedSongViewController *songViewController = segue.destinationViewController;
         songViewController.managedObjectContext = self.managedObjectContext;
         
-        //        MPMediaQuery *myCollectionQuery = selectedGroup.queryType;
-        
-        NSMutableArray *songDictMutableArray = [[NSMutableArray alloc] init];
+        NSMutableArray *songMutableArray = [[NSMutableArray alloc] init];
         long playlistDuration = 0;
         
         NSArray *songs = [selectedGroup.queryType items];
         
-        
         for (MPMediaItem *song in songs) {
-            TagData *tagData = [self retrieveTagForMediaItem: song];
-            if (tagData) {
-                NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys: song, @"Song", tagData, @"TagData", nil];
-
-                [songDictMutableArray addObject: dict];
+            [songMutableArray addObject: song];
             playlistDuration = (playlistDuration + [[song valueForProperty:MPMediaItemPropertyPlaybackDuration] longValue]);
             //                NSString *songTitle =[song valueForProperty: MPMediaItemPropertyTitle];
             //                NSLog (@"\t\t%@", songTitle);
-            }
         }
-        
-        NSArray *sortedArray;
-        sortedArray = [songDictMutableArray sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
-            TagData *firstTagData = [(NSDictionary *)a objectForKey: @"TagData"];
-            TagData *secondTagData = [(NSDictionary *)b objectForKey: @"TagData"];
-            return [firstTagData.sortOrder compare: secondTagData.sortOrder];
-        }];
-        
-        for (NSDictionary *dict in sortedArray) {
-            TagData *tagData = [dict objectForKey: @"TagData"];
-            MPMediaItem *song = [dict objectForKey: @"Song"];
-            NSString *title = [song valueForProperty: MPMediaItemPropertyTitle];
-            NSLog (@"tag  is %@ song is %@", tagData.tagName, title);
-        }
-        
         CollectionItem *collectionItem = [CollectionItem alloc];
         collectionItem.name = selectedGroup.name;
         collectionItem.duration = [NSNumber numberWithLong: playlistDuration];
-        //        collectionItem.collection = [MPMediaItemCollection collectionWithItems: songMutableArray];
-        [collectionItem.collectionArray arrayByAddingObjectsFromArray: sortedArray];
+//        collectionItem.collection = [MPMediaItemCollection collectionWithItems: songMutableArray];
+//        collectionItem.collectionArray = [sortedArray mutableCopy];
+        collectionItem.collectionArray = songMutableArray;
+
+
         
         songViewController.title = NSLocalizedString(collectionItem.name, nil);
         songViewController.collectionItem = collectionItem;
@@ -546,16 +526,7 @@ UIViewController *presentingViewController;
     }
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 }
-- (TagData *) retrieveTagForMediaItem: (MPMediaItem *) mediaItem {
-    
-    //check to see if there is user data for this media item
-    MediaItemUserData *mediaItemUserData = [MediaItemUserData alloc];
-    mediaItemUserData.managedObjectContext = self.managedObjectContext;
-    
-    UserDataForMediaItem *userDataForMediaItem = [mediaItemUserData containsItem: [mediaItem valueForProperty: MPMediaItemPropertyPersistentID]];
-    return userDataForMediaItem.tagData;
-    
-}
+
 - (IBAction)viewNowPlaying {
     
 //    LogMethod();

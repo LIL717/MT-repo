@@ -17,6 +17,11 @@
 #import "AlbumViewcontroller.h"
 #import "GenreViewController.h"
 #import "MediaGroupViewController.h"
+#import "TaggedSongViewController.h"
+//#import "TagData.h"
+//#import "MediaItemUserData.h"
+//#import "UserDataForMediaItem.h"
+
 
 @interface MediaGroupCarouselViewController ()
 
@@ -242,7 +247,7 @@
         //self.selectedGroup is a MediaGroup with a name and a querytype
         self.selectedGroup = [self.groupingData objectAtIndex:index];
     if (([selectedGroup.name isEqualToString: @"Tagged"])) {
-        NSLog (@"Tagged Songs");
+        [self performSegueWithIdentifier: @"ViewTaggedSongCollection" sender: self];
     } else {
         if ([selectedGroup.name isEqualToString: @"Songs"]) {
             [self performSegueWithIdentifier: @"ViewSongCollection" sender: self];
@@ -358,6 +363,37 @@
         songViewController.collectionQueryType = [selectedGroup.queryType copy];
         
 	}
+    if ([segue.identifier isEqualToString:@"ViewTaggedSongCollection"])
+	{
+        TaggedSongViewController *songViewController = segue.destinationViewController;
+        songViewController.managedObjectContext = self.managedObjectContext;
+        
+        NSMutableArray *songMutableArray = [[NSMutableArray alloc] init];
+        long playlistDuration = 0;
+        
+        NSArray *songs = [selectedGroup.queryType items];
+        
+        for (MPMediaItem *song in songs) {
+            [songMutableArray addObject: song];
+            playlistDuration = (playlistDuration + [[song valueForProperty:MPMediaItemPropertyPlaybackDuration] longValue]);
+            //                NSString *songTitle =[song valueForProperty: MPMediaItemPropertyTitle];
+            //                NSLog (@"\t\t%@", songTitle);
+        }
+        CollectionItem *collectionItem = [CollectionItem alloc];
+        collectionItem.name = selectedGroup.name;
+        collectionItem.duration = [NSNumber numberWithLong: playlistDuration];
+//        collectionItem.collection = [MPMediaItemCollection collectionWithItems: songMutableArray];
+        //        collectionItem.collectionArray = [sortedArray mutableCopy];
+        collectionItem.collectionArray = songMutableArray;
+        
+        songViewController.title = NSLocalizedString(collectionItem.name, nil);
+        songViewController.collectionItem = collectionItem;
+        songViewController.iPodLibraryChanged = self.iPodLibraryChanged;
+        songViewController.listIsAlphabetic = YES;
+        songViewController.taggedList = YES;
+        songViewController.collectionQueryType = [selectedGroup.queryType copy];
+        
+	}
     if ([segue.identifier isEqualToString:@"ViewNowPlaying"])
 	{
 		MainViewController *mainViewController = segue.destinationViewController;
@@ -371,6 +407,16 @@
     
     
 }
+//- (TagData *) retrieveTagForMediaItem: (MPMediaItem *) mediaItem {
+//    
+//    //check to see if there is user data for this media item
+//    MediaItemUserData *mediaItemUserData = [MediaItemUserData alloc];
+//    mediaItemUserData.managedObjectContext = self.managedObjectContext;
+//    
+//    UserDataForMediaItem *userDataForMediaItem = [mediaItemUserData containsItem: [mediaItem valueForProperty: MPMediaItemPropertyPersistentID]];
+//    return userDataForMediaItem.tagData;
+//    
+//}
 - (IBAction)viewNowPlaying {
     
 //    LogMethod();

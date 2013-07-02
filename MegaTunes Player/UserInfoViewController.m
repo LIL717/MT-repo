@@ -91,7 +91,7 @@
         [self.tagButton addTarget:self
                    action:@selector(selectNewTag)
          forControlEvents:UIControlEventTouchDown];
-        [self.tagButton setTitle:NSLocalizedString(@"Select Tag", nil) forState:UIControlStateNormal];
+        [self.tagButton setTitle:NSLocalizedString(@"Assign Tag", nil) forState:UIControlStateNormal];
         BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
 
         CGFloat tagButtonY = 11.0;
@@ -168,7 +168,7 @@
 
     self.comments.delegate = self;
     
-    if (self.userDataForMediaItem.comments) {
+    if ([self.userDataForMediaItem.comments length] > 0) {
         self.comments.text = self.userDataForMediaItem.comments;
         [self.comments setContentOffset:CGPointMake(0, 0) animated:YES];
 
@@ -176,7 +176,9 @@
     } else {
         self.comments.text = @"";
         [self.placeholderLabel setHidden:NO];
+        self.placeholderLabel.text = NSLocalizedString(@"Add Notes", nil);
     }
+    
 
 }
 
@@ -392,6 +394,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    
     MediaItemUserData *mediaItemUserData = [MediaItemUserData alloc];
     mediaItemUserData.managedObjectContext = self.managedObjectContext;
     
@@ -403,6 +406,22 @@
     [self loadDataForView];
     
 }
+//- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+//    TagData *tagData = [self.fetchedResultsController objectAtIndexPath:indexPath];
+//    [self.managedObjectContext deleteObject:tagData];
+//    
+//    NSError *error = nil;
+//    if (![self.managedObjectContext save:&error]) {
+//        NSLog(@"Couldn't delete entry: %@", error);
+//        [[[UIAlertView alloc] initWithTitle:@"ERROR"
+//                                    message:@"Couldn't delete entry"
+//                                   delegate:nil
+//                          cancelButtonTitle:@"OK"
+//                          otherButtonTitles:nil] show];
+//    }
+//    [[NSNotificationCenter defaultCenter] postNotificationName: @"TagDataChanged" object:nil];
+//    
+//}
 
 -(UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
     return UITableViewCellEditingStyleDelete;

@@ -55,6 +55,8 @@
     }
 
 }
+//update or add  NOTE: mediaItemUserData is never deleted,  the tagData is set to nil when a tag is removed, but object is never deleted
+
 - (void) updateTagForItem: (UserDataForMediaItem *) userDataForMediaItem {
     
     NSError * error = nil;
@@ -79,6 +81,8 @@
 //    tagData.managedObjectContext = self.managedObjectContext;
 //    
 //    [tagData updateItemForTag: userDataForMediaItem.tagData];
+    [[NSNotificationCenter defaultCenter] postNotificationName: @"TagDataForItemChanged" object:nil];
+
 }
 - (void) updateCommentsForItem: (UserDataForMediaItem *) userDataForMediaItem {
     

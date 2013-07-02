@@ -419,6 +419,8 @@ NSString *actionType;
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil] show];
     }
+    [[NSNotificationCenter defaultCenter] postNotificationName: @"TagDataChanged" object:nil];
+
 }
 
 -(UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -592,6 +594,11 @@ NSString *actionType;
 }
 - (void)dealloc {
     //    LogMethod();
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:NSManagedObjectContextDidSaveNotification
+                                                  object:nil];
     
 }
 

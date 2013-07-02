@@ -23,11 +23,11 @@
         <attribute name="tagColorGreen" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="tagColorRed" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="tagName" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="mediaItemUserData" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="MediaItemUserData" inverseName="tagData" inverseEntity="MediaItemUserData" syncable="YES"/>
+        <relationship name="mediaItemUserData" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MediaItemUserData" inverseName="tagData" inverseEntity="MediaItemUserData" syncable="YES"/>
     </entity>
     <elements>
         <element name="ItemCollection" positionX="0" positionY="0" width="128" height="135"/>
         <element name="MediaItemUserData" positionX="153" positionY="189" width="128" height="135"/>
-        <element name="TagData" positionX="468" positionY="174" width="128" height="150"/>
+        <element name="TagData" positionX="468" positionY="174" width="128" height="148"/>
     </elements>
 </model>

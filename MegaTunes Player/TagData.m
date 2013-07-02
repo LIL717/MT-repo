@@ -89,6 +89,8 @@
     if (![self.managedObjectContext save:&error]) {
         NSLog(@"%s: Problem saving: %@", __PRETTY_FUNCTION__, error);
     }
+    [[NSNotificationCenter defaultCenter] postNotificationName: @"TagDataChanged" object:nil];
+
 }
 - (void) updateTagItemInCoreData: (TagItem *) tagItem {
     
@@ -106,8 +108,12 @@
     if (![self.managedObjectContext save:&error]) {
         NSLog(@"%s: Problem saving: %@", __PRETTY_FUNCTION__, error);
     }
+    [[NSNotificationCenter defaultCenter] postNotificationName: @"TagDataChanged" object:nil];
+
 
 }
+// notification for tagItemDeleted is in UserTagViewController
+
 - (void) listAll {
     // Test listing all tagItems from the store
     
