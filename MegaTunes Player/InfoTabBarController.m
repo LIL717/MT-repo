@@ -10,6 +10,7 @@
 #import "Appdelegate.h"
 #import "MainViewController.h"
 #import "SongViewController.h"
+#import "TaggedSongViewController.h"
 #import "AlbumInfoViewController.h"
 #import "ITunesInfoViewController.h"
 #import "ITunesCommentsViewController.h"
@@ -317,10 +318,22 @@
         [self.navigationController popToRootViewControllerAnimated:YES];
     } else {
         MPMusicPlaybackState playbackState = [musicPlayer playbackState];
+        NSLog (@" playbackState is %d", playbackState);
         if (playbackState == MPMusicPlaybackStateStopped) {
             //pop back to songviewcontroller
-            NSArray *array = [self.navigationController viewControllers];
-            [self.navigationController popToViewController:[array objectAtIndex:2] animated:YES];
+
+            UIViewController *popToVC = [[UIViewController alloc] init];
+            
+            for (UIViewController*vc in [self.navigationController viewControllers]) {
+                if ([vc isKindOfClass: [SongViewController class]]){
+                    popToVC = vc;
+                }
+                if ([vc isKindOfClass: [TaggedSongViewController class]]){
+                    popToVC = vc;
+                }
+            }
+            
+            [self.navigationController popToViewController: popToVC animated:YES];
             [self.infoDelegate infoTabBarControllerDidCancel:self];
         } else {
             [self.navigationController popViewControllerAnimated:YES];

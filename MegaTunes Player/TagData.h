@@ -31,6 +31,8 @@
 - (NSArray *) fetchTagList;
 - (void) addTagItemToCoreData:(TagItem *) tagItem;
 - (void) updateTagItemInCoreData: (TagItem *) tagItem;
+- (void) deleteTagDataFromCoreData: (TagData *) tagData;
+
 - (void) listAll;
 - (TagItem *) containsItem: (NSNumber *) sortOrder;
 //- (void)removeUGItemFromCoreData;

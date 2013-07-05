@@ -204,7 +204,11 @@
 - (void)saveTag {
 
     TagItem *tagItem = [TagItem alloc];
-    tagItem.tagName = self.tagName.text;
+//    if ([self.tagName.text isEqualToString: @""]) {
+//        tagItem.tagName = @"   ";
+//    } else {
+        tagItem.tagName = self.tagName.text;
+//    }
     
     if (self.hasColor) {
         CGFloat red = 0.0, green = 0.0, blue = 0.0, alpha = 0.0;
@@ -222,7 +226,7 @@
     tagData.managedObjectContext = self.managedObjectContext;
 
     if ([actionType isEqualToString: @"Add"]) {
-        
+        NSLog (@"Add tag to TagData");
         //add 1 to the lastObject index and save that as the sortOrder
 //        NSLog (@"self.lastObjectIndex = %d", self.lastObjectIndex);
         
@@ -232,10 +236,14 @@
         [tagData addTagItemToCoreData: tagItem];
     }
     if ([actionType isEqualToString: @"Edit"]) {
-        
+        NSLog (@"Update tag in TagData");
+
         tagItem.sortOrder = self.sortOrder;
         [tagData updateTagItemInCoreData: tagItem];
     }
+    
+//    [tagData listAll];
+
     [self goBackClick];
 }
 - (IBAction)textFieldFinished:(id)sender
@@ -278,6 +286,8 @@
     UIImage *coloredBackgroundImage = [[UIImage imageNamed: @"list-background.png"] imageWithTint:self.pickedColor];
     [self.tagName setBackgroundColor:[UIColor colorWithPatternImage: coloredBackgroundImage]];
     self.hasColor = YES;
+    [self.tagName setNeedsDisplay];
+//    [self.tagName setNeedsDisplay];
 //    [_rect setBackgroundColor:color];
 //    [_cPicker hidePicker];
 }

@@ -8,6 +8,7 @@
 
 #import "TagData.h"
 #import "TagItem.h"
+#import "MediaItemUserData.h"
 
 @implementation TagData
 
@@ -85,6 +86,7 @@
     [newManagedObject setValue: tagItem.tagColorBlue forKey:@"tagColorBlue"];
     [newManagedObject setValue: tagItem.tagColorAlpha forKey:@"tagColorAlpha"];
     [newManagedObject setValue: tagItem.sortOrder forKey:@"sortOrder"];
+
     
     if (![self.managedObjectContext save:&error]) {
         NSLog(@"%s: Problem saving: %@", __PRETTY_FUNCTION__, error);
@@ -112,7 +114,19 @@
 
 
 }
-// notification for tagItemDeleted is in UserTagViewController
+- (void) deleteTagDataFromCoreData: (TagData *) tagData {
+    
+    NSError * error = nil;
+    
+    [self.managedObjectContext deleteObject: tagData];
+        
+    if (![self.managedObjectContext save:&error]) {
+        NSLog(@"%s: Problem saving: %@", __PRETTY_FUNCTION__, error);
+    }
+    [[NSNotificationCenter defaultCenter] postNotificationName: @"TagDataChanged" object:nil];
+    
+    
+}
 
 - (void) listAll {
     // Test listing all tagItems from the store
@@ -130,18 +144,20 @@
         NSLog (@"fetch error");
     }
     
-    for (TagItem *tagItem in allFetchedObjects) {
-        NSLog(@"Name: %@", tagItem.tagName);
-        int red = [tagItem.tagColorRed intValue];
-        int green = [tagItem.tagColorGreen intValue];
-        int blue = [tagItem.tagColorBlue intValue];
-        int alpha = [tagItem.tagColorAlpha intValue];
+    for (TagData *tagData in allFetchedObjects) {
+        NSLog(@"TagName: %@", tagData.tagName);
+        int red = [tagData.tagColorRed intValue];
+        int green = [tagData.tagColorGreen intValue];
+        int blue = [tagData.tagColorBlue intValue];
+        int alpha = [tagData.tagColorAlpha intValue];
         
         UIColor *color = [UIColor colorWithRed:(red/255.0f) green:(green/255.0f) blue:(blue/255.0f) alpha:(alpha/255.0f)];
-                NSLog(@"Color: %@", color);
+                NSLog(@"TagColor: %@", color);
         
-        int sortOrder = [tagItem.sortOrder intValue];
+        int sortOrder = [tagData.sortOrder intValue];
         NSLog(@"sortOrder: %d", sortOrder);
+        NSLog(@"mediaItemUserData: %@", tagData.mediaItemUserData);
+
     }
 }
 

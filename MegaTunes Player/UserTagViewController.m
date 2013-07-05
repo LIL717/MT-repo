@@ -393,7 +393,9 @@ NSString *actionType;
     self.userDataForMediaItem.tagData = tagData;    
     [mediaItemUserData updateTagForItem: self.userDataForMediaItem];
     
+//    NSLog (@"add tag to mediaItemUserData");
 //    [mediaItemUserData listAll];
+//    [tagData listAll];
 
     [self goBackClick];
     
@@ -408,18 +410,16 @@ NSString *actionType;
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     TagData *tagData = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    [self.managedObjectContext deleteObject:tagData];
-
-    NSError *error = nil;
-    if (![self.managedObjectContext save:&error]) {
-        NSLog(@"Couldn't delete entry: %@", error);
-        [[[UIAlertView alloc] initWithTitle:@"ERROR"
-                                    message:@"Couldn't delete entry"
-                                   delegate:nil
-                          cancelButtonTitle:@"OK"
-                          otherButtonTitles:nil] show];
-    }
-    [[NSNotificationCenter defaultCenter] postNotificationName: @"TagDataChanged" object:nil];
+    tagData.managedObjectContext = self.managedObjectContext;
+    
+    [tagData deleteTagDataFromCoreData: tagData];
+    
+//    NSLog (@"Tag deleted from TagData");
+//    [tagData listAll];
+//    
+//    MediaItemUserData *mediaItemUserData = [MediaItemUserData alloc];
+//    mediaItemUserData.managedObjectContext = self. managedObjectContext;
+//    [mediaItemUserData listAll];
 
 }
 

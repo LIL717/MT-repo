@@ -82,7 +82,6 @@
 //    
 //    [tagData updateItemForTag: userDataForMediaItem.tagData];
     [[NSNotificationCenter defaultCenter] postNotificationName: @"TagDataForItemChanged" object:nil];
-
 }
 - (void) updateCommentsForItem: (UserDataForMediaItem *) userDataForMediaItem {
     
@@ -97,6 +96,7 @@
         [newManagedObject setValue: userDataForMediaItem.title forKey:@"title"];
         [newManagedObject setValue: userDataForMediaItem.comments forKey: @"comments"];
         [newManagedObject setValue: userDataForMediaItem.persistentID forKey:@"persistentID"];
+
     }
     if (![self.managedObjectContext save:&error]) {
         NSLog(@"%s: Problem saving: %@", __PRETTY_FUNCTION__, error);
@@ -118,7 +118,7 @@
         NSLog(@"title: %@", uDFMI.title);
         NSLog(@"persistentID: %@", uDFMI.persistentID);
         NSLog(@"comments: %@", uDFMI.comments);
-        NSLog(@"tagName: %@", uDFMI.tagData.tagName);
+        NSLog(@"tagData: %@", uDFMI.tagData);
     }
 }
 //end test

@@ -398,12 +398,17 @@
     MediaItemUserData *mediaItemUserData = [MediaItemUserData alloc];
     mediaItemUserData.managedObjectContext = self.managedObjectContext;
     
-//    TagData *tagData = [self.userInfoTagArray objectAtIndex:indexPath.row];
     self.userDataForMediaItem.tagData = nil;
     [mediaItemUserData updateTagForItem: self.userDataForMediaItem];
     
     self.userInfoTagArray = [NSArray arrayWithObjects: nil];
     [self loadDataForView];
+    
+//    NSLog (@"Deleted tag from mediaItemUserData");
+//    [mediaItemUserData listAll];
+//    TagData *tagData = [TagData alloc];
+//    tagData.managedObjectContext = self.managedObjectContext;
+//    [tagData listAll];
     
 }
 //- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {

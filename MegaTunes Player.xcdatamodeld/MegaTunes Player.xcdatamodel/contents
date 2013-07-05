@@ -27,7 +27,7 @@
     </entity>
     <elements>
         <element name="ItemCollection" positionX="0" positionY="0" width="128" height="135"/>
-        <element name="MediaItemUserData" positionX="153" positionY="189" width="128" height="135"/>
-        <element name="TagData" positionX="468" positionY="174" width="128" height="148"/>
+        <element name="MediaItemUserData" positionX="153" positionY="189" width="128" height="133"/>
+        <element name="TagData" positionX="468" positionY="174" width="128" height="150"/>
     </elements>
 </model>

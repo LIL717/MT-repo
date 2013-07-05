@@ -163,7 +163,8 @@ static const NSUInteger kNavigationBarHeight = 60;
     if ([[tagData fetchTagList] count] == 0) {
 
         TagItem *userTagItem = [TagItem alloc];
-                userTagItem.tagName = @"warmup";
+        
+        userTagItem.tagName = @"warmup";
         
         userTagItem.tagColorRed = [NSNumber numberWithInt: 26];
         userTagItem.tagColorGreen = [NSNumber numberWithInt: 121];
@@ -184,8 +185,8 @@ static const NSUInteger kNavigationBarHeight = 60;
         [tagData addTagItemToCoreData: userTagItem];
 
     }
-    
-    [tagData listAll];
+//    NSLog (@"preload tags");
+//    [tagData listAll];
     
 //    [self.window setRootViewController:navigationController]; 
     

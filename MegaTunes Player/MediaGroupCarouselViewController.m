@@ -389,7 +389,7 @@
         songViewController.title = NSLocalizedString(collectionItem.name, nil);
         songViewController.collectionItem = collectionItem;
         songViewController.iPodLibraryChanged = self.iPodLibraryChanged;
-        songViewController.listIsAlphabetic = YES;
+        songViewController.listIsAlphabetic = NO;
         songViewController.taggedList = YES;
         songViewController.collectionQueryType = [selectedGroup.queryType copy];
         
