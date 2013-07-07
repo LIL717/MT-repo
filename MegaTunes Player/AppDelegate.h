@@ -26,6 +26,7 @@
 @property (nonatomic, retain) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
 //@property (nonatomic, retain) ColorSwitcher *colorSwitcher;
+//@property (nonatomic) BOOL iCloudAvailable;
 
 
 - (NSURL *)applicationDocumentsDirectory;

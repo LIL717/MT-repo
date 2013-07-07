@@ -27,9 +27,13 @@
 @synthesize managedObjectContext = managedObjectContext_;
 @synthesize fetchedResultsController = fetchedResultsController_;
 @synthesize persistentStoreCoordinator = persistentStoreCoordinator_;
+//@synthesize iCloudAvailable;
 
 
 static const NSUInteger kNavigationBarHeight = 60;
+// Add new private instance variable
+NSURL * _iCloudRoot;
+BOOL _iCloudAvailable;
 
 
 //+ (AppDelegate *)instance {
@@ -188,7 +192,35 @@ static const NSUInteger kNavigationBarHeight = 60;
 //    NSLog (@"preload tags");
 //    [tagData listAll];
     
-//    [self.window setRootViewController:navigationController]; 
+    //check if icloud is accessible
+    
+    [self initializeiCloudAccessWithCompletion:^(BOOL available) {
+        
+        _iCloudAvailable = available;
+        
+    }];
+    
+    
+    
+    
+    
+    
+    
+    
+//    NSURL *ubiq = [[NSFileManager defaultManager]
+//                   URLForUbiquityContainerIdentifier:nil];
+//    if (ubiq) {
+//        NSLog(@"iCloud access at %@", ubiq);
+//        [self set_ICloudAvailable:YES];
+//    } else {
+//        NSLog(@"No iCloud access");
+//        [self set_ICloudAvailable:NO];
+//
+//    }
+    NSUserDefaults * standardUserDefaults = [NSUserDefaults standardUserDefaults];
+    [standardUserDefaults setBool: _iCloudAvailable forKey:@"iCloudAvailable"];
+    
+//    [self.window setRootViewController:navigationController];
     
 //    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 //    // Override point for customization after application launch.
@@ -226,6 +258,24 @@ static const NSUInteger kNavigationBarHeight = 60;
 
     return YES;
 }
+ // Add to end of "Helpers" section
+ - (void)initializeiCloudAccessWithCompletion:(void (^)(BOOL available)) completion {
+     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+         _iCloudRoot = [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil];
+         if (_iCloudRoot != nil) {
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 NSLog(@"iCloud available at: %@", _iCloudRoot);
+                 completion(TRUE);
+             });
+         }
+         else {
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 NSLog(@"iCloud not available");
+                 completion(FALSE);
+             });
+         }
+     });
+ }
 
 - (void)customizeGlobalTheme {
     

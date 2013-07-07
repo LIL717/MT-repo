@@ -21,6 +21,7 @@
 //#import "TagData.h"
 //#import "MediaItemUserData.h"
 //#import "UserDataForMediaItem.h"
+#import "AppDelegate.h"
 
 
 @interface MediaGroupCarouselViewController ()
@@ -41,6 +42,8 @@
 @synthesize rightBarButton;
 @synthesize initialLandscapeImage;
 @synthesize mediaGroupViewController;
+@synthesize appDelegate;
+
 
 
 #pragma mark - Initial Display methods
@@ -64,8 +67,8 @@
     
     musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
     
-    id appDelegate = (id)[[UIApplication sharedApplication] delegate];
-    self.managedObjectContext = [appDelegate managedObjectContext];
+    self.appDelegate = (id) [[UIApplication sharedApplication] delegate];
+    self.managedObjectContext = [self.appDelegate managedObjectContext];
     
     [self registerForMediaPlayerNotifications];
     
@@ -334,6 +337,7 @@
 	{
         SongViewController *songViewController = segue.destinationViewController;
         songViewController.managedObjectContext = self.managedObjectContext;
+        songViewController.collectionContainsICloudItem = NO;
         
         //        MPMediaQuery *myCollectionQuery = selectedGroup.queryType;
         
@@ -342,12 +346,16 @@
         
         NSArray *songs = [selectedGroup.queryType items];
         
+        NSString *isCloudItem = @"0";  // the BOOL MPMediaItemPropertyIsCloudItem seems to be 0, but doesn't work as a BOOL
         
         for (MPMediaItem *song in songs) {
+            isCloudItem = [song valueForProperty: MPMediaItemPropertyIsCloudItem];
+            if (isCloudItem.intValue == 1) {
+                songViewController.collectionContainsICloudItem = YES;
+            }
             [songMutableArray addObject: song];
             playlistDuration = (playlistDuration + [[song valueForProperty:MPMediaItemPropertyPlaybackDuration] longValue]);
-            //                NSString *songTitle =[song valueForProperty: MPMediaItemPropertyTitle];
-            //                NSLog (@"\t\t%@", songTitle);
+
         }
         
         CollectionItem *collectionItem = [CollectionItem alloc];
@@ -367,18 +375,25 @@
 	{
         TaggedSongViewController *songViewController = segue.destinationViewController;
         songViewController.managedObjectContext = self.managedObjectContext;
+        songViewController.collectionContainsICloudItem = NO;
+
         
         NSMutableArray *songMutableArray = [[NSMutableArray alloc] init];
         long playlistDuration = 0;
         
         NSArray *songs = [selectedGroup.queryType items];
         
+        NSString *isCloudItem = @"0";  // the BOOL MPMediaItemPropertyIsCloudItem seems to be 0, but doesn't work as a BOOL
+        
         for (MPMediaItem *song in songs) {
+            isCloudItem = [song valueForProperty: MPMediaItemPropertyIsCloudItem];
+            if (isCloudItem.intValue == 1) {
+                songViewController.collectionContainsICloudItem = YES;
+            }
             [songMutableArray addObject: song];
             playlistDuration = (playlistDuration + [[song valueForProperty:MPMediaItemPropertyPlaybackDuration] longValue]);
-            //                NSString *songTitle =[song valueForProperty: MPMediaItemPropertyTitle];
-            //                NSLog (@"\t\t%@", songTitle);
         }
+        
         CollectionItem *collectionItem = [CollectionItem alloc];
         collectionItem.name = selectedGroup.name;
         collectionItem.duration = [NSNumber numberWithLong: playlistDuration];

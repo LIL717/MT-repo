@@ -8,6 +8,8 @@
 
 @class CollectionItem;
 @class MTSearchBar;
+@class AppDelegate;
+
 
 
 @interface AlbumViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MPMediaPickerControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate> {
@@ -34,6 +36,7 @@
 @property (nonatomic, strong)   UIBarButtonItem *rightBarButton;
 @property (nonatomic, strong)   NSArray *searchResults;
 @property (nonatomic, strong)   MPMediaPropertyPredicate *collectionPredicate;
+@property (nonatomic, strong)   AppDelegate *appDelegate;
 
 
 

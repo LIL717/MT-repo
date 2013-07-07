@@ -17,6 +17,7 @@
 #import "MediaItemUserData.h"
 #import "UserInfoViewcontroller.h"
 #import "OBSlider.h"
+//#import "AppDelegate.h"
 //#import "NSDateFormatter+Duration.h"
 
 #pragma mark Audio session callbacks_______________________
@@ -119,6 +120,7 @@
 @synthesize initialView;                //used with the process of figuring our whether playing queue matches queue that was saved
 @synthesize skippedBack;                //set when shipBack used with predictedNextPlaying
 @synthesize savedNowPlaying;             //for some reason a new song calls the handle_NowPlayingItemChanged: method twice, so this is used to save and compare
+//@synthesize appDelegate;
 @synthesize predictedNextItem;
 @synthesize userInfoViewController;
 //these lines came from player view controller
@@ -163,6 +165,9 @@ float saveVolume;
 MPMusicPlaybackState savedPlaybackState;
 long collectionRemainingSeconds;
 long songRemainingSeconds;
+NSURL * _iCloudRoot;
+BOOL _iCloudAvailable;
+
 
 
 #pragma mark - Initial Display methods
@@ -174,7 +179,7 @@ long songRemainingSeconds;
     [super viewDidLoad];
     
     [TestFlight passCheckpoint:@"MainViewController"];
-
+    
     UIImage *backgroundImage = [UIImage imageNamed: @"infoSelectedButtonImage.png"];
     [self.nowPlayingInfoButton setImage: backgroundImage forState:UIControlStateHighlighted];
     self.nextLabel.textColor = [UIColor yellowColor];
@@ -474,6 +479,18 @@ long songRemainingSeconds;
 //        [self.initialNowPlayingLabel removeFromSuperview];
 
     }
+    
+//    the BOOL MPMediaItemPropertyIsCloudItem seems to be 0, but doesn't work as a BOOL
+    
+    BOOL iCloudAvailable = [[NSUserDefaults standardUserDefaults] boolForKey:@"iCloudAvailable"];
+    
+    NSString *isCloudItem = [[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyIsCloudItem];
+    if (isCloudItem.intValue == 1) {
+        if (!iCloudAvailable) {
+            [self goBackClick];
+        }
+    }
+    
     self.savedNowPlaying = [musicPlayer nowPlayingItem];
 
 }
@@ -1091,9 +1108,9 @@ long songRemainingSeconds;
 {
 //    LogMethod();
 
-    //remove the swipe gesture from the nav bar  (doesn't work to wait until dealloc)
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
+    
+    //remove the swipe gesture from the nav bar  (doesn't work to wait until dealloc)
     [self.navigationController.navigationBar removeGestureRecognizer:self.swipeLeftRight];
 
     if (iPodLibraryChanged) {
@@ -1114,6 +1131,11 @@ long songRemainingSeconds;
     //      LogMethod();
     
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    
+    [notificationCenter addObserver: self
+                           selector: @selector (iCloudAccountAvailabilityChanged:)
+                               name: NSUbiquityIdentityDidChangeNotification
+                             object: nil];
     
 	[notificationCenter addObserver: self
 						   selector: @selector (handle_NowPlayingItemChanged:)
@@ -1143,6 +1165,40 @@ long songRemainingSeconds;
     [[MPMediaLibrary defaultMediaLibrary] beginGeneratingLibraryChangeNotifications];
     
 	[musicPlayer beginGeneratingPlaybackNotifications];
+}
+
+- (void) iCloudAccountAvailabilityChanged:(NSNotification *) notification
+{
+    
+// need to know whether iCloud is available when a new song will play
+    
+    [self initializeiCloudAccessWithCompletion:^(BOOL available) {
+        
+        _iCloudAvailable = available;
+        
+    }];
+    NSUserDefaults * standardUserDefaults = [NSUserDefaults standardUserDefaults];
+    [standardUserDefaults setBool: _iCloudAvailable forKey:@"iCloudAvailable"];
+
+    
+}
+
+- (void)initializeiCloudAccessWithCompletion:(void (^)(BOOL available)) completion {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        _iCloudRoot = [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil];
+        if (_iCloudRoot != nil) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSLog(@"iCloud available at: %@", _iCloudRoot);
+                completion(TRUE);
+            });
+        }
+        else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSLog(@"iCloud not available");
+                completion(FALSE);
+            });
+        }
+    });
 }
 // If the music player was paused, leave it paused. If it was playing, it will continue to
 //		play on its own. The music player state is "stopped" only if the previous list of songs
@@ -1330,6 +1386,10 @@ long songRemainingSeconds;
 }
 - (void)dealloc {
 //       LogMethod();
+    
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                    name: NSUbiquityIdentityDidChangeNotification
+                                                  object: nil];
     
 	[[NSNotificationCenter defaultCenter] removeObserver: self
 													name: MPMusicPlayerControllerNowPlayingItemDidChangeNotification

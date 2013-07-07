@@ -59,6 +59,7 @@ BOOL showDuration;
     [super viewDidLoad];
 //    LogMethod();
     
+
     //set up an array of durations to be used in landscape mode
     collectionDurations = [[NSMutableArray alloc] initWithCapacity: [self.collection count]];
 
@@ -782,17 +783,33 @@ BOOL showDuration;
 
         SongViewController *songViewController = segue.destinationViewController;
         songViewController.managedObjectContext = self.managedObjectContext;
+        songViewController.collectionContainsICloudItem = NO;
 
         CollectionItem *collectionItem = [CollectionItem alloc];
         collectionItem.name = selectedName;
-//        collectionItem.duration = [self calculatePlaylistDuration: [self.collectionDataArray objectAtIndex:indexPath.row]];
-        collectionItem.duration = [self calculatePlaylistDuration: [self.albumCollection objectAtIndex: 0]];
-
         
-//        collectionItem.collectionArray = [NSMutableArray arrayWithArray:[[self.collectionDataArray objectAtIndex:indexPath.row] items]];
-        collectionItem.collectionArray = [NSMutableArray arrayWithArray:[[self.albumCollection objectAtIndex:0] items]];
+        NSMutableArray *songMutableArray = [[NSMutableArray alloc] init];
+        long playlistDuration = 0;
+//        collectionItem.duration = [self calculatePlaylistDuration: [self.collectionDataArray objectAtIndex:indexPath.row]];
+        NSArray *songs = [[self.albumCollection objectAtIndex:0] items];
 
+        NSString *isCloudItem = @"0";  // the BOOL MPMediaItemPropertyIsCloudItem seems to be 0, but doesn't work as a BOOL
+        
+        for (MPMediaItem *song in songs) {
+            isCloudItem = [song valueForProperty: MPMediaItemPropertyIsCloudItem];
+            if (isCloudItem.intValue == 1) {
+                songViewController.collectionContainsICloudItem = YES;
+            }
+            [songMutableArray addObject: song];
+            playlistDuration = (playlistDuration + [[song valueForProperty:MPMediaItemPropertyPlaybackDuration] longValue]);
+        }
 //        collectionItem.collectionArray = [self.albumCollection objectAtIndex:0];
+        collectionItem.duration = [NSNumber numberWithLong: playlistDuration];
+        
+        
+        //        collectionItem.collectionArray = [NSMutableArray arrayWithArray:[[self.collectionDataArray objectAtIndex:indexPath.row] items]];
+//        collectionItem.collectionArray = [NSMutableArray arrayWithArray:[[self.albumCollection objectAtIndex:0] items]];
+        collectionItem.collectionArray = [NSMutableArray arrayWithArray: songMutableArray];
 
 
         songViewController.iPodLibraryChanged = self.iPodLibraryChanged;

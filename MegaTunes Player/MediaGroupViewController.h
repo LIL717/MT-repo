@@ -8,6 +8,7 @@
 
 #import "MediaGroup.h"
 @class MediaGroupCarouselViewController;
+@class AppDelegate;
 
 @interface MediaGroupViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MPMediaPickerControllerDelegate, UINavigationControllerDelegate> {
 
@@ -28,6 +29,7 @@
 @property (nonatomic, strong)   MediaGroupCarouselViewController *mediaGroupCarouselViewController;
 @property (nonatomic, strong)   UIImageView *pView;
 @property (nonatomic, strong)   UIImageView *lView;
+@property (nonatomic, strong)   AppDelegate *appDelegate;
 
 @property (nonatomic, strong)   UIImage *initialPortraitImage;
 @property (nonatomic, strong)   UIImage *initialLandscapeImage;

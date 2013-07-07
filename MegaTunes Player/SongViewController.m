@@ -53,8 +53,11 @@
 @synthesize songViewTitle;
 @synthesize swipeLeftRight;
 //@synthesize sectionIndexColor;
+@synthesize collectionContainsICloudItem;
 
 NSMutableArray *songDurations;
+NSMutableArray *savedDataSource;
+NSNumber *savedPlaylistDuration;
 NSIndexPath *selectedIndexPath;
 MPMediaItem *selectedSong;
 NSString *searchMediaItemProperty;
@@ -62,11 +65,14 @@ CGFloat constraintConstant;
 //UIImage *backgroundImage;
 UIButton *infoButton;
 
-
 BOOL cellScrolled;
 BOOL isIndexed;
 BOOL showDuration;
 BOOL turnOnShuffle;
+BOOL currentDataSourceContainsICloudItems;
+NSURL * _iCloudRoot;
+BOOL _iCloudAvailable;
+
 
 #pragma mark - Initial Display methods
 
@@ -76,7 +82,11 @@ BOOL turnOnShuffle;
 //    LogMethod();
     [super viewDidLoad];
     
-        
+    currentDataSourceContainsICloudItems = YES;
+    savedDataSource = [[NSMutableArray alloc] initWithCapacity: [self.collectionItem.collectionArray count]];
+    savedDataSource = [self.collectionItem.collectionArray copy];
+    savedPlaylistDuration = [self.collectionItem.duration copy];
+    
     self.songViewTitle = self.title;
     self.showTagButton = NO;
     self.songTableView.scrollsToTop = YES;
@@ -87,6 +97,10 @@ BOOL turnOnShuffle;
     [self.swipeLeftRight setDirection:(UISwipeGestureRecognizerDirectionRight | UISwipeGestureRecognizerDirectionLeft )];
     [self.navigationController.navigationBar addGestureRecognizer:self.swipeLeftRight];
     
+    // adjust the dataSource if iCloud items are not available
+    if (self.collectionContainsICloudItem) {
+            [self adjustDataSource];
+    }
     //set up an array of durations to be used in landscape mode
     songDurations = [[NSMutableArray alloc] initWithCapacity: [self.collectionItem.collectionArray count]];
     
@@ -208,7 +222,38 @@ BOOL turnOnShuffle;
 //    NSLog (@"songSectionTitles %@", self.songSectionTitles);
 
 }
+- (void) adjustDataSource {
+    BOOL iCloudAvailable = [[NSUserDefaults standardUserDefaults] boolForKey:@"iCloudAvailable"];
+    if (iCloudAvailable) {
+        if (!currentDataSourceContainsICloudItems) {
+            self.collectionItem.collectionArray = savedDataSource;
+            self.collectionItem.duration = savedPlaylistDuration;
+            currentDataSourceContainsICloudItems = YES;
+        }
+    } else {
+        if (currentDataSourceContainsICloudItems) {
+            //save the array with all the items and the duration 
+            savedDataSource = [self.collectionItem.collectionArray copy];
+            savedPlaylistDuration = [self.collectionItem.duration copy];
+            
+            //create a new array without the iCloudItems
+            NSMutableArray *songMutableArray = [[NSMutableArray alloc] init];
+            long playlistDuration = 0;
+                        
+            for (MPMediaItem *song in savedDataSource) {
+                if (![song valueForProperty: MPMediaItemPropertyIsCloudItem]) {
+                    [songMutableArray addObject: song];
+                    playlistDuration = (playlistDuration + [[song valueForProperty:MPMediaItemPropertyPlaybackDuration] longValue]);
+                }
+            }
+                //save the new array and duration to use
+            self.collectionItem.collectionArray = songMutableArray;
+            self.collectionItem.duration = [NSNumber numberWithLong: playlistDuration];
+            currentDataSourceContainsICloudItems = NO;
+        }
+    }
 
+}
 - (void) createDurationArray {
     
     for (MPMediaItem *song in self.collectionItem.collectionArray) {
@@ -1155,6 +1200,11 @@ BOOL turnOnShuffle;
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     
     [notificationCenter addObserver: self
+                           selector: @selector (iCloudAccountAvailabilityChanged:)
+                               name: NSUbiquityIdentityDidChangeNotification
+                             object: nil];
+    
+    [notificationCenter addObserver: self
                            selector: @selector(receiveCellScrolledNotification:)
                                name: @"CellScrolled"
                              object: nil];
@@ -1179,7 +1229,42 @@ BOOL turnOnShuffle;
 
     
 }
+- (void) iCloudAccountAvailabilityChanged:(NSNotification *) notification
+{
 
+    // if the collection passed here contains iCloudItems adjust the dataSource if iCloud items are not available
+    if (self.collectionContainsICloudItem) {
+
+        [self initializeiCloudAccessWithCompletion:^(BOOL available) {
+            
+            _iCloudAvailable = available;
+            
+        }];
+        NSUserDefaults * standardUserDefaults = [NSUserDefaults standardUserDefaults];
+        [standardUserDefaults setBool: _iCloudAvailable forKey:@"iCloudAvailable"];
+        [self adjustDataSource];
+        [self.songTableView reloadData];
+    }
+
+}
+
+- (void)initializeiCloudAccessWithCompletion:(void (^)(BOOL available)) completion {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        _iCloudRoot = [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil];
+        if (_iCloudRoot != nil) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSLog(@"iCloud available at: %@", _iCloudRoot);
+                completion(TRUE);
+            });
+        }
+        else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSLog(@"iCloud not available");
+                completion(FALSE);
+            });
+        }
+    });
+}
 - (void) receiveCellScrolledNotification:(NSNotification *) notification
 {
     if ([[notification name] isEqualToString:@"CellScrolled"]) {
@@ -1254,6 +1339,10 @@ BOOL turnOnShuffle;
 - (void)dealloc {
 //    LogMethod();
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                    name: NSUbiquityIdentityDidChangeNotification
+                                                  object: nil];
     
     [[NSNotificationCenter defaultCenter] removeObserver: self
                                                     name: @"CellScrolled"

@@ -10,6 +10,8 @@
 #import "iCarousel.h"
 #import "MediaGroup.h"
 @class MediaGroupViewController;
+@class AppDelegate;
+
 
 
 @interface MediaGroupCarouselViewController : UIViewController <iCarouselDataSource, iCarouselDelegate, MPMediaPickerControllerDelegate> {
@@ -27,6 +29,8 @@
 @property (nonatomic, strong)	MPMusicPlayerController	*musicPlayer;
 @property (readwrite)           BOOL iPodLibraryChanged;
 @property (nonatomic, strong)   UIBarButtonItem *rightBarButton;
+@property (nonatomic, strong)   AppDelegate *appDelegate;
+
 
 @property (nonatomic, strong)   UIImage *initialLandscapeImage;
 @property (nonatomic, strong)   MediaGroupViewController *mediaGroupViewController;

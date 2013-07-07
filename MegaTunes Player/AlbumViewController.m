@@ -14,6 +14,7 @@
 #import "DTCustomColoredAccessory.h"
 #import "MainViewController.h"
 #import "InCellScrollView.h"
+#import "AppDelegate.h"
 
 
 @interface AlbumViewController ()
@@ -41,6 +42,7 @@
 @synthesize rightBarButton;
 @synthesize searchResults;
 @synthesize collectionPredicate;
+@synthesize appDelegate;
 
 NSMutableArray *collectionDurations;
 NSIndexPath *selectedIndexPath;
@@ -64,6 +66,8 @@ BOOL showDuration;
     [super viewDidLoad];
     //    LogMethod();
     
+    self.appDelegate = (id) [[UIApplication sharedApplication] delegate];
+
     //set up an array of durations to be used in landscape mode
     collectionDurations = [[NSMutableArray alloc] initWithCapacity: [self.collection count]];
 //    NSLog (@" count of collection array %d", [self.collection count]);
@@ -752,17 +756,36 @@ BOOL showDuration;
 	{
         SongViewController *songViewController = segue.destinationViewController;
         songViewController.managedObjectContext = self.managedObjectContext;
+        songViewController.collectionContainsICloudItem = NO;
         
 //        MPMediaQuery *myCollectionQuery = self.collectionQueryType;
         selectedQuery = [self.collectionQueryType copy];
 
         NSArray *allSongCollection = [selectedQuery items];
         
-        NSMutableArray *songMutableArray = [[NSMutableArray alloc] init];
+//        NSMutableArray *allSongMutableArray = [[NSMutableArray alloc] init];
         long playlistDuration = 0;
+        
+        //        collectionItem.duration = [self calculatePlaylistDuration: [self.collectionDataArray objectAtIndex:indexPath.row]];
+//        
+//        for (MPMediaItem *song in allSongCollection) {
+//            if ([song valueForProperty: MPMediaItemPropertyIsCloudItem]) {
+//                songViewController.collectionContainsICloudItem = YES;
+//            }
+//            [allSongMutableArray addObject: song];
+////                playlistDuration = (playlistDuration + [[song valueForProperty:MPMediaItemPropertyPlaybackDuration] longValue]);
+//        }
+//        NSArray *songs = allSongCollection;
+        NSMutableArray *songMutableArray = [[NSMutableArray alloc] init];
+
+        NSString *isCloudItem = @"0";  // the BOOL MPMediaItemPropertyIsCloudItem seems to be 0, but doesn't work as a BOOL
         
         // sort the song list into alphabetical order with the nuances of Apple's sorting - see createComparator below
         for (MPMediaItem *song in allSongCollection) {
+            isCloudItem = [song valueForProperty: MPMediaItemPropertyIsCloudItem];
+            if (isCloudItem.intValue == 1) {
+                songViewController.collectionContainsICloudItem = YES;
+            }
             NSUInteger newIndex = [songMutableArray indexOfObject:song
                                          inSortedRange:(NSRange){0, [songMutableArray count]}
                                                options:NSBinarySearchingInsertionIndex
@@ -801,12 +824,39 @@ BOOL showDuration;
 	{
         SongViewController *songViewController = segue.destinationViewController;
         songViewController.managedObjectContext = self.managedObjectContext;
+        songViewController.collectionContainsICloudItem = NO;
         
         CollectionItem *collectionItem = [CollectionItem alloc];
         collectionItem.name = selectedName;
-        collectionItem.duration = [self calculatePlaylistDuration: self.songCollection];
+        
+        
+        NSMutableArray *songMutableArray = [[NSMutableArray alloc] init];
+        long playlistDuration = 0;
+        
+        NSArray *allSongCollection = [NSMutableArray arrayWithArray:[self.songCollection items]];
 
-        collectionItem.collectionArray = [NSMutableArray arrayWithArray:[self.songCollection items]];
+        
+        //        collectionItem.duration = [self calculatePlaylistDuration: [self.collectionDataArray objectAtIndex:indexPath.row]];
+        
+        NSString *isCloudItem = @"0";  // the BOOL MPMediaItemPropertyIsCloudItem seems to be 0, but doesn't work as a BOOL
+        
+        for (MPMediaItem *song in allSongCollection) {
+            isCloudItem = [song valueForProperty: MPMediaItemPropertyIsCloudItem];
+            if (isCloudItem.intValue == 1) {
+                songViewController.collectionContainsICloudItem = YES;
+            }
+            [songMutableArray addObject: song];
+            playlistDuration = (playlistDuration + [[song valueForProperty:MPMediaItemPropertyPlaybackDuration] longValue]);
+        }
+        
+        
+        
+        
+        collectionItem.duration = [NSNumber numberWithLong: playlistDuration];
+
+//        collectionItem.collectionArray = [NSMutableArray arrayWithArray:[self.songCollection items]];
+        collectionItem.collectionArray = songMutableArray;
+
         
         songViewController.iPodLibraryChanged = self.iPodLibraryChanged;
         songViewController.listIsAlphabetic = NO;
@@ -992,6 +1042,7 @@ BOOL showDuration;
     [musicPlayer beginGeneratingPlaybackNotifications];
     
 }
+
 - (void) receiveCellScrolledNotification:(NSNotification *) notification
 {
 //    LogMethod();
