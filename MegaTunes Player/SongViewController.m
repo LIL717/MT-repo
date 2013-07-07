@@ -225,7 +225,7 @@ BOOL _iCloudAvailable;
 - (void) adjustDataSource {
     BOOL iCloudAvailable = [[NSUserDefaults standardUserDefaults] boolForKey:@"iCloudAvailable"];
     if (iCloudAvailable) {
-        if (!currentDataSourceContainsICloudItems) {
+        if (currentDataSourceContainsICloudItems == NO) {
             self.collectionItem.collectionArray = savedDataSource;
             self.collectionItem.duration = savedPlaylistDuration;
             currentDataSourceContainsICloudItems = YES;
@@ -239,9 +239,12 @@ BOOL _iCloudAvailable;
             //create a new array without the iCloudItems
             NSMutableArray *songMutableArray = [[NSMutableArray alloc] init];
             long playlistDuration = 0;
-                        
+            
+            NSString *isCloudItem = @"0";  // the BOOL MPMediaItemPropertyIsCloudItem seems to be 0, but doesn't work as a BOOL
+            
             for (MPMediaItem *song in savedDataSource) {
-                if (![song valueForProperty: MPMediaItemPropertyIsCloudItem]) {
+                isCloudItem = [song valueForProperty: MPMediaItemPropertyIsCloudItem];
+                if (isCloudItem.intValue != 1) {  //iCloud items should be 1
                     [songMutableArray addObject: song];
                     playlistDuration = (playlistDuration + [[song valueForProperty:MPMediaItemPropertyPlaybackDuration] longValue]);
                 }
