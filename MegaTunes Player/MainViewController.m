@@ -440,7 +440,7 @@ BOOL _iCloudAvailable;
     if (self.savedNowPlaying != [musicPlayer nowPlayingItem]) {
 //        NSLog (@"actually handling it");
             //the next two methods are separated so that they can be executed separately in viewDidLoad and viewWillAppear the first time the view is loaded, afer that they can be executed together here
-        //check if the predictedNextSong is actually the song that will not play
+        //check if the predictedNextSong is actually the song that will play
 
         if (initialView == YES) {
             //the first time through, just assume it is the right queue
@@ -460,16 +460,22 @@ BOOL _iCloudAvailable;
                 }
             }
         }
-        if (!skippedBack) {
-            //now set the nextPlayingItem to new item
-            NSUInteger nextPlayingIndex = [musicPlayer indexOfNowPlayingItem] + 1;
-            
-            if (nextPlayingIndex < self.userMediaItemCollection.count) {
-                predictedNextItem = [[self.userMediaItemCollection items] objectAtIndex: [musicPlayer indexOfNowPlayingItem] + 1 ];
-            } else {
-                predictedNextItem = nil;
+        if (musicPlayer.shuffleMode == MPMusicShuffleModeOff) {
+
+            if (!skippedBack) {
+                //now set the nextPlayingItem to new item
+                NSUInteger nextPlayingIndex = [musicPlayer indexOfNowPlayingItem] + 1;
+                
+                if (nextPlayingIndex < self.userMediaItemCollection.count) {
+                    predictedNextItem = [[self.userMediaItemCollection items] objectAtIndex: [musicPlayer indexOfNowPlayingItem] + 1 ];
+                } else {
+                    predictedNextItem = nil;
+                }
+                NSLog (@"predictedNextItem is %@", [predictedNextItem valueForProperty:  MPMediaItemPropertyTitle]);
             }
-            NSLog (@"predictedNextItem is %@", [predictedNextItem valueForProperty:  MPMediaItemPropertyTitle]);
+        } else {
+            //if shuffle mode is on, can't predict next item
+            predictedNextItem = nil;
         }
         [self prepareAllExceptNowPlaying];
         if (!playNew) {
@@ -821,6 +827,7 @@ BOOL _iCloudAvailable;
     } else {
 //        self.showTitle = YES;
         collectionRemaining = [NSString stringWithFormat:@"%02lu:%02lu",
+
                                collectionRemainingSeconds /60,
                                collectionRemainingSeconds % 60];
         formatter.dateFormat = @"m:ss";

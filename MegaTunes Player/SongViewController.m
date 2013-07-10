@@ -1040,7 +1040,7 @@ BOOL firstLoad;
         
         self.collectionItemToSave = self.collectionItem;
         
-        NSLog (@" self.collectionItemToSave is %@", self.collectionItemToSave);
+//        NSLog (@" self.collectionItemToSave is %@", self.collectionItemToSave);
 
         
         //set the "nowPlaying indicator" as the view disappears (already selected play indicator is still there too :(
