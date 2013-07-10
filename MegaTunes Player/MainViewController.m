@@ -1175,10 +1175,12 @@ BOOL _iCloudAvailable;
     [self initializeiCloudAccessWithCompletion:^(BOOL available) {
         
         _iCloudAvailable = available;
+        NSUserDefaults * standardUserDefaults = [NSUserDefaults standardUserDefaults];
+        [standardUserDefaults setBool: _iCloudAvailable forKey:@"iCloudAvailable"];
+        BOOL iCloudAvailable = [[NSUserDefaults standardUserDefaults] boolForKey:@"iCloudAvailable"];
+        NSLog (@"iCloudAvailable BOOL from NSUserDefaults is %d", iCloudAvailable);
         
     }];
-    NSUserDefaults * standardUserDefaults = [NSUserDefaults standardUserDefaults];
-    [standardUserDefaults setBool: _iCloudAvailable forKey:@"iCloudAvailable"];
 
     
 }

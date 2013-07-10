@@ -52,6 +52,8 @@
 @property (strong, nonatomic) UISwipeGestureRecognizer *swipeLeftRight;
 //@property (nonatomic, retain) UIColor *sectionIndexColor;
 @property (nonatomic)           BOOL collectionContainsICloudItem;
+@property (readwrite)           BOOL cellScrolled;
+
 
 
 

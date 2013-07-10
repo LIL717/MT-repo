@@ -61,6 +61,8 @@
 @synthesize swipeLeftRight;
 //@synthesize sectionIndexColor;
 @synthesize collectionContainsICloudItem;
+@synthesize cellScrolled;
+
 
 
 NSMutableArray *songDurations;
@@ -77,13 +79,13 @@ UIButton *infoButton;
 NSMutableArray *taggedSongArray;
 NSNumber *taggedPlaylistDuration;
 
-BOOL cellScrolled;
 BOOL isIndexed;
 BOOL showDuration;
 BOOL turnOnShuffle;
 BOOL currentDataSourceContainsICloudItems;
 NSURL * _iCloudRoot;
 BOOL _iCloudAvailable;
+BOOL firstLoad;
 
 #pragma mark - Initial Display methods
 
@@ -91,6 +93,8 @@ BOOL _iCloudAvailable;
 {
     //    LogMethod();
     [super viewDidLoad];
+    
+    firstLoad = YES;
     
     currentDataSourceContainsICloudItems = YES;
     if (taggedList) {
@@ -199,9 +203,25 @@ BOOL _iCloudAvailable;
     //    }
     [self registerForMediaPlayerNotifications];
     //    scrolledCellIndexArray = [[NSMutableArray alloc] initWithCapacity: 20];
-    cellScrolled = NO;
+    self.cellScrolled = NO;
     
-    if ([self.collectionItem.collectionArray count] > 1) {
+    // adjust the dataSource if iCloud items are not available
+    if (self.collectionContainsICloudItem) {
+        if (!taggedList) {
+            [self adjustDataSource];
+        }
+    }
+    [self loadSectionData];
+    
+    int arrayCount;
+    
+    if (taggedList) {
+        arrayCount = [taggedSongArray count];
+    } else {
+        arrayCount = [self.collectionItem.collectionArray count];
+    }
+    
+    if (arrayCount > 1) {
         self.shuffleButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         self.shuffleButton.contentEdgeInsets = UIEdgeInsetsMake(0, 14, 0, 0);
         [self.shuffleButton setTitleColor: [UIColor whiteColor] forState: UIControlStateNormal];
@@ -213,15 +233,6 @@ BOOL _iCloudAvailable;
         frame.size.height = 55;
         self.shuffleView.frame = frame;
     }
-    
-    // adjust the dataSource if iCloud items are not available
-    if (self.collectionContainsICloudItem) {
-        if (!taggedList) {
-            [self adjustDataSource];
-        }
-    }
-    [self loadSectionData];
-
 }
 - (void) loadSectionData {
     //list can be alphabetic - if All Songs was chosen or in track order, only index alphabetic with more than 20 rows
@@ -297,6 +308,17 @@ BOOL _iCloudAvailable;
     taggedSongArray = [sortedArray mutableCopy];
     taggedPlaylistDuration = [NSNumber numberWithLong: playlistDuration];
     
+    
+    
+//    if ([taggedSongArray count] == 0) {
+//        UIAlertView* alertView = [[UIAlertView alloc] initWithTitle: NSLocalizedString(@"No Data", nil)
+//                                                            message:@"Message"
+//                                                           delegate:self
+//                                                  cancelButtonTitle:@"OK"
+//                                                  otherButtonTitles: nil];
+//        [alertView show];
+//        
+//    }
 //    //print out the data in the taggedSongArray
 //    for (NSDictionary *dict in taggedSongArray) {
 ////        for (NSDictionary *dict in songDictMutableArray) {
@@ -476,20 +498,20 @@ BOOL _iCloudAvailable;
     //    // if rows have been scrolled, they have been added to this array, so need to scroll them back to 0
     //    YAY this works!!
     //    if ([scrolledCellIndexArray count] > 0) {
-    if (cellScrolled) {
+    if (self.cellScrolled) {
         //        for (NSIndexPath *indexPath in scrolledCellIndexArray) {
         for (NSIndexPath *indexPath in [self.songTableView indexPathsForVisibleRows]) {
-            if (indexPath.row > 0) {
-                
+//            if (indexPath.row > 0) {
+            
                 //            NSLog (@" indexPath to scroll %@", indexPath);
                 SongCell *cell = (SongCell *)[self.songTableView cellForRowAtIndexPath:indexPath];
                 [cell.scrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-            }
+//            }
         }
         //        [self.songTableView reloadRowsAtIndexPaths:scrolledCellIndexArray withRowAnimation: UITableViewRowAnimationNone];
         
         //        [scrolledCellIndexArray removeAllObjects];
-        cellScrolled = NO;
+        self.cellScrolled = NO;
     }
     [self updateLayoutForNewOrientation: self.interfaceOrientation];
     
@@ -562,12 +584,21 @@ BOOL _iCloudAvailable;
     //    if (!isSearching) {
     
     BOOL firstRowVisible = NO;
+    
     //visibleRows is always 0 the first time through here for a table, populated after that
-    NSArray *visibleRows = [self.songTableView indexPathsForVisibleRows];
-    NSIndexPath *index = [visibleRows objectAtIndex: 0];
-    if (index.section == 0 && index.row == 0) {
+    if (firstLoad) {
+        firstLoad = NO;
         firstRowVisible = YES;
+    } else {
+        NSArray *visibleRows = [self.songTableView indexPathsForVisibleRows];
+        if ([visibleRows count] != 0) {
+            NSIndexPath *index = [visibleRows objectAtIndex: 0];
+            if (index.section == 0 && index.row == 0) {
+                firstRowVisible = YES;
+            }
+        }
     }
+
     
     // hide the search bar and All Songs cell
     CGFloat tableViewHeaderHeight = self.shuffleView.frame.size.height;
@@ -576,7 +607,14 @@ BOOL _iCloudAvailable;
     //        NSLog (@"possibleRows = %d collection count = %d", possibleRows, [self.collection count]);
     
     //if the table won't fill the screen need to wait for delay in order for tableView header to hide properly - so ugly
-    if ([self.collectionItem.collectionArray count] <= possibleRows) {
+    int arrayCount;
+    
+    if (taggedList) {
+        arrayCount = [taggedSongArray count];
+    } else {
+        arrayCount = [self.collectionItem.collectionArray count];
+    }
+    if (arrayCount <= possibleRows) {
         [self performSelector:@selector(updateContentOffset) withObject:nil afterDelay:0.0];
     } else {
         if (firstRowVisible) {
@@ -587,7 +625,7 @@ BOOL _iCloudAvailable;
     }
     [self.songTableView reloadData];
     //    }
-    cellScrolled = NO;
+    self.cellScrolled = NO;
     
 }
 - (void)updateContentOffset {
@@ -917,7 +955,7 @@ BOOL _iCloudAvailable;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    LogMethod();
+//    LogMethod();
     
     if (self.isSearching) {
         
@@ -942,7 +980,7 @@ BOOL _iCloudAvailable;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    LogMethod();
+//    LogMethod();
     
     //don't use SongCell for searchResultsCell won't respond to touches to scroll anyway and terrible performance on GoBackClick when autoRotated
     static NSString *CellIdentifier = @"Cell";
@@ -1547,13 +1585,31 @@ BOOL _iCloudAvailable;
     //Shuffle button selected
     [musicPlayer setShuffleMode: MPMusicShuffleModeSongs];
     
+    NSMutableArray *shuffleArray = [[NSMutableArray alloc] initWithCapacity: [self.collectionItem.collectionArray count]];
+    
+    if (taggedList) {
+        NSMutableArray *collectionArray = [[NSMutableArray alloc] initWithCapacity: [taggedSongArray count]];
+        for (NSDictionary *dict in taggedSongArray) {
+            MPMediaItem *song = [dict valueForKey: @"Song"];
+            [collectionArray addObject: song];
+        }
+        shuffleArray = collectionArray;
+    } else {
+        shuffleArray = self.collectionItem.collectionArray;
+    }
+    
     int min = 0;
-    int max = [self.collectionItem.collectionArray count] -1;
+    int max = [shuffleArray count] -1;
+
+//    int max = [self.collectionItem.collectionArray count] -1;
     int randNum = rand() % (max - min) + min; //create the random number.
     
-    selectedSong = [self.collectionItem.collectionArray objectAtIndex: randNum];
-    
-    self.songCollection = [MPMediaItemCollection collectionWithItems: self.collectionItem.collectionArray];
+//    selectedSong = [self.collectionItem.collectionArray objectAtIndex: randNum];
+    selectedSong = [shuffleArray objectAtIndex: randNum];
+
+//    self.songCollection = [MPMediaItemCollection collectionWithItems: self.collectionItem.collectionArray];
+    self.songCollection = [MPMediaItemCollection collectionWithItems: shuffleArray];
+
     self.collectionItem.collection = self.songCollection;
     
     self.collectionItemToSave = self.collectionItem;
@@ -1639,10 +1695,12 @@ BOOL _iCloudAvailable;
         [self initializeiCloudAccessWithCompletion:^(BOOL available) {
             
             _iCloudAvailable = available;
-            
+            NSUserDefaults * standardUserDefaults = [NSUserDefaults standardUserDefaults];
+            [standardUserDefaults setBool: _iCloudAvailable forKey:@"iCloudAvailable"];
+            BOOL iCloudAvailable = [[NSUserDefaults standardUserDefaults] boolForKey:@"iCloudAvailable"];
+            NSLog (@"iCloudAvailable BOOL from NSUserDefaults is %d", iCloudAvailable);
         }];
-        NSUserDefaults * standardUserDefaults = [NSUserDefaults standardUserDefaults];
-        [standardUserDefaults setBool: _iCloudAvailable forKey:@"iCloudAvailable"];
+
         if (taggedList) {
             [self adjustTaggedDataSource];
         } else {
@@ -1705,7 +1763,7 @@ BOOL _iCloudAvailable;
         //                [scrolledCellIndexArray addObject:indexPath];
         //            }
         //        }
-        cellScrolled = YES;
+        self.cellScrolled = YES;
     }
 }
 
@@ -1732,7 +1790,7 @@ BOOL _iCloudAvailable;
 //    LogMethod();
     
     [self.songTableView reloadData];
-    cellScrolled = NO;
+    self.cellScrolled = NO;
     //    scrolledCellIndexArray = [[NSMutableArray alloc] initWithCapacity: 20];
     
 }

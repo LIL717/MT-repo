@@ -198,27 +198,29 @@ BOOL _iCloudAvailable;
         
         _iCloudAvailable = available;
         
+        NSUserDefaults * standardUserDefaults = [NSUserDefaults standardUserDefaults];
+        [standardUserDefaults setBool: _iCloudAvailable forKey:@"iCloudAvailable"];
+        
+        BOOL iCloudAvailable = [[NSUserDefaults standardUserDefaults] boolForKey:@"iCloudAvailable"];
+        NSLog (@"iCloudAvailable BOOL from NSUserDefaults is %d", iCloudAvailable);
+
+        
     }];
-    
-    
-    
-    
-    
-    
     
     
 //    NSURL *ubiq = [[NSFileManager defaultManager]
 //                   URLForUbiquityContainerIdentifier:nil];
 //    if (ubiq) {
 //        NSLog(@"iCloud access at %@", ubiq);
-//        [self set_ICloudAvailable:YES];
+//        _iCloudAvailable = YES;
 //    } else {
 //        NSLog(@"No iCloud access");
-//        [self set_ICloudAvailable:NO];
+//        _iCloudAvailable = NO;
 //
 //    }
-    NSUserDefaults * standardUserDefaults = [NSUserDefaults standardUserDefaults];
-    [standardUserDefaults setBool: _iCloudAvailable forKey:@"iCloudAvailable"];
+
+    
+
     
 //    [self.window setRootViewController:navigationController];
     
@@ -274,7 +276,10 @@ BOOL _iCloudAvailable;
                  completion(FALSE);
              });
          }
+
      });
+
+
  }
 
 - (void)customizeGlobalTheme {

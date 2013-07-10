@@ -54,6 +54,8 @@
 @synthesize swipeLeftRight;
 //@synthesize sectionIndexColor;
 @synthesize collectionContainsICloudItem;
+@synthesize cellScrolled;
+
 
 NSMutableArray *songDurations;
 NSMutableArray *savedDataSource;
@@ -65,13 +67,13 @@ CGFloat constraintConstant;
 //UIImage *backgroundImage;
 UIButton *infoButton;
 
-BOOL cellScrolled;
 BOOL isIndexed;
 BOOL showDuration;
 BOOL turnOnShuffle;
 BOOL currentDataSourceContainsICloudItems;
 NSURL * _iCloudRoot;
 BOOL _iCloudAvailable;
+BOOL firstLoad;
 
 
 #pragma mark - Initial Display methods
@@ -82,6 +84,9 @@ BOOL _iCloudAvailable;
 //    LogMethod();
     [super viewDidLoad];
     
+    firstLoad = YES;
+    
+    //as this method starts, the whole collectionArray is available including ICloudItems
     currentDataSourceContainsICloudItems = YES;
     savedDataSource = [[NSMutableArray alloc] initWithCapacity: [self.collectionItem.collectionArray count]];
     savedDataSource = [self.collectionItem.collectionArray copy];
@@ -99,7 +104,7 @@ BOOL _iCloudAvailable;
     
     // adjust the dataSource if iCloud items are not available
     if (self.collectionContainsICloudItem) {
-            [self adjustDataSource];
+        [self adjustDataSource];
     }
     //set up an array of durations to be used in landscape mode
     songDurations = [[NSMutableArray alloc] initWithCapacity: [self.collectionItem.collectionArray count]];
@@ -180,7 +185,7 @@ BOOL _iCloudAvailable;
     //    }
     [self registerForMediaPlayerNotifications];
 //    scrolledCellIndexArray = [[NSMutableArray alloc] initWithCapacity: 20];
-    cellScrolled = NO;
+    self.cellScrolled = NO;
     
     if ([self.collectionItem.collectionArray count] > 1) {
         self.shuffleButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
@@ -283,20 +288,20 @@ BOOL _iCloudAvailable;
 //    // if rows have been scrolled, they have been added to this array, so need to scroll them back to 0
 //    YAY this works!!
 //    if ([scrolledCellIndexArray count] > 0) {
-    if (cellScrolled) {
+    if (self.cellScrolled) {
 //        for (NSIndexPath *indexPath in scrolledCellIndexArray) {
         for (NSIndexPath *indexPath in [self.songTableView indexPathsForVisibleRows]) {
-            if (indexPath.row > 0) {
+//            if (indexPath.row > 0) {
 
 //            NSLog (@" indexPath to scroll %@", indexPath);
             SongCell *cell = (SongCell *)[self.songTableView cellForRowAtIndexPath:indexPath];
             [cell.scrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-            }
+//            }
         }
 //        [self.songTableView reloadRowsAtIndexPaths:scrolledCellIndexArray withRowAnimation: UITableViewRowAnimationNone];
 
 //        [scrolledCellIndexArray removeAllObjects];
-        cellScrolled = NO;
+        self.cellScrolled = NO;
     }
     [self updateLayoutForNewOrientation: self.interfaceOrientation];
 
@@ -368,14 +373,24 @@ BOOL _iCloudAvailable;
 //    //don't need to do this if the search table is showing
 //    if (!isSearching) {
     
-        BOOL firstRowVisible = NO;
-        //visibleRows is always 0 the first time through here for a table, populated after that
+    BOOL firstRowVisible = NO;
+
+
+
+    //visibleRows is always 0 the first time through here for a table, populated after that
+    if (firstLoad) {
+        firstLoad = NO;
+        firstRowVisible = YES;
+    } else {
         NSArray *visibleRows = [self.songTableView indexPathsForVisibleRows];
-        NSIndexPath *index = [visibleRows objectAtIndex: 0];
-        if (index.section == 0 && index.row == 0) {
-            firstRowVisible = YES;
+        if ([visibleRows count] != 0) {
+            NSIndexPath *index = [visibleRows objectAtIndex: 0];
+            if (index.section == 0 && index.row == 0) {
+                firstRowVisible = YES;
+            }
         }
-        
+    }
+    
         // hide the search bar and All Songs cell
         CGFloat tableViewHeaderHeight = self.shuffleView.frame.size.height;
         CGFloat adjustedHeaderHeight = tableViewHeaderHeight - navBarAdjustment;
@@ -393,7 +408,7 @@ BOOL _iCloudAvailable;
         }
         [self.songTableView reloadData];
 //    }
-    cellScrolled = NO;
+    self.cellScrolled = NO;
 
 }
 - (void)updateContentOffset {
@@ -1241,10 +1256,13 @@ BOOL _iCloudAvailable;
         [self initializeiCloudAccessWithCompletion:^(BOOL available) {
             
             _iCloudAvailable = available;
+            NSUserDefaults * standardUserDefaults = [NSUserDefaults standardUserDefaults];
+            [standardUserDefaults setBool: _iCloudAvailable forKey:@"iCloudAvailable"];
+            BOOL iCloudAvailable = [[NSUserDefaults standardUserDefaults] boolForKey:@"iCloudAvailable"];
+            NSLog (@"iCloudAvailable BOOL from NSUserDefaults is %d", iCloudAvailable);
             
         }];
-        NSUserDefaults * standardUserDefaults = [NSUserDefaults standardUserDefaults];
-        [standardUserDefaults setBool: _iCloudAvailable forKey:@"iCloudAvailable"];
+
         [self adjustDataSource];
         [self.songTableView reloadData];
     }
@@ -1295,7 +1313,7 @@ BOOL _iCloudAvailable;
 //                [scrolledCellIndexArray addObject:indexPath];
 //            }
 //        }
-        cellScrolled = YES;
+        self.cellScrolled = YES;
     }
 }
 
@@ -1322,7 +1340,7 @@ BOOL _iCloudAvailable;
     LogMethod();
 
     [self.songTableView reloadData];
-    cellScrolled = NO;
+    self.cellScrolled = NO;
 //    scrolledCellIndexArray = [[NSMutableArray alloc] initWithCapacity: 20];
 
 }

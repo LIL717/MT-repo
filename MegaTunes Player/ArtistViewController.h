@@ -30,6 +30,8 @@
 @property (nonatomic, strong)   NSArray *albumCollection;
 @property (nonatomic, strong)   UIBarButtonItem *rightBarButton;
 @property (nonatomic, strong)   NSArray *searchResults;
+@property (readwrite)           BOOL cellScrolled;
+
 
 
 - (NSNumber *) calculatePlaylistDuration: (MPMediaItemCollection *) currentQueue;

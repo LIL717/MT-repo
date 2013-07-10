@@ -31,6 +31,7 @@
 @property (nonatomic, strong)   UIBarButtonItem *rightBarButton;
 @property (readwrite)           BOOL isIndexed;
 @property (readwrite)           BOOL isSearching;
+@property (readwrite)           BOOL cellScrolled;
 @property (nonatomic, strong)   NSArray *searchResults;
 
 

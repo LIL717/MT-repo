@@ -56,7 +56,7 @@
                         </view>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" restorationIdentifier="SongCell" selectionStyle="gray" hidesAccessoryWhenEditing="NO" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="SongCell" rowHeight="55" id="fy5-n4-fQP" userLabel="cell" customClass="SongCell">
-                                <rect key="frame" x="0.0" y="146" width="480" height="56"/>
+                                <rect key="frame" x="0.0" y="146" width="480" height="57"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="10" y="1" width="460" height="54"/>
@@ -70,15 +70,8 @@
                                         </imageView>
                                         <scrollView clipsSubviews="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EZG-Q9-yHA" userLabel="IBScrollView" customClass="InCellScrollView">
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="list-background.png" translatesAutoresizingMaskIntoConstraints="NO" id="SVb-KX-c1T">
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="53" type="user" id="HVw-tl-Ydr"/>
-                                                    </constraints>
-                                                </imageView>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="list-background.png" translatesAutoresizingMaskIntoConstraints="NO" id="SVb-KX-c1T"/>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="clip" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e09-6C-UeW">
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="53" type="user" id="GFe-nq-x5h"/>
-                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="44"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                                     <color key="highlightedColor" red="0.070588238540000001" green="0.1176470667" blue="1" alpha="1" colorSpace="deviceRGB"/>
@@ -115,16 +108,17 @@
                                     <constraint firstItem="EZG-Q9-yHA" firstAttribute="leading" secondItem="2sQ-Rj-GH3" secondAttribute="trailing" constant="-2" type="user" id="7BY-cl-ev9"/>
                                     <constraint firstAttribute="trailing" secondItem="9Je-hu-yhg" secondAttribute="trailing" constant="44" type="user" id="Ep0-Qq-8eg"/>
                                     <constraint firstItem="7eR-Mq-JMU" firstAttribute="leading" secondItem="fy5-n4-fQP" secondAttribute="leading" type="user" id="K4l-Mh-Fuh"/>
-                                    <constraint firstItem="7eR-Mq-JMU" firstAttribute="bottom" secondItem="2sQ-Rj-GH3" secondAttribute="bottom" type="default" id="Mv6-AY-63Y"/>
                                     <constraint firstItem="7eR-Mq-JMU" firstAttribute="trailing" secondItem="fy5-n4-fQP" secondAttribute="trailing" type="default" id="Oav-dK-3yy"/>
+                                    <constraint firstItem="9Je-hu-yhg" firstAttribute="top" secondItem="fy5-n4-fQP" secondAttribute="top" type="user" id="PTG-aL-X3p"/>
                                     <constraint firstItem="9Je-hu-yhg" firstAttribute="centerY" secondItem="2sQ-Rj-GH3" secondAttribute="centerY" type="user" id="Pd9-z5-md6"/>
+                                    <constraint firstItem="2sQ-Rj-GH3" firstAttribute="top" secondItem="fy5-n4-fQP" secondAttribute="top" type="user" id="Qkj-ds-o6I"/>
+                                    <constraint firstItem="7eR-Mq-JMU" firstAttribute="top" secondItem="fy5-n4-fQP" secondAttribute="top" type="user" id="S9X-xR-wmd"/>
                                     <constraint firstAttribute="bottom" secondItem="EZG-Q9-yHA" secondAttribute="bottom" constant="3" type="user" id="Vcc-eu-huw"/>
                                     <constraint firstItem="2sQ-Rj-GH3" firstAttribute="leading" secondItem="fy5-n4-fQP" secondAttribute="leading" type="user" id="ZpO-5f-739"/>
-                                    <constraint firstItem="7eR-Mq-JMU" firstAttribute="top" secondItem="9Je-hu-yhg" secondAttribute="top" type="user" id="csT-VY-Arc"/>
-                                    <constraint firstItem="EZG-Q9-yHA" firstAttribute="top" secondItem="2sQ-Rj-GH3" secondAttribute="top" type="default" id="hJA-eb-Unv"/>
-                                    <constraint firstItem="EZG-Q9-yHA" firstAttribute="top" secondItem="7eR-Mq-JMU" secondAttribute="top" type="user" id="j4d-cm-R0C"/>
-                                    <constraint firstAttribute="bottom" secondItem="7eR-Mq-JMU" secondAttribute="bottom" constant="1" type="user" id="lcK-H6-Bou"/>
+                                    <constraint firstAttribute="bottom" secondItem="7eR-Mq-JMU" secondAttribute="bottom" type="user" id="lcK-H6-Bou"/>
+                                    <constraint firstItem="EZG-Q9-yHA" firstAttribute="top" secondItem="fy5-n4-fQP" secondAttribute="top" type="user" id="oPJ-kS-fOK"/>
                                     <constraint firstAttribute="trailing" secondItem="EZG-Q9-yHA" secondAttribute="trailing" constant="168" type="user" id="v22-it-y6X"/>
+                                    <constraint firstItem="9Je-hu-yhg" firstAttribute="bottom" secondItem="fy5-n4-fQP" secondAttribute="bottom" type="default" id="w4V-KX-lps"/>
                                 </constraints>
                                 <connections>
                                     <outlet property="cellBackgroundImageView" destination="7eR-Mq-JMU" id="KFn-3Y-1vR"/>
@@ -1637,7 +1631,7 @@
                         </view>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" restorationIdentifier="SongCell" selectionStyle="gray" hidesAccessoryWhenEditing="NO" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="SongCell" rowHeight="55" id="IaW-fx-iKd" userLabel="cell" customClass="SongCell">
-                                <rect key="frame" x="0.0" y="146" width="480" height="56"/>
+                                <rect key="frame" x="0.0" y="146" width="480" height="57"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="10" y="1" width="460" height="54"/>
@@ -1695,15 +1689,15 @@
                                 <constraints>
                                     <constraint firstItem="aYU-yg-hDV" firstAttribute="leading" secondItem="IaW-fx-iKd" secondAttribute="leading" type="user" id="1KE-ml-fod"/>
                                     <constraint firstItem="Ef9-y7-oDk" firstAttribute="leading" secondItem="IaW-fx-iKd" secondAttribute="leading" type="user" id="2oR-TW-9Ls"/>
-                                    <constraint firstItem="aYU-yg-hDV" firstAttribute="top" secondItem="Ufv-VV-8Cs" secondAttribute="top" type="user" id="4Tu-oG-wxy"/>
-                                    <constraint firstItem="ggW-FG-mrw" firstAttribute="top" secondItem="aYU-yg-hDV" secondAttribute="top" type="user" id="A9B-No-ka9"/>
+                                    <constraint firstItem="aYU-yg-hDV" firstAttribute="top" secondItem="IaW-fx-iKd" secondAttribute="top" type="user" id="35l-KO-57v"/>
+                                    <constraint firstItem="Ef9-y7-oDk" firstAttribute="bottom" secondItem="IaW-fx-iKd" secondAttribute="bottom" type="default" id="9iU-WL-y8b"/>
+                                    <constraint firstItem="Ef9-y7-oDk" firstAttribute="top" secondItem="IaW-fx-iKd" secondAttribute="top" type="default" id="9t5-rp-S8j"/>
                                     <constraint firstAttribute="trailing" secondItem="ggW-FG-mrw" secondAttribute="trailing" constant="168" type="user" id="FGT-wG-wue"/>
                                     <constraint firstItem="Ufv-VV-8Cs" firstAttribute="centerY" secondItem="Ef9-y7-oDk" secondAttribute="centerY" type="user" id="LNT-AQ-4Ev"/>
-                                    <constraint firstItem="ggW-FG-mrw" firstAttribute="top" secondItem="Ef9-y7-oDk" secondAttribute="top" type="default" id="Rn5-o3-PBV"/>
-                                    <constraint firstItem="aYU-yg-hDV" firstAttribute="bottom" secondItem="Ef9-y7-oDk" secondAttribute="bottom" type="default" id="Y8Y-r7-hJO"/>
+                                    <constraint firstItem="ggW-FG-mrw" firstAttribute="top" secondItem="IaW-fx-iKd" secondAttribute="top" type="user" id="SeG-A9-rLZ"/>
                                     <constraint firstItem="ggW-FG-mrw" firstAttribute="leading" secondItem="Ef9-y7-oDk" secondAttribute="trailing" constant="-2" type="user" id="ZKQ-B0-4Wl"/>
-                                    <constraint firstAttribute="bottom" secondItem="aYU-yg-hDV" secondAttribute="bottom" constant="1" type="user" id="jU9-PW-inB"/>
-                                    <constraint firstAttribute="bottom" secondItem="ggW-FG-mrw" secondAttribute="bottom" constant="3" type="user" id="nEg-fH-MUh"/>
+                                    <constraint firstItem="Ufv-VV-8Cs" firstAttribute="top" secondItem="IaW-fx-iKd" secondAttribute="top" type="user" id="cti-3K-05s"/>
+                                    <constraint firstAttribute="bottom" secondItem="aYU-yg-hDV" secondAttribute="bottom" type="user" id="jU9-PW-inB"/>
                                     <constraint firstAttribute="trailing" secondItem="Ufv-VV-8Cs" secondAttribute="trailing" constant="44" type="user" id="rly-Rv-Tsp"/>
                                     <constraint firstItem="aYU-yg-hDV" firstAttribute="trailing" secondItem="IaW-fx-iKd" secondAttribute="trailing" type="default" id="rwE-dO-fU4"/>
                                 </constraints>
@@ -1954,9 +1948,7 @@
         <class className="SongViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/SongViewController.h"/>
             <relationships>
-                <relationship kind="action" name="infoButtonTapped:event:"/>
                 <relationship kind="action" name="playWithShuffle:"/>
-                <relationship kind="action" name="toggleTagButtonAndTitle:"/>
                 <relationship kind="outlet" name="searchBar" candidateClass="MTSearchBar"/>
                 <relationship kind="outlet" name="shuffleButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="shuffleView" candidateClass="UIView"/>
@@ -1966,7 +1958,6 @@
         <class className="TaggedSongViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/TaggedSongViewController.h"/>
             <relationships>
-                <relationship kind="action" name="infoButtonTapped:event:"/>
                 <relationship kind="action" name="playWithShuffle:"/>
                 <relationship kind="outlet" name="searchBar" candidateClass="MTSearchBar"/>
                 <relationship kind="outlet" name="shuffleButton" candidateClass="UIButton"/>
@@ -2031,13 +2022,13 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="hv1-71-OGq"/>
-        <segue reference="TSf-v1-yU3"/>
         <segue reference="5Qv-VH-YKH"/>
+        <segue reference="TSf-v1-yU3"/>
         <segue reference="jae-3W-C2f"/>
         <segue reference="hHs-2t-p2p"/>
-        <segue reference="A7H-qB-bdF"/>
-        <segue reference="E4Y-B8-RSc"/>
         <segue reference="qJB-vr-AI7"/>
+        <segue reference="E4Y-B8-RSc"/>
         <segue reference="rM7-oN-wjy"/>
+        <segue reference="A7H-qB-bdF"/>
     </inferredMetricsTieBreakers>
 </document>

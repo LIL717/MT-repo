@@ -43,6 +43,7 @@
 @synthesize searchResults;
 @synthesize collectionPredicate;
 @synthesize appDelegate;
+@synthesize cellScrolled;
 
 NSMutableArray *collectionDurations;
 NSIndexPath *selectedIndexPath;
@@ -56,8 +57,8 @@ MPMediaQuery *selectedQuery;
 MPMediaPropertyPredicate *selectedPredicate;
 
 
-BOOL cellScrolled;
 BOOL showDuration;
+BOOL firstLoad;
 //UIActivityIndicatorView *spinner;
 #pragma mark - Initial Display methods
 
@@ -66,6 +67,7 @@ BOOL showDuration;
     [super viewDidLoad];
     //    LogMethod();
     
+    firstLoad = YES;
     self.appDelegate = (id) [[UIApplication sharedApplication] delegate];
 
     //set up an array of durations to be used in landscape mode
@@ -113,7 +115,7 @@ BOOL showDuration;
     musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
     
     [self registerForMediaPlayerNotifications];
-    cellScrolled = NO;
+    self.cellScrolled = NO;
     
     self.showAllSongsCell = YES;
 
@@ -205,15 +207,15 @@ BOOL showDuration;
     }
     //    // if rows have been scrolled, they have been added to this array, so need to scroll them back to 0
     //    YAY this works!!
-    if (cellScrolled) {
+    if (self.cellScrolled) {
         for (NSIndexPath *indexPath in [self.collectionTableView indexPathsForVisibleRows]) {
-            if (indexPath.row > 0) {
-//                NSLog (@" indexPath to scroll %@", indexPath);
+//            if (indexPath.row > 0) {
+                NSLog (@" indexPath to scroll %@", indexPath);
                 CollectionItemCell *cell = (CollectionItemCell *)[self.collectionTableView cellForRowAtIndexPath:indexPath];
                 [cell.scrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-            }
+//            }
         }
-        cellScrolled = NO;
+        self.cellScrolled = NO;
     }
     [self updateLayoutForNewOrientation: self.interfaceOrientation];
     
@@ -262,11 +264,19 @@ BOOL showDuration;
     if (!self.isSearching) {
         
         BOOL firstRowVisible = NO;
+        
         //visibleRows is always 0 the first time through here for a table, populated after that
-        NSArray *visibleRows = [self.collectionTableView indexPathsForVisibleRows];
-        NSIndexPath *index = [visibleRows objectAtIndex: 0];
-        if (index.section == 0 && index.row == 0) {
+        if (firstLoad) {
+            firstLoad = NO;
             firstRowVisible = YES;
+        } else {
+            NSArray *visibleRows = [self.collectionTableView indexPathsForVisibleRows];
+            if ([visibleRows count] != 0) {
+                NSIndexPath *index = [visibleRows objectAtIndex: 0];
+                if (index.section == 0 && index.row == 0) {
+                    firstRowVisible = YES;
+                }
+            }
         }
         
         // hide the search bar and All Albums cell
@@ -287,7 +297,7 @@ BOOL showDuration;
         
         [self.collectionTableView reloadData];
     }
-    cellScrolled = NO;
+    self.cellScrolled = NO;
     
 //    //recenter spinner
 //    [spinner setCenter: CGPointMake (self.view.bounds.size.width / 2, self.view.bounds.size.height / 2)];
@@ -1047,7 +1057,7 @@ BOOL showDuration;
 {
 //    LogMethod();
     if ([[notification name] isEqualToString:@"CellScrolled"]) {
-        cellScrolled = YES;
+        self.cellScrolled = YES;
     }
 }
 //- (void) receiveSearchingNotification:(NSNotification *) notification

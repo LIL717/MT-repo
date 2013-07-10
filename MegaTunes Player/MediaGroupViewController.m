@@ -517,8 +517,6 @@ UIViewController *presentingViewController;
 //        collectionItem.collectionArray = [sortedArray mutableCopy];
         collectionItem.collectionArray = songMutableArray;
 
-
-        
         songViewController.title = NSLocalizedString(collectionItem.name, nil);
         songViewController.collectionItem = collectionItem;
         songViewController.iPodLibraryChanged = self.iPodLibraryChanged;

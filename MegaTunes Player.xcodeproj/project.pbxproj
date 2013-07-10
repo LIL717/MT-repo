@@ -274,6 +274,7 @@
 		700511FF16AF2A9E0085B6F1 /* TemporaryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TemporaryViewController.m; sourceTree = "<group>"; };
 		7005120116AFC65A0085B6F1 /* notPlaying.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = notPlaying.png; sourceTree = "<group>"; };
 		7005120216AFC65A0085B6F1 /* notPlaying@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "notPlaying@2x.png"; sourceTree = "<group>"; };
+		7010C866178C4AFA004B6D94 /* MegaTunes.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = MegaTunes.entitlements; sourceTree = "<group>"; };
 		701464A7173711C4007FD617 /* list-backwseparator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list-backwseparator.png"; sourceTree = "<group>"; };
 		701464A8173711C4007FD617 /* list-backwseparator@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list-backwseparator@2x.png"; sourceTree = "<group>"; };
 		701464AF17399FDB007FD617 /* cancel_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cancel_white.png; sourceTree = "<group>"; };
@@ -645,6 +646,7 @@
 		7060521C14F88D43001A1CDB = {
 			isa = PBXGroup;
 			children = (
+				7010C866178C4AFA004B6D94 /* MegaTunes.entitlements */,
 				707797F716EFF4A90026FD56 /* libz.dylib */,
 				707797EF16EFF3B80026FD56 /* TestFlightSDK1-2 */,
 				7060523114F88D43001A1CDB /* MegaTunes Player */,
@@ -1726,6 +1728,7 @@
 		7060525B14F88D44001A1CDB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = MegaTunes.entitlements;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MegaTunes Player/MegaTunes Player-Prefix.pch";
 				GCC_VERSION = "";
@@ -1756,6 +1759,7 @@
 		7060525C14F88D44001A1CDB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = MegaTunes.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MegaTunes Player/MegaTunes Player-Prefix.pch";

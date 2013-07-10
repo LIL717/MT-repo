@@ -32,6 +32,7 @@
 @property (readwrite)           BOOL showAllSongsCell;
 @property (readwrite)           BOOL isIndexed;
 @property (readwrite)           BOOL isSearching;
+@property (readwrite)           BOOL cellScrolled;
 @property (nonatomic, retain)   MPMediaItemCollection *songCollection;
 @property (nonatomic, strong)   UIBarButtonItem *rightBarButton;
 @property (nonatomic, strong)   NSArray *searchResults;
