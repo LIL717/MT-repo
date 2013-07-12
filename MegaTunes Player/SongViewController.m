@@ -55,6 +55,8 @@
 //@synthesize sectionIndexColor;
 @synthesize collectionContainsICloudItem;
 @synthesize cellScrolled;
+@synthesize songShuffleButtonPressed;
+
 
 
 NSMutableArray *songDurations;
@@ -81,10 +83,12 @@ BOOL firstLoad;
 
 - (void)viewDidLoad
 {
-//    LogMethod();
+    LogMethod();
     [super viewDidLoad];
     
     firstLoad = YES;
+    self.songShuffleButtonPressed = NO;
+
     
     //as this method starts, the whole collectionArray is available including ICloudItems
     currentDataSourceContainsICloudItems = YES;
@@ -103,9 +107,9 @@ BOOL firstLoad;
     [self.navigationController.navigationBar addGestureRecognizer:self.swipeLeftRight];
     
     // adjust the dataSource if iCloud items are not available
-    if (self.collectionContainsICloudItem) {
-        [self adjustDataSource];
-    }
+//    if (self.collectionContainsICloudItem) {
+//        [self adjustDataSource];
+//    }
     //set up an array of durations to be used in landscape mode
     songDurations = [[NSMutableArray alloc] initWithCapacity: [self.collectionItem.collectionArray count]];
     
@@ -208,7 +212,7 @@ BOOL firstLoad;
     isIndexed = NO;
     
     if (listIsAlphabetic) {
-        if ([self.collectionItem.collectionArray count] > self.songTableView.sectionIndexMinimumDisplayRowCount) {
+        if ([self.collectionItem.collectionArray count] >= self.songTableView.sectionIndexMinimumDisplayRowCount) {
             isIndexed = YES;
             // format of collectionSections is <MPMediaQuerySection: 0x1cd34c80> title=B, range={0, 5}, sectionIndexTitleIndex=1,
             
@@ -595,24 +599,24 @@ BOOL firstLoad;
         if (sectionTitle == nil) {
             return nil;
         }
-        CGFloat sectionViewHeight;
-        CGFloat sectionViewWidth;
+        CGFloat sectionHeaderHeight;
+        CGFloat sectionHeaderWidth;
         UIColor *sectionHeaderColor;
         //if there aren't enough for indexing, dispense with the section headers
         if (isIndexed) {
-            sectionViewHeight = 10;
-            sectionViewWidth = tableView.bounds.size.width;
+            sectionHeaderHeight = 10;
+            sectionHeaderWidth = tableView.bounds.size.width;
             sectionHeaderColor = [UIColor whiteColor];
         } else {
-            sectionViewHeight = 0;
-            sectionViewWidth = 0;
+            sectionHeaderHeight = 0;
+            sectionHeaderWidth = 0;
         }
         
-        UIView *sectionView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, sectionViewWidth, sectionViewHeight)];
-        [sectionView setBackgroundColor:sectionHeaderColor];
+        UIView *sectionHeader = [[UIView alloc] initWithFrame:CGRectMake(0, 0, sectionHeaderWidth, sectionHeaderHeight)];
+        [sectionHeader setBackgroundColor:sectionHeaderColor];
         //    [sectionView addSubview:label];
         
-        return sectionView;
+        return sectionHeader;
     }
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -633,7 +637,40 @@ BOOL firstLoad;
         }
     }
 }
-
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    //    LogMethod();
+    //this must be nil or the section headers of the original tableView are awkwardly visible
+    // original table must be reloaded after search to get them back :(  this seems to be an Apple bug
+    if (self.isSearching) {
+        
+        return nil;
+        
+    } else {
+        NSString *sectionTitle = [self tableView:tableView titleForHeaderInSection:section];
+        if (sectionTitle == nil) {
+            return nil;
+        }
+        CGFloat sectionFooterHeight;
+        CGFloat sectionFooterWidth;
+        UIColor *sectionFooterColor;
+        //if there aren't enough for indexing, dispense with the section footers
+        if (isIndexed) {
+            sectionFooterHeight = 1;
+            sectionFooterWidth = tableView.bounds.size.width;
+            sectionFooterColor = [UIColor whiteColor];
+        } else {
+            sectionFooterHeight = 0;
+            sectionFooterWidth = 0;
+        }
+        
+        UIView *sectionFooter = [[UIView alloc] initWithFrame:CGRectMake(0, 0, sectionFooterWidth, sectionFooterHeight)];
+        [sectionFooter setBackgroundColor:sectionFooterColor];
+        //    [sectionView addSubview:label];
+        
+        return sectionFooter;
+    }
+}
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -1083,6 +1120,8 @@ BOOL firstLoad;
         mainViewController.userMediaItemCollection = self.songCollection;
 
         mainViewController.playNew = YES;
+        mainViewController.songShuffleButtonPressed = self.songShuffleButtonPressed;
+        self.songShuffleButtonPressed = NO;
         mainViewController.iPodLibraryChanged = self.iPodLibraryChanged;
         
         //save collection in Core Data
@@ -1173,11 +1212,16 @@ BOOL firstLoad;
 - (IBAction)playWithShuffle:(id)sender {
     LogMethod();
     //Shuffle button selected
-    [musicPlayer setShuffleMode: MPMusicShuffleModeSongs];
+    //unpredictable end of playing shuffled songs when this is set here, works to set in mainViewController
+//    [musicPlayer setShuffleMode: MPMusicShuffleModeSongs];
+    self.songShuffleButtonPressed = YES;
+
+//    int min = 0;
+//    int max = [self.collectionItem.collectionArray count] -1;
+//    int randNum = rand() % (max - min) + min; //create the random number.
     
-    int min = 0;
-    int max = [self.collectionItem.collectionArray count] -1;
-    int randNum = rand() % (max - min) + min; //create the random number.
+    int max = [self.collectionItem.collectionArray count];
+    int randNum = arc4random() % max;
     
     selectedSong = [self.collectionItem.collectionArray objectAtIndex: randNum];
     

@@ -116,7 +116,7 @@ BOOL firstLoad;
     [self.collectionTableView setSectionIndexColor:[UIColor whiteColor]];
 
     
-    if ([self.collection count] > self.collectionTableView.sectionIndexMinimumDisplayRowCount) {
+    if ([self.collection count] >= self.collectionTableView.sectionIndexMinimumDisplayRowCount) {
         self.isIndexed = YES;
     } else {
         self.isIndexed = NO;

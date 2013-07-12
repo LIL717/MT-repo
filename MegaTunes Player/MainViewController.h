@@ -66,6 +66,7 @@
 @property (readwrite)           BOOL                    hasFinishedMoving;
 @property (nonatomic)           BOOL                    scrubbing; // Whether the player is currently scrubbing
 @property (nonatomic)           MPMusicPlaybackState    savedPlaybackState;
+@property (readwrite)           BOOL                    songShuffleButtonPressed;
 
 @property (strong, nonatomic) IBOutlet UILabel *initialNowPlayingLabel;
 @property (strong, nonatomic) IBOutlet AutoScrollLabel	*nowPlayingLabel;

@@ -28,6 +28,7 @@
 @property (nonatomic, retain) NSArray *fetchedObjects;
 
 - (UserDataForMediaItem *) containsItem: (NSNumber *) currentItemPersistentID;
+- (NSArray *) containsTag;
 - (void) updateTagForItem: (UserDataForMediaItem *) userDataForMediaItem;
 - (void) updateCommentsForItem: (UserDataForMediaItem *) userDataForMediaItem;
 - (void) listAll;

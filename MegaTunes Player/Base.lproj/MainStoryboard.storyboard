@@ -1765,14 +1765,14 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="OaX-wz-MBb"/>
+        <segue reference="SvT-2g-rDr"/>
+        <segue reference="ZlS-b1-pog"/>
         <segue reference="hot-4h-GjM"/>
         <segue reference="qWI-HD-eSG"/>
         <segue reference="hv1-71-OGq"/>
-        <segue reference="cs7-xB-URz"/>
-        <segue reference="ZlS-b1-pog"/>
-        <segue reference="5Qv-VH-YKH"/>
-        <segue reference="jae-3W-C2f"/>
+        <segue reference="OaX-wz-MBb"/>
+        <segue reference="oc8-HG-QrB"/>
         <segue reference="hHs-2t-p2p"/>
+        <segue reference="jae-3W-C2f"/>
     </inferredMetricsTieBreakers>
 </document>

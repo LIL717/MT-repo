@@ -42,7 +42,7 @@
 @synthesize itemToPlay;
 @synthesize iPodLibraryChanged;         //A flag indicating whether the library has been changed due to a sync
 @synthesize listIsAlphabetic;
-@synthesize taggedList;
+//@synthesize taggedList;
 @synthesize isSearching;
 @synthesize songCollection;
 @synthesize playBarButton;
@@ -62,6 +62,9 @@
 //@synthesize sectionIndexColor;
 @synthesize collectionContainsICloudItem;
 @synthesize cellScrolled;
+@synthesize songShuffleButtonPressed;
+@synthesize taggedSongArray;
+@synthesize taggedPlaylistDuration;
 
 
 
@@ -76,8 +79,6 @@ NSString *searchMediaItemProperty;
 CGFloat constraintConstant;
 //UIImage *backgroundImage;
 UIButton *infoButton;
-NSMutableArray *taggedSongArray;
-NSNumber *taggedPlaylistDuration;
 
 BOOL isIndexed;
 BOOL showDuration;
@@ -95,24 +96,25 @@ BOOL firstLoad;
     [super viewDidLoad];
     
     firstLoad = YES;
+    self.songShuffleButtonPressed = NO;
     
     currentDataSourceContainsICloudItems = YES;
-    if (taggedList) {
+//    if (taggedList) {
         savedTaggedDataSource = [[NSMutableArray alloc] initWithCapacity: [self.collectionItem.collectionArray count]];
-    } else {
-        savedDataSource = [[NSMutableArray alloc] initWithCapacity: [self.collectionItem.collectionArray count]];
-        savedDataSource = [self.collectionItem.collectionArray copy];
-        savedPlaylistDuration = [self.collectionItem.duration copy];
-    }
+//    } else {
+//        savedDataSource = [[NSMutableArray alloc] initWithCapacity: [self.collectionItem.collectionArray count]];
+//        savedDataSource = [self.collectionItem.collectionArray copy];
+//        savedPlaylistDuration = [self.collectionItem.duration copy];
+//    }
     
     self.songViewTitle = self.title;
     self.showTagButton = NO;
     self.songTableView.scrollsToTop = YES;
-    if (taggedList) {
+//    if (taggedList) {
         self.showTags = YES;
-    } else {
-        self.showTags = [[NSUserDefaults standardUserDefaults] boolForKey:@"showTags"];
-    }
+//    } else {
+//        self.showTags = [[NSUserDefaults standardUserDefaults] boolForKey:@"showTags"];
+//    }
     
     
     self.swipeLeftRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(toggleTagButtonAndTitle:)];
@@ -120,23 +122,7 @@ BOOL firstLoad;
     [self.navigationController.navigationBar addGestureRecognizer:self.swipeLeftRight];
     
     
-    //set up an array of durations to be used in landscape mode
-    //format of array is dictionary when taggedList, so don't set up in background, will just do it in cellforrowatindexpath
-    
-    songDurations = [[NSMutableArray alloc] initWithCapacity: [self.collectionItem.collectionArray count]];
-    if (!taggedList) {
 
-        //    NSLog (@" count of collection array %d", [self.collectionItem.collectionArray count]);
-        
-        if ([self.collectionItem.collectionArray count] > 0) {
-            //create the array in the background
-            dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-            dispatch_async(queue, ^{
-                // Perform async operation
-                [self createDurationArray];
-            });
-        }
-    }
     //set up grouped table view to look like plain (so that section headers won't stick to top)
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
     self.songTableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]];
@@ -206,21 +192,47 @@ BOOL firstLoad;
     self.cellScrolled = NO;
     
     // adjust the dataSource if iCloud items are not available
-    if (self.collectionContainsICloudItem) {
-        if (!taggedList) {
-            [self adjustDataSource];
-        }
+//    if (self.collectionContainsICloudItem) {
+//        if (!taggedList) {
+//            [self adjustDataSource];
+//        }
+//    }
+    // load the taggedSongArray if it has not been previously loaded
+    if (!self.taggedSongArray) {
+        [self loadTaggedData];
     }
     [self loadSectionData];
     
+
     int arrayCount;
     
-    if (taggedList) {
-        arrayCount = [taggedSongArray count];
-    } else {
-        arrayCount = [self.collectionItem.collectionArray count];
-    }
+//    if (taggedList) {
+        arrayCount = [self.taggedSongArray count];
+//    } else {
+//        arrayCount = [self.collectionItem.collectionArray count];
+//    }
     
+    //set up an array of durations to be used in landscape mode
+    //format of array is dictionary when taggedList, so don't set up in background, will just do it in cellforrowatindexpath
+    
+    //    songDurations = [[NSMutableArray alloc] initWithCapacity: [self.collectionItem.collectionArray count]];
+    songDurations = [[NSMutableArray alloc] initWithCapacity: [self.taggedSongArray count]];
+    
+    //    if (!taggedList) {
+    
+    //    NSLog (@" count of collection array %d", [self.collectionItem.collectionArray count]);
+    
+    //        if ([self.collectionItem.collectionArray count] > 0) {
+    if (arrayCount > 0) {
+        
+        //create the array in the background
+        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+        dispatch_async(queue, ^{
+            // Perform async operation
+            [self createDurationArray];
+        });
+    }
+    //    }
     if (arrayCount > 1) {
         self.shuffleButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         self.shuffleButton.contentEdgeInsets = UIEdgeInsetsMake(0, 14, 0, 0);
@@ -235,7 +247,6 @@ BOOL firstLoad;
     }
 }
 - (void) loadSectionData {
-    //list can be alphabetic - if All Songs was chosen or in track order, only index alphabetic with more than 20 rows
     
     self.songTableView.sectionIndexMinimumDisplayRowCount = 20;
     [self.songTableView setSectionIndexColor:[UIColor whiteColor]];
@@ -243,36 +254,36 @@ BOOL firstLoad;
     isIndexed = NO;
     
 
-    if (taggedList) {
-        [self loadTaggedData];
-        savedTaggedDataSource = [taggedSongArray copy];
+//    if (taggedList) {
+
+        savedTaggedDataSource = [self.taggedSongArray copy];
         savedTaggedPlaylistDuration = [self.collectionItem.duration copy];
         if (self.collectionContainsICloudItem) {
             [self adjustTaggedDataSource];
         }
         [self createTagSections];
-        if ([taggedSongArray count] > self.songTableView.sectionIndexMinimumDisplayRowCount) {
+        if ([self.taggedSongArray count] >= self.songTableView.sectionIndexMinimumDisplayRowCount) {
             isIndexed = YES;
         }
-    } else {
-        if (listIsAlphabetic) {
-            if ([self.collectionItem.collectionArray count] > self.songTableView.sectionIndexMinimumDisplayRowCount) {
-                isIndexed = YES;
-                // format of collectionSections is <MPMediaQuerySection: 0x1cd34c80> title=B, range={0, 5}, sectionIndexTitleIndex=1,
-                
-            }
-        }
-        self.songSections = [self.collectionQueryType collectionSections];
-        //    NSLog (@"songSections %@", self.songSections);
-        //    NSLog (@"collection %@", self.collectionItem.collectionArray);
-        
-        NSMutableArray * titles = [NSMutableArray arrayWithCapacity:[self.songSections count]];
-        for (MPMediaQuerySection * sec in self.songSections) {
-            [titles addObject:sec.title];
-        }
-        self.songSectionTitles = [titles copy];
-        
-    }
+//    } else {
+//        if (listIsAlphabetic) {
+//            if ([self.collectionItem.collectionArray count] >= self.songTableView.sectionIndexMinimumDisplayRowCount) {
+//                isIndexed = YES;
+//                // format of collectionSections is <MPMediaQuerySection: 0x1cd34c80> title=B, range={0, 5}, sectionIndexTitleIndex=1,
+//                
+//            }
+//        }
+//        self.songSections = [self.collectionQueryType collectionSections];
+//        //    NSLog (@"songSections %@", self.songSections);
+//        //    NSLog (@"collection %@", self.collectionItem.collectionArray);
+//        
+//        NSMutableArray * titles = [NSMutableArray arrayWithCapacity:[self.songSections count]];
+//        for (MPMediaQuerySection * sec in self.songSections) {
+//            [titles addObject:sec.title];
+//        }
+//        self.songSectionTitles = [titles copy];
+//        
+//    }
     //    NSLog (@"songSectionTitles %@", self.songSectionTitles);
 }
 - (void) loadTaggedData {
@@ -280,7 +291,7 @@ BOOL firstLoad;
         //        MPMediaQuery *myCollectionQuery = selectedGroup.queryType;
 
     NSMutableArray *songDictMutableArray = [NSMutableArray arrayWithCapacity: 20];
-    taggedSongArray = [NSMutableArray arrayWithCapacity: 20];
+//    self.taggedSongArray = [NSMutableArray arrayWithCapacity: 20];
     
     long playlistDuration = 0;
 
@@ -305,12 +316,12 @@ BOOL firstLoad;
         return [firstTagData.sortOrder compare: secondTagData.sortOrder];
     }];
 
-    taggedSongArray = [sortedArray mutableCopy];
-    taggedPlaylistDuration = [NSNumber numberWithLong: playlistDuration];
+    self.taggedSongArray = [sortedArray mutableCopy];
+    self.taggedPlaylistDuration = [NSNumber numberWithLong: playlistDuration];
     
     
     
-//    if ([taggedSongArray count] == 0) {
+//    if ([self.taggedSongArray count] == 0) {
 //        UIAlertView* alertView = [[UIAlertView alloc] initWithTitle: NSLocalizedString(@"No Data", nil)
 //                                                            message:@"Message"
 //                                                           delegate:self
@@ -319,8 +330,8 @@ BOOL firstLoad;
 //        [alertView show];
 //        
 //    }
-//    //print out the data in the taggedSongArray
-//    for (NSDictionary *dict in taggedSongArray) {
+//    //print out the data in the self.taggedSongArray
+//    for (NSDictionary *dict in self.taggedSongArray) {
 ////        for (NSDictionary *dict in songDictMutableArray) {
 //        TagData *tagData = [dict objectForKey: @"TagData"];
 //        MPMediaItem *song = [dict objectForKey: @"Song"];
@@ -352,7 +363,7 @@ BOOL firstLoad;
     NSMutableArray * titles = [NSMutableArray arrayWithCapacity:[[tagData fetchTagList] count]];
     NSString *sectionIndex;
     // Loop through the songsDictArray and create our keys and 2 objects for each key, TagData and a mutable array of the songs in that section
-    for (NSDictionary *dict in taggedSongArray) {  //dict is a dictionary with 2 objects, mediaItem (song) and TagData
+    for (NSDictionary *dict in self.taggedSongArray) {  //dict is a dictionary with 2 objects, mediaItem (song) and TagData
         TagData *tagData = [dict objectForKey: @"TagData"];
 //        NSLog (@"tagData.tagName is %@", tagData.tagName);
         sectionIndex = tagData.tagName;
@@ -406,7 +417,10 @@ BOOL firstLoad;
 }
 - (void) createDurationArray {
     
-    for (MPMediaItem *song in self.collectionItem.collectionArray) {
+//    for (MPMediaItem *song in self.collectionItem.collectionArray) {
+    for (NSDictionary *dict in self.taggedSongArray) {  //dict is a dictionary with 2 objects, mediaItem (song) and TagData
+        MPMediaItem *song = [dict objectForKey: @"Song"];
+
         //get the duration of the the playlist
         
         long playbackDuration = [[song valueForProperty: MPMediaItemPropertyPlaybackDuration] longValue];
@@ -418,53 +432,53 @@ BOOL firstLoad;
         
     }
 }
-- (void) adjustDataSource {
-    BOOL iCloudAvailable = [[NSUserDefaults standardUserDefaults] boolForKey:@"iCloudAvailable"];
-    if (iCloudAvailable) {
-        if (currentDataSourceContainsICloudItems == NO) {
-            self.collectionItem.collectionArray = savedDataSource;
-            self.collectionItem.duration = savedPlaylistDuration;
-            currentDataSourceContainsICloudItems = YES;
-        }
-    } else {
-        if (currentDataSourceContainsICloudItems) {
-            //save the array with all the items and the duration
-            savedDataSource = [self.collectionItem.collectionArray copy];
-            savedPlaylistDuration = [self.collectionItem.duration copy];
-            
-            //create a new array without the iCloudItems
-            NSMutableArray *songMutableArray = [[NSMutableArray alloc] init];
-            long playlistDuration = 0;
-            NSString *isCloudItem = @"0";  // the BOOL MPMediaItemPropertyIsCloudItem seems to be 0, but doesn't work as a BOOL
-            
-            for (MPMediaItem *song in savedDataSource) {
-                isCloudItem = [song valueForProperty: MPMediaItemPropertyIsCloudItem];
-                if (isCloudItem.intValue != 1) {  //iCloud items should be 1
-                    [songMutableArray addObject: song];
-                    playlistDuration = (playlistDuration + [[song valueForProperty:MPMediaItemPropertyPlaybackDuration] longValue]);
-                }
-            }
-            //save the new array and duration to use
-            self.collectionItem.collectionArray = songMutableArray;
-            self.collectionItem.duration = [NSNumber numberWithLong: playlistDuration];
-            currentDataSourceContainsICloudItems = NO;
-        }
-    }
-    
-}
+//- (void) adjustDataSource {
+//    BOOL iCloudAvailable = [[NSUserDefaults standardUserDefaults] boolForKey:@"iCloudAvailable"];
+//    if (iCloudAvailable) {
+//        if (currentDataSourceContainsICloudItems == NO) {
+//            self.collectionItem.collectionArray = savedDataSource;
+//            self.collectionItem.duration = savedPlaylistDuration;
+//            currentDataSourceContainsICloudItems = YES;
+//        }
+//    } else {
+//        if (currentDataSourceContainsICloudItems) {
+//            //save the array with all the items and the duration
+//            savedDataSource = [self.collectionItem.collectionArray copy];
+//            savedPlaylistDuration = [self.collectionItem.duration copy];
+//            
+//            //create a new array without the iCloudItems
+//            NSMutableArray *songMutableArray = [[NSMutableArray alloc] init];
+//            long playlistDuration = 0;
+//            NSString *isCloudItem = @"0";  // the BOOL MPMediaItemPropertyIsCloudItem seems to be 0, but doesn't work as a BOOL
+//            
+//            for (MPMediaItem *song in savedDataSource) {
+//                isCloudItem = [song valueForProperty: MPMediaItemPropertyIsCloudItem];
+//                if (isCloudItem.intValue != 1) {  //iCloud items should be 1
+//                    [songMutableArray addObject: song];
+//                    playlistDuration = (playlistDuration + [[song valueForProperty:MPMediaItemPropertyPlaybackDuration] longValue]);
+//                }
+//            }
+//            //save the new array and duration to use
+//            self.collectionItem.collectionArray = songMutableArray;
+//            self.collectionItem.duration = [NSNumber numberWithLong: playlistDuration];
+//            currentDataSourceContainsICloudItems = NO;
+//        }
+//    }
+//    
+//}
 - (void) adjustTaggedDataSource {
     BOOL iCloudAvailable = [[NSUserDefaults standardUserDefaults] boolForKey:@"iCloudAvailable"];
     if (iCloudAvailable) {
         if (currentDataSourceContainsICloudItems == NO) {
-            taggedSongArray = savedTaggedDataSource;
-            taggedPlaylistDuration = savedTaggedPlaylistDuration;
+            self.taggedSongArray = savedTaggedDataSource;
+            self.taggedPlaylistDuration = savedTaggedPlaylistDuration;
             currentDataSourceContainsICloudItems = YES;
         }
     } else {
         if (currentDataSourceContainsICloudItems) {
             //save the array with all the items and the duration
-            savedTaggedDataSource = [taggedSongArray copy];
-            savedTaggedPlaylistDuration = [taggedPlaylistDuration copy];
+            savedTaggedDataSource = [self.taggedSongArray copy];
+            savedTaggedPlaylistDuration = [self.taggedPlaylistDuration copy];
             
             //create a new array without the iCloudItems
             NSMutableArray *songMutableArray = [[NSMutableArray alloc] init];
@@ -479,8 +493,8 @@ BOOL firstLoad;
                 }
             }
             //save the new array and duration to use
-            taggedSongArray = songMutableArray;
-            taggedPlaylistDuration = [NSNumber numberWithLong: playlistDuration];
+            self.taggedSongArray = songMutableArray;
+            self.taggedPlaylistDuration = [NSNumber numberWithLong: playlistDuration];
             currentDataSourceContainsICloudItems = NO;
         }
     }
@@ -605,15 +619,16 @@ BOOL firstLoad;
     CGFloat adjustedHeaderHeight = tableViewHeaderHeight - navBarAdjustment;
     NSInteger possibleRows = self.songTableView.frame.size.height / self.songTableView.rowHeight;
     //        NSLog (@"possibleRows = %d collection count = %d", possibleRows, [self.collection count]);
-    
+    //for a tagged song list, there are large headers, so subtract 3 from possible rows as there could be 3 headers on the first screen
+    possibleRows -= 3;
     //if the table won't fill the screen need to wait for delay in order for tableView header to hide properly - so ugly
     int arrayCount;
     
-    if (taggedList) {
-        arrayCount = [taggedSongArray count];
-    } else {
-        arrayCount = [self.collectionItem.collectionArray count];
-    }
+//    if (taggedList) {
+        arrayCount = [self.taggedSongArray count];
+//    } else {
+//        arrayCount = [self.collectionItem.collectionArray count];
+//    }
     if (arrayCount <= possibleRows) {
         [self performSelector:@selector(updateContentOffset) withObject:nil afterDelay:0.0];
     } else {
@@ -699,7 +714,7 @@ BOOL firstLoad;
     
      NSArray *allMatchingSongs = [mySongQuery items];
     
-    if (taggedList) {
+//    if (taggedList) {
         NSMutableArray *taggedSongsSearchResults = [[NSMutableArray alloc] init];
         for (MPMediaItem *song in allMatchingSongs) {
             TagData *tagData = [self retrieveTagForMediaItem: song];
@@ -708,9 +723,9 @@ BOOL firstLoad;
             }
         }
         self.searchResults = [taggedSongsSearchResults copy];
-    } else {
-        searchResults = [mySongQuery items];
-    }
+//    } else {
+//        searchResults = [mySongQuery items];
+//    }
     
 //    NSLog (@"searchResults %@", searchResults);
     
@@ -746,27 +761,27 @@ BOOL firstLoad;
     if (tableView == self.searchDisplayController.searchResultsTableView) {
         return 1;
     } else {
-        if (taggedList) {
+//        if (taggedList) {
             return [[self.taggedSongSections allKeys] count];
-        } else {
-            return [self.songSections count];
-        }
+//        } else {
+//            return [self.songSections count];
+//        }
     }
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
 //    LogMethod();
-    if (taggedList) {
+//    if (taggedList) {
 //        TagData *tagData = [self.taggedSongSectionTitles objectAtIndex: section];
 //        return tagData.tagName;
 
         return [self.taggedSongSectionTitles objectAtIndex: section];
-    } else {
-        MPMediaQuerySection * sec = nil;
-        sec = self.songSections[section];
-        return sec.title;
-    }
+//    } else {
+//        MPMediaQuerySection * sec = nil;
+//        sec = self.songSections[section];
+//        return sec.title;
+//    }
 }
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
@@ -779,7 +794,7 @@ BOOL firstLoad;
         return [[NSArray arrayWithObject:@"{search}"] arrayByAddingObjectsFromArray:self.songSectionTitles];
         //    return self.collectionSectionTitles;
         }  else {
-            if (taggedList) {
+//            if (taggedList) {
                 NSMutableArray *indexTitleArray = [[NSMutableArray alloc] init];
                 for (NSString *sectionTitle in self.taggedSongSectionTitles) {
                     
@@ -795,9 +810,9 @@ BOOL firstLoad;
                 return [[NSArray arrayWithObject:@"{search}"] arrayByAddingObjectsFromArray:indexTitleArray];
 
 
-            } else {
-                return nil;
-        }
+//            } else {
+//                return nil;
+//        }
     }
     
 }
@@ -826,8 +841,8 @@ BOOL firstLoad;
 //        NSLog (@" searchResults count is %d", [searchResults count]);
         return [searchResults count];
     } else {
-        if (taggedList) {
-            
+//        if (taggedList) {
+        
 //            TagData *tagData = [self.taggedSongSectionTitles objectAtIndex: section];
 //            NSLog (@" tagData.tagName %@", tagData.tagName);
             NSString *tagName = [self.taggedSongSectionTitles objectAtIndex: section];
@@ -847,10 +862,10 @@ BOOL firstLoad;
             return [[self.taggedSongSections valueForKey: tagName] count];
 
 
-        } else {
-            MPMediaQuerySection * sec = self.songSections[section];
-            return sec.range.length;
-            }
+//        } else {
+//            MPMediaQuerySection * sec = self.songSections[section];
+//            return sec.range.length;
+//            }
     }
     //    } else if (isIndexed) {
     //        MPMediaQuerySection * sec = self.songSections[section];
@@ -904,7 +919,7 @@ BOOL firstLoad;
      
         UILabel *sectionTitleLabel = [UILabel alloc];
                                       
-        if (taggedList) {
+//        if (taggedList) {
             sectionViewHeight = 60;
             sectionTitleLabel = [[UILabel alloc] initWithFrame: CGRectMake( 0, 0, sectionViewWidth, sectionViewHeight)];
 //            sectionTitleLabel.font = [UIFont boldSystemFontOfSize:44];
@@ -922,23 +937,23 @@ BOOL firstLoad;
 //            [sectionTitleLabel setDrawGradient:NO];
 
             
-        } else {
-
-            //if there aren't enough for indexing, dispense with the section headers
-            if (isIndexed) {
-                sectionViewHeight = 10;
-//                sectionViewWidth = tableView.bounds.size.width;
-//                sectionHeaderColor = [UIColor whiteColor];
-            } else {
-                sectionViewHeight = 0;
-                sectionViewWidth = 0;
-            }
-        }
+//        } else {
+//
+//            //if there aren't enough for indexing, dispense with the section headers
+//            if (isIndexed) {
+//                sectionViewHeight = 10;
+////                sectionViewWidth = tableView.bounds.size.width;
+////                sectionHeaderColor = [UIColor whiteColor];
+//            } else {
+//                sectionViewHeight = 0;
+//                sectionViewWidth = 0;
+//            }
+//        }
 
         UIView *sectionView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, sectionViewWidth, sectionViewHeight)];
         [sectionView setBackgroundColor:sectionHeaderColor];
         
-        if (taggedList) {
+//        if (taggedList) {
             [sectionView addSubview:sectionTitleLabel];
             CGRect frame = CGRectMake(0, 57, self.songTableView.frame.size.width, 3);
             UIView *separatorLine = [[UILabel alloc] initWithFrame:frame];
@@ -949,7 +964,7 @@ BOOL firstLoad;
             separatorLine = [[UILabel alloc] initWithFrame:frame];
             separatorLine.backgroundColor = [UIColor whiteColor];
             [sectionView addSubview: separatorLine];
-        }
+//        }
         return sectionView;
     }
 }
@@ -963,20 +978,53 @@ BOOL firstLoad;
         
         return 0;
     } else {
-        if (taggedList) {
+//        if (taggedList) {
             return 60;
-        } else {
-        //if there aren't enough for indexing, dispense with the section headers
-            if (isIndexed) {
-                return 10;
-            } else {
-                return 0;
-            }
-        }
+//        } else {
+//        //if there aren't enough for indexing, dispense with the section headers
+//            if (isIndexed) {
+//                return 10;
+//            } else {
+//                return 0;
+//            }
+//        }
     }
 }
 
-
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    //    LogMethod();
+    //this must be nil or the section headers of the original tableView are awkwardly visible
+    // original table must be reloaded after search to get them back :(  this seems to be an Apple bug
+    if (self.isSearching) {
+        
+        return nil;
+        
+    } else {
+        NSString *sectionTitle = [self tableView:tableView titleForHeaderInSection:section];
+        if (sectionTitle == nil) {
+            return nil;
+        }
+        CGFloat sectionFooterHeight;
+        CGFloat sectionFooterWidth;
+        UIColor *sectionFooterColor;
+        //if there aren't enough for indexing, dispense with the section footers
+        if (isIndexed) {
+            sectionFooterHeight = 1;
+            sectionFooterWidth = tableView.bounds.size.width;
+            sectionFooterColor = [UIColor clearColor];
+        } else {
+            sectionFooterHeight = 0;
+            sectionFooterWidth = 0;
+        }
+        
+        UIView *sectionFooter = [[UIView alloc] initWithFrame:CGRectMake(0, 0, sectionFooterWidth, sectionFooterHeight)];
+        [sectionFooter setBackgroundColor:sectionFooterColor];
+        //    [sectionView addSubview:label];
+        
+        return sectionFooter;
+    }
+}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -1057,7 +1105,7 @@ BOOL firstLoad;
         
         MPMediaItem *song;
         
-        if (taggedList ) {
+//        if (taggedList ) {
 //            NSLog (@"indexPath is %@", indexPath);
 //            TagData *tagData = [self.taggedSongSectionTitles objectAtIndex: indexPath.section];
 //            NSLog (@" tagData.tagName %@", tagData.tagName);
@@ -1074,9 +1122,9 @@ BOOL firstLoad;
 
 //            NSLog (@"song is %@", [song valueForProperty: MPMediaItemPropertyTitle]);
 
-        } else {
-            song = self.collectionItem.collectionArray[sec.range.location + indexPath.row];
-        }
+//        } else {
+//            song = self.collectionItem.collectionArray[sec.range.location + indexPath.row];
+//        }
         //    MPMediaItem *song = [self.collectionItem.collectionArray objectAtIndex:indexPath.row];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         
@@ -1396,7 +1444,7 @@ BOOL firstLoad;
         
         selectedIndexPath = indexPath;
         
-        if (taggedList ) {
+//        if (taggedList ) {
 //            NSLog (@"indexPath is %@", indexPath);
 //            TagData *tagData = [self.taggedSongSectionTitles objectAtIndex: indexPath.section];
 //            NSLog (@" tagData.tagName %@", tagData.tagName);
@@ -1413,20 +1461,20 @@ BOOL firstLoad;
             
 //            NSLog (@"song is %@", [selectedSong valueForProperty: MPMediaItemPropertyTitle]);
             
-            NSMutableArray *collectionArray = [[NSMutableArray alloc] initWithCapacity: [taggedSongArray count]];
-            for (NSDictionary *dict in taggedSongArray) {
+            NSMutableArray *collectionArray = [[NSMutableArray alloc] initWithCapacity: [self.taggedSongArray count]];
+            for (NSDictionary *dict in self.taggedSongArray) {
                 MPMediaItem *song = [dict valueForKey: @"Song"];
                 [collectionArray addObject: song];
             }
             self.songCollection = [MPMediaItemCollection collectionWithItems: collectionArray];
-            self.collectionItem.duration = taggedPlaylistDuration;
+            self.collectionItem.duration = self.taggedPlaylistDuration;
 
-        } else {
-            MPMediaQuerySection * sec = self.songSections[indexPath.section];
-            selectedSong = self.collectionItem.collectionArray[sec.range.location + indexPath.row];
-            self.songCollection = [MPMediaItemCollection collectionWithItems: self.collectionItem.collectionArray];
-
-        }
+//        } else {
+//            MPMediaQuerySection * sec = self.songSections[indexPath.section];
+//            selectedSong = self.collectionItem.collectionArray[sec.range.location + indexPath.row];
+//            self.songCollection = [MPMediaItemCollection collectionWithItems: self.collectionItem.collectionArray];
+//
+//        }
         
         self.collectionItem.collection = self.songCollection;
         
@@ -1475,6 +1523,9 @@ BOOL firstLoad;
         mainViewController.userMediaItemCollection = self.songCollection;
         
         mainViewController.playNew = YES;
+        mainViewController.songShuffleButtonPressed = self.songShuffleButtonPressed;
+        self.songShuffleButtonPressed = NO;
+
         mainViewController.iPodLibraryChanged = self.iPodLibraryChanged;
         
         //save collection in Core Data
@@ -1553,7 +1604,7 @@ BOOL firstLoad;
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
         
-    if (taggedList ) {
+//    if (taggedList ) {
 //        NSLog (@"indexPath is %@", indexPath);
         //            TagData *tagData = [self.taggedSongSectionTitles objectAtIndex: indexPath.section];
         //            NSLog (@" tagData.tagName %@", tagData.tagName);
@@ -1569,13 +1620,13 @@ BOOL firstLoad;
         self.mediaItemForInfo = [dict objectForKey: @"Song"];
         
 //        NSLog (@"song is %@", [selectedSong valueForProperty: MPMediaItemPropertyTitle]);
-    } else {
-        MPMediaQuerySection * sec = self.songSections[indexPath.section];
-        MPMediaItem *song = self.collectionItem.collectionArray[sec.range.location + indexPath.row];
-        //    MPMediaItem *song = [self.collectionItem.collectionArray objectAtIndex:indexPath.row];
-        
-        self.mediaItemForInfo = song;
-    }
+//    } else {
+//        MPMediaQuerySection * sec = self.songSections[indexPath.section];
+//        MPMediaItem *song = self.collectionItem.collectionArray[sec.range.location + indexPath.row];
+//        //    MPMediaItem *song = [self.collectionItem.collectionArray objectAtIndex:indexPath.row];
+//        
+//        self.mediaItemForInfo = song;
+//    }
     
     [self performSegueWithIdentifier: @"ViewInfo" sender: self];
 }
@@ -1583,27 +1634,32 @@ BOOL firstLoad;
 - (IBAction)playWithShuffle:(id)sender {
 //    LogMethod();
     //Shuffle button selected
-    [musicPlayer setShuffleMode: MPMusicShuffleModeSongs];
+    //unpredictable end of playing shuffled songs when this is set here, works to set in mainViewController
+//    [musicPlayer setShuffleMode: MPMusicShuffleModeSongs];
+    self.songShuffleButtonPressed = YES;
     
-    NSMutableArray *shuffleArray = [[NSMutableArray alloc] initWithCapacity: [self.collectionItem.collectionArray count]];
+//    NSMutableArray *shuffleArray = [[NSMutableArray alloc] initWithCapacity: [self.collectionItem.collectionArray count]];
+    NSMutableArray *shuffleArray = [[NSMutableArray alloc] initWithCapacity: [self.taggedSongArray count]];
+
     
-    if (taggedList) {
-        NSMutableArray *collectionArray = [[NSMutableArray alloc] initWithCapacity: [taggedSongArray count]];
-        for (NSDictionary *dict in taggedSongArray) {
+//    if (taggedList) {
+        NSMutableArray *collectionArray = [[NSMutableArray alloc] initWithCapacity: [self.taggedSongArray count]];
+        for (NSDictionary *dict in self.taggedSongArray) {
             MPMediaItem *song = [dict valueForKey: @"Song"];
             [collectionArray addObject: song];
         }
         shuffleArray = collectionArray;
-    } else {
-        shuffleArray = self.collectionItem.collectionArray;
-    }
+//    } else {
+//        shuffleArray = self.collectionItem.collectionArray;
+//    }
     
-    int min = 0;
-    int max = [shuffleArray count] -1;
-
-//    int max = [self.collectionItem.collectionArray count] -1;
-    int randNum = rand() % (max - min) + min; //create the random number.
-    
+//    int min = 0;
+//    int max = [shuffleArray count] -1;
+//
+////    int max = [self.collectionItem.collectionArray count] -1;
+//    int randNum = rand() % (max - min) + min; //create the random number.
+    int max = [shuffleArray count];
+    int randNum = arc4random() % max;
 //    selectedSong = [self.collectionItem.collectionArray objectAtIndex: randNum];
     selectedSong = [shuffleArray objectAtIndex: randNum];
 
@@ -1701,11 +1757,11 @@ BOOL firstLoad;
             NSLog (@"iCloudAvailable BOOL from NSUserDefaults is %d", iCloudAvailable);
         }];
 
-        if (taggedList) {
+//        if (taggedList) {
             [self adjustTaggedDataSource];
-        } else {
-            [self adjustDataSource];
-        }
+//        } else {
+//            [self adjustDataSource];
+//        }
         [self.songTableView reloadData];
     }
     

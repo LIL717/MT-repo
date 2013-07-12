@@ -55,6 +55,45 @@
     }
 
 }
+- (NSArray *) containsTag {
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"MediaItemUserData"
+                                              inManagedObjectContext:self.managedObjectContext];
+    [fetchRequest setEntity:entity];
+    NSError *error = nil;
+    
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"ANY tagData != nil"];
+    
+    [fetchRequest setPredicate:pred];
+    
+//    //    NSLog(@"entity retrieved is %@", entity);
+//    
+//    self.fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+//    
+//    if (self.fetchedObjects == nil) {
+//        // Handle the error
+//        NSLog (@"fetch error");
+//    }
+//    
+//    if ([self.fetchedObjects count] == 0) {
+//        //        NSLog (@"no mediatItemUser objects fetched");
+//        return nil;
+//    } else {
+//        // if there is an object, need to return it
+//        return [self.fetchedObjects objectAtIndex:0];
+//    }
+//    NSError *error = nil;
+    NSArray *allFetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    
+    if (allFetchedObjects == nil) {
+        // Handle the error
+        NSLog (@"fetch error");
+    }
+    
+    return allFetchedObjects;
+    
+}
 //update or add  NOTE: mediaItemUserData is never deleted,  the tagData is set to nil when a tag is removed, but object is never deleted
 
 - (void) updateTagForItem: (UserDataForMediaItem *) userDataForMediaItem {

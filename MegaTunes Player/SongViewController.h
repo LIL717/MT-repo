@@ -52,6 +52,8 @@
 //@property (nonatomic, retain) UIColor *sectionIndexColor;
 @property (nonatomic)           BOOL collectionContainsICloudItem;
 @property (readwrite)           BOOL cellScrolled;
+@property (readwrite)           BOOL songShuffleButtonPressed;
+
 
 
 

@@ -126,6 +126,7 @@
 //these lines came from player view controller
 @synthesize userIsScrubbing;
 @synthesize hasFinishedMoving;
+@synthesize songShuffleButtonPressed;
 
 @synthesize currentQueue;
 @synthesize elapsedTimeLabel;
@@ -205,9 +206,6 @@ BOOL _iCloudAvailable;
     
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
     
-    //not sure, but think this is only needed to play sounds not music
-    //    [self setupApplicationAudio];
-    
     [self setPlayedMusicOnce: NO];
 
     [self setMusicPlayer: [MPMusicPlayerController iPodMusicPlayer]];
@@ -239,14 +237,18 @@ BOOL _iCloudAvailable;
     initialView = YES;
     skippedBack = NO;
 
-    if (self.itemToPlay == [musicPlayer nowPlayingItem]) {
-        [self setPlayNew: NO];
-    }
+//    if (self.itemToPlay == [musicPlayer nowPlayingItem]) {
+//        [self setPlayNew: NO];
+//    }
     if (playNew) {
         [musicPlayer setQueueWithItemCollection: self.userMediaItemCollection];
         [musicPlayer setNowPlayingItem: self.itemToPlay];
-
         [self playMusic];
+        if (self.songShuffleButtonPressed) {
+            [musicPlayer setShuffleMode: MPMusicShuffleModeOff];
+            [musicPlayer setShuffleMode: MPMusicShuffleModeSongs];
+            self.songShuffleButtonPressed = NO;
+        }
 //        [self setPlayNew: NO];  this gets set in viewDidAppear instead
         
     } else if ([musicPlayer nowPlayingItem]) {
@@ -272,11 +274,16 @@ BOOL _iCloudAvailable;
             predictedNextItem = nil;
         }
         [self prepareAllExceptNowPlaying];
-
-
-        
     }
-
+    
+//    //print out the queue tat is saved
+//    NSArray *returnedQueue = [self.userMediaItemCollection items];
+//
+//    for (MPMediaItem *song in returnedQueue) {
+//        NSString *songTitle = [song valueForProperty: MPMediaItemPropertyTitle];
+//        NSLog (@"\t\t%@", songTitle);
+//    }
+    
     if ([musicPlayer playbackState] != MPMusicPlaybackStatePlaying) {
         [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
     } else if ([musicPlayer playbackState] == MPMusicPlaybackStatePlaying) {

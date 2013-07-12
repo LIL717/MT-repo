@@ -138,19 +138,28 @@ BOOL firstLoad;
         frame.size.height = 55;
         self.allSongsView.frame = frame;
     }
-    self.collectionTableView.sectionIndexMinimumDisplayRowCount = 20;
+    //since collectionSections is not working for Playlists (submitted bug report to Apple 14409913), don't show allow indexing until Apple fixes it or make a workaround (like the sections for TaggedSongViewController)
+    if ([self.collectionType isEqualToString: @"Playlists"]) {
+        self.collectionTableView.sectionIndexMinimumDisplayRowCount = 999;
+    } else {
+        self.collectionTableView.sectionIndexMinimumDisplayRowCount = 20;
+    }
+    
     [self.collectionTableView setSectionIndexColor:[UIColor whiteColor]];
     
-    if ([self.collection count] > self.collectionTableView.sectionIndexMinimumDisplayRowCount) {
+    if ([self.collection count] >= self.collectionTableView.sectionIndexMinimumDisplayRowCount) {
         self.isIndexed = YES;
     } else {
         self.isIndexed = NO;
     }
     
+
+    
+    
     // format of collectionSections is <MPMediaQuerySection: 0x1cd34c80> title=B, range={0, 5}, sectionIndexTitleIndex=1,
 
     self.albumCollectionSections = [self.collectionQueryType collectionSections];
-    
+        
     NSMutableArray * titles = [NSMutableArray arrayWithCapacity:[self.albumCollectionSections count]];
     for (MPMediaQuerySection * sec in self.albumCollectionSections) {
         [titles addObject:sec.title];

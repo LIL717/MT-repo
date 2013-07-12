@@ -405,7 +405,7 @@
         songViewController.collectionItem = collectionItem;
         songViewController.iPodLibraryChanged = self.iPodLibraryChanged;
         songViewController.listIsAlphabetic = NO;
-        songViewController.taggedList = YES;
+//        songViewController.taggedList = YES;
         songViewController.collectionQueryType = [selectedGroup.queryType copy];
         
 	}

@@ -49,6 +49,7 @@
 {
     if (highlighted) {
         self.nameLabel.textColor = [UIColor blueColor];
+        self.durationLabel.textColor = [UIColor blueColor];
         NSLog(@"setSelected:YES");
 //        self.selectionStyle = UITableViewCellSelectionStyleGray;
 
@@ -63,6 +64,7 @@
         [self.scrollView.scrollViewImageView  setImage: [UIImage imageNamed: @"list-background.png"]];
     } else {
         self.nameLabel.textColor = [UIColor whiteColor];
+        self.durationLabel.textColor = [UIColor whiteColor];
     }
 }
 - (void) layoutSubviews

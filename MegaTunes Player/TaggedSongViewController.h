@@ -33,7 +33,7 @@
 @property (nonatomic, strong)   MPMediaItem *itemToPlay;
 @property (readwrite)           BOOL iPodLibraryChanged;
 @property (readwrite)           BOOL listIsAlphabetic;
-@property (readwrite)           BOOL taggedList;
+//@property (readwrite)           BOOL taggedList;
 @property (readwrite)           BOOL isSearching;
 @property (nonatomic, retain)   MPMediaItemCollection *songCollection;
 @property (nonatomic, strong)   UIBarButtonItem *playBarButton;
@@ -53,6 +53,9 @@
 //@property (nonatomic, retain) UIColor *sectionIndexColor;
 @property (nonatomic)           BOOL collectionContainsICloudItem;
 @property (readwrite)           BOOL cellScrolled;
+@property (readwrite)           BOOL songShuffleButtonPressed;
+@property (nonatomic, strong)   NSMutableArray *taggedSongArray;
+@property (nonatomic, strong)   NSNumber *taggedPlaylistDuration;
 
 
 

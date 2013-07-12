@@ -30,11 +30,17 @@
 @property (nonatomic, strong)   UIImageView *pView;
 @property (nonatomic, strong)   UIImageView *lView;
 @property (nonatomic, strong)   AppDelegate *appDelegate;
+@property (nonatomic, strong)   NSMutableArray *songMutableArray;
+@property (nonatomic, strong)   NSNumber *playlistDuration;
+@property (nonatomic, strong)   NSMutableArray *taggedSongArray;
+@property (nonatomic, strong)   NSNumber *taggedPlaylistDuration;
+@property (readwrite)           BOOL collectionContainsICloudItem;
 
 @property (nonatomic, strong)   UIImage *initialPortraitImage;
 @property (nonatomic, strong)   UIImage *initialLandscapeImage;
 
 
+- (void)hideActivityIndicator;
 
 
 @end
