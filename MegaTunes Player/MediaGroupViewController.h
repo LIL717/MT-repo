@@ -9,11 +9,17 @@
 #import "MediaGroup.h"
 @class MediaGroupCarouselViewController;
 @class AppDelegate;
+@class MediaGroupViewController;
+
+@protocol MediaGroupViewControllerDelegate <NSObject>
+- (void) viewController:(MediaGroupViewController *)controller didFinishLoadingArray:(NSMutableArray *) array;
+@end
 
 @interface MediaGroupViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MPMediaPickerControllerDelegate, UINavigationControllerDelegate> {
 
     NSManagedObjectContext  *managedObjectContext_;
 }
+@property (nonatomic, weak) id <MediaGroupViewControllerDelegate> delegate;
 
 @property (strong, nonatomic)   IBOutlet UITableView *groupTableView;
 @property (nonatomic, retain)   NSManagedObjectContext *managedObjectContext;
@@ -31,6 +37,8 @@
 @property (nonatomic, strong)   UIImageView *lView;
 @property (nonatomic, strong)   AppDelegate *appDelegate;
 @property (nonatomic, strong)   NSMutableArray *songMutableArray;
+@property (nonatomic, strong)   NSMutableArray *tinySongMutableArray;
+
 @property (nonatomic, strong)   NSNumber *playlistDuration;
 @property (nonatomic, strong)   NSMutableArray *taggedSongArray;
 @property (nonatomic, strong)   NSNumber *taggedPlaylistDuration;

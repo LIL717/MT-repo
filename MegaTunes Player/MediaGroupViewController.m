@@ -31,6 +31,7 @@
 
 @implementation MediaGroupViewController
 
+@synthesize delegate;
 @synthesize groupTableView;
 @synthesize collection;
 @synthesize groupingData;
@@ -46,6 +47,8 @@
 @synthesize lView;
 @synthesize appDelegate;
 @synthesize songMutableArray;
+@synthesize tinySongMutableArray;
+
 @synthesize playlistDuration;
 @synthesize taggedSongArray;
 @synthesize taggedPlaylistDuration;
@@ -57,7 +60,10 @@
 UIViewController *presentingViewController;
 BOOL songArrayLoaded;
 BOOL taggedSongArrayLoaded;
+NSMutableArray *songArrayToLoad;
 UIAlertView *alert;
+BOOL tinyArray;
+BOOL listIsAlphabetic;
 
 
 #pragma mark - Initial Display methods
@@ -198,6 +204,9 @@ UIAlertView *alert;
 {
 //    LogMethod();
     [super viewDidLoad];
+    
+    songArrayToLoad = [[NSMutableArray alloc] initWithCapacity: 19];
+    
     [self loadGroupingData];
     
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
@@ -240,11 +249,28 @@ UIAlertView *alert;
 
         }];
     }
+    
+    self.collectionContainsICloudItem = NO;
+    [self checkForICloudItemsWithCompletion:^(BOOL result) {
+        
+    }];
+    
+    // load the first section of data only to this tiny array, it will be displayed until the full array loads
+    self.tinySongMutableArray = [[NSMutableArray alloc] initWithCapacity: 19];
+    
+    MPMediaQuery *mySongQuery = [[MPMediaQuery alloc] init];
+    mySongQuery = [MPMediaQuery songsQuery];
+    MPMediaQuerySection *firstSection = [[mySongQuery collectionSections] objectAtIndex: 0];
+    NSRange firstRange = firstSection.range;
+    int endOfRange = firstRange.length;
+    int i;
+    for (i = 0; i < endOfRange; i++) {
+        MPMediaItem *song = [[mySongQuery items] objectAtIndex: i];
+        [self.tinySongMutableArray addObject: song];
+//        NSLog (@"song in tinyArray is %@", [song valueForProperty: MPMediaItemPropertyTitle]);
 
-//    [self createTaggedSongArray];
-//    taggedSongArrayLoaded = YES;
-//    [self hideActivityIndicator];
-//    NSLog (@"Done Building Tagged Song Array");
+    }
+    NSLog (@"tinySong Array loaded");
     
     self.initialView = YES;
 
@@ -278,6 +304,7 @@ UIAlertView *alert;
     return;
     
 }
+
 - (void)loadSongArrayWithCompletion:(void (^)(BOOL result))completionHandler {
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -287,7 +314,7 @@ UIAlertView *alert;
         if( completionHandler ){
             dispatch_sync(dispatch_get_main_queue(), ^(void) {
                 songArrayLoaded = YES;
-                [self hideActivityIndicator];
+                [self.delegate viewController:self didFinishLoadingArray:self.songMutableArray];
                 NSLog (@"Done Building Song Array");
             });
         }
@@ -310,31 +337,41 @@ UIAlertView *alert;
         }
     });
 }
-
+- (void)checkForICloudItemsWithCompletion:(void (^)(BOOL result))completionHandler {
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        MPMediaQuery *mySongQuery = [[MPMediaQuery alloc] init];
+        mySongQuery = [MPMediaQuery songsQuery];
+        MPMediaPropertyPredicate *filterPredicate = [MPMediaPropertyPredicate predicateWithValue:  [NSNumber numberWithInt: 1]
+                                                                                     forProperty:  MPMediaItemPropertyIsCloudItem];
+        [mySongQuery addFilterPredicate: filterPredicate];
+        NSArray *filteredArray = [mySongQuery items];
+        if ([filteredArray count] > 0) {
+            self.collectionContainsICloudItem = YES;
+        }
+        
+        // Check that there was not a nil handler passed.
+        if( completionHandler ){
+            dispatch_sync(dispatch_get_main_queue(), ^(void) {
+                NSLog (@"Done Checking For ICloud Items");
+            });
+        }
+    });
+}
 
 
 - (void) createSongArray {
     self.songMutableArray = [[NSMutableArray alloc] init];
-    
-    self.collectionContainsICloudItem = NO;
-    
-    long duration = 0;
-    
-    NSArray *songs = [[MPMediaQuery songsQuery] items];
-    
-//    NSString *isCloudItem = @"0";  // the BOOL MPMediaItemPropertyIsCloudItem seems to be 0, but doesn't work as a BOOL
-    
-    for (MPMediaItem *song in songs) {
         
-        //this is way too much of a resource hog - just can't do it this way
-//        isCloudItem = [song valueForProperty: MPMediaItemPropertyIsCloudItem];
-//        if (isCloudItem.intValue == 1) {
-//            self.collectionContainsICloudItem = YES;
-//        }
-        [songMutableArray addObject: song];
-        duration = (duration + [[song valueForProperty:MPMediaItemPropertyPlaybackDuration] longValue]);
-    }
-    self.playlistDuration = [NSNumber numberWithLong: duration];
+    MPMediaQuery *mySongQuery = [[MPMediaQuery alloc] init];
+    mySongQuery = [MPMediaQuery songsQuery];
+
+    self.songMutableArray = [[mySongQuery items] mutableCopy];
+    
+//    for (MPMediaItem *song in self.songMutableArray) {
+//        NSLog (@"SongName is %@", [song valueForProperty: MPMediaItemPropertyTitle]);
+//    }
+
     
 }
 - (void) createTaggedSongArray {
@@ -344,11 +381,13 @@ UIAlertView *alert;
 
     long taggedDuration = 0;
     
-    NSArray *taggedMediaItems = [self retrieveTaggedMediaItems];
+    MediaItemUserData *mediaItemUserData = [MediaItemUserData alloc];
+    mediaItemUserData.managedObjectContext = self.managedObjectContext;
     
+    NSArray *taggedMediaItems = [mediaItemUserData containsTag];    
     
     for (MediaItemUserData *taggedMediaItem in taggedMediaItems) {
-        NSLog (@" song is %@ with persistentID %@", taggedMediaItem.title, taggedMediaItem.persistentID);
+//        NSLog (@" song is %@ with persistentID %@", taggedMediaItem.title, taggedMediaItem.persistentID);
         
         MPMediaQuery *mySongQuery = [[MPMediaQuery alloc] init];
         mySongQuery = [MPMediaQuery songsQuery];
@@ -358,10 +397,9 @@ UIAlertView *alert;
         NSArray *filteredArray = [mySongQuery items];
         if ([filteredArray count] > 0) {
     
-            
             MPMediaItem *song = [MPMediaItem alloc];
             for (MPMediaItem *filteredItem in filteredArray) {
-                NSLog (@"item with persistentID %@", [filteredItem valueForProperty: MPMediaItemPropertyPersistentID]);
+//                NSLog (@"item with persistentID %@", [filteredItem valueForProperty: MPMediaItemPropertyPersistentID]);
                 song = filteredItem;
             }
 
@@ -383,19 +421,6 @@ UIAlertView *alert;
     
     self.taggedSongArray = [sortedArray mutableCopy];
     self.taggedPlaylistDuration = [NSNumber numberWithLong: taggedDuration];
-}
-- (NSArray *) retrieveTaggedMediaItems {
-    
-    //get an array of MediaItemsForUserData that have tagData
-    MediaItemUserData *mediaItemUserData = [MediaItemUserData alloc];
-    mediaItemUserData.managedObjectContext = self.managedObjectContext;
-    
-    NSArray *taggedMediaItems = [mediaItemUserData containsTag];
-//    for (MediaItemUserData *taggedMediaItem in taggedMediaItems) {
-//    NSLog (@" song is %@ with persistentID %@ and tagName %@", taggedMediaItem.title, taggedMediaItem.persistentID, taggedMediaItem.tagData.tagName);
-//    }
-    return taggedMediaItems;
-    
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -531,10 +556,16 @@ UIAlertView *alert;
     } else {
         if ([selectedGroup.name isEqualToString: @"Songs"]) {
             if (!songArrayLoaded) {
-                [self showActivityIndicator];
+                songArrayToLoad = self.tinySongMutableArray;
+                tinyArray = YES;
+                listIsAlphabetic = NO;
             } else {
-                [self performSegueWithIdentifier: @"ViewSongCollection" sender: self];
+                songArrayToLoad = self.songMutableArray;
+                tinyArray = NO;
+                listIsAlphabetic = YES;
             }
+            [self performSegueWithIdentifier: @"ViewSongCollection" sender: self];
+
         } else {
             if ([selectedGroup.name isEqualToString:@"Artists"]) {
                 //works more like Apple with AlbumArtist rather than just Artist
@@ -619,41 +650,26 @@ UIAlertView *alert;
 	{
         SongViewController *songViewController = segue.destinationViewController;
         songViewController.managedObjectContext = self.managedObjectContext;
-        
-
-//        songViewController.collectionContainsICloudItem = NO;
-//
-////        MPMediaQuery *myCollectionQuery = selectedGroup.queryType;
-//        
-//        NSMutableArray *songMutableArray = [[NSMutableArray alloc] init];
-//        long playlistDuration = 0;
-//
-//        NSArray *songs = [selectedGroup.queryType items];
-//
-//        NSString *isCloudItem = @"0";  // the BOOL MPMediaItemPropertyIsCloudItem seems to be 0, but doesn't work as a BOOL
-//        
-//        for (MPMediaItem *song in songs) {
-//            isCloudItem = [song valueForProperty: MPMediaItemPropertyIsCloudItem];
-//            if (isCloudItem.intValue == 1) {
-//                songViewController.collectionContainsICloudItem = YES;
-//            }
-//            [songMutableArray addObject: song];
-//            playlistDuration = (playlistDuration + [[song valueForProperty:MPMediaItemPropertyPlaybackDuration] longValue]);
-//        }
 
         CollectionItem *collectionItem = [CollectionItem alloc];
         collectionItem.name = selectedGroup.name;
-        collectionItem.duration = self.playlistDuration;
+//        collectionItem.duration = self.playlistDuration;
 //        collectionItem.collection = [MPMediaItemCollection collectionWithItems: songMutableArray];
-        collectionItem.collectionArray = self.songMutableArray;
+//        collectionItem.collectionArray = self.songMutableArray;
+        collectionItem.collectionArray = songArrayToLoad;
+
         
 
         songViewController.title = NSLocalizedString(collectionItem.name, nil);
         songViewController.collectionItem = collectionItem;
         songViewController.iPodLibraryChanged = self.iPodLibraryChanged;
-        songViewController.listIsAlphabetic = YES;
+//        songViewController.listIsAlphabetic = YES;
+        songViewController.listIsAlphabetic = listIsAlphabetic;
+        songViewController.tinyArray = tinyArray;
+
         songViewController.collectionQueryType = [selectedGroup.queryType copy];
         songViewController.collectionContainsICloudItem = self.collectionContainsICloudItem;
+        songViewController.mediaGroupViewController = self;
 
         
 	}
@@ -661,28 +677,10 @@ UIAlertView *alert;
 	{
         TaggedSongViewController *songViewController = segue.destinationViewController;
         songViewController.managedObjectContext = self.managedObjectContext;
-        
-//        songViewController.collectionContainsICloudItem = NO;
-//
-//        
-//        NSMutableArray *songMutableArray = [[NSMutableArray alloc] init];
-//        long playlistDuration = 0;
-//        
-//        NSArray *songs = [selectedGroup.queryType items];
-//        
-//        NSString *isCloudItem = @"0";  // the BOOL MPMediaItemPropertyIsCloudItem seems to be 0, but doesn't work as a BOOL
-//        
-//        for (MPMediaItem *song in songs) {
-//            isCloudItem = [song valueForProperty: MPMediaItemPropertyIsCloudItem];
-//            if (isCloudItem.intValue == 1) {
-//                songViewController.collectionContainsICloudItem = YES;
-//            }
-//            [songMutableArray addObject: song];
-//            playlistDuration = (playlistDuration + [[song valueForProperty:MPMediaItemPropertyPlaybackDuration] longValue]);
-//        }
+
         CollectionItem *collectionItem = [CollectionItem alloc];
         collectionItem.name = selectedGroup.name;
-        collectionItem.duration = self.playlistDuration;
+//        collectionItem.duration = self.playlistDuration;
 //        collectionItem.collection = [MPMediaItemCollection collectionWithItems: songMutableArray];
 //        collectionItem.collectionArray = [sortedArray mutableCopy];
         collectionItem.collectionArray = songMutableArray;
@@ -691,7 +689,6 @@ UIAlertView *alert;
         songViewController.collectionItem = collectionItem;
         songViewController.iPodLibraryChanged = self.iPodLibraryChanged;
         songViewController.listIsAlphabetic = NO;
-//        songViewController.taggedList = YES;
         songViewController.collectionQueryType = [selectedGroup.queryType copy];
         songViewController.collectionContainsICloudItem = self.collectionContainsICloudItem;
         songViewController.taggedSongArray = self.taggedSongArray;

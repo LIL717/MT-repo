@@ -10,9 +10,11 @@
 
 
 #import "InfoTabBarController.h"
+#import "MediaGroupViewController.h"
 
 
-@interface SongViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, InfoTabBarControllerDelegate, MPMediaPickerControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate> {
+
+@interface SongViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, InfoTabBarControllerDelegate, MPMediaPickerControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate, MediaGroupViewControllerDelegate> {
   
     NSManagedObjectContext *managedObjectContext_;
 
@@ -53,6 +55,8 @@
 @property (nonatomic)           BOOL collectionContainsICloudItem;
 @property (readwrite)           BOOL cellScrolled;
 @property (readwrite)           BOOL songShuffleButtonPressed;
+@property (readwrite)           BOOL tinyArray;
+@property (nonatomic, weak)     MediaGroupViewController *mediaGroupViewController;
 
 
 
@@ -62,6 +66,7 @@
 
 
 - (void) infoTabBarControllerDidCancel:(InfoTabBarController *)controller;
+- (void) viewController:(MediaGroupViewController *)controller didFinishLoadingArray:(NSMutableArray *) array;
 - (IBAction)playWithShuffle:(id)sender;
 
 

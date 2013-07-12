@@ -16,6 +16,7 @@
 #import "UIImage+AdditionalFunctionalities.h"
 #import "UserDataForMediaItem.h"
 #import "MediaItemUserData.h"
+#import "MediaGroupViewController.h"
 
 @interface SongViewController ()
 @property (nonatomic, strong) NSArray * songSections;
@@ -56,6 +57,8 @@
 @synthesize collectionContainsICloudItem;
 @synthesize cellScrolled;
 @synthesize songShuffleButtonPressed;
+@synthesize tinyArray;
+@synthesize mediaGroupViewController;
 
 
 
@@ -86,15 +89,10 @@ BOOL firstLoad;
     LogMethod();
     [super viewDidLoad];
     
+    self.mediaGroupViewController.delegate = self;
+    
     firstLoad = YES;
     self.songShuffleButtonPressed = NO;
-
-    
-    //as this method starts, the whole collectionArray is available including ICloudItems
-    currentDataSourceContainsICloudItems = YES;
-    savedDataSource = [[NSMutableArray alloc] initWithCapacity: [self.collectionItem.collectionArray count]];
-    savedDataSource = [self.collectionItem.collectionArray copy];
-    savedPlaylistDuration = [self.collectionItem.duration copy];
     
     self.songViewTitle = self.title;
     self.showTagButton = NO;
@@ -110,19 +108,7 @@ BOOL firstLoad;
 //    if (self.collectionContainsICloudItem) {
 //        [self adjustDataSource];
 //    }
-    //set up an array of durations to be used in landscape mode
-    songDurations = [[NSMutableArray alloc] initWithCapacity: [self.collectionItem.collectionArray count]];
-    
-//    NSLog (@" count of collection array %d", [self.collectionItem.collectionArray count]);
-    
-    if ([self.collectionItem.collectionArray count] > 0) {
-    //create the array in the background
-        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-        dispatch_async(queue, ^{
-            // Perform async operation
-            [self createDurationArray];
-        });
-    }
+
     //set up grouped table view to look like plain (so that section headers won't stick to top)
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
     self.songTableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]];
@@ -210,27 +196,59 @@ BOOL firstLoad;
     [self.songTableView setSectionIndexColor:[UIColor whiteColor]];
 
     isIndexed = NO;
+
+    [self prepareArrayDependentData];
+
+
+}
+- (void) prepareArrayDependentData {
+    
+    //as this method starts, the whole collectionArray is available including ICloudItems
+    currentDataSourceContainsICloudItems = YES;
+    savedDataSource = [[NSMutableArray alloc] initWithCapacity: [self.collectionItem.collectionArray count]];
+    savedDataSource = [self.collectionItem.collectionArray copy];
+    savedPlaylistDuration = [self.collectionItem.duration copy];
+    
+    //set up an array of durations to be used in landscape mode
+    songDurations = [[NSMutableArray alloc] initWithCapacity: [self.collectionItem.collectionArray count]];
+    
+    //    NSLog (@" count of collection array %d", [self.collectionItem.collectionArray count]);
+    
+    if ([self.collectionItem.collectionArray count] > 0) {
+        //create the array in the background
+        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+        dispatch_async(queue, ^{
+            // Perform async operation
+            [self createDurationArray];
+        });
+    }
     
     if (listIsAlphabetic) {
         if ([self.collectionItem.collectionArray count] >= self.songTableView.sectionIndexMinimumDisplayRowCount) {
             isIndexed = YES;
             // format of collectionSections is <MPMediaQuerySection: 0x1cd34c80> title=B, range={0, 5}, sectionIndexTitleIndex=1,
             
-        } 
+        }
     }
-
-    self.songSections = [self.collectionQueryType collectionSections];
-//    NSLog (@"songSections %@", self.songSections);
-//    NSLog (@"collection %@", self.collectionItem.collectionArray);
+    
+    if (tinyArray) {
+        MPMediaQuerySection *firstSection = [[self.collectionQueryType collectionSections] objectAtIndex: 0];
+        self.songSections = [[NSArray alloc] initWithObjects: firstSection, nil];
+        
+    } else {
+        self.songSections = [self.collectionQueryType collectionSections];
+    }
+    //    NSLog (@"songSections %@", self.songSections);
+    //    NSLog (@"collection %@", self.collectionItem.collectionArray);
     
     NSMutableArray * titles = [NSMutableArray arrayWithCapacity:[self.songSections count]];
     for (MPMediaQuerySection * sec in self.songSections) {
         [titles addObject:sec.title];
     }
     self.songSectionTitles = [titles copy];
-//    NSLog (@"songSectionTitles %@", self.songSectionTitles);
-
+    //    NSLog (@"songSectionTitles %@", self.songSectionTitles);
 }
+
 - (void) adjustDataSource {
     BOOL iCloudAvailable = [[NSUserDefaults standardUserDefaults] boolForKey:@"iCloudAvailable"];
     if (iCloudAvailable) {
@@ -268,8 +286,10 @@ BOOL firstLoad;
 }
 - (void) createDurationArray {
     
+    long playlistDuration = 0;
+    
     for (MPMediaItem *song in self.collectionItem.collectionArray) {
-        //get the duration of the the playlist
+        //get the duration of the item
         
         long playbackDuration = [[song valueForProperty: MPMediaItemPropertyPlaybackDuration] longValue];
 
@@ -277,8 +297,13 @@ BOOL firstLoad;
         int playlistSeconds = (playbackDuration % 60);                        // seconds
         NSString *itemDuration = [NSString stringWithFormat:@"%2d:%02d", playlistMinutes, playlistSeconds];
         [songDurations addObject: itemDuration];
-        
+        playlistDuration = (playlistDuration + [[song valueForProperty:MPMediaItemPropertyPlaybackDuration] longValue]);
     }
+
+    self.collectionItem.duration = [NSNumber numberWithLong: playlistDuration];
+    NSLog (@"Duration array complete");
+    
+
 }
 - (void) viewWillAppear:(BOOL)animated
 {
@@ -695,7 +720,7 @@ BOOL firstLoad;
     }
     
     MPMediaQuerySection * sec = self.songSections[indexPath.section];
-    //    NSLog (@" section is %d", indexPath.section);
+//    NSLog (@" section is %d", indexPath.section);
     
 
     BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
@@ -756,6 +781,7 @@ BOOL firstLoad;
         MPMediaItem *song = self.collectionItem.collectionArray[sec.range.location + indexPath.row];
         
         cell.nameLabel.text = [song valueForProperty:  MPMediaItemPropertyTitle];
+//        NSLog (@"song in table is %@", cell.nameLabel.text);
         cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed: @"list-background.png"]];
 
         UIColor *tagColor = [UIColor alloc];
@@ -801,7 +827,7 @@ BOOL firstLoad;
         }
                                                                 
         //show accessory if not indexed
-        if (isIndexed) {
+        if (isIndexed || tinyArray) {
             cell.accessoryType = UITableViewCellAccessoryNone;
             [infoButton removeFromSuperview];
         } else {
@@ -1271,6 +1297,11 @@ BOOL firstLoad;
                                name: @"CellScrolled"
                              object: nil];
     
+//    [notificationCenter addObserver: self
+//                           selector: @selector(receiveSongArrayLoadedNotification:)
+//                               name: @"SongArrayLoaded"
+//                             object: nil];
+    
     [notificationCenter addObserver: self
 						   selector: @selector (handle_NowPlayingItemChanged:)
 							   name: MPMusicPlayerControllerNowPlayingItemDidChangeNotification
@@ -1360,7 +1391,23 @@ BOOL firstLoad;
         self.cellScrolled = YES;
     }
 }
-
+//- (void) receiveSongArrayLoadedNotification:(NSNotification *) notification
+//{
+//    
+//    self.collectionItem.collectionArray = self.mediaGroupViewController.songMutableArray;
+//    tinyArray = NO;
+//    [self prepareArrayDependentData];
+//    [self.songTableView reloadData];
+//    
+//}
+- (void) viewController:(MediaGroupViewController *)controller didFinishLoadingArray:(NSMutableArray *)array
+{
+    self.collectionItem.collectionArray = array;
+    tinyArray = NO;
+    listIsAlphabetic = YES;
+    [self prepareArrayDependentData];
+    [self.songTableView reloadData];
+}
 - (void) handle_iPodLibraryChanged: (id) changeNotification {
 //    LogMethod();
 	// Implement this method to update cached collections of media items when the
@@ -1412,6 +1459,10 @@ BOOL firstLoad;
     [[NSNotificationCenter defaultCenter] removeObserver: self
                                                     name: @"CellScrolled"
                                                   object: nil];
+//    
+//    [[NSNotificationCenter defaultCenter] removeObserver: self
+//                                                    name: @"SongArrayLoaded"
+//                                                  object: nil];
     
     [[NSNotificationCenter defaultCenter] removeObserver: self
                                                 name: MPMusicPlayerControllerNowPlayingItemDidChangeNotification
