@@ -17,6 +17,7 @@
 #import "UserDataForMediaItem.h"
 #import "MediaItemUserData.h"
 #import "MediaGroupViewController.h"
+#import "MediaGroupCarouselViewController.h"
 
 @interface SongViewController ()
 @property (nonatomic, strong) NSArray * songSections;
@@ -59,6 +60,7 @@
 @synthesize songShuffleButtonPressed;
 @synthesize tinyArray;
 @synthesize mediaGroupViewController;
+@synthesize mediaGroupCarouselViewController;
 
 
 
@@ -90,6 +92,7 @@ BOOL firstLoad;
     [super viewDidLoad];
     
     self.mediaGroupViewController.delegate = self;
+    self.mediaGroupCarouselViewController.delegate = self;
     
     firstLoad = YES;
     self.songShuffleButtonPressed = NO;
@@ -1400,8 +1403,20 @@ BOOL firstLoad;
 //    [self.songTableView reloadData];
 //    
 //}
-- (void) viewController:(MediaGroupViewController *)controller didFinishLoadingSongArray:(NSArray *)array
+//- (void) viewController:(MediaGroupViewController *)controller didFinishLoadingSongArray:(NSArray *)array
+//{
+//    LogMethod();
+//    
+//    self.collectionItem.collectionArray = [array mutableCopy];
+//    tinyArray = NO;
+//    listIsAlphabetic = YES;
+//    [self prepareArrayDependentData];
+//    [self.songTableView reloadData];
+//}
+- (void) viewController:(id) controller didFinishLoadingSongArray:(NSArray *)array
 {
+    LogMethod();
+    
     self.collectionItem.collectionArray = [array mutableCopy];
     tinyArray = NO;
     listIsAlphabetic = YES;

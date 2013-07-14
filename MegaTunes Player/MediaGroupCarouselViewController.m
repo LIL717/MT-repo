@@ -31,6 +31,7 @@
 
 @implementation MediaGroupCarouselViewController
 
+@synthesize delegate;
 @synthesize carousel;
 @synthesize backgroundView;
 @synthesize collection;
@@ -54,11 +55,11 @@
 @synthesize songArrayLoaded;
 @synthesize taggedSongArrayLoaded;
 @synthesize tinySongArrayLoaded;
+@synthesize loadingAlert;
 
 
 NSMutableArray *songArrayToLoad;
 
-UIAlertView *alert;
 BOOL tinyArray;
 BOOL listIsAlphabetic;
 
@@ -93,6 +94,8 @@ BOOL listIsAlphabetic;
 {
 //    LogMethod();
     [super viewDidLoad];
+    
+    self.mediaGroupViewController.delegate = self;
   
     //configure carousel
     carousel.type = iCarouselTypeCoverFlow2;
@@ -341,14 +344,14 @@ BOOL listIsAlphabetic;
 //    if (index == carousel.currentItemIndex) {
         //self.selectedGroup is a MediaGroup with a name and a querytype
         self.selectedGroup = [self.groupingData objectAtIndex:index];
-    if (([selectedGroup.name isEqualToString: @"Tagged"])) {
+    if (([self.selectedGroup.name isEqualToString: @"Tagged"])) {
         if (!self.taggedSongArrayLoaded) {
             [self showActivityIndicator];
         } else {
             [self performSegueWithIdentifier: @"ViewTaggedSongCollection" sender: self];
         }
     } else {
-        if ([selectedGroup.name isEqualToString: @"Songs"]) {
+        if ([self.selectedGroup.name isEqualToString: @"Songs"]) {
             if (!self.songArrayLoaded) {
                 if (!self.tinySongArrayLoaded) {
                     [self showActivityIndicator];
@@ -364,17 +367,17 @@ BOOL listIsAlphabetic;
                 [self performSegueWithIdentifier: @"ViewSongCollection" sender: self];
             }
         } else {
-            if ([selectedGroup.name isEqualToString:@"Artists"]) {
+            if ([self.selectedGroup.name isEqualToString:@"Artists"]) {
                 //works more like Apple with AlbumArtist rather than just Artist
                 MPMediaQuery *myCollectionQuery = [[MPMediaQuery alloc] init];
                 [myCollectionQuery setGroupingType: MPMediaGroupingAlbumArtist];
                 selectedGroup.queryType = myCollectionQuery;
                 [self performSegueWithIdentifier: @"ArtistCollections" sender: self];
             } else {
-                if ([selectedGroup.name isEqualToString:@"Composers"]) {
+                if ([self.selectedGroup.name isEqualToString:@"Composers"]) {
                     [self performSegueWithIdentifier: @"ArtistCollections" sender: self];
                 } else {
-                    if ([selectedGroup.name isEqualToString:@"Genres"]) {
+                    if ([self.selectedGroup.name isEqualToString:@"Genres"]) {
                         [self performSegueWithIdentifier: @"ViewGenres" sender: self];
                     } else {
                         // Playlists, Albums, Compilations, Podcasts go to albumCollections
@@ -464,7 +467,9 @@ BOOL listIsAlphabetic;
         songViewController.tinyArray = self.tinySongArrayLoaded;
         
         songViewController.collectionQueryType = [selectedGroup.queryType copy];
-        songViewController.collectionContainsICloudItem = self.collectionContainsICloudItem;        
+        songViewController.collectionContainsICloudItem = self.collectionContainsICloudItem;
+        songViewController.mediaGroupCarouselViewController = self;
+
         
 	}
     if ([segue.identifier isEqualToString:@"ViewTaggedSongCollection"])
@@ -512,13 +517,21 @@ BOOL listIsAlphabetic;
     
 - (void)hideActivityIndicator {
     
-    if (alert) {
+    if (self.loadingAlert) {
         
-        [alert dismissWithClickedButtonIndex:0 animated:YES];
-        alert = nil;
+        [self.loadingAlert dismissWithClickedButtonIndex:0 animated:YES];
+        self.loadingAlert = nil;
         if ([selectedGroup.name isEqualToString: @"Songs"]) {
-            songArrayToLoad = [self.tinySongArray mutableCopy];
-            listIsAlphabetic = NO;
+            if (self.songArrayLoaded) {
+                songArrayToLoad = [self.songArray mutableCopy];
+                listIsAlphabetic = YES;
+                self.tinySongArrayLoaded = NO;
+
+            } else {
+                songArrayToLoad = [self.tinySongArray mutableCopy];
+                listIsAlphabetic = NO;
+                self.tinySongArrayLoaded = YES;
+            }
             [self performSegueWithIdentifier: @"ViewSongCollection" sender: self];
         }
         if ([selectedGroup.name isEqualToString: @"Tagged"]) {
@@ -529,34 +542,42 @@ BOOL listIsAlphabetic;
 }
 
 - (void)showActivityIndicator {
-    if (alert)
+    if (self.loadingAlert)
         return;
-    alert = [[UIAlertView alloc] initWithTitle:nil message:nil delegate:self cancelButtonTitle:nil otherButtonTitles: nil];
-    [alert show];
+    self.loadingAlert = [[UIAlertView alloc] initWithTitle:nil message:nil delegate:self cancelButtonTitle:nil otherButtonTitles: nil];
+    [self.loadingAlert show];
     
     UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    indicator.center = CGPointMake(alert.bounds.size.width * 0.5f, alert.bounds.size.height * 0.5f);
+    indicator.center = CGPointMake(self.loadingAlert.bounds.size.width * 0.5f, self.loadingAlert.bounds.size.height * 0.5f);
     
     [indicator startAnimating];
-    [alert addSubview:indicator];
+    [self.loadingAlert addSubview:indicator];
 }
 
 - (void) viewController:(MediaGroupViewController *)controller didFinishLoadingSongArray:(NSArray *)array
 {
-    songArrayToLoad = [array mutableCopy];
+    LogMethod();
+
+    self.songArray = array;
     listIsAlphabetic = YES;
     self.songArrayLoaded = YES;
+    [self hideActivityIndicator];
+    [self.delegate viewController:self didFinishLoadingSongArray:array];
 
 }
 
 - (void) viewController:(MediaGroupViewController *)controller didFinishLoadingTinySongArray:(NSArray *) array
 {
+    LogMethod();
+
     self.tinySongArray = array;
     self.tinySongArrayLoaded = YES;
     [self hideActivityIndicator];
 }
 - (void) viewController:(MediaGroupViewController *)controller didFinishLoadingTaggedSongArray:(NSArray *) array
 {
+    LogMethod();
+
     self.sortedTaggedArray = array;
     self.taggedSongArrayLoaded = YES;
     [self hideActivityIndicator];

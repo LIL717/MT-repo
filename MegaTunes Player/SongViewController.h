@@ -11,10 +11,11 @@
 
 #import "InfoTabBarController.h"
 #import "MediaGroupViewController.h"
+#import "MediaGroupCarouselViewController.h"
 
 
 
-@interface SongViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, InfoTabBarControllerDelegate, MPMediaPickerControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate, MediaGroupViewControllerDelegate> {
+@interface SongViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, InfoTabBarControllerDelegate, MPMediaPickerControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate, MediaGroupViewControllerDelegate, MediaGroupCarouselViewControllerDelegate> {
   
     NSManagedObjectContext *managedObjectContext_;
 
@@ -57,6 +58,7 @@
 @property (readwrite)           BOOL songShuffleButtonPressed;
 @property (readwrite)           BOOL tinyArray;
 @property (nonatomic, weak)     MediaGroupViewController *mediaGroupViewController;
+@property (nonatomic, weak)     MediaGroupCarouselViewController *mediaGroupCarouselViewController;
 
 
 
@@ -66,9 +68,10 @@
 
 
 - (void) infoTabBarControllerDidCancel:(InfoTabBarController *)controller;
-- (void) viewController:(MediaGroupViewController *)controller didFinishLoadingSongArray:(NSArray *) array;
+//- (void) viewController:(MediaGroupViewController *)controller didFinishLoadingSongArray:(NSArray *) array;
 - (void) viewController:(MediaGroupViewController *)controller didFinishLoadingTinySongArray:(NSArray *) array;
 - (void) viewController:(MediaGroupViewController *)controller didFinishLoadingTaggedSongArray:(NSArray *) array;
+- (void) viewController:(id) controller didFinishLoadingSongArray:(NSArray *)array;
 
 - (IBAction)playWithShuffle:(id)sender;
 

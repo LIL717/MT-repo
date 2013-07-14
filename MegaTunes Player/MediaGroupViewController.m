@@ -74,7 +74,7 @@ BOOL listIsAlphabetic;
 
 - (void)awakeFromNib
 {
-//    LogMethod();
+    LogMethod();
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(orientationChanged:)
@@ -104,7 +104,7 @@ BOOL listIsAlphabetic;
        didShowViewController:(UIViewController *)viewController
                     animated:(BOOL)animated
 {
-//    LogMethod();
+    LogMethod();
     // May be coming back from another controller to find we're
     // showing the wrong controller for the orientation.
     [self swapControllersIfNeeded];
@@ -112,10 +112,14 @@ BOOL listIsAlphabetic;
 // Method to handle orientation changes.
 - (void)orientationChanged:(NSNotification *)notification
 {
+    LogMethod();
+
     [self swapControllersIfNeeded];
 }
 - (void) createTempBackgroundForSwap
 {
+    LogMethod();
+
     UIDeviceOrientation deviceOrientation = [UIDevice currentDevice].orientation;
     
     if (UIDeviceOrientationIsLandscape(deviceOrientation) &&
@@ -125,6 +129,12 @@ BOOL listIsAlphabetic;
         
         self.mediaGroupCarouselViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MediaGroupCarouselView"];
         self.mediaGroupCarouselViewController.mediaGroupViewController = self;
+        self.mediaGroupCarouselViewController.taggedSongArrayLoaded = self.taggedSongArrayLoaded;
+        self.mediaGroupCarouselViewController.songArrayLoaded = self.songArrayLoaded;
+        self.mediaGroupCarouselViewController.tinySongArrayLoaded = self.tinySongArrayLoaded;
+        self.mediaGroupCarouselViewController.tinySongArray = self.tinySongArray;
+        self.mediaGroupCarouselViewController.songArray = self.songArray;
+        self.mediaGroupCarouselViewController.sortedTaggedArray = self.sortedTaggedArray;
 
         //initialLandscapeImage is created from the Playlist carousel view the first time it is loaded
         if (self.initialLandscapeImage) {
@@ -165,7 +175,7 @@ BOOL listIsAlphabetic;
 }
 - (void)swapControllersIfNeeded
 {
-//    LogMethod();
+    LogMethod();
     UIDeviceOrientation deviceOrientation = [UIDevice currentDevice].orientation;
     
     // Check that we're not showing the wrong controller for the orientation.
@@ -212,7 +222,7 @@ BOOL listIsAlphabetic;
 
 - (void)viewDidLoad
 {
-//    LogMethod();
+    LogMethod();
     [super viewDidLoad];
     
     songArrayToLoad = [[NSMutableArray alloc] initWithCapacity: 19];
@@ -311,17 +321,18 @@ BOOL listIsAlphabetic;
 
         self.tinySongArray = [self.tinySongMutableArray mutableCopy];
         //uncomment to slow the load way way down to test tinyArray
-
-//    for (MPMediaItem *song in self.tinySongMutableArray) {
-//        NSLog (@"TinySongName is %@", [song valueForProperty: MPMediaItemPropertyTitle]);
-//    }
+        
+//        NSArray *tempArray = [mySongQuery items];
+//        for (MPMediaItem *song in self.tinySongArray) {
+//            NSLog (@"TinySongName is %@", [song valueForProperty: MPMediaItemPropertyTitle]);
+//        }
         
         // Check that there was not a nil handler passed.
         if( completionHandler ){
             dispatch_sync(dispatch_get_main_queue(), ^(void) {
                 self.tinySongArrayLoaded = YES;
                 [self hideActivityIndicator];
-                [self.delegate viewController:self didFinishLoadingSongArray:self.tinySongArray];
+                [self.delegate viewController:self didFinishLoadingTinySongArray:self.tinySongArray];
                 NSLog (@"Done Building Tiny Song Array");
             });
         }
@@ -336,6 +347,7 @@ BOOL listIsAlphabetic;
         if( completionHandler ){
             dispatch_sync(dispatch_get_main_queue(), ^(void) {
                 self.songArrayLoaded = YES;
+                [self hideActivityIndicator];
                 [self.delegate viewController:self didFinishLoadingSongArray:self.songArray];
                 NSLog (@"Done Building Song Array");
             });
@@ -350,7 +362,7 @@ BOOL listIsAlphabetic;
 
     self.songArray = [mySongQuery items];
     
-    //uncomment to slow the load way way down to test tinyArray
+//    //uncomment to slow the load way way down to test tinyArray
 //    for (MPMediaItem *song in self.songArray) {
 //        NSLog (@"SongName is %@", [song valueForProperty: MPMediaItemPropertyTitle]);
 //    }
@@ -366,7 +378,7 @@ BOOL listIsAlphabetic;
             dispatch_sync(dispatch_get_main_queue(), ^(void) {
                 self.taggedSongArrayLoaded = YES;
                 [self hideActivityIndicator];
-                [self.delegate viewController:self didFinishLoadingSongArray:self.sortedTaggedArray];
+                [self.delegate viewController:self didFinishLoadingTaggedSongArray:self.sortedTaggedArray];
                 NSLog (@"Done Building Tagged Song Array");
             });
         }
@@ -732,8 +744,15 @@ BOOL listIsAlphabetic;
         [alert dismissWithClickedButtonIndex:0 animated:YES];
         alert = nil;
         if ([selectedGroup.name isEqualToString: @"Songs"]) {
-            songArrayToLoad = [self.tinySongArray mutableCopy];
-            listIsAlphabetic = NO;
+            if (self.songArrayLoaded) {
+                songArrayToLoad = [self.songArray mutableCopy];
+                listIsAlphabetic = YES;
+                self.tinySongArrayLoaded = NO;
+            } else {
+                songArrayToLoad = [self.tinySongArray mutableCopy];
+                listIsAlphabetic = NO;
+                self.tinySongArrayLoaded = YES;
+            }
             [self performSegueWithIdentifier: @"ViewSongCollection" sender: self];
         }
         if ([selectedGroup.name isEqualToString: @"Tagged"]) {

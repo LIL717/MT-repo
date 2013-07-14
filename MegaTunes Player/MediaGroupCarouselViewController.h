@@ -10,14 +10,21 @@
 #import "iCarousel.h"
 #import "MediaGroup.h"
 #import "MediaGroupViewController.h"
+#import "MediaGroupCarouselViewController.h"
 @class AppDelegate;
 
+@protocol MediaGroupCarouselViewControllerDelegate <NSObject>
 
+- (void) viewController:(MediaGroupCarouselViewController *)controller didFinishLoadingSongArray:(NSArray *) array;
+
+@end
 
 @interface MediaGroupCarouselViewController : UIViewController <iCarouselDataSource, iCarouselDelegate, MPMediaPickerControllerDelegate, MediaGroupViewControllerDelegate> {
     
     NSManagedObjectContext  *managedObjectContext_;
 }
+
+@property (nonatomic, weak) id <MediaGroupCarouselViewControllerDelegate> delegate;
 
 @property (strong, nonatomic) IBOutlet iCarousel *carousel;
 @property (strong, nonatomic) IBOutlet UIImageView *backgroundView;
@@ -42,6 +49,7 @@
 @property (readwrite)           BOOL songArrayLoaded;
 @property (readwrite)           BOOL taggedSongArrayLoaded;
 @property (readwrite)           BOOL tinySongArrayLoaded;
+@property (nonatomic, strong)   UIAlertView *loadingAlert;
 
 
 
