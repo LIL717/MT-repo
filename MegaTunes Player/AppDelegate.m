@@ -30,14 +30,8 @@
 @synthesize fetchedResultsController = fetchedResultsController_;
 @synthesize persistentStoreCoordinator = persistentStoreCoordinator_;
 //@synthesize iCloudAvailable;
-@synthesize songMutableArray;
-@synthesize playlistDuration;
-@synthesize taggedSongArray;
-@synthesize taggedPlaylistDuration;
-@synthesize collectionContainsICloudItem;
-@synthesize songArrayLoaded;
-@synthesize taggedSongArrayLoaded;
-@synthesize musicPlayer;
+
+
 
 
 static const NSUInteger kNavigationBarHeight = 60;
@@ -217,18 +211,6 @@ BOOL _iCloudAvailable;
         
     }];
     
-    musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
-
-//    //create the taggedSongArray in the background
-//    [self loadTaggedSongArrayWithCompletion:^(BOOL result) {
-//        
-//    }];
-//    
-//    //    //create the songArray in the background
-//    [self loadSongArrayWithCompletion:^(BOOL result) {
-//        
-//        
-//    }];
     
 //    NSURL *ubiq = [[NSFileManager defaultManager]
 //                   URLForUbiquityContainerIdentifier:nil];
@@ -303,114 +285,7 @@ BOOL _iCloudAvailable;
 
 
  }
-- (void)loadSongArrayWithCompletion:(void (^)(BOOL result))completionHandler {
-    
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [self createSongArray];
-        
-        // Check that there was not a nil handler passed.
-        if( completionHandler ){
-            dispatch_sync(dispatch_get_main_queue(), ^(void) {
-                self.songArrayLoaded = YES;
-                NSLog (@"Done Building Song Array in App Delegate");
-            });
-        }
-    });
-}
 
-- (void)loadTaggedSongArrayWithCompletion:(void (^)(BOOL result))completionHandler {
-    
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [self createTaggedSongArray];
-        
-        // Check that there was not a nil handler passed.
-        if (completionHandler) {
-            dispatch_sync(dispatch_get_main_queue(), ^(void) {
-                self.taggedSongArrayLoaded = YES;
-                NSLog (@"Done Building Tagged Song Array in App Delegate");
-            });
-        } else {
-            dispatch_sync(dispatch_get_main_queue(), ^(void) {
-                self.taggedSongArrayLoaded = NO;
-                NSLog (@"Error");
-            });
-        }
-    });
-}
-
-
-
-- (void) createSongArray {
-    self.songMutableArray = [[NSMutableArray alloc] init];
-    
-//    self.collectionContainsICloudItem = NO;
-    
-    long duration = 0;
-    
-    NSArray *songs = [[MPMediaQuery songsQuery] items];
-    
-    //    NSString *isCloudItem = @"0";  // the BOOL MPMediaItemPropertyIsCloudItem seems to be 0, but doesn't work as a BOOL
-    
-    for (MPMediaItem *song in songs) {
-        
-        //this is way too much of a resource hog - just can't do it this way
-        //        isCloudItem = [song valueForProperty: MPMediaItemPropertyIsCloudItem];
-        //        if (isCloudItem.intValue == 1) {
-        //            self.collectionContainsICloudItem = YES;
-        //        }
-        [self.songMutableArray addObject: song];
-        duration = (duration + [[song valueForProperty:MPMediaItemPropertyPlaybackDuration] longValue]);
-    }
-    self.playlistDuration = [NSNumber numberWithLong: duration];
-    
-}
-- (void) createTaggedSongArray {
-    //    self.songMutableArray = [[NSMutableArray alloc] init];
-    NSMutableArray *songDictMutableArray = [NSMutableArray arrayWithCapacity: 20];
-    self.taggedSongArray = [NSMutableArray arrayWithCapacity: 20];
-    
-    long taggedDuration = 0;
-    NSArray *songs = [[MPMediaQuery songsQuery] items];
-    
-    //    NSString *isCloudItem = @"0";  // the BOOL MPMediaItemPropertyIsCloudItem seems to be 0, but doesn't work as a BOOL
-    
-    for (MPMediaItem *song in songs) {
-        //    for (MPMediaItem *song in self.songMutableArray) {
-        
-        TagData *tagData = [self retrieveTagForMediaItem: song];
-        if (tagData) {
-            NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys: song, @"Song", tagData, @"TagData", nil];
-            
-            [songDictMutableArray addObject: dict];
-            taggedDuration = (taggedDuration + [[song valueForProperty:MPMediaItemPropertyPlaybackDuration] longValue]);
-            //                NSString *songTitle =[song valueForProperty: MPMediaItemPropertyTitle];
-            //                NSLog (@"\t\t%@", songTitle);
-        }
-    }
-    
-    NSArray *sortedArray;
-    sortedArray = [songDictMutableArray sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
-        TagData *firstTagData = [(NSDictionary *)a objectForKey: @"TagData"];
-        TagData *secondTagData = [(NSDictionary *)b objectForKey: @"TagData"];
-        return [firstTagData.sortOrder compare: secondTagData.sortOrder];
-    }];
-    
-    self.taggedSongArray = [sortedArray mutableCopy];
-    self.taggedPlaylistDuration = [NSNumber numberWithLong: taggedDuration];
-}
-- (TagData *) retrieveTagForMediaItem: (MPMediaItem *) mediaItem {
-    
-    //check to see if there is user data for this media item
-    MediaItemUserData *mediaItemUserData = [MediaItemUserData alloc];
-    mediaItemUserData.managedObjectContext = self.managedObjectContext;
-    
-    UserDataForMediaItem *userDataForMediaItem = [mediaItemUserData containsItem: [mediaItem valueForProperty: MPMediaItemPropertyPersistentID]];
-    //    NSLog (@"userDataForMediaItem is %@", userDataForMediaItem.title);
-    //    NSLog (@"tagData.tagName is %@", userDataForMediaItem.tagData.tagName);
-    
-    return userDataForMediaItem.tagData;
-    
-}
 - (void)customizeGlobalTheme {
     
 

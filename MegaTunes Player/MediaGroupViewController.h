@@ -12,7 +12,10 @@
 @class MediaGroupViewController;
 
 @protocol MediaGroupViewControllerDelegate <NSObject>
-- (void) viewController:(MediaGroupViewController *)controller didFinishLoadingArray:(NSMutableArray *) array;
+- (void) viewController:(MediaGroupViewController *)controller didFinishLoadingTinySongArray:(NSArray *) array;
+- (void) viewController:(MediaGroupViewController *)controller didFinishLoadingSongArray:(NSArray *) array;
+- (void) viewController:(MediaGroupViewController *)controller didFinishLoadingTaggedSongArray:(NSArray *) array;
+
 @end
 
 @interface MediaGroupViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MPMediaPickerControllerDelegate, UINavigationControllerDelegate> {
@@ -36,13 +39,18 @@
 @property (nonatomic, strong)   UIImageView *pView;
 @property (nonatomic, strong)   UIImageView *lView;
 @property (nonatomic, strong)   AppDelegate *appDelegate;
-@property (nonatomic, strong)   NSMutableArray *songMutableArray;
+@property (nonatomic, strong)   NSArray *songArray;
 @property (nonatomic, strong)   NSMutableArray *tinySongMutableArray;
+@property (nonatomic, strong)   NSArray *tinySongArray;
 
 @property (nonatomic, strong)   NSNumber *playlistDuration;
-@property (nonatomic, strong)   NSMutableArray *taggedSongArray;
+@property (nonatomic, strong)   NSArray *sortedTaggedArray;
 @property (nonatomic, strong)   NSNumber *taggedPlaylistDuration;
 @property (readwrite)           BOOL collectionContainsICloudItem;
+@property (readwrite)           BOOL songArrayLoaded;
+@property (readwrite)           BOOL taggedSongArrayLoaded;
+@property (readwrite)           BOOL tinySongArrayLoaded;
+
 
 @property (nonatomic, strong)   UIImage *initialPortraitImage;
 @property (nonatomic, strong)   UIImage *initialLandscapeImage;

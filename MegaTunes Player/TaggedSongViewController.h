@@ -33,7 +33,6 @@
 @property (nonatomic, strong)   MPMediaItem *itemToPlay;
 @property (readwrite)           BOOL iPodLibraryChanged;
 @property (readwrite)           BOOL listIsAlphabetic;
-//@property (readwrite)           BOOL taggedList;
 @property (readwrite)           BOOL isSearching;
 @property (nonatomic, retain)   MPMediaItemCollection *songCollection;
 @property (nonatomic, strong)   UIBarButtonItem *playBarButton;
@@ -41,20 +40,18 @@
 @property (nonatomic, strong)   UIBarButtonItem *colorTagBarButton;
 @property (nonatomic, strong)   UIBarButtonItem *noColorTagBarButton;
 
-//@property (nonatomic, strong)   NSString *collectionType;
 @property (nonatomic, strong)   MPMediaQuery *collectionQueryType;
-//@property (nonatomic, strong)   MPMediaPropertyPredicate *collectionPredicate;
 @property (nonatomic, strong)   NSArray *searchResults;
 @property (nonatomic, strong)   CollectionItem *collectionItemToSave;
 @property (readwrite)           BOOL showTagButton;
 @property (readwrite)           BOOL showTags;
 @property (nonatomic, strong)   NSString *songViewTitle;
 @property (strong, nonatomic) UISwipeGestureRecognizer *swipeLeftRight;
-//@property (nonatomic, retain) UIColor *sectionIndexColor;
 @property (nonatomic)           BOOL collectionContainsICloudItem;
 @property (readwrite)           BOOL cellScrolled;
 @property (readwrite)           BOOL songShuffleButtonPressed;
 @property (nonatomic, strong)   NSMutableArray *taggedSongArray;
+@property (nonatomic, strong)   NSArray *sortedTaggedArray;
 @property (nonatomic, strong)   NSNumber *taggedPlaylistDuration;
 
 

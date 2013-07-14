@@ -66,7 +66,10 @@
 
 
 - (void) infoTabBarControllerDidCancel:(InfoTabBarController *)controller;
-- (void) viewController:(MediaGroupViewController *)controller didFinishLoadingArray:(NSMutableArray *) array;
+- (void) viewController:(MediaGroupViewController *)controller didFinishLoadingSongArray:(NSArray *) array;
+- (void) viewController:(MediaGroupViewController *)controller didFinishLoadingTinySongArray:(NSArray *) array;
+- (void) viewController:(MediaGroupViewController *)controller didFinishLoadingTaggedSongArray:(NSArray *) array;
+
 - (IBAction)playWithShuffle:(id)sender;
 
 

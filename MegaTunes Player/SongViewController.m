@@ -1400,13 +1400,19 @@ BOOL firstLoad;
 //    [self.songTableView reloadData];
 //    
 //}
-- (void) viewController:(MediaGroupViewController *)controller didFinishLoadingArray:(NSMutableArray *)array
+- (void) viewController:(MediaGroupViewController *)controller didFinishLoadingSongArray:(NSArray *)array
 {
-    self.collectionItem.collectionArray = array;
+    self.collectionItem.collectionArray = [array mutableCopy];
     tinyArray = NO;
     listIsAlphabetic = YES;
     [self prepareArrayDependentData];
     [self.songTableView reloadData];
+}
+- (void) viewController:(MediaGroupViewController *)controller didFinishLoadingTinySongArray:(NSArray *) array{
+    //part of delegate protocol but doesn't need to do anything here
+}
+- (void) viewController:(MediaGroupViewController *)controller didFinishLoadingTaggedSongArray:(NSArray *) array {
+    //part of delegate protocol but doesn't need to do anything here
 }
 - (void) handle_iPodLibraryChanged: (id) changeNotification {
 //    LogMethod();

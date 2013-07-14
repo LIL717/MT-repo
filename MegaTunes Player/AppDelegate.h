@@ -24,14 +24,6 @@
 @property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, retain) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-@property (nonatomic, strong)   NSMutableArray *songMutableArray;
-@property (nonatomic, strong)   NSNumber *playlistDuration;
-@property (nonatomic, strong)   NSMutableArray *taggedSongArray;
-@property (nonatomic, strong)   NSNumber *taggedPlaylistDuration;
-@property (readwrite)           BOOL collectionContainsICloudItem;
-@property (readwrite)           BOOL songArrayLoaded;
-@property (readwrite)           BOOL taggedSongArrayLoaded;
-@property (nonatomic, strong)	MPMusicPlayerController	*musicPlayer;
 
 
 //@property (nonatomic, retain) ColorSwitcher *colorSwitcher;

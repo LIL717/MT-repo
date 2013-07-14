@@ -46,23 +46,27 @@
 @synthesize pView;
 @synthesize lView;
 @synthesize appDelegate;
-@synthesize songMutableArray;
+@synthesize songArray;
 @synthesize tinySongMutableArray;
+@synthesize tinySongArray;
+@synthesize sortedTaggedArray;
 
 @synthesize playlistDuration;
-@synthesize taggedSongArray;
 @synthesize taggedPlaylistDuration;
 @synthesize collectionContainsICloudItem;
+@synthesize songArrayLoaded;
+@synthesize taggedSongArrayLoaded;
+@synthesize tinySongArrayLoaded;
+
 
 @synthesize initialPortraitImage;
 @synthesize initialLandscapeImage;
 
 UIViewController *presentingViewController;
-BOOL songArrayLoaded;
-BOOL taggedSongArrayLoaded;
+
 NSMutableArray *songArrayToLoad;
+
 UIAlertView *alert;
-BOOL tinyArray;
 BOOL listIsAlphabetic;
 
 
@@ -178,6 +182,12 @@ BOOL listIsAlphabetic;
             self.mediaGroupCarouselViewController =
             [self.storyboard instantiateViewControllerWithIdentifier:@"MediaGroupCarouselView"];
             self.mediaGroupCarouselViewController.mediaGroupViewController = self;
+            self.mediaGroupCarouselViewController.taggedSongArrayLoaded = self.taggedSongArrayLoaded;
+            self.mediaGroupCarouselViewController.songArrayLoaded = self.songArrayLoaded;
+            self.mediaGroupCarouselViewController.tinySongArrayLoaded = self.tinySongArrayLoaded;
+            self.mediaGroupCarouselViewController.tinySongArray = self.tinySongArray;
+            self.mediaGroupCarouselViewController.songArray = self.songArray;
+            self.mediaGroupCarouselViewController.sortedTaggedArray = self.sortedTaggedArray;
         }
         // Push the new controller rather than use a segue so that we can do it
         // without animation.
@@ -228,49 +238,25 @@ BOOL listIsAlphabetic;
     
     self.appDelegate = (id) [[UIApplication sharedApplication] delegate];
     self.managedObjectContext = [self.appDelegate managedObjectContext];
-    
-    if (self.appDelegate.songArrayLoaded) {
-        songArrayLoaded = self.appDelegate.songArrayLoaded;
-        self.songMutableArray = self.appDelegate.songMutableArray;
-        self.playlistDuration = self.appDelegate.playlistDuration;
-    } else {
-        //    //create the songArray in the background
-        [self loadSongArrayWithCompletion:^(BOOL result) {
 
-        }];
-    }
-    if (self.appDelegate.taggedSongArrayLoaded) {
-        taggedSongArrayLoaded = self.appDelegate.taggedSongArrayLoaded;
-        self.taggedSongArray = self.appDelegate.taggedSongArray;
-        self.taggedPlaylistDuration = self.appDelegate.taggedPlaylistDuration;
-    } else {
-        //create the taggedSongArray in the background
-        [self loadTaggedSongArrayWithCompletion:^(BOOL result) {
+    //    //create the tinySongArray in the background
+    [self loadTinySongArrayWithCompletion:^(BOOL result) {
+        
+    }];
+    //    //create the songArray in the background
+    [self loadSongArrayWithCompletion:^(BOOL result) {
 
-        }];
-    }
+    }];
+
+    //create the taggedSongArray in the background
+    [self loadTaggedSongArrayWithCompletion:^(BOOL result) {
+
+    }];
     
     self.collectionContainsICloudItem = NO;
     [self checkForICloudItemsWithCompletion:^(BOOL result) {
         
     }];
-    
-    // load the first section of data only to this tiny array, it will be displayed until the full array loads
-    self.tinySongMutableArray = [[NSMutableArray alloc] initWithCapacity: 19];
-    
-    MPMediaQuery *mySongQuery = [[MPMediaQuery alloc] init];
-    mySongQuery = [MPMediaQuery songsQuery];
-    MPMediaQuerySection *firstSection = [[mySongQuery collectionSections] objectAtIndex: 0];
-    NSRange firstRange = firstSection.range;
-    int endOfRange = firstRange.length;
-    int i;
-    for (i = 0; i < endOfRange; i++) {
-        MPMediaItem *song = [[mySongQuery items] objectAtIndex: i];
-        [self.tinySongMutableArray addObject: song];
-//        NSLog (@"song in tinyArray is %@", [song valueForProperty: MPMediaItemPropertyTitle]);
-
-    }
-    NSLog (@"tinySong Array loaded");
     
     self.initialView = YES;
 
@@ -304,7 +290,43 @@ BOOL listIsAlphabetic;
     return;
     
 }
+- (void)loadTinySongArrayWithCompletion:(void (^)(BOOL result))completionHandler {
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // load the first section of data only to this tiny array, it will be displayed until the full array loads
+        self.tinySongMutableArray = [[NSMutableArray alloc] initWithCapacity: 19];
+        
+        MPMediaQuery *mySongQuery = [[MPMediaQuery alloc] init];
+        mySongQuery = [MPMediaQuery songsQuery];
+        MPMediaQuerySection *firstSection = [[mySongQuery collectionSections] objectAtIndex: 0];
+        NSRange firstRange = firstSection.range;
+        int endOfRange = firstRange.length;
+        int i;
+        for (i = 0; i < endOfRange; i++) {
+            MPMediaItem *song = [[mySongQuery items] objectAtIndex: i];
+            [self.tinySongMutableArray addObject: song];
+            //        NSLog (@"song in tinyArray is %@", [song valueForProperty: MPMediaItemPropertyTitle]);
+            
+        }
 
+        self.tinySongArray = [self.tinySongMutableArray mutableCopy];
+        //uncomment to slow the load way way down to test tinyArray
+
+//    for (MPMediaItem *song in self.tinySongMutableArray) {
+//        NSLog (@"TinySongName is %@", [song valueForProperty: MPMediaItemPropertyTitle]);
+//    }
+        
+        // Check that there was not a nil handler passed.
+        if( completionHandler ){
+            dispatch_sync(dispatch_get_main_queue(), ^(void) {
+                self.tinySongArrayLoaded = YES;
+                [self hideActivityIndicator];
+                [self.delegate viewController:self didFinishLoadingSongArray:self.tinySongArray];
+                NSLog (@"Done Building Tiny Song Array");
+            });
+        }
+    });
+}
 - (void)loadSongArrayWithCompletion:(void (^)(BOOL result))completionHandler {
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -313,15 +335,27 @@ BOOL listIsAlphabetic;
         // Check that there was not a nil handler passed.
         if( completionHandler ){
             dispatch_sync(dispatch_get_main_queue(), ^(void) {
-                songArrayLoaded = YES;
-                [self.delegate viewController:self didFinishLoadingArray:self.songMutableArray];
+                self.songArrayLoaded = YES;
+                [self.delegate viewController:self didFinishLoadingSongArray:self.songArray];
                 NSLog (@"Done Building Song Array");
             });
         }
     });
 }
 
+- (void) createSongArray {
+        
+    MPMediaQuery *mySongQuery = [[MPMediaQuery alloc] init];
+    mySongQuery = [MPMediaQuery songsQuery];
 
+    self.songArray = [mySongQuery items];
+    
+    //uncomment to slow the load way way down to test tinyArray
+//    for (MPMediaItem *song in self.songArray) {
+//        NSLog (@"SongName is %@", [song valueForProperty: MPMediaItemPropertyTitle]);
+//    }
+    
+}
 - (void)loadTaggedSongArrayWithCompletion:(void (^)(BOOL result))completionHandler {
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -330,54 +364,18 @@ BOOL listIsAlphabetic;
         // Check that there was not a nil handler passed.
         if( completionHandler ){
             dispatch_sync(dispatch_get_main_queue(), ^(void) {
-                taggedSongArrayLoaded = YES;
+                self.taggedSongArrayLoaded = YES;
                 [self hideActivityIndicator];
+                [self.delegate viewController:self didFinishLoadingSongArray:self.sortedTaggedArray];
                 NSLog (@"Done Building Tagged Song Array");
             });
         }
     });
 }
-- (void)checkForICloudItemsWithCompletion:(void (^)(BOOL result))completionHandler {
-    
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        MPMediaQuery *mySongQuery = [[MPMediaQuery alloc] init];
-        mySongQuery = [MPMediaQuery songsQuery];
-        MPMediaPropertyPredicate *filterPredicate = [MPMediaPropertyPredicate predicateWithValue:  [NSNumber numberWithInt: 1]
-                                                                                     forProperty:  MPMediaItemPropertyIsCloudItem];
-        [mySongQuery addFilterPredicate: filterPredicate];
-        NSArray *filteredArray = [mySongQuery items];
-        if ([filteredArray count] > 0) {
-            self.collectionContainsICloudItem = YES;
-        }
-        
-        // Check that there was not a nil handler passed.
-        if( completionHandler ){
-            dispatch_sync(dispatch_get_main_queue(), ^(void) {
-                NSLog (@"Done Checking For ICloud Items");
-            });
-        }
-    });
-}
-
-
-- (void) createSongArray {
-    self.songMutableArray = [[NSMutableArray alloc] init];
-        
-    MPMediaQuery *mySongQuery = [[MPMediaQuery alloc] init];
-    mySongQuery = [MPMediaQuery songsQuery];
-
-    self.songMutableArray = [[mySongQuery items] mutableCopy];
-    
-//    for (MPMediaItem *song in self.songMutableArray) {
-//        NSLog (@"SongName is %@", [song valueForProperty: MPMediaItemPropertyTitle]);
-//    }
-
-    
-}
 - (void) createTaggedSongArray {
     
     NSMutableArray *songDictMutableArray = [NSMutableArray arrayWithCapacity: 20];
-    self.taggedSongArray = [NSMutableArray arrayWithCapacity: 20];
+//    self.taggedSongArray = [NSMutableArray arrayWithCapacity: 20];
 
     long taggedDuration = 0;
     
@@ -412,16 +410,37 @@ BOOL listIsAlphabetic;
         }
     }
     
-    NSArray *sortedArray;
-    sortedArray = [songDictMutableArray sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
+        self.sortedTaggedArray = [songDictMutableArray sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
         TagData *firstTagData = [(NSDictionary *)a objectForKey: @"TagData"];
         TagData *secondTagData = [(NSDictionary *)b objectForKey: @"TagData"];
         return [firstTagData.sortOrder compare: secondTagData.sortOrder];
     }];
     
-    self.taggedSongArray = [sortedArray mutableCopy];
     self.taggedPlaylistDuration = [NSNumber numberWithLong: taggedDuration];
 }
+
+- (void)checkForICloudItemsWithCompletion:(void (^)(BOOL result))completionHandler {
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        MPMediaQuery *mySongQuery = [[MPMediaQuery alloc] init];
+        mySongQuery = [MPMediaQuery songsQuery];
+        MPMediaPropertyPredicate *filterPredicate = [MPMediaPropertyPredicate predicateWithValue:  [NSNumber numberWithInt: 1]
+                                                                                     forProperty:  MPMediaItemPropertyIsCloudItem];
+        [mySongQuery addFilterPredicate: filterPredicate];
+        NSArray *filteredArray = [mySongQuery items];
+        if ([filteredArray count] > 0) {
+            self.collectionContainsICloudItem = YES;
+        }
+        
+        // Check that there was not a nil handler passed.
+        if( completionHandler ){
+            dispatch_sync(dispatch_get_main_queue(), ^(void) {
+                NSLog (@"Done Checking For ICloud Items");
+            });
+        }
+    });
+}
+
 
 - (void) viewWillAppear:(BOOL)animated
 {
@@ -548,24 +567,27 @@ BOOL listIsAlphabetic;
     //self.selectedGroup is a MediaGroup with a name and a querytype
     self.selectedGroup = [self.groupingData objectAtIndex:indexPath.row];
     if (([selectedGroup.name isEqualToString: @"Tagged"])) {
-        if (!taggedSongArrayLoaded) {
+        if (!self.taggedSongArrayLoaded) {
             [self showActivityIndicator];
         } else {
             [self performSegueWithIdentifier: @"ViewTaggedSongCollection" sender: self];
         }
     } else {
         if ([selectedGroup.name isEqualToString: @"Songs"]) {
-            if (!songArrayLoaded) {
-                songArrayToLoad = self.tinySongMutableArray;
-                tinyArray = YES;
-                listIsAlphabetic = NO;
+            if (!self.songArrayLoaded) {
+                if (!self.tinySongArrayLoaded) {
+                    [self showActivityIndicator];
+                } else {
+                    songArrayToLoad = [self.tinySongMutableArray mutableCopy];
+                    listIsAlphabetic = NO;
+                    [self performSegueWithIdentifier: @"ViewSongCollection" sender: self];
+                }
             } else {
-                songArrayToLoad = self.songMutableArray;
-                tinyArray = NO;
+                songArrayToLoad = [self.songArray mutableCopy];
+                self.tinySongArrayLoaded = NO;
                 listIsAlphabetic = YES;
+                [self performSegueWithIdentifier: @"ViewSongCollection" sender: self];
             }
-            [self performSegueWithIdentifier: @"ViewSongCollection" sender: self];
-
         } else {
             if ([selectedGroup.name isEqualToString:@"Artists"]) {
                 //works more like Apple with AlbumArtist rather than just Artist
@@ -663,9 +685,9 @@ BOOL listIsAlphabetic;
         songViewController.title = NSLocalizedString(collectionItem.name, nil);
         songViewController.collectionItem = collectionItem;
         songViewController.iPodLibraryChanged = self.iPodLibraryChanged;
-//        songViewController.listIsAlphabetic = YES;
         songViewController.listIsAlphabetic = listIsAlphabetic;
-        songViewController.tinyArray = tinyArray;
+        NSLog (@"TinySongArrayLoaded = %d", self.tinySongArrayLoaded);
+        songViewController.tinyArray = self.tinySongArrayLoaded;
 
         songViewController.collectionQueryType = [selectedGroup.queryType copy];
         songViewController.collectionContainsICloudItem = self.collectionContainsICloudItem;
@@ -680,10 +702,8 @@ BOOL listIsAlphabetic;
 
         CollectionItem *collectionItem = [CollectionItem alloc];
         collectionItem.name = selectedGroup.name;
-//        collectionItem.duration = self.playlistDuration;
-//        collectionItem.collection = [MPMediaItemCollection collectionWithItems: songMutableArray];
-//        collectionItem.collectionArray = [sortedArray mutableCopy];
-        collectionItem.collectionArray = songMutableArray;
+        collectionItem.duration = self.taggedPlaylistDuration;
+//        collectionItem.collectionArray = [self.songArray mutableCopy];
 
         songViewController.title = NSLocalizedString(collectionItem.name, nil);
         songViewController.collectionItem = collectionItem;
@@ -691,7 +711,7 @@ BOOL listIsAlphabetic;
         songViewController.listIsAlphabetic = NO;
         songViewController.collectionQueryType = [selectedGroup.queryType copy];
         songViewController.collectionContainsICloudItem = self.collectionContainsICloudItem;
-        songViewController.taggedSongArray = self.taggedSongArray;
+        songViewController.taggedSongArray = [self.sortedTaggedArray mutableCopy];
         
 	}
    if ([segue.identifier isEqualToString:@"ViewNowPlaying"])
@@ -712,6 +732,8 @@ BOOL listIsAlphabetic;
         [alert dismissWithClickedButtonIndex:0 animated:YES];
         alert = nil;
         if ([selectedGroup.name isEqualToString: @"Songs"]) {
+            songArrayToLoad = [self.tinySongArray mutableCopy];
+            listIsAlphabetic = NO;
             [self performSegueWithIdentifier: @"ViewSongCollection" sender: self];
         }
         if ([selectedGroup.name isEqualToString: @"Tagged"]) {
@@ -746,6 +768,16 @@ BOOL listIsAlphabetic;
     
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     
+    [notificationCenter addObserver:self
+                           selector:@selector(tagDataChanged:)
+                               name:@"TagDataForItemChanged"
+                             object:nil];
+    
+    [notificationCenter addObserver:self
+                           selector:@selector(tagDataChanged:)
+                               name:@"TagDataChanged"
+                             object:nil];
+    
     [notificationCenter addObserver: self
 						   selector: @selector (handle_PlaybackStateChanged:)
 							   name: MPMusicPlayerControllerPlaybackStateDidChangeNotification
@@ -760,6 +792,15 @@ BOOL listIsAlphabetic;
     [musicPlayer beginGeneratingPlaybackNotifications];
 
 }
+- (void)tagDataChanged:(NSNotification *)notification {
+    NSLog(@"tag data changed reload...");
+    //create the taggedSongArray in the background
+    [self loadTaggedSongArrayWithCompletion:^(BOOL result) {
+        
+    }];
+
+}
+
 - (void) handle_iPodLibraryChanged: (id) changeNotification {
 //    LogMethod();
 	// Implement this method to update cached collections of media items when the
@@ -780,6 +821,14 @@ BOOL listIsAlphabetic;
 }
 - (void)dealloc {
 //    LogMethod();
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:@"TagDataForItemChanged"
+                                                  object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:@"TagDataChanged"
+                                                  object:nil];
     
     [[NSNotificationCenter defaultCenter] removeObserver: self
                                                     name: MPMediaLibraryDidChangeNotification

@@ -9,12 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "iCarousel.h"
 #import "MediaGroup.h"
-@class MediaGroupViewController;
+#import "MediaGroupViewController.h"
 @class AppDelegate;
 
 
 
-@interface MediaGroupCarouselViewController : UIViewController <iCarouselDataSource, iCarouselDelegate, MPMediaPickerControllerDelegate> {
+@interface MediaGroupCarouselViewController : UIViewController <iCarouselDataSource, iCarouselDelegate, MPMediaPickerControllerDelegate, MediaGroupViewControllerDelegate> {
     
     NSManagedObjectContext  *managedObjectContext_;
 }
@@ -30,9 +30,26 @@
 @property (readwrite)           BOOL iPodLibraryChanged;
 @property (nonatomic, strong)   UIBarButtonItem *rightBarButton;
 @property (nonatomic, strong)   AppDelegate *appDelegate;
+@property (nonatomic, strong)   NSArray *songArray;
+@property (nonatomic, strong)   NSMutableArray *tinySongMutableArray;
+@property (nonatomic, strong)   NSArray *tinySongArray;
+
+
+@property (nonatomic, strong)   NSNumber *playlistDuration;
+@property (nonatomic, strong)   NSArray *sortedTaggedArray;
+@property (nonatomic, strong)   NSNumber *taggedPlaylistDuration;
+@property (readwrite)           BOOL collectionContainsICloudItem;
+@property (readwrite)           BOOL songArrayLoaded;
+@property (readwrite)           BOOL taggedSongArrayLoaded;
+@property (readwrite)           BOOL tinySongArrayLoaded;
+
 
 
 @property (nonatomic, strong)   UIImage *initialLandscapeImage;
 @property (nonatomic, strong)   MediaGroupViewController *mediaGroupViewController;
+
+- (void) viewController:(MediaGroupViewController *)controller didFinishLoadingSongArray:(NSArray *) array;
+- (void) viewController:(MediaGroupViewController *)controller didFinishLoadingTinySongArray:(NSArray *) array;
+- (void) viewController:(MediaGroupViewController *)controller didFinishLoadingTaggedSongArray:(NSArray *) array;
 
 @end
