@@ -606,12 +606,7 @@ BOOL firstLoad;
         MPMediaQuerySection * sec = self.songSections[section];
         return sec.range.length;
     }
-//    } else if (isIndexed) {
-//        MPMediaQuerySection * sec = self.songSections[section];
-//        return sec.range.length;
-//    } else {
-//        return [self.collectionItem.collectionArray count];
-//    }
+
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {

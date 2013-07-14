@@ -720,7 +720,7 @@ BOOL listIsAlphabetic;
         songViewController.title = NSLocalizedString(collectionItem.name, nil);
         songViewController.collectionItem = collectionItem;
         songViewController.iPodLibraryChanged = self.iPodLibraryChanged;
-        songViewController.listIsAlphabetic = NO;
+//        songViewController.listIsAlphabetic = NO;
         songViewController.collectionQueryType = [selectedGroup.queryType copy];
         songViewController.collectionContainsICloudItem = self.collectionContainsICloudItem;
         songViewController.taggedSongArray = [self.sortedTaggedArray mutableCopy];

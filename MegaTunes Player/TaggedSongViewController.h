@@ -7,6 +7,7 @@
 //
 
 @class CollectionItem;
+@class TaggedSectionIndexData;
 @class MTSearchBar;
 
 #import "InfoTabBarController.h"
@@ -32,7 +33,7 @@
 @property (nonatomic, strong)   MPMediaItem *mediaItemForInfo;
 @property (nonatomic, strong)   MPMediaItem *itemToPlay;
 @property (readwrite)           BOOL iPodLibraryChanged;
-@property (readwrite)           BOOL listIsAlphabetic;
+//@property (readwrite)           BOOL listIsAlphabetic;
 @property (readwrite)           BOOL isSearching;
 @property (nonatomic, retain)   MPMediaItemCollection *songCollection;
 @property (nonatomic, strong)   UIBarButtonItem *playBarButton;
@@ -53,6 +54,7 @@
 @property (nonatomic, strong)   NSMutableArray *taggedSongArray;
 @property (nonatomic, strong)   NSArray *sortedTaggedArray;
 @property (nonatomic, strong)   NSNumber *taggedPlaylistDuration;
+@property (nonatomic, strong)   TaggedSectionIndexData *taggedSectionIndexData;
 
 
 
