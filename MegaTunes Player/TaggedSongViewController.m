@@ -23,8 +23,6 @@
 #import "TaggedSectionIndexData.h"
 
 @interface TaggedSongViewController ()
-//@property (nonatomic, strong) NSArray * songSections;
-//@property (nonatomic, strong) NSArray * songSectionTitles;
 @property (nonatomic, strong) NSMutableArray * taggedSongSections;  // an dictionary with a key of the first letter of the tagName and 1 object:  a dictionary of all the songs (mediaItems) in that section
 @property (nonatomic, strong) NSArray *taggedSongSectionTitles;  //need to keep this as its own array instead of adding as dictionary key so that search can be added to the top!
 @end
@@ -198,20 +196,17 @@ BOOL firstLoad;
     }
     [self loadSectionData];
 
-    //can't figure out how to get the index of the createdDurationArray when need to check it in cellForRowAtIndexPath 
-    //set up an array of durations to be used in landscape mode
-//    
-//    songDurations = [[NSMutableArray alloc] initWithCapacity: [self.taggedSongArray count]];
-//    
-//    if ([self.taggedSongArray count] > 0) {
-//        
-//        //create the array in the background
-//        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-//        dispatch_async(queue, ^{
-//            // Perform async operation
-//            [self createDurationArray];
-//        });
-//    }
+    songDurations = [[NSMutableArray alloc] initWithCapacity: [self.taggedSongArray count]];
+    
+    if ([self.taggedSongArray count] > 0) {
+        
+        //create the array in the background
+        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+        dispatch_async(queue, ^{
+            // Perform async operation
+            [self createDurationArray];
+        });
+    }
 
 }
 - (void) createTaggedSongArray {
@@ -271,7 +266,6 @@ BOOL firstLoad;
     
     isIndexed = NO;
     
-
     savedTaggedDataSource = [self.taggedSongArray copy];
     savedTaggedPlaylistDuration = [self.collectionItem.duration copy];
     if (self.collectionContainsICloudItem) {
@@ -283,49 +277,7 @@ BOOL firstLoad;
     }
     //    NSLog (@"songSectionTitles %@", self.songSectionTitles);
 }
-//
-//- (void) createTagSections {
-//    
-//    BOOL found;
-//    
-//    TagData *tagData = [TagData alloc];
-//    tagData.managedObjectContext = self.managedObjectContext;
-//    
-//    int arrayCount;
-//    arrayCount = [[tagData fetchTagList] count];
-//    self.taggedSongSections = [NSMutableArray arrayWithCapacity: arrayCount];
-//    NSMutableArray * titles = [NSMutableArray arrayWithCapacity: arrayCount];
-//    
-//    NSString *sectionIndex;
-//    // Loop through the songsDictArray and create our keys and 2 objects for each key, TagData and a mutable array of the songs in that section
-//    for (NSDictionary *dict in self.taggedSongArray) {  //dict is a dictionary with 2 objects, mediaItem (song) and TagData
-//        TagData *tagData = [dict objectForKey: @"TagData"];
-////        NSLog (@"tagData.tagName is %@", tagData.tagName);
-//        sectionIndex = tagData.tagName;
-//
-////        NSLog (@" sectionIndex is %@", sectionIndex);
-//        
-//        found = NO;
-//        
-//        for (NSString *str in [self.taggedSongSections allKeys]) {
-//            if ([str isEqualToString:sectionIndex]) {
-//                found = YES;
-////                NSLog (@" foundSectionIndex is %@", sectionIndex);
-//
-//            }
-//        }
-//        
-//        if (!found) {
-//            [self.taggedSongSections setValue:[[NSMutableArray alloc] init] forKey:sectionIndex];
-////            [[self.taggedSongSections objectForKey: indexChar] addObject: tagData];
-//            [titles addObject:sectionIndex];
-//        }
-//        [[self.taggedSongSections objectForKey: sectionIndex] addObject:dict];
-//
-//    }
-//    self.taggedSongSectionTitles = [titles copy];
-//
-//}
+
 - (void) createTagSections {
     LogMethod();
 
@@ -351,6 +303,7 @@ BOOL firstLoad;
     int sectionCount = 0;
     NSString *sectionNameToSave;
     NSString *sectionName;
+    
     for (NSDictionary *dict in self.taggedSongArray) {  //dict is a dictionary with 2 objects, mediaItem (song) and TagData
         TagData *tagData = [dict objectForKey: @"TagData"];
         //        NSLog (@"tagData.tagName is %@", tagData.tagName);
@@ -371,7 +324,7 @@ BOOL firstLoad;
         } else {
             [titles addObject: sectionName];
             if (sectionCount > 0) {
-
+                
                 self.taggedSectionIndexData = [TaggedSectionIndexData alloc];
                 
                 if ([sectionNameToSave length] > 3) {
@@ -395,7 +348,8 @@ BOOL firstLoad;
     //add last entry when done looping
     if (sectionCount > 0) {
 //        [titles addObject: tagData.tagName];
-        
+        self.taggedSectionIndexData = [TaggedSectionIndexData alloc];
+
         if ([sectionNameToSave length] > 3) {
             self.taggedSectionIndexData.sectionIndexTitle =  [sectionNameToSave substringToIndex: 3];
         } else {
@@ -403,36 +357,36 @@ BOOL firstLoad;
         }
         
         self.taggedSectionIndexData.sectionRange = NSMakeRange(currentLocation, sectionItemCount);
-        self.taggedSectionIndexData.sectionIndexTitleIndex = sectionCount;
+        self.taggedSectionIndexData.sectionIndexTitleIndex = sectionCount - 1;
         [self.taggedSongSections addObject: self.taggedSectionIndexData];
         NSLog (@"Added last object title=%@, range=%d %d, index=%d", self.taggedSectionIndexData.sectionIndexTitle, self.taggedSectionIndexData.sectionRange.location, self.taggedSectionIndexData.sectionRange.length, self.taggedSectionIndexData.sectionIndexTitleIndex);
     }
     self.taggedSongSectionTitles = [titles copy];
     
 }
-//- (void) createDurationArray {
-//
-//    long playlistDuration = 0;
-//
-////    for (MPMediaItem *song in self.collectionItem.collectionArray) {
-//    for (NSDictionary *dict in self.taggedSongArray) {  //dict is a dictionary with 2 objects, mediaItem (song) and TagData
-//        MPMediaItem *song = [dict objectForKey: @"Song"];
-//
-//        //get the duration of the the playlist
-//        
-//        long playbackDuration = [[song valueForProperty: MPMediaItemPropertyPlaybackDuration] longValue];
-//        
-//        int playlistMinutes = (playbackDuration / 60);     // Whole minutes
-//        int playlistSeconds = (playbackDuration % 60);                        // seconds
-//        NSString *itemDuration = [NSString stringWithFormat:@"%2d:%02d", playlistMinutes, playlistSeconds];
-//        [songDurations addObject: itemDuration];
-//        playlistDuration = (playlistDuration + [[song valueForProperty:MPMediaItemPropertyPlaybackDuration] longValue]);
-//
-//        
-//    }
-//    self.collectionItem.duration = [NSNumber numberWithLong: playlistDuration];
-//    NSLog (@"Duration array complete");
-//}
+- (void) createDurationArray {
+
+    long playlistDuration = 0;
+
+//    for (MPMediaItem *song in self.collectionItem.collectionArray) {
+    for (NSDictionary *dict in self.taggedSongArray) {  //dict is a dictionary with 2 objects, mediaItem (song) and TagData
+        MPMediaItem *song = [dict objectForKey: @"Song"];
+
+        //get the duration of the the playlist
+        
+        long playbackDuration = [[song valueForProperty: MPMediaItemPropertyPlaybackDuration] longValue];
+        
+        int playlistMinutes = (playbackDuration / 60);     // Whole minutes
+        int playlistSeconds = (playbackDuration % 60);                        // seconds
+        NSString *itemDuration = [NSString stringWithFormat:@"%2d:%02d", playlistMinutes, playlistSeconds];
+        [songDurations addObject: itemDuration];
+        playlistDuration = (playlistDuration + [[song valueForProperty:MPMediaItemPropertyPlaybackDuration] longValue]);
+
+        
+    }
+    self.collectionItem.duration = [NSNumber numberWithLong: playlistDuration];
+    NSLog (@"Duration array complete");
+}
 
 - (void) adjustTaggedDataSource {
     LogMethod();

@@ -454,8 +454,15 @@ NSString *actionType;
     }
     
     tagDataArray = nil;
+    NSError * error = nil;
+
     
     [self.managedObjectContext save:nil];
+    
+    if (![self.managedObjectContext save:&error]) {
+        NSLog(@"%s: Problem saving: %@", __PRETTY_FUNCTION__, error);
+    }
+    [[NSNotificationCenter defaultCenter] postNotificationName: @"TagDataChanged" object:nil];
 
     [self.userTagTableView reloadData];
 
