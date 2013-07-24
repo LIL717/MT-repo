@@ -39,6 +39,9 @@
 		702B414D165715C2004A9265 /* AlbumInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 702B414C165715C2004A9265 /* AlbumInfoViewController.m */; };
 		702B4158165743AB004A9265 /* UserDataForMediaItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 702B4157165743AB004A9265 /* UserDataForMediaItem.m */; };
 		703E3EA116811FC7004C152C /* UINavigationBar+AdditionalFunctionalities.m in Sources */ = {isa = PBXBuildFile; fileRef = 703E3EA016811FC7004C152C /* UINavigationBar+AdditionalFunctionalities.m */; };
+		7044021517A03E4200AFAA98 /* launchPhoto320.png in Resources */ = {isa = PBXBuildFile; fileRef = 7044021317A03E4100AFAA98 /* launchPhoto320.png */; };
+		7044021617A03E4200AFAA98 /* launchPhoto640.png in Resources */ = {isa = PBXBuildFile; fileRef = 7044021417A03E4200AFAA98 /* launchPhoto640.png */; };
+		7044021817A049CA00AFAA98 /* launchPhoto568.png in Resources */ = {isa = PBXBuildFile; fileRef = 7044021717A049CA00AFAA98 /* launchPhoto568.png */; };
 		70492FF616E71A9D005A66C4 /* shinyVolumeHandle.png in Resources */ = {isa = PBXBuildFile; fileRef = 70492FF416E71A9D005A66C4 /* shinyVolumeHandle.png */; };
 		70492FF716E71A9D005A66C4 /* shinyVolumeHandle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70492FF516E71A9D005A66C4 /* shinyVolumeHandle@2x.png */; };
 		70492FFE16E8050A005A66C4 /* bigforward.png in Resources */ = {isa = PBXBuildFile; fileRef = 70492FFC16E80509005A66C4 /* bigforward.png */; };
@@ -299,6 +302,9 @@
 		702B4157165743AB004A9265 /* UserDataForMediaItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserDataForMediaItem.m; sourceTree = "<group>"; };
 		703E3E9F16811FC7004C152C /* UINavigationBar+AdditionalFunctionalities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationBar+AdditionalFunctionalities.h"; sourceTree = "<group>"; };
 		703E3EA016811FC7004C152C /* UINavigationBar+AdditionalFunctionalities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationBar+AdditionalFunctionalities.m"; sourceTree = "<group>"; };
+		7044021317A03E4100AFAA98 /* launchPhoto320.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = launchPhoto320.png; sourceTree = "<group>"; };
+		7044021417A03E4200AFAA98 /* launchPhoto640.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = launchPhoto640.png; sourceTree = "<group>"; };
+		7044021717A049CA00AFAA98 /* launchPhoto568.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = launchPhoto568.png; sourceTree = "<group>"; };
 		70492FF416E71A9D005A66C4 /* shinyVolumeHandle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shinyVolumeHandle.png; sourceTree = "<group>"; };
 		70492FF516E71A9D005A66C4 /* shinyVolumeHandle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shinyVolumeHandle@2x.png"; sourceTree = "<group>"; };
 		70492FFC16E80509005A66C4 /* bigforward.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bigforward.png; sourceTree = "<group>"; };
@@ -670,6 +676,9 @@
 		7060521C14F88D43001A1CDB = {
 			isa = PBXGroup;
 			children = (
+				7044021717A049CA00AFAA98 /* launchPhoto568.png */,
+				7044021317A03E4100AFAA98 /* launchPhoto320.png */,
+				7044021417A03E4200AFAA98 /* launchPhoto640.png */,
 				70D34EC6179C79BC0005A2BE /* Default-568h@2x.png */,
 				70D34EC4179C79980005A2BE /* Default@2x.png */,
 				70D34EC2179C79890005A2BE /* Default.png */,
@@ -1514,6 +1523,9 @@
 				70D34EC7179C79BC0005A2BE /* Default-568h@2x.png in Resources */,
 				70F72FFC179F302E00F2EF41 /* README.md in Resources */,
 				70F72FFD179F302E00F2EF41 /* release_notes.md in Resources */,
+				7044021517A03E4200AFAA98 /* launchPhoto320.png in Resources */,
+				7044021617A03E4200AFAA98 /* launchPhoto640.png in Resources */,
+				7044021817A049CA00AFAA98 /* launchPhoto568.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
