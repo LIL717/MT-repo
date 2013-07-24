@@ -45,7 +45,6 @@
 @property (nonatomic, strong)   NSNumber *playlistDuration;
 @property (nonatomic, strong)   NSArray *sortedTaggedArray;
 @property (nonatomic, strong)   NSNumber *taggedPlaylistDuration;
-@property (readwrite)           BOOL collectionContainsICloudItem;
 @property (readwrite)           BOOL songArrayLoaded;
 @property (readwrite)           BOOL taggedSongArrayLoaded;
 @property (readwrite)           BOOL tinySongArrayLoaded;
@@ -59,5 +58,6 @@
 - (void) viewController:(MediaGroupViewController *)controller didFinishLoadingSongArray:(NSArray *) array;
 - (void) viewController:(MediaGroupViewController *)controller didFinishLoadingTinySongArray:(NSArray *) array;
 - (void) viewController:(MediaGroupViewController *)controller didFinishLoadingTaggedSongArray:(NSArray *) array;
+
 
 @end

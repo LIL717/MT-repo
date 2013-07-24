@@ -383,8 +383,7 @@ NSString *actionType;
     MediaItemUserData *mediaItemUserData = [MediaItemUserData alloc];
     mediaItemUserData.managedObjectContext = self.managedObjectContext;
 
-    TagData *tagData = [TagData alloc];
-    tagData = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    TagData *tagData = [self.fetchedResultsController objectAtIndexPath:indexPath];
     tagData.managedObjectContext = self.managedObjectContext;
 
     
@@ -525,8 +524,7 @@ NSString *actionType;
         }
         if ([actionType isEqualToString: @"Edit"]) {
         
-            TagData *tagData = [TagData alloc];
-            tagData = [self.fetchedResultsController objectAtIndexPath:savedIndexPath];
+            TagData *tagData = [self.fetchedResultsController objectAtIndexPath:savedIndexPath];
             addTagViewController.nameToEdit = tagData.tagName;
             addTagViewController.sortOrder = tagData.sortOrder;
             

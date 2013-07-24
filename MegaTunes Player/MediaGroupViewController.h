@@ -46,10 +46,12 @@
 @property (nonatomic, strong)   NSNumber *playlistDuration;
 @property (nonatomic, strong)   NSArray *sortedTaggedArray;
 @property (nonatomic, strong)   NSNumber *taggedPlaylistDuration;
-@property (readwrite)           BOOL collectionContainsICloudItem;
+//@property (readwrite)           BOOL collectionContainsICloudItem;
 @property (readwrite)           BOOL songArrayLoaded;
 @property (readwrite)           BOOL taggedSongArrayLoaded;
 @property (readwrite)           BOOL tinySongArrayLoaded;
+@property (readwrite)           BOOL currentDataSourceContainsICloudItems;
+
 
 
 @property (nonatomic, strong)   UIImage *initialPortraitImage;

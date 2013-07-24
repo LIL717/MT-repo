@@ -323,15 +323,15 @@ BOOL firstLoad;
     artistQuery = [[MPMediaQuery alloc] init];
     artistQuery = [self.collectionQueryType copy];
     
-    MPMediaGrouping mediaGrouping = MPMediaGroupingAlbumArtist;
+//    MPMediaGrouping mediaGrouping = MPMediaGroupingAlbumArtist;
     
     if ([self.collectionType isEqualToString: @"Artists"] || [self.collectionType isEqualToString: @"Genres"]) {
         searchMediaItemProperty = MPMediaItemPropertyAlbumArtist;
-        mediaGrouping = MPMediaGroupingAlbumArtist;
+//        mediaGrouping = MPMediaGroupingAlbumArtist;
     } else {
         if ([self.collectionType isEqualToString: @"Composers"]) {
             searchMediaItemProperty = MPMediaItemPropertyComposer;
-            mediaGrouping = MPMediaGroupingComposer;
+//            mediaGrouping = MPMediaGroupingComposer;
         }
     }
     MPMediaPropertyPredicate *filterPredicate = [MPMediaPropertyPredicate predicateWithValue: searchText
@@ -793,7 +793,6 @@ BOOL firstLoad;
 
         SongViewController *songViewController = segue.destinationViewController;
         songViewController.managedObjectContext = self.managedObjectContext;
-        songViewController.collectionContainsICloudItem = NO;
 
         CollectionItem *collectionItem = [CollectionItem alloc];
         collectionItem.name = selectedName;
@@ -802,14 +801,8 @@ BOOL firstLoad;
         long playlistDuration = 0;
 //        collectionItem.duration = [self calculatePlaylistDuration: [self.collectionDataArray objectAtIndex:indexPath.row]];
         NSArray *songs = [[self.albumCollection objectAtIndex:0] items];
-
-        NSString *isCloudItem = @"0";  // the BOOL MPMediaItemPropertyIsCloudItem seems to be 0, but doesn't work as a BOOL
         
         for (MPMediaItem *song in songs) {
-            isCloudItem = [song valueForProperty: MPMediaItemPropertyIsCloudItem];
-            if (isCloudItem.intValue == 1) {
-                songViewController.collectionContainsICloudItem = YES;
-            }
             [songMutableArray addObject: song];
             playlistDuration = (playlistDuration + [[song valueForProperty:MPMediaItemPropertyPlaybackDuration] longValue]);
         }

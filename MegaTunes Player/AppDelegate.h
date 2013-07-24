@@ -9,6 +9,8 @@
 
 //#define PLAYER_TYPE_PREF_KEY @"player_type_preference"
 //#define SHOW_PLAYLIST_REMAINING_KEY @"show_playlist_remaining"
+//#import <SystemConfiguration/SystemConfiguration.h>
+
 
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, NSFetchedResultsControllerDelegate> {
@@ -27,7 +29,6 @@
 
 
 //@property (nonatomic, retain) ColorSwitcher *colorSwitcher;
-//@property (nonatomic) BOOL iCloudAvailable;
 
 
 - (NSURL *)applicationDocumentsDirectory;

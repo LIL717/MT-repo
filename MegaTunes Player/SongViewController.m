@@ -18,6 +18,7 @@
 #import "MediaItemUserData.h"
 #import "MediaGroupViewController.h"
 #import "MediaGroupCarouselViewController.h"
+#import "Reachability.h"
 
 @interface SongViewController ()
 @property (nonatomic, strong) NSArray * songSections;
@@ -65,8 +66,8 @@
 
 
 NSMutableArray *songDurations;
-NSMutableArray *savedDataSource;
-NSNumber *savedPlaylistDuration;
+//NSMutableArray *savedDataSource;
+//NSNumber *savedPlaylistDuration;
 NSIndexPath *selectedIndexPath;
 MPMediaItem *selectedSong;
 NSString *searchMediaItemProperty;
@@ -78,9 +79,8 @@ BOOL isIndexed;
 BOOL showDuration;
 BOOL turnOnShuffle;
 BOOL currentDataSourceContainsICloudItems;
-NSURL * _iCloudRoot;
-BOOL _iCloudAvailable;
 BOOL firstLoad;
+BOOL excludeICloudItems;
 
 
 #pragma mark - Initial Display methods
@@ -88,9 +88,12 @@ BOOL firstLoad;
 
 - (void)viewDidLoad
 {
-    LogMethod();
+//    LogMethod();
     [super viewDidLoad];
     
+    //as this method starts, the whole collectionArray is available including ICloudItems
+    currentDataSourceContainsICloudItems = YES;
+
     self.mediaGroupViewController.delegate = self;
     self.mediaGroupCarouselViewController.delegate = self;
     
@@ -107,10 +110,6 @@ BOOL firstLoad;
     [self.swipeLeftRight setDirection:(UISwipeGestureRecognizerDirectionRight | UISwipeGestureRecognizerDirectionLeft )];
     [self.navigationController.navigationBar addGestureRecognizer:self.swipeLeftRight];
     
-    // adjust the dataSource if iCloud items are not available
-//    if (self.collectionContainsICloudItem) {
-//        [self adjustDataSource];
-//    }
 
     //set up grouped table view to look like plain (so that section headers won't stick to top)
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
@@ -180,18 +179,7 @@ BOOL firstLoad;
 //    scrolledCellIndexArray = [[NSMutableArray alloc] initWithCapacity: 20];
     self.cellScrolled = NO;
     
-    if ([self.collectionItem.collectionArray count] > 1) {
-        self.shuffleButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-        self.shuffleButton.contentEdgeInsets = UIEdgeInsetsMake(0, 14, 0, 0);
-        [self.shuffleButton setTitleColor: [UIColor whiteColor] forState: UIControlStateNormal];
-        [self.shuffleButton setTitleColor:  [UIColor blueColor] forState: UIControlStateHighlighted];
-        [self.shuffleButton setTitle: NSLocalizedString(@"Shuffle", nil) forState: UIControlStateNormal];
-    } else {
-        self.shuffleButton.hidden = YES;
-        CGRect frame = self.shuffleView.frame;
-        frame.size.height = 55;
-        self.shuffleView.frame = frame;
-    }
+
     
     //list can be alphabetic - if All Songs was chosen or in track order, only index alphabetic with more than 20 rows
     
@@ -199,18 +187,19 @@ BOOL firstLoad;
     [self.songTableView setSectionIndexColor:[UIColor whiteColor]];
 
     isIndexed = NO;
-
+    
     [self prepareArrayDependentData];
+    
+    //check if collection has ICloud Items
+
+    self.collectionContainsICloudItem = NO;
+    [self checkForICloudItemsWithCompletion:^(BOOL result) {
+        
+    }];
 
 
 }
 - (void) prepareArrayDependentData {
-    
-    //as this method starts, the whole collectionArray is available including ICloudItems
-    currentDataSourceContainsICloudItems = YES;
-    savedDataSource = [[NSMutableArray alloc] initWithCapacity: [self.collectionItem.collectionArray count]];
-    savedDataSource = [self.collectionItem.collectionArray copy];
-    savedPlaylistDuration = [self.collectionItem.duration copy];
     
     //set up an array of durations to be used in landscape mode
     songDurations = [[NSMutableArray alloc] initWithCapacity: [self.collectionItem.collectionArray count]];
@@ -225,7 +214,22 @@ BOOL firstLoad;
             [self createDurationArray];
         });
     }
-    
+    if ([self.collectionItem.collectionArray count] > 1) {
+        self.shuffleButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        self.shuffleButton.contentEdgeInsets = UIEdgeInsetsMake(0, 14, 0, 0);
+        [self.shuffleButton setTitleColor: [UIColor whiteColor] forState: UIControlStateNormal];
+        [self.shuffleButton setTitleColor:  [UIColor blueColor] forState: UIControlStateHighlighted];
+        [self.shuffleButton setTitle: NSLocalizedString(@"Shuffle", nil) forState: UIControlStateNormal];
+        self.shuffleButton.hidden = NO;
+        CGRect frame = self.shuffleView.frame;
+        frame.size.height = 110;
+        self.shuffleView.frame = frame;
+    } else {
+        self.shuffleButton.hidden = YES;
+        CGRect frame = self.shuffleView.frame;
+        frame.size.height = 55;
+        self.shuffleView.frame = frame;
+    }
     if (listIsAlphabetic) {
         if ([self.collectionItem.collectionArray count] >= self.songTableView.sectionIndexMinimumDisplayRowCount) {
             isIndexed = YES;
@@ -252,40 +256,62 @@ BOOL firstLoad;
     //    NSLog (@"songSectionTitles %@", self.songSectionTitles);
 }
 
-- (void) adjustDataSource {
-    BOOL iCloudAvailable = [[NSUserDefaults standardUserDefaults] boolForKey:@"iCloudAvailable"];
-    if (iCloudAvailable) {
-        if (currentDataSourceContainsICloudItems == NO) {
-            self.collectionItem.collectionArray = savedDataSource;
-            self.collectionItem.duration = savedPlaylistDuration;
-            currentDataSourceContainsICloudItems = YES;
+//- (void) adjustDataSource {
+//    BOOL iCloudAvailable = [[NSUserDefaults standardUserDefaults] boolForKey:@"iCloudAvailable"];
+//    if (iCloudAvailable) {
+//        if (currentDataSourceContainsICloudItems == NO) {
+//            self.collectionItem.collectionArray = savedDataSource;
+//            self.collectionItem.duration = savedPlaylistDuration;
+//            currentDataSourceContainsICloudItems = YES;
+//        }
+//    } else {
+//        if (currentDataSourceContainsICloudItems) {
+//            //save the array with all the items and the duration 
+//            savedDataSource = [self.collectionItem.collectionArray copy];
+//            savedPlaylistDuration = [self.collectionItem.duration copy];
+//            
+//            //create a new array without the iCloudItems
+//            NSMutableArray *songMutableArray = [[NSMutableArray alloc] init];
+//            long playlistDuration = 0;
+//            
+//            NSString *isCloudItem = @"0";  // the BOOL MPMediaItemPropertyIsCloudItem seems to be 0, but doesn't work as a BOOL
+//            
+//            for (MPMediaItem *song in savedDataSource) {
+//                isCloudItem = [song valueForProperty: MPMediaItemPropertyIsCloudItem];
+//                if (isCloudItem.intValue != 1) {  //iCloud items should be 1
+//                    [songMutableArray addObject: song];
+//                    playlistDuration = (playlistDuration + [[song valueForProperty:MPMediaItemPropertyPlaybackDuration] longValue]);
+//                }
+//            }
+//                //save the new array and duration to use
+//            self.collectionItem.collectionArray = songMutableArray;
+//            self.collectionItem.duration = [NSNumber numberWithLong: playlistDuration];
+//            currentDataSourceContainsICloudItems = NO;
+//        }
+//    }
+//
+//}
+- (void)checkForICloudItemsWithCompletion:(void (^)(BOOL result))completionHandler {
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        MPMediaQuery *mySongQuery = [self.collectionQueryType copy];
+        MPMediaPropertyPredicate *filterPredicate = [MPMediaPropertyPredicate predicateWithValue:  [NSNumber numberWithInt: 1]
+                                                                                     forProperty:  MPMediaItemPropertyIsCloudItem];
+        [mySongQuery addFilterPredicate: filterPredicate];
+        NSArray *filteredArray = [mySongQuery items];
+        if ([filteredArray count] > 0) {
+            self.collectionContainsICloudItem = YES;
         }
-    } else {
-        if (currentDataSourceContainsICloudItems) {
-            //save the array with all the items and the duration 
-            savedDataSource = [self.collectionItem.collectionArray copy];
-            savedPlaylistDuration = [self.collectionItem.duration copy];
-            
-            //create a new array without the iCloudItems
-            NSMutableArray *songMutableArray = [[NSMutableArray alloc] init];
-            long playlistDuration = 0;
-            
-            NSString *isCloudItem = @"0";  // the BOOL MPMediaItemPropertyIsCloudItem seems to be 0, but doesn't work as a BOOL
-            
-            for (MPMediaItem *song in savedDataSource) {
-                isCloudItem = [song valueForProperty: MPMediaItemPropertyIsCloudItem];
-                if (isCloudItem.intValue != 1) {  //iCloud items should be 1
-                    [songMutableArray addObject: song];
-                    playlistDuration = (playlistDuration + [[song valueForProperty:MPMediaItemPropertyPlaybackDuration] longValue]);
-                }
-            }
-                //save the new array and duration to use
-            self.collectionItem.collectionArray = songMutableArray;
-            self.collectionItem.duration = [NSNumber numberWithLong: playlistDuration];
-            currentDataSourceContainsICloudItems = NO;
+        
+        // Check that there was not a nil handler passed.
+        if( completionHandler ){
+            dispatch_sync(dispatch_get_main_queue(), ^(void) {
+                NSLog (@"Done Checking For ICloud Items in SongViewController");
+                NSLog (@"unfiltered CollectionContainsICloudItem = %d", self.collectionContainsICloudItem);
+                [self reachabilityChanged: (NSNotification *) nil];
+            });
         }
-    }
-
+    });
 }
 - (void) createDurationArray {
     
@@ -465,7 +491,7 @@ BOOL firstLoad;
 #pragma mark - Search Display methods
 
 - (void)searchDisplayControllerDidBeginSearch:(UISearchDisplayController *)controller {
-    LogMethod();
+//    LogMethod();
     self.isSearching = YES;
     //    [[NSNotificationCenter defaultCenter] postNotificationName: @"Searching" object:nil];
     
@@ -477,7 +503,7 @@ BOOL firstLoad;
 }
 
 - (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller {
-    LogMethod();
+//    LogMethod();
     self.isSearching = NO;
     //reload the original tableView otherwise section headers are not visible :(  this seems to be an Apple bug
     
@@ -496,7 +522,7 @@ BOOL firstLoad;
 }
 - (void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope
 {
-    LogMethod();
+//    LogMethod();
     
     searchMediaItemProperty = MPMediaItemPropertyTitle;
     
@@ -506,9 +532,7 @@ BOOL firstLoad;
                                                                               comparisonType:MPMediaPredicateComparisonContains];
     
     
-    MPMediaQuery *mySongQuery = [[MPMediaQuery alloc] init];
-    //must copy otherwise adds the predicate to self.collectionQueryType too
-    mySongQuery = [self.collectionQueryType copy];
+    MPMediaQuery *mySongQuery = [self.collectionQueryType copy];
     [mySongQuery addFilterPredicate: filterPredicate];
     
     searchResults = [mySongQuery items];
@@ -752,7 +776,7 @@ BOOL firstLoad;
         //        }
         searchResultsCell.textLabel.text = mediaItemName;
         
-        UIColor *tagColor = [UIColor alloc];
+        UIColor *tagColor;
         
         if (showTags) {
             tagColor = [self retrieveTagColorForMediaItem: item];
@@ -782,7 +806,7 @@ BOOL firstLoad;
 //        NSLog (@"song in table is %@", cell.nameLabel.text);
         cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed: @"list-background.png"]];
 
-        UIColor *tagColor = [UIColor alloc];
+        UIColor *tagColor;
         
         if (showTags) {
             tagColor = [self retrieveTagColorForMediaItem: song];
@@ -1234,7 +1258,7 @@ BOOL firstLoad;
 }
 
 - (IBAction)playWithShuffle:(id)sender {
-    LogMethod();
+//    LogMethod();
     //Shuffle button selected
     //unpredictable end of playing shuffled songs when this is set here, works to set in mainViewController
 //    [musicPlayer setShuffleMode: MPMusicShuffleModeSongs];
@@ -1285,10 +1309,14 @@ BOOL firstLoad;
     
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     
-    [notificationCenter addObserver: self
-                           selector: @selector (iCloudAccountAvailabilityChanged:)
-                               name: NSUbiquityIdentityDidChangeNotification
-                             object: nil];
+//    [notificationCenter addObserver: self
+//                           selector: @selector (iCloudAccountAvailabilityChanged:)
+//                               name: NSUbiquityIdentityDidChangeNotification
+//                             object: nil];
+    [notificationCenter addObserver:self
+                           selector:@selector(reachabilityChanged:)
+                               name:kReachabilityChangedNotification
+                             object:nil];
     
     [notificationCenter addObserver: self
                            selector: @selector(receiveCellScrolledNotification:)
@@ -1320,44 +1348,82 @@ BOOL firstLoad;
 
     
 }
-- (void) iCloudAccountAvailabilityChanged:(NSNotification *) notification
-{
-
-    // if the collection passed here contains iCloudItems adjust the dataSource if iCloud items are not available
+- (void)reachabilityChanged:(NSNotification *)notification {
+    NSLog(@"reachability changed");
+    BOOL networkAvailable = [[NSUserDefaults standardUserDefaults] boolForKey:@"networkAvailable"];
+    NSLog (@"networkAvailable BOOL from NSUserDefaults is %d", networkAvailable);
     if (self.collectionContainsICloudItem) {
+        if (networkAvailable) {
+            excludeICloudItems = NO;
+            if (currentDataSourceContainsICloudItems == NO) {
+                 //    //create the songArray in the background
+//                [self loadSongArrayWithCompletion:^(BOOL result) {
+//                }];
+                [self createSongArray];
+                [self prepareArrayDependentData];
+                [self.songTableView reloadData];
+                [self updateLayoutForNewOrientation: self.interfaceOrientation];
 
-        [self initializeiCloudAccessWithCompletion:^(BOOL available) {
-            
-            _iCloudAvailable = available;
-            NSUserDefaults * standardUserDefaults = [NSUserDefaults standardUserDefaults];
-            [standardUserDefaults setBool: _iCloudAvailable forKey:@"iCloudAvailable"];
-            BOOL iCloudAvailable = [[NSUserDefaults standardUserDefaults] boolForKey:@"iCloudAvailable"];
-            NSLog (@"iCloudAvailable BOOL from NSUserDefaults is %d", iCloudAvailable);
-            
-        }];
+            }
+        } else {
+            //if network is unAvailable
+            excludeICloudItems = YES;
+            if (currentDataSourceContainsICloudItems == YES) {
+                //    //create the songArray in the background
+//                [self loadSongArrayWithCompletion:^(BOOL result) {
+//                }];
+                [self createSongArray];
+                [self prepareArrayDependentData];
+                [self.songTableView reloadData];
+                [self updateLayoutForNewOrientation: self.interfaceOrientation];
 
-        [self adjustDataSource];
-        [self.songTableView reloadData];
-    }
-
-}
-
-- (void)initializeiCloudAccessWithCompletion:(void (^)(BOOL available)) completion {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        _iCloudRoot = [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil];
-        if (_iCloudRoot != nil) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                NSLog(@"iCloud available at: %@", _iCloudRoot);
-                completion(TRUE);
-            });
+            }
         }
-        else {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                NSLog(@"iCloud not available");
-                completion(FALSE);
+    }
+    
+}
+- (void)loadSongArrayWithCompletion:(void (^)(BOOL result))completionHandler {
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self createSongArray];
+        
+        // Check that there was not a nil handler passed.
+        if( completionHandler ){
+            dispatch_sync(dispatch_get_main_queue(), ^(void) {
+//                self.songArrayLoaded = YES;
+                NSLog (@"Done Building Song Array in songviewController");
+                [self prepareArrayDependentData];
+                [self.songTableView reloadData];
             });
         }
     });
+}
+- (void) createSongArray {
+    
+//    MPMediaQuery *mySongQuery = [[MPMediaQuery alloc] init];
+//    mySongQuery = [self.collectionQueryType copy];
+    MPMediaPropertyPredicate *filterPredicate = [MPMediaPropertyPredicate predicateWithValue:  [NSNumber numberWithInt: 0]
+                                                                                 forProperty:  MPMediaItemPropertyIsCloudItem];
+    if (excludeICloudItems) {
+        //iCloud items have value 1 for MPMediaItemPropertyIsCloudItem so if excluding them, only choose items with value 0
+
+//        [mySongQuery addFilterPredicate: filterPredicate];
+        [self.collectionQueryType addFilterPredicate: filterPredicate];
+
+        currentDataSourceContainsICloudItems = NO;
+    } else {
+        [self.collectionQueryType removeFilterPredicate: filterPredicate];
+        currentDataSourceContainsICloudItems = YES;
+    }
+//    self.collectionItem.collectionArray = [[mySongQuery items] mutableCopy];
+    self.collectionItem.collectionArray = [[self.collectionQueryType items] mutableCopy];
+
+    
+    //    //uncomment to slow the load way way down to test tinyArray
+    //    for (MPMediaItem *song in self.songArray) {
+    //        NSLog (@"SongName is %@", [song valueForProperty: MPMediaItemPropertyTitle]);
+    //    }
+    
 }
 - (void) receiveCellScrolledNotification:(NSNotification *) notification
 {
@@ -1410,20 +1476,24 @@ BOOL firstLoad;
 //}
 - (void) viewController:(id) controller didFinishLoadingSongArray:(NSArray *)array
 {
-    LogMethod();
-    
-    self.collectionItem.collectionArray = [array mutableCopy];
-    tinyArray = NO;
-    listIsAlphabetic = YES;
-    [self prepareArrayDependentData];
-    [self.songTableView reloadData];
+//    LogMethod();
+    //only reload if the query is for all songs, other views of songs (playlists, artist, etc. should not reload)
+    if (self.collectionQueryType == [MPMediaQuery songsQuery]) {
+        self.collectionItem.collectionArray = [array mutableCopy];
+        tinyArray = NO;
+        listIsAlphabetic = YES;
+        [self prepareArrayDependentData];
+        [self.songTableView reloadData];
+    }
 }
+
 - (void) viewController:(MediaGroupViewController *)controller didFinishLoadingTinySongArray:(NSArray *) array{
     //part of delegate protocol but doesn't need to do anything here
 }
 - (void) viewController:(MediaGroupViewController *)controller didFinishLoadingTaggedSongArray:(NSArray *) array {
     //part of delegate protocol but doesn't need to do anything here
 }
+
 - (void) handle_iPodLibraryChanged: (id) changeNotification {
 //    LogMethod();
 	// Implement this method to update cached collections of media items when the
@@ -1433,7 +1503,7 @@ BOOL firstLoad;
 }
 // When the playback state changes, if stopped remove nowplaying button
 - (void) handle_PlaybackStateChanged: (id) notification {
-    LogMethod();
+//    LogMethod();
 
 	MPMusicPlaybackState playbackState = [musicPlayer playbackState];
 	
@@ -1444,7 +1514,7 @@ BOOL firstLoad;
 }
 // When the now-playing item changes, update the now-playing indicator and reload table
 - (void) handle_NowPlayingItemChanged: (id) notification {
-    LogMethod();
+//    LogMethod();
 
     [self.songTableView reloadData];
     self.cellScrolled = NO;
@@ -1468,9 +1538,9 @@ BOOL firstLoad;
 //    LogMethod();
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
-    [[NSNotificationCenter defaultCenter] removeObserver: self
-                                                    name: NSUbiquityIdentityDidChangeNotification
-                                                  object: nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:kReachabilityChangedNotification
+                                                  object:nil];
     
     [[NSNotificationCenter defaultCenter] removeObserver: self
                                                     name: @"CellScrolled"

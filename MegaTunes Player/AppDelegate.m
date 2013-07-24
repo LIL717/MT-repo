@@ -15,6 +15,7 @@
 #import "TagItem.h"
 #import "MediaItemUserData.h"
 #import "UserDataForMediaItem.h"
+#import "Reachability.h"
 
 
 
@@ -29,15 +30,12 @@
 @synthesize managedObjectContext = managedObjectContext_;
 @synthesize fetchedResultsController = fetchedResultsController_;
 @synthesize persistentStoreCoordinator = persistentStoreCoordinator_;
-//@synthesize iCloudAvailable;
 
 
 
 
 static const NSUInteger kNavigationBarHeight = 60;
 // Add new private instance variable
-NSURL * _iCloudRoot;
-BOOL _iCloudAvailable;
 
 
 //+ (AppDelegate *)instance {
@@ -198,30 +196,47 @@ BOOL _iCloudAvailable;
     
     //check if icloud is accessible
     
-    [self initializeiCloudAccessWithCompletion:^(BOOL available) {
-        
-        _iCloudAvailable = available;
-        
-        NSUserDefaults * standardUserDefaults = [NSUserDefaults standardUserDefaults];
-        [standardUserDefaults setBool: _iCloudAvailable forKey:@"iCloudAvailable"];
-        
-        BOOL iCloudAvailable = [[NSUserDefaults standardUserDefaults] boolForKey:@"iCloudAvailable"];
-        NSLog (@"iCloudAvailable BOOL from NSUserDefaults is %d", iCloudAvailable);
-
-        
-    }];
-    
-    
-//    NSURL *ubiq = [[NSFileManager defaultManager]
-//                   URLForUbiquityContainerIdentifier:nil];
-//    if (ubiq) {
-//        NSLog(@"iCloud access at %@", ubiq);
-//        _iCloudAvailable = YES;
-//    } else {
-//        NSLog(@"No iCloud access");
-//        _iCloudAvailable = NO;
+//    [self initializeiCloudAccessWithCompletion:^(BOOL available) {
+//        
+//        _iCloudAvailable = available;
+//        
+//        NSUserDefaults * standardUserDefaults = [NSUserDefaults standardUserDefaults];
+//        [standardUserDefaults setBool: _iCloudAvailable forKey:@"iCloudAvailable"];
+//        
+//        BOOL iCloudAvailable = [[NSUserDefaults standardUserDefaults] boolForKey:@"iCloudAvailable"];
+//        NSLog (@"iCloudAvailable BOOL from NSUserDefaults is %d", iCloudAvailable);
 //
-//    }
+//        
+//    }];
+    
+    // allocate a reachability object
+    Reachability* reach = [Reachability reachabilityWithHostname:@"www.google.com"];
+    
+    // tell the reachability that we DO want to be reachable on 3G/EDGE/CDMA
+    reach.reachableOnWWAN = YES;
+    
+    // set the blocks
+    reach.reachableBlock = ^(Reachability*reach)
+    {
+        NSLog(@"REACHABLE!");
+        NSUserDefaults * standardUserDefaults = [NSUserDefaults standardUserDefaults];
+        [standardUserDefaults setBool: YES forKey:@"networkAvailable"];
+        
+    };
+    
+    reach.unreachableBlock = ^(Reachability*reach)
+    {
+        NSLog(@"UNREACHABLE!");
+        NSUserDefaults * standardUserDefaults = [NSUserDefaults standardUserDefaults];
+        [standardUserDefaults setBool: NO forKey:@"networkAvailable"];
+        
+    };
+    
+    // start the notifier which will cause the reachability object to retain itself!
+    [reach startNotifier];
+    
+    BOOL networkAvailable = [[NSUserDefaults standardUserDefaults] boolForKey:@"networkAvailable"];
+    NSLog (@"networkAvailable BOOL from NSUserDefaults is %d", networkAvailable);
 
     
 
@@ -264,27 +279,27 @@ BOOL _iCloudAvailable;
 
     return YES;
 }
- // Add to end of "Helpers" section
- - (void)initializeiCloudAccessWithCompletion:(void (^)(BOOL available)) completion {
-     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-         _iCloudRoot = [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil];
-         if (_iCloudRoot != nil) {
-             dispatch_async(dispatch_get_main_queue(), ^{
-                 NSLog(@"iCloud available at: %@", _iCloudRoot);
-                 completion(TRUE);
-             });
-         }
-         else {
-             dispatch_async(dispatch_get_main_queue(), ^{
-                 NSLog(@"iCloud not available");
-                 completion(FALSE);
-             });
-         }
-
-     });
-
-
- }
+// // Add to end of "Helpers" section
+// - (void)initializeiCloudAccessWithCompletion:(void (^)(BOOL available)) completion {
+//     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//         _iCloudRoot = [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil];
+//         if (_iCloudRoot != nil) {
+//             dispatch_async(dispatch_get_main_queue(), ^{
+//                 NSLog(@"iCloud available at: %@", _iCloudRoot);
+//                 completion(TRUE);
+//             });
+//         }
+//         else {
+//             dispatch_async(dispatch_get_main_queue(), ^{
+//                 NSLog(@"iCloud not available");
+//                 completion(FALSE);
+//             });
+//         }
+//
+//     });
+//
+//
+// }
 
 - (void)customizeGlobalTheme {
     
