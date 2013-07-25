@@ -63,6 +63,10 @@
     [self loadDataForView];
     
     [self setEditingUserInfo: NO];
+    // save to NSUserDefaults so that the MainViewController can check before popping out if state changes to stopped
+    NSUserDefaults * standardUserDefaults = [NSUserDefaults standardUserDefaults];
+    [standardUserDefaults setBool:self.editingUserInfo forKey:@"userIsEditing"];
+    
     [self setShowCheckMarkButton: NO];
 
     [self updateLayoutForNewOrientation: self.interfaceOrientation];
@@ -211,6 +215,10 @@
 //    LogMethod();
 
     [self setEditingUserInfo: YES];
+    // save to NSUserDefaults so that the MainViewController can check before popping out if state changes to stopped
+    NSUserDefaults * standardUserDefaults = [NSUserDefaults standardUserDefaults];
+    [standardUserDefaults setBool:self.editingUserInfo forKey:@"userIsEditing"];
+
     [self setShowCheckMarkButton: YES];
 
     
@@ -253,6 +261,9 @@
     }
     [self unregisterForKeyboardNotifications];
     [self setEditingUserInfo: NO];
+    // save to NSUserDefaults so that the MainViewController can check before popping out if state changes to stopped
+    NSUserDefaults * standardUserDefaults = [NSUserDefaults standardUserDefaults];
+    [standardUserDefaults setBool:self.editingUserInfo forKey:@"userIsEditing"];
     [self setShowCheckMarkButton: NO];
 
 
@@ -473,6 +484,9 @@
 	if ([segue.identifier isEqualToString:@"SelectTag"])
     {
         [self setEditingUserInfo: YES];
+        // save to NSUserDefaults so that the MainViewController can check before popping out if state changes to stopped
+        NSUserDefaults * standardUserDefaults = [NSUserDefaults standardUserDefaults];
+        [standardUserDefaults setBool:self.editingUserInfo forKey:@"userIsEditing"];
 
         UserTagViewController *userTagViewController = segue.destinationViewController;
         userTagViewController.managedObjectContext = self.managedObjectContext;
@@ -502,6 +516,9 @@
 {
     //need to reload on return so that selected tag is shown
     [self setEditingUserInfo: NO];
+    // save to NSUserDefaults so that the MainViewController can check before popping out if state changes to stopped
+    NSUserDefaults * standardUserDefaults = [NSUserDefaults standardUserDefaults];
+    [standardUserDefaults setBool:self.editingUserInfo forKey:@"userIsEditing"];
 //    [self.tagLabel removeFromSuperview];
 //    self.userTagButton.titleLabel.text = @"";
 

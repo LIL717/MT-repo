@@ -296,17 +296,27 @@ long songRemainingSeconds;
     //set the temp initialNowPlayingLabel so something is there when view loads, gets removed from view in viewDidAppear when autoScrollLabel is created
     self.initialNowPlayingLabel.text = [[musicPlayer nowPlayingItem] valueForProperty:  MPMediaItemPropertyTitle];
 
-    if (musicPlayer.shuffleMode == MPMusicShuffleModeOff) {
+    NSLog (@"Shuffle Mode is %d", musicPlayer.shuffleMode);
+    
+    if (musicPlayer.shuffleMode == MPMusicShuffleModeSongs) {
+        [self.shuffleButton setImage: [UIImage imageNamed: @"bigshuffleblue.png"] forState: UIControlStateNormal];
+    } else {
+        [self.shuffleButton setImage: [UIImage imageNamed: @"bigshuffle.png"] forState: UIControlStateNormal];
 
-        
-        UIImage *coloredImage = [self.shuffleButton.currentImage imageWithTint:[UIColor whiteColor]];
-        [self.shuffleButton setImage: coloredImage forState:UIControlStateNormal];
-        
     }
-    if (musicPlayer.repeatMode == MPMusicRepeatModeNone) {
-        UIImage *coloredImage = [self.repeatButton.currentImage imageWithTint:[UIColor whiteColor]];
-        [self.repeatButton setImage: coloredImage forState:UIControlStateNormal];
-    }    
+    NSLog (@"Repeat Mode is %d", musicPlayer.repeatMode);
+
+    if (musicPlayer.repeatMode == MPMusicRepeatModeOne) {
+        [self.repeatButton setImage: [UIImage imageNamed: @"bigrepeat1blue.png"] forState: UIControlStateNormal];
+        
+    } else if (musicPlayer.repeatMode == MPMusicRepeatModeAll) {
+        [self.repeatButton setImage: [UIImage imageNamed: @"bigrepeatblue.png"] forState: UIControlStateNormal];
+        
+    } else {
+        [self.repeatButton setImage: [UIImage imageNamed: @"bigrepeat.png"] forState: UIControlStateNormal];
+
+    }
+
     [self.volumeView setMinimumVolumeSliderImage:[UIImage imageNamed:@"slider-fill.png"] forState:UIControlStateNormal];
     [self.volumeView setMaximumVolumeSliderImage:[UIImage imageNamed:@"slider-trackGray.png"] forState:UIControlStateNormal];
     [self.volumeView setVolumeThumbImage:[UIImage imageNamed:@"shinyVolumeHandle.png"] forState:UIControlStateNormal];
@@ -570,7 +580,8 @@ long songRemainingSeconds;
     self.nextSongLabel.text = [NSString stringWithFormat: @""];
     self.nextLabel.text = [NSString stringWithFormat:@""];
 //    NSLog (@"shuffle mode??? %d", musicPlayer.shuffleMode);
-    if (musicPlayer.shuffleMode == MPMusicShuffleModeOff) {
+    // only show next song if shuffle off and NOT repeat one song mode
+    if (musicPlayer.shuffleMode == MPMusicShuffleModeOff && musicPlayer.repeatMode != MPMusicRepeatModeOne) {
         [self prepareNextSongLabel];
     } else {
         self.nextSongScrollView.hidden = YES;
@@ -1090,12 +1101,30 @@ long songRemainingSeconds;
     //    NSLog (@"repeatMode is %d", [musicPlayer repeatMode]);
     if (musicPlayer.repeatMode == MPMusicRepeatModeNone) {
         [musicPlayer setRepeatMode: MPMusicRepeatModeAll];
-        [self.repeatButton setImage: [UIImage imageNamed: @"bigrepeat.png"] forState: UIControlStateNormal];
-        
+        [self.repeatButton setImage: [UIImage imageNamed: @"bigrepeatblue.png"] forState: UIControlStateNormal];
+//        UIImage *coloredImage = [[UIImage imageNamed: @"bigrepeatblue.png"] imageWithTint:[UIColor blueColor]];
+//        [self.repeatButton setImage: coloredImage forState:UIControlStateNormal];
+
     } else if (musicPlayer.repeatMode == MPMusicRepeatModeAll) {
+        [musicPlayer setRepeatMode: MPMusicRepeatModeOne];
+//        UIImage *coloredImage = [[UIImage imageNamed: @"bigrepeat1blue.png"] imageWithTint:[UIColor blueColor]];
+//        [self.repeatButton setImage: coloredImage forState:UIControlStateNormal];
+        [self.repeatButton setImage: [UIImage imageNamed: @"bigrepeat1blue.png"] forState: UIControlStateNormal];
+        self.nextSongScrollView.hidden = YES;
+        self.nextSongLabel.hidden = YES;
+        self.nextLabel.hidden = YES;
+    
+    } else if (musicPlayer.repeatMode == MPMusicRepeatModeOne) {
         [musicPlayer setRepeatMode: MPMusicRepeatModeNone];
-        UIImage *coloredImage = [self.repeatButton.currentImage imageWithTint:[UIColor whiteColor]];
-        [self.repeatButton setImage: coloredImage forState:UIControlStateNormal];
+//        UIImage *coloredImage = [[UIImage imageNamed: @"bigrepeat.png"] imageWithTint:[UIColor whiteColor]];
+//        [self.repeatButton setImage: coloredImage forState:UIControlStateNormal];
+        [self.repeatButton setImage: [UIImage imageNamed: @"bigrepeat.png"] forState: UIControlStateNormal];
+        //show nextSongLabel when repeat one is turned off as long as shuffle is off
+        if (musicPlayer.shuffleMode == MPMusicShuffleModeOff) {
+            queueIsKnown = YES;
+            [self prepareNextSongLabel];
+    
+        }
     }
 }
 
@@ -1103,7 +1132,7 @@ long songRemainingSeconds;
     //need to handle MPMusicShuffleModeAlbums
     if (musicPlayer.shuffleMode == MPMusicShuffleModeOff) {
         [musicPlayer setShuffleMode: MPMusicShuffleModeSongs];
-        [self.shuffleButton setImage: [UIImage imageNamed: @"bigshuffle.png"] forState: UIControlStateNormal];
+        [self.shuffleButton setImage: [UIImage imageNamed: @"bigshuffleblue.png"] forState: UIControlStateNormal];
 //        self.nextSongLabel.text = [NSString stringWithFormat: @""];
 //        self.nextLabel.text = [NSString stringWithFormat:@""];
         self.nextSongScrollView.hidden = YES;
@@ -1111,12 +1140,13 @@ long songRemainingSeconds;
         self.nextLabel.hidden = YES;
     } else if (musicPlayer.shuffleMode == MPMusicShuffleModeSongs) {
         [musicPlayer setShuffleMode: MPMusicShuffleModeOff];
-        UIImage *coloredImage = [self.shuffleButton.currentImage imageWithTint:[UIColor whiteColor]];
-        [self.shuffleButton setImage: coloredImage forState:UIControlStateNormal];
-        //show nextSongLabel when shuffle is off
-        queueIsKnown = YES;
-        [self prepareNextSongLabel];
-        
+        [self.shuffleButton setImage: [UIImage imageNamed: @"bigshuffle.png"] forState: UIControlStateNormal];
+
+        //show nextSongLabel when shuffle is off as long as not repeat one song mode
+        if (musicPlayer.repeatMode != MPMusicRepeatModeOne) {
+            queueIsKnown = YES;
+            [self prepareNextSongLabel];
+        }
     }
 }
 - (IBAction) togglePlaylistRemainingAndTitle:(id)sender {
@@ -1300,8 +1330,11 @@ long songRemainingSeconds;
                 //		its queue from the start. - !except if first time thru and state is stopped
                 [musicPlayer stop];
                 
-                [self goBackClick];
-            
+                BOOL userIsEditing = [[NSUserDefaults standardUserDefaults] boolForKey:@"userIsEditing"];
+                //if the user is editing, we don't want to pop, so call goBackClick in InfoTabBarDidCancel
+                if (!userIsEditing) {
+                    [self goBackClick];
+                }
 //                if (iPodLibraryChanged) {
 //                    [self.navigationController popToRootViewControllerAnimated:YES];
 //                } else {
@@ -1335,6 +1368,26 @@ long songRemainingSeconds;
             [self performSelector:@selector(delayedPlay) withObject:nil afterDelay:0.0];            
 //            NSLog (@"**************NOT Playing");
         }
+    }
+    NSLog (@"Shuffle Mode is %d", musicPlayer.shuffleMode);
+    
+    if (musicPlayer.shuffleMode == MPMusicShuffleModeSongs) {
+        [self.shuffleButton setImage: [UIImage imageNamed: @"bigshuffleblue.png"] forState: UIControlStateNormal];
+    } else {
+        [self.shuffleButton setImage: [UIImage imageNamed: @"bigshuffle.png"] forState: UIControlStateNormal];
+        
+    }
+    NSLog (@"Repeat Mode is %d", musicPlayer.repeatMode);
+    
+    if (musicPlayer.repeatMode == MPMusicRepeatModeOne) {
+        [self.repeatButton setImage: [UIImage imageNamed: @"bigrepeat1blue.png"] forState: UIControlStateNormal];
+        
+    } else if (musicPlayer.repeatMode == MPMusicRepeatModeAll) {
+        [self.repeatButton setImage: [UIImage imageNamed: @"bigrepeatblue.png"] forState: UIControlStateNormal];
+        
+    } else {
+        [self.repeatButton setImage: [UIImage imageNamed: @"bigrepeat.png"] forState: UIControlStateNormal];
+        
     }
 }
 - (void) delayedPlay {
@@ -1421,7 +1474,13 @@ long songRemainingSeconds;
 						   selector: @selector (handle_PlaybackStateChanged:)
 							   name: MPMusicPlayerControllerPlaybackStateDidChangeNotification
 							 object: musicPlayer];
-    
+
+    MPMusicPlaybackState playbackState = [musicPlayer playbackState];
+
+    if (playbackState == MPMusicPlaybackStateStopped) {
+        [self goBackClick];
+    }
+
 }
 - (void)viewWillDisappear:(BOOL)animated {
     LogMethod();

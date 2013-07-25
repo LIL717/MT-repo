@@ -153,6 +153,15 @@
     NSString *playingItem = [[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyTitle];
     //    NSLog (@"playing Item is *%@*, songInfo.SongName is *%@*", playingItem, self.songInfo.songName);
     
+	MPMusicPlaybackState playbackState = [musicPlayer playbackState];
+	
+    //if the player is stopped (but we are still here because of editing, set playingItem to nil so nowPlaying button won't show)
+    
+    if (playbackState == MPMusicPlaybackStateStopped) {
+        playingItem = nil;
+        [self setShowPlayButton: NO];
+
+    }
     if (playingItem) {
         //don't display right bar button if playing item is song info item
         if ([playingItem isEqualToString: [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyTitle]]) {
@@ -380,6 +389,7 @@
 // If displaying now-playing item when it changes, update mediaItemForInfo and show info for currently playing song
 - (void) handle_NowPlayingItemChanged: (id) notification {
     LogMethod();
+    
     if (self.viewingNowPlaying) {
         //if the user is in the middle of editing we won't change the mediaItem (until they return to previous view)
         if (!self.userInfoViewController.editingUserInfo) {
@@ -420,15 +430,23 @@
 - (void) handle_PlaybackStateChanged: (id) notification {
     LogMethod();
     
+    BOOL userIsEditing = [[NSUserDefaults standardUserDefaults] boolForKey:@"userIsEditing"];
+    
 	MPMusicPlaybackState playbackState = [musicPlayer playbackState];
 	
     if (playbackState == MPMusicPlaybackStateStopped) {
-        self.navigationItem.rightBarButtonItem= nil;
+        
+        //if the user is editing, we don't want to pop, so call goBackClick in InfoTabBarDidCancel
+        if (!userIsEditing) {
+            self.navigationItem.rightBarButtonItem= nil;
+            
+            //if the currently playing song is the last one in the queue, force a goBack
+            if (self.viewingNowPlaying) {
+                [self goBackClick];
+            }
 
-        //if the currently playing song is the last one in the queue, force a goBack
-        if (self.viewingNowPlaying) {
-            [self goBackClick];
         }
+
     }
 }
 

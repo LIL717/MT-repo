@@ -53,7 +53,6 @@
 @property (readwrite)           BOOL songShuffleButtonPressed;
 @property (nonatomic, strong)   NSMutableArray *taggedSongArray;
 @property (nonatomic, strong)   NSArray *sortedTaggedArray;
-@property (nonatomic, strong)   NSNumber *taggedPlaylistDuration;
 @property (nonatomic, strong)   TaggedSectionIndexData *taggedSectionIndexData;
 
 

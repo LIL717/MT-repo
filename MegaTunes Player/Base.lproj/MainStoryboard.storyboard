@@ -844,7 +844,7 @@
                         </view>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="CollectionItemCell" rowHeight="55" id="DFq-ZQ-3yg" userLabel="cell" customClass="CollectionItemCell">
-                                <rect key="frame" x="0.0" y="146" width="480" height="56"/>
+                                <rect key="frame" x="0.0" y="146" width="480" height="57"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="10" y="1" width="440" height="54"/>
@@ -1765,14 +1765,14 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="SvT-2g-rDr"/>
         <segue reference="ZlS-b1-pog"/>
-        <segue reference="hot-4h-GjM"/>
+        <segue reference="OaX-wz-MBb"/>
         <segue reference="qWI-HD-eSG"/>
         <segue reference="hv1-71-OGq"/>
-        <segue reference="OaX-wz-MBb"/>
+        <segue reference="hot-4h-GjM"/>
         <segue reference="oc8-HG-QrB"/>
-        <segue reference="hHs-2t-p2p"/>
+        <segue reference="pO3-jk-z6Z"/>
         <segue reference="jae-3W-C2f"/>
+        <segue reference="hHs-2t-p2p"/>
     </inferredMetricsTieBreakers>
 </document>

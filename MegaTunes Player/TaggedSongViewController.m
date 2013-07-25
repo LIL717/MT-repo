@@ -61,7 +61,6 @@
 @synthesize songShuffleButtonPressed;
 @synthesize taggedSongArray;
 @synthesize sortedTaggedArray;
-@synthesize taggedPlaylistDuration;
 @synthesize taggedSectionIndexData;
 
 
@@ -248,7 +247,6 @@ BOOL excludeICloudItems;
     }];
     
     self.taggedSongArray = [self.sortedTaggedArray mutableCopy];
-    self.taggedPlaylistDuration = [NSNumber numberWithLong: taggedDuration];
     self.collectionItem.duration = [NSNumber numberWithLong: taggedDuration];
 }
 - (void) prepareArrayDependentData {
@@ -1240,7 +1238,6 @@ BOOL excludeICloudItems;
             [collectionArray addObject: song];
         }
         self.songCollection = [MPMediaItemCollection collectionWithItems: collectionArray];
-        self.collectionItem.duration = self.taggedPlaylistDuration;
 
         self.collectionItem.collection = self.songCollection;
         
