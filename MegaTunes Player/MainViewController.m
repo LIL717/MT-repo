@@ -234,7 +234,7 @@ BOOL stopWatchRunning;
         self.navigationItem.titleView = nil;
     } else {
         self.title = NSLocalizedString(@"Now Playing", nil);
-        self.navigationItem.rightBarButtonItem = nil;
+        self.navigationItem.rightBarButtonItems = nil;
         self.navigationItem.titleView = [self customizeTitleView];
     }
 
@@ -798,10 +798,10 @@ BOOL stopWatchRunning;
         elapsed -= mins * 60;
         int secs = (int) (elapsed);
         elapsed -= secs;
-        int fraction = elapsed * 10.0;
+//        int fraction = elapsed * 10.0;
         
         //update text string using a format of 0:00.0
-        self.stopWatchTime = [NSString stringWithFormat: @"%2u:%02u", mins, secs, fraction];
+        self.stopWatchTime = [NSString stringWithFormat: @"%2u:%02u", mins, secs];
         
     } else {
         self.stopWatchTime = @"";
@@ -840,17 +840,16 @@ BOOL stopWatchRunning;
         [self positionSlider];
     }
     
-    self.navigationItem.rightBarButtonItem = nil;
+    self.navigationItem.rightBarButtonItems = nil;
+
     // only show the collection remaining if the setting is on and shuffle is off and repeat is off
     if (showPlaylistRemaining) {
+
+        self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects: self.stopWatchBarButton, nil];
+
         if (musicPlayer.shuffleMode == MPMusicShuffleModeOff && musicPlayer.repeatMode == MPMusicRepeatModeNone) {
 //        NSString * collectionRemaining = [self calculateCollectionRemaining];
             [self calculateCollectionRemaining];
-
-        // don't show collectionRemaining if it is the same as songRemaining
-//            if (collectionRemainingSeconds == songRemainingSeconds) {
-//                self.navigationItem.rightBarButtonItem=nil;
-//            }
         }
     }
     
@@ -891,7 +890,7 @@ BOOL stopWatchRunning;
     
 //    // don't show collectionRemaining if it is the same as songRemaining
 //    if (collectionRemainingSeconds <= songRemainingSeconds) {
-//        self.navigationItem.rightBarButtonItem=nil;
+//        self.navigationItem.rightBarButtonItems=nil;
 //        return;
 //    }
     
@@ -918,6 +917,8 @@ BOOL stopWatchRunning;
     NSDate *collectionRemainingTime = [formatter dateFromString:collectionRemaining];
     
     if (collectionRemainingTime) {
+        UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+        [negativeSpacer setWidth:-15];
         if (collectionRemainingSeconds > 0) {
             
             NSString *collectionRemainingLabel = [NSString stringWithFormat:@"-%@",[formatter stringFromDate:collectionRemainingTime]];
@@ -933,13 +934,14 @@ BOOL stopWatchRunning;
             [durationButton setTitlePositionAdjustment: UIOffsetMake(TextOffset, 5.0f) forBarMetrics: UIBarMetricsDefault];
             [durationButton setTitlePositionAdjustment: UIOffsetMake(TextOffset, 9.0f) forBarMetrics: UIBarMetricsLandscapePhone];
 
-            UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-            [negativeSpacer setWidth:-15];
+
             
-            self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:durationButton, self.stopWatchBarButton, negativeSpacer, nil];
+//            self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:durationButton, self.stopWatchBarButton, negativeSpacer, nil];
+            self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:durationButton, self.stopWatchBarButton, nil];
 
         } else {
-            self.navigationItem.rightBarButtonItem=nil;
+            self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects: self.stopWatchBarButton, nil];
+
         }
 
     } 
@@ -1004,7 +1006,8 @@ BOOL stopWatchRunning;
 	{
         TimeMagnifierViewController *timeMagnifierViewController = [[navigationController viewControllers] objectAtIndex:0];
         timeMagnifierViewController.delegate = self;
-        timeMagnifierViewController.textToMagnify = self.navigationItem.rightBarButtonItem.title;
+        UIBarButtonItem *playlistRemainingButton = [self.navigationItem.rightBarButtonItems objectAtIndex: 0];
+        timeMagnifierViewController.textToMagnify = playlistRemainingButton.title;
         timeMagnifierViewController.timeType = segue.identifier;
 
 	}
@@ -1201,20 +1204,22 @@ BOOL stopWatchRunning;
         //title will only be displayed if playlist remaining is turned off
         self.title = NSLocalizedString(@"Now Playing", nil);
         [UIView animateWithDuration:2.5 animations:^{
-            self.navigationItem.rightBarButtonItem = nil;
+            self.navigationItem.rightBarButtonItems = nil;
             self.navigationItem.titleView = [self customizeTitleView];
         }];
         //        NSLog (@"show Playlist Remaining");
     } else {
         self.showPlaylistRemaining = YES;
-        [UIView animateWithDuration:0.25 animations:^{
+//        [UIView animateWithDuration:0.15 animations:^{
             self.title = nil;
             self.navigationItem.titleView = nil;
+            self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects: self.stopWatchBarButton, nil];
+
             [self updateTime];
-        }];
+//        }];
         //        NSLog (@"don't show Playlist Remaining");
     }
-    //showTags must persist so save to NSUserDefaults
+    //showPlaylistRemaining must persist so save to NSUserDefaults
     NSUserDefaults * standardUserDefaults = [NSUserDefaults standardUserDefaults];
     [standardUserDefaults setBool:self.showPlaylistRemaining forKey:@"showPlaylistRemaining"];
 }
