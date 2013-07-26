@@ -128,6 +128,7 @@
 @synthesize hasFinishedMoving;
 @synthesize songShuffleButtonPressed;
 @synthesize collectionContainsICloudItem;
+@synthesize stopWatchBarButton;
 
 @synthesize currentQueue;
 @synthesize elapsedTimeLabel;
@@ -141,6 +142,7 @@
 @synthesize nextSongLabel;
 @synthesize collectionItem;
 @synthesize swipeLeftRight;
+@synthesize stopWatchTime;
 
 @synthesize rewindButton;
 @synthesize playPauseButton;
@@ -167,6 +169,8 @@ float saveVolume;
 MPMusicPlaybackState savedPlaybackState;
 long collectionRemainingSeconds;
 long songRemainingSeconds;
+NSTimeInterval stopWatchStartTime;
+BOOL stopWatchRunning;
 
 
 
@@ -199,6 +203,19 @@ long songRemainingSeconds;
     [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage58 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
     
     self.navigationItem.backBarButtonItem = self.navigationItem.leftBarButtonItem;
+    
+
+    
+    self.stopWatchBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                              style:UIBarButtonItemStyleBordered
+                                                             target:self
+                                                             action:@selector(startStopWatch)];
+    
+    UIImage *menuBarImageDefault = [[UIImage imageNamed:@"stopWatchIcon57.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    UIImage *menuBarImageLandscape = [[UIImage imageNamed:@"stopWatchIcon68.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    
+    [self.stopWatchBarButton setBackgroundImage:menuBarImageDefault forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [self.stopWatchBarButton setBackgroundImage:menuBarImageLandscape forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
     
     //need this to use MPNowPlayingInfoCenter
     [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
@@ -769,6 +786,26 @@ long songRemainingSeconds;
 - (void) updateTime
 {
     //   LogMethod();
+
+    if (stopWatchRunning) {
+    
+        //calculate elapsed time
+        NSTimeInterval currentTime = [NSDate timeIntervalSinceReferenceDate];
+        NSTimeInterval elapsed = currentTime - stopWatchStartTime;
+        
+        //extract out the minutes,seonds, and fraction of seconds from elapsed time:
+        int mins = (int) (elapsed / 60.0);
+        elapsed -= mins * 60;
+        int secs = (int) (elapsed);
+        elapsed -= secs;
+        int fraction = elapsed * 10.0;
+        
+        //update text string using a format of 0:00.0
+        self.stopWatchTime = [NSString stringWithFormat: @"%2u:%02u", mins, secs, fraction];
+        
+    } else {
+        self.stopWatchTime = @"";
+    }
     
     long playbackSeconds = musicPlayer.currentPlaybackTime;
     long songDuration = [[self.musicPlayer.nowPlayingItem valueForProperty:MPMediaItemPropertyPlaybackDuration] floatValue];
@@ -899,7 +936,7 @@ long songRemainingSeconds;
             UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
             [negativeSpacer setWidth:-15];
             
-            self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:durationButton,negativeSpacer,nil];
+            self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:durationButton, self.stopWatchBarButton, negativeSpacer, nil];
 
         } else {
             self.navigationItem.rightBarButtonItem=nil;
@@ -970,6 +1007,15 @@ long songRemainingSeconds;
         timeMagnifierViewController.textToMagnify = self.navigationItem.rightBarButtonItem.title;
         timeMagnifierViewController.timeType = segue.identifier;
 
+	}
+    
+    if ([segue.identifier isEqualToString:@"StartStopWatch"])
+	{
+        TimeMagnifierViewController *timeMagnifierViewController = [[navigationController viewControllers] objectAtIndex:0];
+        timeMagnifierViewController.delegate = self;
+        timeMagnifierViewController.textToMagnify = @"0:00";
+        timeMagnifierViewController.timeType = segue.identifier;
+        
 	}
     
     if ([segue.identifier isEqualToString:@"MagnifyNextSong"])
@@ -1175,6 +1221,12 @@ long songRemainingSeconds;
 - (IBAction)magnify {
     
     [self performSegueWithIdentifier: @"MagnifyPlaylistRemaining" sender: self];
+}
+- (IBAction) startStopWatch {
+    
+    stopWatchStartTime = [NSDate timeIntervalSinceReferenceDate];
+    stopWatchRunning = YES;
+    [self performSegueWithIdentifier: @"StartStopWatch" sender: self];
 }
 - (void)goBackClick
 {
@@ -1460,6 +1512,7 @@ long songRemainingSeconds;
 
 - (void)timeMagnifierViewControllerDidCancel:(TimeMagnifierViewController *)controller
 {
+    stopWatchRunning = NO;
 	[self dismissViewControllerAnimated:YES completion:nil];
     [self willAnimateRotationToInterfaceOrientation: self.interfaceOrientation duration: 1];
 }

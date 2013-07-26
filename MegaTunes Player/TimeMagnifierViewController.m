@@ -56,6 +56,10 @@
         [self.magnifiedText setTitle: mainViewController.navigationItem.rightBarButtonItem.title
                             forState: UIControlStateNormal];
     }
+    if ([self.timeType isEqualToString: @"StartStopWatch"]) {
+        [self.magnifiedText setTitle: mainViewController.stopWatchTime
+                            forState: UIControlStateNormal];
+    }
 
 }
 

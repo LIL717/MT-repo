@@ -68,6 +68,8 @@
 @property (nonatomic)           MPMusicPlaybackState    savedPlaybackState;
 @property (readwrite)           BOOL                    songShuffleButtonPressed;
 @property (nonatomic)           BOOL                    collectionContainsICloudItem;
+@property (nonatomic, strong)   UIBarButtonItem         *stopWatchBarButton;
+
 
 
 @property (strong, nonatomic) IBOutlet UILabel *initialNowPlayingLabel;
@@ -90,6 +92,7 @@
 
 @property (strong, nonatomic) CollectionItem *collectionItem;
 @property (strong, nonatomic) UISwipeGestureRecognizer *swipeLeftRight;
+@property (strong, nonatomic) NSString *stopWatchTime;
 
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *nextSongLabelWidthConstraint;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *leadingSpaceToSliderConstraint;

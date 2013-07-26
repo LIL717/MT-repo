@@ -56,7 +56,7 @@
                         </view>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" restorationIdentifier="SongCell" selectionStyle="gray" hidesAccessoryWhenEditing="NO" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="SongCell" rowHeight="55" id="fy5-n4-fQP" userLabel="cell" customClass="SongCell">
-                                <rect key="frame" x="0.0" y="146" width="480" height="56"/>
+                                <rect key="frame" x="0.0" y="146" width="480" height="57"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="10" y="1" width="460" height="54"/>
@@ -441,6 +441,7 @@
                         <segue destination="ItR-S9-GSa" kind="modal" identifier="MagnifyRemainingTime" modalTransitionStyle="crossDissolve" id="KOX-nP-ddu"/>
                         <segue destination="ItR-S9-GSa" kind="modal" identifier="MagnifyElapsedTime" modalTransitionStyle="crossDissolve" id="FyL-fq-fFG"/>
                         <segue destination="ItR-S9-GSa" kind="modal" identifier="MagnifyPlaylistRemaining" modalTransitionStyle="crossDissolve" id="jae-3W-C2f"/>
+                        <segue destination="ItR-S9-GSa" kind="modal" identifier="StartStopWatch" modalTransitionStyle="crossDissolve" id="Xbd-a7-Wgl"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0Sq-tX-xZh" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1235,7 +1236,7 @@
                         </view>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="CollectionItemCell" rowHeight="55" id="WIN-8k-Cc9" userLabel="cell" customClass="CollectionItemCell">
-                                <rect key="frame" x="0.0" y="146" width="480" height="56"/>
+                                <rect key="frame" x="0.0" y="146" width="480" height="57"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="10" y="1" width="440" height="54"/>
@@ -1631,7 +1632,7 @@
                         </view>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" restorationIdentifier="SongCell" selectionStyle="gray" hidesAccessoryWhenEditing="NO" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="SongCell" rowHeight="55" id="IaW-fx-iKd" userLabel="cell" customClass="SongCell">
-                                <rect key="frame" x="0.0" y="146" width="480" height="57"/>
+                                <rect key="frame" x="0.0" y="146" width="480" height="56"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="10" y="1" width="460" height="54"/>
@@ -1765,14 +1766,14 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="pO3-jk-z6Z"/>
+        <segue reference="oc8-HG-QrB"/>
         <segue reference="ZlS-b1-pog"/>
         <segue reference="OaX-wz-MBb"/>
+        <segue reference="hot-4h-GjM"/>
         <segue reference="qWI-HD-eSG"/>
         <segue reference="hv1-71-OGq"/>
-        <segue reference="hot-4h-GjM"/>
-        <segue reference="oc8-HG-QrB"/>
-        <segue reference="pO3-jk-z6Z"/>
-        <segue reference="jae-3W-C2f"/>
         <segue reference="hHs-2t-p2p"/>
+        <segue reference="Xbd-a7-Wgl"/>
     </inferredMetricsTieBreakers>
 </document>
