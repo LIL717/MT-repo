@@ -22,6 +22,8 @@
 @property (strong, nonatomic) NSString *textToMagnify;
 @property (nonatomic, retain)   NSTimer *playbackTimer;
 @property (nonatomic, retain) NSString *timeType;
+@property (nonatomic, strong)	MPMusicPlayerController	*musicPlayer;
+
 
 - (void) updateTime;
 - (IBAction)cancel:(id)sender;

@@ -917,8 +917,7 @@ BOOL stopWatchRunning;
     NSDate *collectionRemainingTime = [formatter dateFromString:collectionRemaining];
     
     if (collectionRemainingTime) {
-        UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-        [negativeSpacer setWidth:-15];
+
         if (collectionRemainingSeconds > 0) {
             
             NSString *collectionRemainingLabel = [NSString stringWithFormat:@"-%@",[formatter stringFromDate:collectionRemainingTime]];
@@ -935,7 +934,8 @@ BOOL stopWatchRunning;
             [durationButton setTitlePositionAdjustment: UIOffsetMake(TextOffset, 9.0f) forBarMetrics: UIBarMetricsLandscapePhone];
 
 
-            
+//        UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+//        [negativeSpacer setWidth:-15];
 //            self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:durationButton, self.stopWatchBarButton, negativeSpacer, nil];
             self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:durationButton, self.stopWatchBarButton, nil];
 
@@ -1237,8 +1237,10 @@ BOOL stopWatchRunning;
 {
 //    LogMethod();
 
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    
+    //don't start networkActivityIndicator if stopwatch is running
+    if (!stopWatchRunning) {
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    }
     //remove the swipe gesture from the nav bar  (doesn't work to wait until dealloc)
     [self.navigationController.navigationBar removeGestureRecognizer:self.swipeLeftRight];
 
@@ -1518,7 +1520,8 @@ BOOL stopWatchRunning;
 - (void)timeMagnifierViewControllerDidCancel:(TimeMagnifierViewController *)controller
 {
     stopWatchRunning = NO;
-	[self dismissViewControllerAnimated:YES completion:nil];
+//	[self dismissViewControllerAnimated:YES completion:nil];
+    [controller dismissViewControllerAnimated:YES completion:nil];
     [self willAnimateRotationToInterfaceOrientation: self.interfaceOrientation duration: 1];
 }
 //#pragma mark - InfoTabBarControllerDelegate
