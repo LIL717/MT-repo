@@ -1016,7 +1016,11 @@ BOOL stopWatchRunning;
 	{
         TimeMagnifierViewController *timeMagnifierViewController = [[navigationController viewControllers] objectAtIndex:0];
         timeMagnifierViewController.delegate = self;
-        timeMagnifierViewController.textToMagnify = @"0:00";
+        int mins = 0;
+        int secs = 0;
+        self.stopWatchTime = [NSString stringWithFormat: @"%2u:%02u", mins, secs];
+        timeMagnifierViewController.textToMagnify = self.stopWatchTime;
+//        timeMagnifierViewController.textToMagnify = @"0:00";
         timeMagnifierViewController.timeType = segue.identifier;
         
 	}
