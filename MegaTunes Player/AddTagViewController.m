@@ -73,6 +73,9 @@
     UIImage *menuBarImage58 = [[UIImage imageNamed:@"arrow_left_58_white.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
     [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage48 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage58 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
+    [self.navigationItem.leftBarButtonItem setIsAccessibilityElement:YES];
+    [self.navigationItem.leftBarButtonItem setAccessibilityLabel: NSLocalizedString(@"Back", nil)];
+    [self.navigationItem.leftBarButtonItem setAccessibilityTraits: UIAccessibilityTraitButton];
     
     self.rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
                                                            style:UIBarButtonItemStyleBordered
@@ -85,17 +88,21 @@
     [self.rightBarButton setBackgroundImage:menuBarImageDefault forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     [self.rightBarButton setBackgroundImage:menuBarImageLandscape forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
     
+    [self.rightBarButton setIsAccessibilityElement:YES];
+    [self.rightBarButton setAccessibilityLabel: NSLocalizedString(@"Done", nil)];
+    [self.rightBarButton setAccessibilityTraits: UIAccessibilityTraitButton];
+    
     self.navigationItem.rightBarButtonItem = self.rightBarButton;
     
     [self.tagName setDelegate: self];
     [self.tagName addTarget:self
-                          action:@selector(textFieldFinished:)
-                forControlEvents:UIControlEventEditingDidEndOnExit];
+                     action:@selector(textFieldFinished:)
+           forControlEvents:UIControlEventEditingDidEndOnExit];
     
     if (self.cPicker == nil) {
-//        [self.view setBackgroundColor:[UIColor grayColor]];
+        //        [self.view setBackgroundColor:[UIColor grayColor]];
         self.cPicker = [[VBColorPicker alloc] initWithFrame:CGRectMake(0, 0, 202, 202)];
-//        [self.cPicker setCenter:self.colorView.center];
+        //        [self.cPicker setCenter:self.colorView.center];
         [self.colorView addSubview: self.cPicker];
         [self.cPicker setDelegate:self];
         [self.cPicker showPicker];
@@ -154,39 +161,39 @@
         
         self.verticalSpaceTopToTagConstraint.constant = 11;
         self.verticalSpaceTopToColorViewConstraint.constant = 96;
-//        [self.view removeConstraint: horizontalSpaceSuperviewToColorViewConstraint];
-//        [self.view removeConstraint: horizontalSpaceColorViewToSuperviewConstraint];
+        //        [self.view removeConstraint: horizontalSpaceSuperviewToColorViewConstraint];
+        //        [self.view removeConstraint: horizontalSpaceColorViewToSuperviewConstraint];
         self.horizontalSpaceTagToSuperviewConstraint.constant = 10;
         [self.view removeConstraint: horizontalSpaceTagToColorViewConstraint];
         [self.view addConstraint: centerXColorViewConstraint];
-
         
-//        [self.cPicker setCenter:self.colorView.center];
-
-
+        
+        //        [self.cPicker setCenter:self.colorView.center];
+        
+        
         
     } else {
         //        NSLog (@"landscape");
         self.verticalSpaceTopToTagConstraint.constant += landscapeOffset;
         self.verticalSpaceTopToColorViewConstraint.constant = self.verticalSpaceTopToTagConstraint.constant + 20;
         [self.view removeConstraint: centerXColorViewConstraint];
-//        self.horizontalSpaceSuperviewToColorViewConstraint.constant = 120;
-//        [self.view addConstraint: self.horizontalSpaceSuperviewToColorViewConstraint];
-//        self.horizontalSpaceColorViewToSuperviewConstraint.constant = 5;
-//        [self.view removeConstraint: horizontalSpaceSuperviewToColorViewConstraint];
-//        [self.view removeConstraint: horizontalSpaceColorViewToSuperviewConstraint];
+        //        self.horizontalSpaceSuperviewToColorViewConstraint.constant = 120;
+        //        [self.view addConstraint: self.horizontalSpaceSuperviewToColorViewConstraint];
+        //        self.horizontalSpaceColorViewToSuperviewConstraint.constant = 5;
+        //        [self.view removeConstraint: horizontalSpaceSuperviewToColorViewConstraint];
+        //        [self.view removeConstraint: horizontalSpaceColorViewToSuperviewConstraint];
         self.horizontalSpaceTagToColorViewConstraint.constant = 5;
         [self.view addConstraint: self.horizontalSpaceTagToColorViewConstraint];
-
+        
         self.horizontalSpaceTagToSuperviewConstraint.constant = 207;
-
-//        [self.cPicker setCenter:self.colorView.center];
-//        [self.view addSubview:_cPicker];
+        
+        //        [self.cPicker setCenter:self.colorView.center];
+        //        [self.view addSubview:_cPicker];
     }
 }
 
 - (void) textFieldDidBeginEditing: (UITextField *) textField {
-//    LogMethod();
+    //    LogMethod();
     if (!self.hasColor) {
         UIImage *coloredBackgroundImage = [[UIImage imageNamed: @"list-background.png"] imageWithTint:[UIColor darkGrayColor]];
         [textField setBackgroundColor:[UIColor colorWithPatternImage: coloredBackgroundImage]];
@@ -194,21 +201,21 @@
 }
 
 - (void) textFieldDidEndEditing: (UITextField *) textField {
-//    LogMethod();
-
+    //    LogMethod();
+    
     if (!self.hasColor) {
-       [textField setBackgroundColor: [UIColor clearColor]];
+        [textField setBackgroundColor: [UIColor clearColor]];
     }
 }
 
 - (void)saveTag {
-
+    
     TagItem *tagItem = [TagItem alloc];
-//    if ([self.tagName.text isEqualToString: @""]) {
-//        tagItem.tagName = @"   ";
-//    } else {
-        tagItem.tagName = self.tagName.text;
-//    }
+    //    if ([self.tagName.text isEqualToString: @""]) {
+    //        tagItem.tagName = @"   ";
+    //    } else {
+    tagItem.tagName = self.tagName.text;
+    //    }
     
     if (self.hasColor) {
         CGFloat red = 0.0, green = 0.0, blue = 0.0, alpha = 0.0;
@@ -221,14 +228,14 @@
         tagItem.tagColorBlue = [NSNumber numberWithInt: (int) (blue * 255)];
         tagItem.tagColorAlpha = [NSNumber numberWithInt: (int) (alpha * 255)];
     }
-
+    
     TagData *tagData = [TagData alloc];
     tagData.managedObjectContext = self.managedObjectContext;
-
+    
     if ([actionType isEqualToString: @"Add"]) {
         NSLog (@"Add tag to TagData");
         //add 1 to the lastObject index and save that as the sortOrder
-//        NSLog (@"self.lastObjectIndex = %d", self.lastObjectIndex);
+        //        NSLog (@"self.lastObjectIndex = %d", self.lastObjectIndex);
         
         self.lastObjectIndex += 1;
         tagItem.sortOrder = [NSNumber numberWithInt: self.lastObjectIndex];
@@ -237,13 +244,13 @@
     }
     if ([actionType isEqualToString: @"Edit"]) {
         NSLog (@"Update tag in TagData");
-
+        
         tagItem.sortOrder = self.sortOrder;
         [tagData updateTagItemInCoreData: tagItem];
     }
     
-//    [tagData listAll];
-
+    //    [tagData listAll];
+    
     [self goBackClick];
 }
 - (IBAction)textFieldFinished:(id)sender
@@ -264,32 +271,32 @@
     self.pickedColor = color;
     
     CGFloat red = 0.0, green = 0.0, blue = 0.0, alpha = 0.0;
-//    CGFloat hue = 0.0, saturation = 0.0, brightness = 0.0;
-//    [self.pickedColor getHue: &hue saturation: &saturation brightness:&brightness alpha:&alpha];
+    //    CGFloat hue = 0.0, saturation = 0.0, brightness = 0.0;
+    //    [self.pickedColor getHue: &hue saturation: &saturation brightness:&brightness alpha:&alpha];
     [self.pickedColor getRed:&red green:&green blue:&blue alpha:&alpha];
-//    NSLog (@"pickedColor before saturation change is %f %f %f %f", red, green, blue, alpha);
-//    
-//    if (brightness > 0.7) {
-//        brightness = 0.5;
-//    }
-////    if (saturation < 0.7) {
-//        saturation = 1.0;
-////    }
-//
-//    self.pickedColor = [UIColor colorWithHue: hue
-//                                  saturation: saturation
-//                                  brightness: brightness
-//                                       alpha: alpha];
-//    [self.pickedColor getRed:&red green:&green blue:&blue alpha:&alpha];
+    //    NSLog (@"pickedColor before saturation change is %f %f %f %f", red, green, blue, alpha);
+    //
+    //    if (brightness > 0.7) {
+    //        brightness = 0.5;
+    //    }
+    ////    if (saturation < 0.7) {
+    //        saturation = 1.0;
+    ////    }
+    //
+    //    self.pickedColor = [UIColor colorWithHue: hue
+    //                                  saturation: saturation
+    //                                  brightness: brightness
+    //                                       alpha: alpha];
+    //    [self.pickedColor getRed:&red green:&green blue:&blue alpha:&alpha];
     NSLog (@"pickedColor after saturation change is %f %f %f %f", red, green, blue, alpha);
     
     UIImage *coloredBackgroundImage = [[UIImage imageNamed: @"list-background.png"] imageWithTint:self.pickedColor];
     [self.tagName setBackgroundColor:[UIColor colorWithPatternImage: coloredBackgroundImage]];
     self.hasColor = YES;
     [self.tagName setNeedsDisplay];
-//    [self.tagName setNeedsDisplay];
-//    [_rect setBackgroundColor:color];
-//    [_cPicker hidePicker];
+    //    [self.tagName setNeedsDisplay];
+    //    [_rect setBackgroundColor:color];
+    //    [_cPicker hidePicker];
 }
 
 - (void)viewDidUnload

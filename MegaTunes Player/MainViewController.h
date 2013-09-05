@@ -9,6 +9,7 @@
 @class ItemCollection;
 @class UserInfoViewController;
 @class OBSlider;
+@class AccessibleButton;
 
 #import "TimeMagnifierViewController.h"
 #import "TextMagnifierViewController.h"
@@ -78,11 +79,11 @@
 @property (strong, nonatomic) IBOutlet OBSlider *progressSlider;
 @property (strong, nonatomic) IBOutlet UILabel *remainingTimeLabel;
 @property (strong, nonatomic) IBOutlet MPVolumeView *volumeView;
-@property (strong, nonatomic) IBOutlet UIButton *rewindButton;
-@property (strong, nonatomic) IBOutlet UIButton *playPauseButton;
-@property (strong, nonatomic) IBOutlet UIButton *forwardButton;
+@property (strong, nonatomic) IBOutlet AccessibleButton *rewindButton;
+@property (strong, nonatomic) IBOutlet AccessibleButton *playPauseButton;
+@property (strong, nonatomic) IBOutlet AccessibleButton *forwardButton;
 @property (strong, nonatomic) IBOutlet UIButton *repeatButton;
-@property (strong, nonatomic) IBOutlet UIButton *shuffleButton;
+@property (strong, nonatomic) IBOutlet AccessibleButton *shuffleButton;
 
 @property (strong, nonatomic) IBOutlet UILabel *nextLabel;
 @property (strong, nonatomic) IBOutlet UIButton *nowPlayingInfoButton;
@@ -94,7 +95,7 @@
 @property (strong, nonatomic) UISwipeGestureRecognizer *swipeLeftRight;
 @property (strong, nonatomic) NSString *stopWatchTime;
 
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *nextSongLabelWidthConstraint;
+//@property (strong, nonatomic) IBOutlet NSLayoutConstraint *nextSongLabelWidthConstraint;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *leadingSpaceToSliderConstraint;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *trailingSpaceFromSliderConstraint;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceBetweenSliderAndElapsedTime;
@@ -102,6 +103,7 @@
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceBetweenRewindAndReplay;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *topSpaceToPlayButton;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *playButtonToBottomSpace;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *centerXInScrollView;
 
 - (IBAction)handleScrub:(id)sender;
 - (IBAction)handleScrubberTouchDown:(id)sender;
@@ -130,4 +132,3 @@
 @property (nonatomic) CGFloat currentPlaybackPosition;
 
 @end
-

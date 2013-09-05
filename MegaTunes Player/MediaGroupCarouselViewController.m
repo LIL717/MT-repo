@@ -65,7 +65,7 @@ BOOL listIsAlphabetic;
 #pragma mark - Initial Display methods
 - (void)awakeFromNib
 {
-//    LogMethod();
+    //    LogMethod();
     [self loadGroupingData];
     
     self.rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
@@ -79,7 +79,11 @@ BOOL listIsAlphabetic;
     [self.rightBarButton setBackgroundImage:menuBarImageDefault forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     [self.rightBarButton setBackgroundImage:menuBarImageLandscape forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
     
-    [self.navigationItem setHidesBackButton: YES animated: NO];    
+    [self.rightBarButton setIsAccessibilityElement:YES];
+    [self.rightBarButton setAccessibilityLabel: NSLocalizedString(@"Now Playing", nil)];
+    [self.rightBarButton setAccessibilityTraits: UIAccessibilityTraitButton];
+    
+    [self.navigationItem setHidesBackButton: YES animated: NO];
     
     musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
     
@@ -91,11 +95,11 @@ BOOL listIsAlphabetic;
 }
 - (void)viewDidLoad
 {
-//    LogMethod();
+    //    LogMethod();
     [super viewDidLoad];
     
     self.mediaGroupViewController.delegate = self;
-  
+    
     //configure carousel
     carousel.type = iCarouselTypeCoverFlow2;
     
@@ -120,7 +124,7 @@ BOOL listIsAlphabetic;
     
     MediaGroup* group8 = [[MediaGroup alloc] initWithName:@"Podcasts" andImage:[UIImage imageNamed:@"PodcastsIcon.png"]andQueryType: [MPMediaQuery podcastsQuery]];
     
-
+    
     
     
     self.groupingData = [NSArray arrayWithObjects:group0, group1, group2, group3, group4, group5, group6, group7,group8, nil];
@@ -134,7 +138,7 @@ BOOL listIsAlphabetic;
 
 - (void) viewWillAppear:(BOOL)animated
 {
-//    LogMethod();
+    //    LogMethod();
     [super viewWillAppear: animated];
     
     [self setIPodLibraryChanged: NO];
@@ -150,11 +154,11 @@ BOOL listIsAlphabetic;
     } else {
         self.navigationItem.rightBarButtonItem= nil;
     }
-
+    
     return;
 }
 -(void) viewDidAppear:(BOOL)animated {
-//    LogMethod();
+    //    LogMethod();
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     [super viewDidAppear:(BOOL)animated];
 }
@@ -190,7 +194,7 @@ BOOL listIsAlphabetic;
     {
         view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 300.0f, 450.0f)];
         ((UIImageView *)view).image = [UIImage imageNamed:@"page.png"];
-//        view.contentMode = UIViewContentModeCenter;
+        //        view.contentMode = UIViewContentModeCenter;
         label = [[UILabel alloc] initWithFrame:CGRectMake(0, 280, 300.0f, 50.0f)];
         
         label.backgroundColor = [UIColor clearColor];
@@ -229,7 +233,7 @@ BOOL listIsAlphabetic;
         [imageView setImage:group.collectionImage];
     }
     [view addSubview:imageView];
-
+    
     // need to create an image of the Playlist carousel item (index 0) to use as a placeholder when loading this after outside rotation
     if (index == 0) {
         UIGraphicsBeginImageContext((view.bounds.size));
@@ -240,7 +244,7 @@ BOOL listIsAlphabetic;
         UIGraphicsEndImageContext();
         
         self.mediaGroupViewController.initialLandscapeImage = (playlistImage);
-
+        
     }
     return view;
 }
@@ -266,9 +270,9 @@ BOOL listIsAlphabetic;
 - (void)carousel:(iCarousel *)carousel didSelectItemAtIndex:(NSInteger)index {
     //    LogMethod();
     
-//    if (index == carousel.currentItemIndex) {
-        //self.selectedGroup is a MediaGroup with a name and a querytype
-        self.selectedGroup = [self.groupingData objectAtIndex:index];
+    //    if (index == carousel.currentItemIndex) {
+    //self.selectedGroup is a MediaGroup with a name and a querytype
+    self.selectedGroup = [self.groupingData objectAtIndex:index];
     if (([self.selectedGroup.name isEqualToString: @"Tagged"])) {
         if (!self.taggedSongArrayLoaded) {
             [self showActivityIndicator];
@@ -393,7 +397,7 @@ BOOL listIsAlphabetic;
         
         songViewController.collectionQueryType = [selectedGroup.queryType copy];
         songViewController.mediaGroupCarouselViewController = self;
-
+        
         
 	}
     if ([segue.identifier isEqualToString:@"ViewTaggedSongCollection"])
@@ -409,7 +413,7 @@ BOOL listIsAlphabetic;
         songViewController.title = NSLocalizedString(collectionItem.name, nil);
         songViewController.collectionItem = collectionItem;
         songViewController.iPodLibraryChanged = self.iPodLibraryChanged;
-//        songViewController.listIsAlphabetic = NO;
+        //        songViewController.listIsAlphabetic = NO;
         songViewController.collectionQueryType = [selectedGroup.queryType copy];
         songViewController.taggedSongArray = [self.sortedTaggedArray mutableCopy];
         
@@ -428,16 +432,16 @@ BOOL listIsAlphabetic;
     
 }
 //- (TagData *) retrieveTagForMediaItem: (MPMediaItem *) mediaItem {
-//    
+//
 //    //check to see if there is user data for this media item
 //    MediaItemUserData *mediaItemUserData = [MediaItemUserData alloc];
 //    mediaItemUserData.managedObjectContext = self.managedObjectContext;
-//    
+//
 //    UserDataForMediaItem *userDataForMediaItem = [mediaItemUserData containsItem: [mediaItem valueForProperty: MPMediaItemPropertyPersistentID]];
 //    return userDataForMediaItem.tagData;
-//    
+//
 //}
-    
+
 - (void)hideActivityIndicator {
     
     if (self.loadingAlert) {
@@ -449,7 +453,7 @@ BOOL listIsAlphabetic;
                 songArrayToLoad = [self.songArray mutableCopy];
                 listIsAlphabetic = YES;
                 self.tinySongArrayLoaded = NO;
-
+                
             } else {
                 songArrayToLoad = [self.tinySongArray mutableCopy];
                 listIsAlphabetic = NO;
@@ -479,28 +483,28 @@ BOOL listIsAlphabetic;
 
 - (void) viewController:(MediaGroupViewController *)controller didFinishLoadingSongArray:(NSArray *)array
 {
-//    LogMethod();
-
+    //    LogMethod();
+    
     self.songArray = array;
     listIsAlphabetic = YES;
     self.songArrayLoaded = YES;
     [self hideActivityIndicator];
     [self.delegate viewController:self didFinishLoadingSongArray:array];
-
+    
 }
 
 - (void) viewController:(MediaGroupViewController *)controller didFinishLoadingTinySongArray:(NSArray *) array
 {
-//    LogMethod();
-
+    //    LogMethod();
+    
     self.tinySongArray = array;
     self.tinySongArrayLoaded = YES;
     [self hideActivityIndicator];
 }
 - (void) viewController:(MediaGroupViewController *)controller didFinishLoadingTaggedSongArray:(NSArray *) array
 {
-//    LogMethod();
-
+    //    LogMethod();
+    
     self.sortedTaggedArray = array;
     self.taggedSongArrayLoaded = YES;
     [self hideActivityIndicator];
@@ -508,7 +512,7 @@ BOOL listIsAlphabetic;
 
 - (IBAction)viewNowPlaying {
     
-//    LogMethod();
+    //    LogMethod();
     
     [self performSegueWithIdentifier: @"ViewNowPlaying" sender: self];
 }
@@ -518,15 +522,15 @@ BOOL listIsAlphabetic;
     
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     
-//    [notificationCenter addObserver:self
-//                           selector:@selector(tagDataChanged:)
-//                               name:@"TagDataForItemChanged"
-//                             object:nil];
-//    
-//    [notificationCenter addObserver:self
-//                           selector:@selector(tagDataChanged:)
-//                               name:@"TagDataChanged"
-//                             object:nil];
+    //    [notificationCenter addObserver:self
+    //                           selector:@selector(tagDataChanged:)
+    //                               name:@"TagDataForItemChanged"
+    //                             object:nil];
+    //
+    //    [notificationCenter addObserver:self
+    //                           selector:@selector(tagDataChanged:)
+    //                               name:@"TagDataChanged"
+    //                             object:nil];
     
     [notificationCenter addObserver: self
 						   selector: @selector (handle_PlaybackStateChanged:)
@@ -546,9 +550,9 @@ BOOL listIsAlphabetic;
 //    NSLog(@"tag data changed reload...");
 //    //create the taggedSongArray in the background
 //    [self loadTaggedSongArrayWithCompletion:^(BOOL result) {
-//        
+//
 //    }];
-//    
+//
 //}
 - (void) handle_iPodLibraryChanged: (id) changeNotification {
     //    LogMethod();
@@ -569,19 +573,19 @@ BOOL listIsAlphabetic;
     
 }
 - (void)dealloc {
-//    LogMethod();
+    //    LogMethod();
     //it's a good idea to set these to nil here to avoid
     //sending messages to a deallocated viewcontroller
     carousel.delegate = nil;
     carousel.dataSource = nil;
     
-//    [[NSNotificationCenter defaultCenter] removeObserver:self
-//                                                    name:@"TagDataForItemChanged"
-//                                                  object:nil];
-//    
-//    [[NSNotificationCenter defaultCenter] removeObserver:self
-//                                                    name:@"TagDataChanged"
-//                                                  object:nil];
+    //    [[NSNotificationCenter defaultCenter] removeObserver:self
+    //                                                    name:@"TagDataForItemChanged"
+    //                                                  object:nil];
+    //
+    //    [[NSNotificationCenter defaultCenter] removeObserver:self
+    //                                                    name:@"TagDataChanged"
+    //                                                  object:nil];
     
     [[NSNotificationCenter defaultCenter] removeObserver: self
                                                     name: MPMediaLibraryDidChangeNotification

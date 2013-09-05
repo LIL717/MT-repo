@@ -17,6 +17,8 @@
 #import "MediaItemUserData.h"
 #import "UserInfoViewcontroller.h"
 #import "OBSlider.h"
+#import "AccessibleButton.h"
+
 //#import "AppDelegate.h"
 //#import "NSDateFormatter+Duration.h"
 
@@ -34,50 +36,50 @@
 //                                       UInt32                    inPropertyValueSize,
 //                                       const void                *inPropertyValue
 //                                       ) {
-//	
+//
 //	// ensure that this callback was invoked for a route change
 //	if (inPropertyID != kAudioSessionProperty_AudioRouteChange) return;
-//    
+//
 //	// This callback, being outside the implementation block, needs a reference to the
 //	//		MainViewController object, which it receives in the inUserData parameter.
 //	//		You provide this reference when registering this callback (see the call to
 //	//		AudioSessionAddPropertyListener).
 //	MainViewController *controller = (__bridge MainViewController *) inUserData;
-//	
+//
 //	// if application sound is not playing, there's nothing to do, so return.
 //	if (controller.appSoundPlayer.playing == 0 ) {
-//        
+//
 //		NSLog (@"Audio route change while application audio is stopped.");
 //		return;
-//		
+//
 //	} else {
-//        
+//
 //		// Determines the reason for the route change, to ensure that it is not
 //		//		because of a category change.
 //		CFDictionaryRef	routeChangeDictionary = inPropertyValue;
-//		
+//
 //		CFNumberRef routeChangeReasonRef =
 //        CFDictionaryGetValue (
 //                              routeChangeDictionary,
 //                              CFSTR (kAudioSession_AudioRouteChangeKey_Reason)
 //                              );
-//        
+//
 //		SInt32 routeChangeReason;
-//		
+//
 //		CFNumberGetValue (
 //                          routeChangeReasonRef,
 //                          kCFNumberSInt32Type,
 //                          &routeChangeReason
 //                          );
-//		
+//
 //		// "Old device unavailable" indicates that a headset was unplugged, or that the
 //		//	device was removed from a dock connector that supports audio output. This is
 //		//	the recommended test for when to pause audio.
 //		if (routeChangeReason == kAudioSessionRouteChangeReason_OldDeviceUnavailable) {
-//            
+//
 //			[controller.appSoundPlayer pause];
 //			NSLog (@"Output device removed, so application audio was paused.");
-//            
+//
 //			UIAlertView *routeChangeAlertView =
 //            [[UIAlertView alloc]	initWithTitle: NSLocalizedString (@"Playback Paused", @"Title for audio hardware route-changed alert view")
 //                                       message: NSLocalizedString (@"Audio output was changed", @"Explanation for route-changed alert view")
@@ -86,9 +88,9 @@
 //                             otherButtonTitles: NSLocalizedString (@"ResumePlaybackAfterRouteChange", @"Play button title"), nil];
 //			[routeChangeAlertView show];
 //			// release takes place in alertView:clickedButtonAtIndex: method
-//            
+//
 //		} else {
-//            
+//
 //			NSLog (@"A route change occurred that does not require pausing of application audio.");
 //		}
 //	}
@@ -157,8 +159,9 @@
 @synthesize verticalSpaceBetweenRewindAndReplay;
 @synthesize topSpaceToPlayButton;
 @synthesize playButtonToBottomSpace;
+@synthesize centerXInScrollView;
 
-@synthesize nextSongLabelWidthConstraint;
+//@synthesize nextSongLabelWidthConstraint;
 @synthesize nowPlayingInfoButton;
 
 @synthesize currentPlaybackPosition;
@@ -179,7 +182,7 @@ BOOL stopWatchRunning;
 // Configure the application.
 
 - (void) viewDidLoad {
-//    LogMethod();
+    //    LogMethod();
     [super viewDidLoad];
     
     [TestFlight passCheckpoint:@"MainViewController"];
@@ -187,7 +190,7 @@ BOOL stopWatchRunning;
     UIImage *backgroundImage = [UIImage imageNamed: @"infoSelectedButtonImage.png"];
     [self.nowPlayingInfoButton setImage: backgroundImage forState:UIControlStateHighlighted];
     self.nextLabel.textColor = [UIColor yellowColor];
-
+    
     
     self.navigationItem.hidesBackButton = YES; // Important
     //initWithTitle cannot be nil, must be @""
@@ -202,14 +205,16 @@ BOOL stopWatchRunning;
     [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage48 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage58 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
     
+    [self.navigationItem.leftBarButtonItem setIsAccessibilityElement:YES];
+    [self.navigationItem.leftBarButtonItem setAccessibilityLabel: NSLocalizedString(@"Back", nil)];
+    [self.navigationItem.leftBarButtonItem setAccessibilityTraits: UIAccessibilityTraitButton];
+    
     self.navigationItem.backBarButtonItem = self.navigationItem.leftBarButtonItem;
     
-
-    
     self.stopWatchBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                              style:UIBarButtonItemStyleBordered
-                                                             target:self
-                                                             action:@selector(startStopWatch)];
+                                                               style:UIBarButtonItemStyleBordered
+                                                              target:self
+                                                              action:@selector(startStopWatch)];
     
     UIImage *menuBarImageDefault = [[UIImage imageNamed:@"stopWatchIcon57.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
     UIImage *menuBarImageLandscape = [[UIImage imageNamed:@"stopWatchIcon68.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
@@ -217,17 +222,22 @@ BOOL stopWatchRunning;
     [self.stopWatchBarButton setBackgroundImage:menuBarImageDefault forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     [self.stopWatchBarButton setBackgroundImage:menuBarImageLandscape forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
     
+    [self.stopWatchBarButton setIsAccessibilityElement:YES];
+    [self.stopWatchBarButton setAccessibilityLabel: NSLocalizedString(@"Stopwatch", nil)];
+    [self.stopWatchBarButton setAccessibilityTraits: UIAccessibilityTraitButton];
+    
+    
     //need this to use MPNowPlayingInfoCenter
     [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
     
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
     
     [self setPlayedMusicOnce: NO];
-
+    
     [self setMusicPlayer: [MPMusicPlayerController iPodMusicPlayer]];
-
+    
     self.showPlaylistRemaining = [[NSUserDefaults standardUserDefaults] boolForKey:@"showPlaylistRemaining"];
-
+    
     //title will only be displayed if playlist remaining is turned off
     if (self.showPlaylistRemaining) {
         self.title = nil;
@@ -237,11 +247,7 @@ BOOL stopWatchRunning;
         self.navigationItem.rightBarButtonItems = nil;
         self.navigationItem.titleView = [self customizeTitleView];
     }
-
-    self.swipeLeftRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(togglePlaylistRemainingAndTitle:)];
-    [self.swipeLeftRight setDirection:(UISwipeGestureRecognizerDirectionRight | UISwipeGestureRecognizerDirectionLeft )];
-    [self.navigationController.navigationBar addGestureRecognizer:self.swipeLeftRight];
-
+    
     //    NSArray *returnedQueue = [self.userMediaItemCollection items];
     //
     //    for (MPMediaItem *song in returnedQueue) {
@@ -252,10 +258,10 @@ BOOL stopWatchRunning;
     queueIsKnown = YES;
     initialView = YES;
     skippedBack = NO;
-
-//    if (self.itemToPlay == [musicPlayer nowPlayingItem]) {
-//        [self setPlayNew: NO];
-//    }
+    
+    //    if (self.itemToPlay == [musicPlayer nowPlayingItem]) {
+    //        [self setPlayNew: NO];
+    //    }
     if (playNew) {
         [musicPlayer setQueueWithItemCollection: self.userMediaItemCollection];
         [musicPlayer setNowPlayingItem: self.itemToPlay];
@@ -264,11 +270,14 @@ BOOL stopWatchRunning;
             [musicPlayer setShuffleMode: MPMusicShuffleModeOff];
             [musicPlayer setShuffleMode: MPMusicShuffleModeSongs];
             self.songShuffleButtonPressed = NO;
+            //            [self.shuffleButton setAccessibilityTraits: UIAccessibilityTraitButton];
+            
         }
-//        [self setPlayNew: NO];  this gets set in viewDidAppear instead
+        musicPlayer.repeatMode = MPMusicRepeatModeNone;
+        //        [self setPlayNew: NO];  this gets set in viewDidAppear instead
         
     } else if ([musicPlayer nowPlayingItem]) {
-
+        
         // Update the UI to reflect the now-playing item except nowPlayingLabel must be set in viewWillAppear instead of viewDidLoad or it appears from bottom
         
         MPMediaItem *currentItem = [musicPlayer nowPlayingItem];
@@ -283,7 +292,7 @@ BOOL stopWatchRunning;
         self.userMediaItemCollection = collectionItem.collection;
         
         NSUInteger nextPlayingIndex = [musicPlayer indexOfNowPlayingItem] + 1;
-
+        
         if (nextPlayingIndex < self.userMediaItemCollection.count) {
             predictedNextItem = [[self.userMediaItemCollection items] objectAtIndex: [musicPlayer indexOfNowPlayingItem] + 1 ];
         } else {
@@ -296,48 +305,69 @@ BOOL stopWatchRunning;
     [self checkForICloudItemsWithCompletion:^(BOOL result) {
         
     }];
-//    //print out the queue tat is saved
-//    NSArray *returnedQueue = [self.userMediaItemCollection items];
-//
-//    for (MPMediaItem *song in returnedQueue) {
-//        NSString *songTitle = [song valueForProperty: MPMediaItemPropertyTitle];
-//        NSLog (@"\t\t%@", songTitle);
-//    }
+    //    //print out the queue tat is saved
+    //    NSArray *returnedQueue = [self.userMediaItemCollection items];
+    //
+    //    for (MPMediaItem *song in returnedQueue) {
+    //        NSString *songTitle = [song valueForProperty: MPMediaItemPropertyTitle];
+    //        NSLog (@"\t\t%@", songTitle);
+    //    }
     
     if ([musicPlayer playbackState] != MPMusicPlaybackStatePlaying) {
         [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
+        [playPauseButton setAccessibilityLabel: NSLocalizedString(@"Play", nil)];
+        
     } else if ([musicPlayer playbackState] == MPMusicPlaybackStatePlaying) {
         [playPauseButton setImage: [UIImage imageNamed:@"bigpause.png"] forState:UIControlStateNormal];
+        [playPauseButton setAccessibilityLabel: NSLocalizedString(@"Pause", nil)];
+        
+        
     }
     
     //set the temp initialNowPlayingLabel so something is there when view loads, gets removed from view in viewDidAppear when autoScrollLabel is created
     self.initialNowPlayingLabel.text = [[musicPlayer nowPlayingItem] valueForProperty:  MPMediaItemPropertyTitle];
-
+    
     NSLog (@"Shuffle Mode is %d", musicPlayer.shuffleMode);
     
     if (musicPlayer.shuffleMode == MPMusicShuffleModeSongs) {
         [self.shuffleButton setImage: [UIImage imageNamed: @"bigshuffleblue.png"] forState: UIControlStateNormal];
+        self.shuffleButton.isSelected = YES;
+        
     } else {
         [self.shuffleButton setImage: [UIImage imageNamed: @"bigshuffle.png"] forState: UIControlStateNormal];
-
+        self.shuffleButton.isSelected = NO;
+        
+        
+        
     }
     NSLog (@"Repeat Mode is %d", musicPlayer.repeatMode);
-
+    
     if (musicPlayer.repeatMode == MPMusicRepeatModeOne) {
         [self.repeatButton setImage: [UIImage imageNamed: @"bigrepeat1blue.png"] forState: UIControlStateNormal];
+        [self.repeatButton setAccessibilityLabel: NSLocalizedString(@"Repeat Track", nil)];
+        [self.repeatButton setAccessibilityHint: NSLocalizedString(@"Changes repeat settings", nil)];
+        
         
     } else if (musicPlayer.repeatMode == MPMusicRepeatModeAll) {
         [self.repeatButton setImage: [UIImage imageNamed: @"bigrepeatblue.png"] forState: UIControlStateNormal];
+        [self.repeatButton setAccessibilityLabel: NSLocalizedString(@"Repeat All", nil)];
+        [self.repeatButton setAccessibilityHint: NSLocalizedString(@"Changes repeat settings", nil)];
+        
+        
         
     } else {
         [self.repeatButton setImage: [UIImage imageNamed: @"bigrepeat.png"] forState: UIControlStateNormal];
-
+        [self.repeatButton setAccessibilityLabel: NSLocalizedString(@"Repeat Off", nil)];
+        [self.repeatButton setAccessibilityHint: NSLocalizedString(@"Changes repeat settings", nil)];
+        
+        
+        
     }
-
+    
     [self.volumeView setMinimumVolumeSliderImage:[UIImage imageNamed:@"slider-fill.png"] forState:UIControlStateNormal];
     [self.volumeView setMaximumVolumeSliderImage:[UIImage imageNamed:@"slider-trackGray.png"] forState:UIControlStateNormal];
     [self.volumeView setVolumeThumbImage:[UIImage imageNamed:@"shinyVolumeHandle.png"] forState:UIControlStateNormal];
-
+    
     if (!UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
         [self.view removeConstraint:self.leadingSpaceToSliderConstraint];
         [self.view removeConstraint:self.trailingSpaceFromSliderConstraint];
@@ -345,15 +375,16 @@ BOOL stopWatchRunning;
         [self.view removeConstraint:self.verticalSpaceBetweenSliderAndRemainingTime];
         [self.view removeConstraint:self.verticalSpaceBetweenRewindAndReplay];
         [self.view removeConstraint:self.topSpaceToPlayButton];
+        
         self.playButtonToBottomSpace.constant = 70;
-
+        
     } else {
-
+        
         [self.view removeConstraint:self.topSpaceToPlayButton];
         [self.view addConstraint: self.playButtonToBottomSpace];
         self.playButtonToBottomSpace.constant = 190;
-
-
+        
+        
     }
     
     [self willAnimateRotationToInterfaceOrientation: self.interfaceOrientation duration: 1];
@@ -375,7 +406,7 @@ BOOL stopWatchRunning;
         
         // Check that there was not a nil handler passed.
         if( completionHandler ){
-            dispatch_sync(dispatch_get_main_queue(), ^(void) {                
+            dispatch_sync(dispatch_get_main_queue(), ^(void) {
                 NSLog (@"Done Checking For ICloud Items in MainViewController");
                 NSLog (@"unfiltered CollectionContainsICloudItem = %d", self.collectionContainsICloudItem);
             });
@@ -383,7 +414,7 @@ BOOL stopWatchRunning;
     });
 }
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
-//    LogMethod();
+    //    LogMethod();
     
     [nowPlayingLabel  refreshLabels];
     if (UIInterfaceOrientationIsLandscape(orientation)) {
@@ -394,20 +425,20 @@ BOOL stopWatchRunning;
         [self.view removeConstraint:self.verticalSpaceBetweenRewindAndReplay];
         [self.view removeConstraint:self.topSpaceToPlayButton];
         self.playButtonToBottomSpace.constant = 70;
-
-
+        
+        
         self.repeatButton.hidden = YES;
         self.shuffleButton.hidden = YES;
         self.volumeView.hidden = YES;
         
-        // could add a button to call the following method to show a floating volume control alert 
-//        MPVolumeSettingsAlertShow();
+        // could add a button to call the following method to show a floating volume control alert
+        //        MPVolumeSettingsAlertShow();
         
-//        if (self.showTitle) {
-////            self.title = @"Now Playing";
-////            self.navigationItem.titleView = [self customizeTitleView];
-//        } else self.Title = @"";
-
+        //        if (self.showTitle) {
+        ////            self.title = @"Now Playing";
+        ////            self.navigationItem.titleView = [self customizeTitleView];
+        //        } else self.Title = @"";
+        
         
     } else {
         
@@ -416,26 +447,26 @@ BOOL stopWatchRunning;
         [self.view addConstraint:self.verticalSpaceBetweenSliderAndElapsedTime];
         [self.view addConstraint:self.verticalSpaceBetweenSliderAndRemainingTime];
         [self.view addConstraint:self.verticalSpaceBetweenRewindAndReplay];
-
+        
         [self.view removeConstraint:self.topSpaceToPlayButton];
         [self.view addConstraint:self.playButtonToBottomSpace];
-
+        
         self.playButtonToBottomSpace.constant = 190;
-
-
+        
+        
         self.repeatButton.hidden = NO;
         self.shuffleButton.hidden = NO;
         self.volumeView.hidden = NO;
-
-//        self.title = @"";
-//        self.navigationItem.titleView = [self customizeTitleView];
+        
+        //        self.title = @"";
+        //        self.navigationItem.titleView = [self customizeTitleView];
     }
     
 }
 - (UILabel *) customizeTitleView
 {
-//    LogMethod();
-
+    //    LogMethod();
+    
     CGRect frame = CGRectMake(0, 0, [self.title sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 48);
     UILabel *label = [[UILabel alloc] initWithFrame:frame];
     label.backgroundColor = [UIColor clearColor];
@@ -448,57 +479,61 @@ BOOL stopWatchRunning;
     return label;
 }
 - (void)viewWillAppear:(BOOL)animated {
-//    LogMethod();
+    //    LogMethod();
     [super viewWillAppear: animated];
-
+    
+    self.swipeLeftRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(togglePlaylistRemainingAndTitle:)];
+    [self.swipeLeftRight setDirection:(UISwipeGestureRecognizerDirectionRight | UISwipeGestureRecognizerDirectionLeft )];
+    [self.navigationController.navigationBar addGestureRecognizer:self.swipeLeftRight];
+    
     self.playbackTimer = [NSTimer scheduledTimerWithTimeInterval:0.5
                                                           target:self
                                                         selector:@selector(updateTime)
                                                         userInfo:nil
                                                          repeats:YES];
     //omg this needs to be here or it does nothing!!
-//    [self scrollNextSongLabel];
+    //    [self scrollNextSongLabel];
     [self.nextSongScrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-//    if ([musicPlayer playbackState] == MPMusicPlaybackStatePaused) {
-//        [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
-//    } else if ([musicPlayer playbackState] == MPMusicPlaybackStatePlaying) {
-//        [playPauseButton setImage: [UIImage imageNamed:@"bigpause.png"] forState:UIControlStateNormal];
-//    }
-
+    //    if ([musicPlayer playbackState] == MPMusicPlaybackStatePaused) {
+    //        [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
+    //    } else if ([musicPlayer playbackState] == MPMusicPlaybackStatePlaying) {
+    //        [playPauseButton setImage: [UIImage imageNamed:@"bigpause.png"] forState:UIControlStateNormal];
+    //    }
+    
     
 }
 
 -(void) viewDidAppear:(BOOL)animated {
-//    LogMethod();
-
+    //    LogMethod();
+    
     if (playNew) {
         [self setPlayNew: NO];
         
-//    } else if ([musicPlayer nowPlayingItem]) {
-//        [self prepareNowPlayingLabel];
-//        [self.initialNowPlayingLabel removeFromSuperview];
-
+        //    } else if ([musicPlayer nowPlayingItem]) {
+        //        [self prepareNowPlayingLabel];
+        //        [self.initialNowPlayingLabel removeFromSuperview];
+        
     }
     [self prepareNowPlayingLabel];
     [self.initialNowPlayingLabel removeFromSuperview];
-
+    
     [super viewDidAppear:(BOOL)animated];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-
+    
 }
 
 #pragma mark Music notification handlers__________________
 
 // When the now-playing item changes, update the now-playing label and the next label.
 - (void) handle_NowPlayingItemChanged: (id) notification {
-//    LogMethod();
-
-// need to check if this method has already been executed because sometimes the notification gets sent twice for the same nowPlaying item, this workaround seems to solve the problem (check if the nowPlayingItem is the same as previous one)
+    //    LogMethod();
+    
+    // need to check if this method has already been executed because sometimes the notification gets sent twice for the same nowPlaying item, this workaround seems to solve the problem (check if the nowPlayingItem is the same as previous one)
     if (self.savedNowPlaying != [musicPlayer nowPlayingItem]) {
-//        NSLog (@"actually handling it");
-            //the next two methods are separated so that they can be executed separately in viewDidLoad and viewWillAppear the first time the view is loaded, afer that they can be executed together here
+        //        NSLog (@"actually handling it");
+        //the next two methods are separated so that they can be executed separately in viewDidLoad and viewWillAppear the first time the view is loaded, afer that they can be executed together here
         //check if the predictedNextSong is actually the song that will play
-
+        
         if (initialView == YES) {
             //the first time through, just assume it is the right queue
             queueIsKnown = YES;
@@ -509,8 +544,8 @@ BOOL stopWatchRunning;
             } else {
                 NSLog (@"predictedNextItem is %@ and nowPlayingItem is %@", [predictedNextItem valueForProperty:  MPMediaItemPropertyTitle], [[musicPlayer nowPlayingItem] valueForProperty:  MPMediaItemPropertyTitle]);
                 if (predictedNextItem == [musicPlayer nowPlayingItem]) {
-
-
+                    
+                    
                     queueIsKnown = YES;
                 } else {
                     queueIsKnown = NO;
@@ -518,7 +553,7 @@ BOOL stopWatchRunning;
             }
         }
         if (musicPlayer.shuffleMode == MPMusicShuffleModeOff) {
-
+            
             if (!skippedBack) {
                 //now set the nextPlayingItem to new item
                 NSUInteger nextPlayingIndex = [musicPlayer indexOfNowPlayingItem] + 1;
@@ -538,65 +573,65 @@ BOOL stopWatchRunning;
         //    the BOOL MPMediaItemPropertyIsCloudItem seems to be 0, but doesn't work as a BOOL
         //    NSString *isCloudItem = [[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyIsCloudItem];
         //    if (isCloudItem.intValue == 1) {
-//        if (self.collectionContainsICloudItem) {
-//                BOOL networkAvailable = [[NSUserDefaults standardUserDefaults] boolForKey:@"networkAvailable"];
-//                if (!networkAvailable) {
-//                    queueIsKnown = NO;
-//                    
-//                    //            [self goBackClick];
-//                }
-//        }
+        //        if (self.collectionContainsICloudItem) {
+        //                BOOL networkAvailable = [[NSUserDefaults standardUserDefaults] boolForKey:@"networkAvailable"];
+        //                if (!networkAvailable) {
+        //                    queueIsKnown = NO;
+        //
+        //                    //            [self goBackClick];
+        //                }
+        //        }
         
         [self prepareAllExceptNowPlaying];
         if (!playNew) {
             //don't do this here if playNew, it will happen in viewWillAppear
             [self prepareNowPlayingLabel];
         }
-//        [self.initialNowPlayingLabel removeFromSuperview];
-
+        //        [self.initialNowPlayingLabel removeFromSuperview];
+        
     }
     
     
-
+    
     
     self.savedNowPlaying = [musicPlayer nowPlayingItem];
-
+    
 }
 - (void) refreshNowPlayingLabel:  (id) notification {
-//    LogMethod();
+    //    LogMethod();
     [nowPlayingLabel  refreshLabels];
-//    [self prepareAllExceptNowPlaying];
+    //    [self prepareAllExceptNowPlaying];
     
-//    NSLog (@"nowPlayingLabel refreshed");
+    //    NSLog (@"nowPlayingLabel refreshed");
 }
 - (void) prepareAllExceptNowPlaying {
-//    LogMethod();
-
-//    MPMediaItem *currentItem = [musicPlayer nowPlayingItem];
-////    NSLog (@" currentItem is %@", [currentItem valueForProperty: MPMediaItemPropertyTitle]);
-//    //check the queue stored in Core Data to see if the nowPlaying song is in that queue
-//    ItemCollection *itemCollection = [ItemCollection alloc];
-//    itemCollection.managedObjectContext = self.managedObjectContext;
-//    
-////    self.collectionItem = [itemCollection containsItem: [currentItem valueForProperty: MPMediaItemPropertyTitle]];
-//    self.collectionItem = [itemCollection containsItem: [currentItem valueForProperty:  MPMediaItemPropertyPersistentID]];
-//
-//    self.userMediaItemCollection = collectionItem.collection;
+    //    LogMethod();
+    
+    //    MPMediaItem *currentItem = [musicPlayer nowPlayingItem];
+    ////    NSLog (@" currentItem is %@", [currentItem valueForProperty: MPMediaItemPropertyTitle]);
+    //    //check the queue stored in Core Data to see if the nowPlaying song is in that queue
+    //    ItemCollection *itemCollection = [ItemCollection alloc];
+    //    itemCollection.managedObjectContext = self.managedObjectContext;
+    //
+    ////    self.collectionItem = [itemCollection containsItem: [currentItem valueForProperty: MPMediaItemPropertyTitle]];
+    //    self.collectionItem = [itemCollection containsItem: [currentItem valueForProperty:  MPMediaItemPropertyPersistentID]];
+    //
+    //    self.userMediaItemCollection = collectionItem.collection;
     // the predicted next item is the next one in this app's saved queue, it might not actually be the next item, so save it and compare when playingItem changes
-//    NSUInteger nextPlayingIndex = [musicPlayer indexOfNowPlayingItem] + 1;
-//    
-//    if (nextPlayingIndex < self.userMediaItemCollection.count) {
-//        predictedNextItem = [[self.userMediaItemCollection items] objectAtIndex: [musicPlayer indexOfNowPlayingItem] + 1 ];
-//    } else {
-//        predictedNextItem = nil;
-//    }
+    //    NSUInteger nextPlayingIndex = [musicPlayer indexOfNowPlayingItem] + 1;
+    //
+    //    if (nextPlayingIndex < self.userMediaItemCollection.count) {
+    //        predictedNextItem = [[self.userMediaItemCollection items] objectAtIndex: [musicPlayer indexOfNowPlayingItem] + 1 ];
+    //    } else {
+    //        predictedNextItem = nil;
+    //    }
     // set up data to pass to info page if chosen
     
     self.mediaItemForInfo = [musicPlayer nowPlayingItem];
     
     self.nextSongLabel.text = [NSString stringWithFormat: @""];
     self.nextLabel.text = [NSString stringWithFormat:@""];
-//    NSLog (@"shuffle mode??? %d", musicPlayer.shuffleMode);
+    //    NSLog (@"shuffle mode??? %d", musicPlayer.shuffleMode);
     // only show next song if shuffle off and NOT repeat one song mode
     if (musicPlayer.shuffleMode == MPMusicShuffleModeOff && musicPlayer.repeatMode != MPMusicRepeatModeOne) {
         [self prepareNextSongLabel];
@@ -609,23 +644,24 @@ BOOL stopWatchRunning;
     [self dataForNowPlayingInfoCenter];
 }
 - (void) prepareNowPlayingLabel {
-//    LogMethod();
-
+    //    LogMethod();
+    
     // Display the song name for the now-playing media item
     // scroll marquee style if too long for field
     
     [self.nowPlayingLabel setText: [[musicPlayer nowPlayingItem] valueForProperty:  MPMediaItemPropertyTitle]];
-//    NSLog (@"nowPlayingLabel.text is %@", self.nowPlayingLabel.text);
+    [self.nowPlayingLabel setAccessibilityHint:  NSLocalizedString(@"Tap to magnify", nil)];
+    //    NSLog (@"nowPlayingLabel.text is %@", self.nowPlayingLabel.text);
     UIFont *newFont = [UIFont systemFontOfSize:44];
     [self.nowPlayingLabel setFont: newFont];
 }
 - (void) prepareNextSongLabel {
-//    LogMethod();
+    //    LogMethod();
     if (!queueIsKnown) {
         return;
     }
     NSUInteger nextPlayingIndex = [musicPlayer indexOfNowPlayingItem] + 1;
-
+    
     MPMediaItem *nextPlayingItem;
     if (skippedBack) {
         nextPlayingItem = predictedNextItem;
@@ -642,13 +678,13 @@ BOOL stopWatchRunning;
     }
     //set up next-playing media item with duration
     
-//    if (nextPlayingIndex >= self.userMediaItemCollection.count) {
-////        self.nextSongLabel.text = [NSString stringWithFormat: @""];
-////        self.nextLabel.text = [NSString stringWithFormat:@""];
-//        self.nextSongScrollView.hidden = YES;
-//        self.nextSongLabel.hidden = YES;
-//        self.nextLabel.hidden = YES;
-//    } else {
+    //    if (nextPlayingIndex >= self.userMediaItemCollection.count) {
+    ////        self.nextSongLabel.text = [NSString stringWithFormat: @""];
+    ////        self.nextLabel.text = [NSString stringWithFormat:@""];
+    //        self.nextSongScrollView.hidden = YES;
+    //        self.nextSongLabel.hidden = YES;
+    //        self.nextLabel.hidden = YES;
+    //    } else {
     if (nextPlayingItem) {
         self.nextSongScrollView.hidden = NO;
         self.nextSongLabel.hidden = NO;
@@ -660,24 +696,28 @@ BOOL stopWatchRunning;
         self.nextSongLabel.text = [NSString stringWithFormat: @"%@  %@",[nextPlayingItem valueForProperty:  MPMediaItemPropertyTitle], formattedNextDuration];
         
         [self scrollNextSongLabel];
-
+        
         self.nextLabel.text = [NSString stringWithFormat: @"%@:", NSLocalizedString(@"Next", nil)];
         
     }
     [self setSkippedBack: NO];
-
+    
 }
 - (void) scrollNextSongLabel {
-//    LogMethod();
+    //    LogMethod();
     
     //calculate the label size to fit the text with the font size
     CGSize labelSize = [self.nextSongLabel.text sizeWithFont:self.nextSongLabel.font
                                            constrainedToSize:CGSizeMake(INT16_MAX, CGRectGetHeight(self.nextSongScrollView.bounds))
                                                lineBreakMode:NSLineBreakByClipping];
     
+    [self.nextSongScrollView removeConstraint:self.centerXInScrollView];
+    
     //Make sure that label is aligned with scrollView
     [self.nextSongScrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-
+    
+    //    NSLog (@" self.nextSongScrollView.frame.size.width = %f", self.nextSongScrollView.frame.size.width);
+    //    NSLog (@" labelSize.width = %f", labelSize.width);
     //disable scroll if the content fits within the scrollView
     if (labelSize.width > self.nextSongScrollView.frame.size.width) {
         self.nextSongScrollView.scrollEnabled = YES;
@@ -786,9 +826,9 @@ BOOL stopWatchRunning;
 - (void) updateTime
 {
     //   LogMethod();
-
-    if (stopWatchRunning) {
     
+    if (stopWatchRunning) {
+        
         //calculate elapsed time
         NSTimeInterval currentTime = [NSDate timeIntervalSinceReferenceDate];
         NSTimeInterval elapsed = currentTime - stopWatchStartTime;
@@ -797,8 +837,8 @@ BOOL stopWatchRunning;
         int mins = (int) (elapsed / 60.0);
         elapsed -= mins * 60;
         int secs = (int) (elapsed);
-//        elapsed -= secs;
-//        int fraction = elapsed * 10.0;
+        //        elapsed -= secs;
+        //        int fraction = elapsed * 10.0;
         
         //update text string using a format of 0:00.0
         self.stopWatchTime = [NSString stringWithFormat: @"%2u:%02u", mins, secs];
@@ -810,20 +850,20 @@ BOOL stopWatchRunning;
     long playbackSeconds = musicPlayer.currentPlaybackTime;
     long songDuration = [[self.musicPlayer.nowPlayingItem valueForProperty:MPMediaItemPropertyPlaybackDuration] floatValue];
     songRemainingSeconds = songDuration - playbackSeconds;
-
+    
     //if the currently playing song has been deleted during a sync then stop playing and pop to rootViewController
     if (songDuration == 0 && self.iPodLibraryChanged) {
         [musicPlayer stop];
         [self.playbackTimer invalidate];
         [self goBackClick];
-//        [self.navigationController popToRootViewControllerAnimated:YES];
+        //        [self.navigationController popToRootViewControllerAnimated:YES];
         NSLog (@"BOOM");
         return;
     }
     
     NSString *elapsed = [NSString stringWithFormat:@"%02lu:%02lu",playbackSeconds/60,playbackSeconds-(playbackSeconds/60)*60];
     NSString *songRemaining = [NSString stringWithFormat:@"%02lu:%02lu",songRemainingSeconds/60,songRemainingSeconds-(songRemainingSeconds/60)*60];
-
+    
     //Use NSDateFormatter to get seconds and minutes from the time string:
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -841,21 +881,21 @@ BOOL stopWatchRunning;
     }
     
     self.navigationItem.rightBarButtonItems = nil;
-
+    
     // only show the collection remaining if the setting is on and shuffle is off and repeat is off
     if (showPlaylistRemaining) {
-
+        
         self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects: self.stopWatchBarButton, nil];
-
+        
         if (musicPlayer.shuffleMode == MPMusicShuffleModeOff && musicPlayer.repeatMode == MPMusicRepeatModeNone) {
-//        NSString * collectionRemaining = [self calculateCollectionRemaining];
+            //        NSString * collectionRemaining = [self calculateCollectionRemaining];
             [self calculateCollectionRemaining];
         }
     }
     
 }
 - (void)positionSlider {
-
+    
     self.progressSlider.minimumValue = 0;
     
     NSNumber *duration = [self.musicPlayer.nowPlayingItem valueForProperty:MPMediaItemPropertyPlaybackDuration];
@@ -867,11 +907,11 @@ BOOL stopWatchRunning;
             self.progressSlider.value = savedHandleValue;
             self.hasFinishedMoving = NO;     //set up for next scrubbing session
         } else {
-        self.progressSlider.value = musicPlayer.currentPlaybackTime;
+            self.progressSlider.value = musicPlayer.currentPlaybackTime;
         }
     }
-
-//    NSLog (@" currentPlaybackTime is %f", musicPlayer.currentPlaybackTime);
+    
+    //    NSLog (@" currentPlaybackTime is %f", musicPlayer.currentPlaybackTime);
 }
 
 - (void) calculateCollectionRemaining {
@@ -879,7 +919,7 @@ BOOL stopWatchRunning;
     long playbackSeconds = musicPlayer.currentPlaybackTime;
     long collectionDuration = [self.collectionItem.duration longValue];
     long collectionElapsed;
-//    long collectionRemainingSeconds;
+    //    long collectionRemainingSeconds;
     
     if (collectionDuration > 0) {
         collectionElapsed = [[self calculatePlaylistElapsed] longValue] + playbackSeconds;
@@ -888,28 +928,28 @@ BOOL stopWatchRunning;
         collectionRemainingSeconds = 0;
     }
     
-//    // don't show collectionRemaining if it is the same as songRemaining
-//    if (collectionRemainingSeconds <= songRemainingSeconds) {
-//        self.navigationItem.rightBarButtonItems=nil;
-//        return;
-//    }
+    //    // don't show collectionRemaining if it is the same as songRemaining
+    //    if (collectionRemainingSeconds <= songRemainingSeconds) {
+    //        self.navigationItem.rightBarButtonItems=nil;
+    //        return;
+    //    }
     
     NSString *collectionRemaining;
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-
+    
     if (collectionRemainingSeconds >= 3600) {
         collectionRemaining = [NSString stringWithFormat:@"%lu:%02lu:%02lu",
                                collectionRemainingSeconds / 3600,
                                (collectionRemainingSeconds % 3600)/60,
                                collectionRemainingSeconds % 60];
         formatter.dateFormat = @"H:mm:ss";
-//        if (self.showPlaylistRemaining) {
-//            self.showTitle = NO;
-//        }
+        //        if (self.showPlaylistRemaining) {
+        //            self.showTitle = NO;
+        //        }
     } else {
-//        self.showTitle = YES;
+        //        self.showTitle = YES;
         collectionRemaining = [NSString stringWithFormat:@"%02lu:%02lu",
-
+                               
                                collectionRemainingSeconds /60,
                                collectionRemainingSeconds % 60];
         formatter.dateFormat = @"m:ss";
@@ -917,7 +957,7 @@ BOOL stopWatchRunning;
     NSDate *collectionRemainingTime = [formatter dateFromString:collectionRemaining];
     
     if (collectionRemainingTime) {
-
+        
         if (collectionRemainingSeconds > 0) {
             
             NSString *collectionRemainingLabel = [NSString stringWithFormat:@"-%@",[formatter stringFromDate:collectionRemainingTime]];
@@ -928,27 +968,27 @@ BOOL stopWatchRunning;
                                                                               action: @selector(magnify)];
             [durationButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIFont systemFontOfSize:44], UITextAttributeFont,nil] forState:UIControlStateNormal];
             [durationButton setBackgroundImage:[UIImage imageNamed:@"rightButtonBackground.png"] forState: UIControlStateNormal barMetrics:UIBarMetricsDefault];
-
+            
             const CGFloat TextOffset = 10.0f;
             [durationButton setTitlePositionAdjustment: UIOffsetMake(TextOffset, 5.0f) forBarMetrics: UIBarMetricsDefault];
             [durationButton setTitlePositionAdjustment: UIOffsetMake(TextOffset, 9.0f) forBarMetrics: UIBarMetricsLandscapePhone];
-
-
-//        UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-//        [negativeSpacer setWidth:-15];
-//            self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:durationButton, self.stopWatchBarButton, negativeSpacer, nil];
+            
+            
+            //        UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+            //        [negativeSpacer setWidth:-15];
+            //            self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:durationButton, self.stopWatchBarButton, negativeSpacer, nil];
             self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:durationButton, self.stopWatchBarButton, nil];
-
+            
         } else {
             self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects: self.stopWatchBarButton, nil];
-
+            
         }
-
-    } 
+        
+    }
     return;
 }
 - (NSNumber *)calculatePlaylistElapsed {
-        
+    
     NSArray *returnedQueue = [self.userMediaItemCollection items];
     
     // when nowPlayingItem is done, indexOfNowPlayingItem becomes unpredictable, don't perform this calculation
@@ -963,7 +1003,7 @@ BOOL stopWatchRunning;
     for (NSUInteger i = 0; i < count; i++) {
         playlistElapsed = (playlistElapsed + [[[returnedQueue objectAtIndex: i] valueForProperty:MPMediaItemPropertyPlaybackDuration] longValue]);
     }
-
+    
     return [NSNumber numberWithLong: playlistElapsed];
 }
 
@@ -971,10 +1011,10 @@ BOOL stopWatchRunning;
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-//    LogMethod();
-
+    //    LogMethod();
+    
     UINavigationController *navigationController = segue.destinationViewController;
-
+    
 	if ([segue.identifier isEqualToString:@"MagnifyRemainingTime"])
 	{
         TimeMagnifierViewController *timeMagnifierViewController = [[navigationController viewControllers] objectAtIndex:0];
@@ -989,7 +1029,7 @@ BOOL stopWatchRunning;
         timeMagnifierViewController.delegate = self;
         timeMagnifierViewController.textToMagnify = self.elapsedTimeLabel.text;
         timeMagnifierViewController.timeType = segue.identifier;
-
+        
 	}
     
     if ([segue.identifier isEqualToString:@"MagnifyNowPlaying"])
@@ -999,7 +1039,7 @@ BOOL stopWatchRunning;
         textMagnifierViewController.textToMagnify = self.nowPlayingLabel.text;
         textMagnifierViewController.textType = segue.identifier;
         textMagnifierViewController.mainViewController = self;
-
+        
 	}
     
     if ([segue.identifier isEqualToString:@"MagnifyPlaylistRemaining"])
@@ -1009,7 +1049,7 @@ BOOL stopWatchRunning;
         UIBarButtonItem *playlistRemainingButton = [self.navigationItem.rightBarButtonItems objectAtIndex: 0];
         timeMagnifierViewController.textToMagnify = playlistRemainingButton.title;
         timeMagnifierViewController.timeType = segue.identifier;
-
+        
 	}
     
     if ([segue.identifier isEqualToString:@"StartStopWatch"])
@@ -1020,7 +1060,7 @@ BOOL stopWatchRunning;
         int secs = 0;
         self.stopWatchTime = [NSString stringWithFormat: @"%2u:%02u", mins, secs];
         timeMagnifierViewController.textToMagnify = self.stopWatchTime;
-//        timeMagnifierViewController.textToMagnify = @"0:00";
+        //        timeMagnifierViewController.textToMagnify = @"0:00";
         timeMagnifierViewController.timeType = segue.identifier;
         
 	}
@@ -1032,7 +1072,7 @@ BOOL stopWatchRunning;
         textMagnifierViewController.textToMagnify = self.nextSongLabel.text;
         textMagnifierViewController.textType = segue.identifier;
         textMagnifierViewController.mainViewController = self;
-
+        
 	}
     if ([segue.identifier isEqualToString:@"ViewInfo"])
 	{
@@ -1041,6 +1081,8 @@ BOOL stopWatchRunning;
         infoTabBarController.infoDelegate = self;
         infoTabBarController.title = [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyTitle];
         infoTabBarController.mediaItemForInfo = self.mediaItemForInfo;
+        infoTabBarController.mainViewIsSender = YES;
+        
         //remove observer for playbackstatechanged because if editing, don't want to pop view
         //  observer will be added back in infoTabBarControllerDidCancel
         [[NSNotificationCenter defaultCenter] removeObserver: self
@@ -1049,18 +1091,18 @@ BOOL stopWatchRunning;
         
 	}
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
+    
 }
 #pragma mark Music control________________________________
 
 - (IBAction)handleScrub:(id)sender {
     //    LogMethod();
-//    //if scrub has gone to the end don't update the currentPlaybackTime to the full duration until the touch has ended so the nowPlayingSongChanged is not triggered
-//    if ([self.progressSlider value] >= [[self.musicPlayer.nowPlayingItem valueForProperty:MPMediaItemPropertyPlaybackDuration] floatValue]) {
-//        [musicPlayer setCurrentPlaybackTime: ([self.progressSlider value] - 0.5)];
-//    } else {
-        [musicPlayer setCurrentPlaybackTime: [self.progressSlider value]];
-//    }
+    //    //if scrub has gone to the end don't update the currentPlaybackTime to the full duration until the touch has ended so the nowPlayingSongChanged is not triggered
+    //    if ([self.progressSlider value] >= [[self.musicPlayer.nowPlayingItem valueForProperty:MPMediaItemPropertyPlaybackDuration] floatValue]) {
+    //        [musicPlayer setCurrentPlaybackTime: ([self.progressSlider value] - 0.5)];
+    //    } else {
+    [musicPlayer setCurrentPlaybackTime: [self.progressSlider value]];
+    //    }
     [self updateTime];
 }
 
@@ -1117,10 +1159,10 @@ BOOL stopWatchRunning;
 }
 
 - (IBAction)playPause:(id)sender {
-//   LogMethod();
+    //   LogMethod();
 	MPMusicPlaybackState playbackState = [musicPlayer playbackState];
     
-//	if (playbackState == MPMusicPlaybackStateStopped || playbackState == MPMusicPlaybackStatePaused) {
+    //	if (playbackState == MPMusicPlaybackStateStopped || playbackState == MPMusicPlaybackStatePaused) {
     if (playbackState != MPMusicPlaybackStatePlaying) {
         [self playMusic];
         
@@ -1155,28 +1197,37 @@ BOOL stopWatchRunning;
     if (musicPlayer.repeatMode == MPMusicRepeatModeNone) {
         [musicPlayer setRepeatMode: MPMusicRepeatModeAll];
         [self.repeatButton setImage: [UIImage imageNamed: @"bigrepeatblue.png"] forState: UIControlStateNormal];
-//        UIImage *coloredImage = [[UIImage imageNamed: @"bigrepeatblue.png"] imageWithTint:[UIColor blueColor]];
-//        [self.repeatButton setImage: coloredImage forState:UIControlStateNormal];
-
+        [self.repeatButton setAccessibilityLabel: NSLocalizedString(@"Repeat All", nil)];
+        [self.repeatButton setAccessibilityHint: NSLocalizedString(@"Changes repeat settings", nil)];
+        
+        
+        //        UIImage *coloredImage = [[UIImage imageNamed: @"bigrepeatblue.png"] imageWithTint:[UIColor blueColor]];
+        //        [self.repeatButton setImage: coloredImage forState:UIControlStateNormal];
+        
     } else if (musicPlayer.repeatMode == MPMusicRepeatModeAll) {
         [musicPlayer setRepeatMode: MPMusicRepeatModeOne];
-//        UIImage *coloredImage = [[UIImage imageNamed: @"bigrepeat1blue.png"] imageWithTint:[UIColor blueColor]];
-//        [self.repeatButton setImage: coloredImage forState:UIControlStateNormal];
+        //        UIImage *coloredImage = [[UIImage imageNamed: @"bigrepeat1blue.png"] imageWithTint:[UIColor blueColor]];
+        //        [self.repeatButton setImage: coloredImage forState:UIControlStateNormal];
         [self.repeatButton setImage: [UIImage imageNamed: @"bigrepeat1blue.png"] forState: UIControlStateNormal];
+        [self.repeatButton setAccessibilityLabel: NSLocalizedString(@"Repeat Track", nil)];
+        [self.repeatButton setAccessibilityHint: NSLocalizedString(@"Changes repeat settings", nil)];
+        
         self.nextSongScrollView.hidden = YES;
         self.nextSongLabel.hidden = YES;
         self.nextLabel.hidden = YES;
-    
+        
     } else if (musicPlayer.repeatMode == MPMusicRepeatModeOne) {
         [musicPlayer setRepeatMode: MPMusicRepeatModeNone];
-//        UIImage *coloredImage = [[UIImage imageNamed: @"bigrepeat.png"] imageWithTint:[UIColor whiteColor]];
-//        [self.repeatButton setImage: coloredImage forState:UIControlStateNormal];
+        //        UIImage *coloredImage = [[UIImage imageNamed: @"bigrepeat.png"] imageWithTint:[UIColor whiteColor]];
+        //        [self.repeatButton setImage: coloredImage forState:UIControlStateNormal];
         [self.repeatButton setImage: [UIImage imageNamed: @"bigrepeat.png"] forState: UIControlStateNormal];
+        [self.repeatButton setAccessibilityLabel: NSLocalizedString(@"Repeat Off", nil)];
+        [self.repeatButton setAccessibilityHint: NSLocalizedString(@"Changes repeat settings", nil)];
         //show nextSongLabel when repeat one is turned off as long as shuffle is off
         if (musicPlayer.shuffleMode == MPMusicShuffleModeOff) {
             queueIsKnown = YES;
             [self prepareNextSongLabel];
-    
+            
         }
     }
 }
@@ -1186,15 +1237,20 @@ BOOL stopWatchRunning;
     if (musicPlayer.shuffleMode == MPMusicShuffleModeOff) {
         [musicPlayer setShuffleMode: MPMusicShuffleModeSongs];
         [self.shuffleButton setImage: [UIImage imageNamed: @"bigshuffleblue.png"] forState: UIControlStateNormal];
-//        self.nextSongLabel.text = [NSString stringWithFormat: @""];
-//        self.nextLabel.text = [NSString stringWithFormat:@""];
+        self.shuffleButton.isSelected = YES;
+        //        [self.shuffleButton setAccessibilityTraits: UIAccessibilityTraitSelected];
+        
+        //        self.nextSongLabel.text = [NSString stringWithFormat: @""];
+        //        self.nextLabel.text = [NSString stringWithFormat:@""];
         self.nextSongScrollView.hidden = YES;
         self.nextSongLabel.hidden = YES;
         self.nextLabel.hidden = YES;
     } else if (musicPlayer.shuffleMode == MPMusicShuffleModeSongs) {
         [musicPlayer setShuffleMode: MPMusicShuffleModeOff];
         [self.shuffleButton setImage: [UIImage imageNamed: @"bigshuffle.png"] forState: UIControlStateNormal];
-
+        self.shuffleButton.isSelected = NO;
+        
+        
         //show nextSongLabel when shuffle is off as long as not repeat one song mode
         if (musicPlayer.repeatMode != MPMusicRepeatModeOne) {
             queueIsKnown = YES;
@@ -1202,6 +1258,7 @@ BOOL stopWatchRunning;
         }
     }
 }
+
 - (IBAction) togglePlaylistRemainingAndTitle:(id)sender {
     if (showPlaylistRemaining) {
         self.showPlaylistRemaining = NO;
@@ -1214,13 +1271,13 @@ BOOL stopWatchRunning;
         //        NSLog (@"show Playlist Remaining");
     } else {
         self.showPlaylistRemaining = YES;
-//        [UIView animateWithDuration:0.15 animations:^{
-            self.title = nil;
-            self.navigationItem.titleView = nil;
-            self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects: self.stopWatchBarButton, nil];
-
-            [self updateTime];
-//        }];
+        //        [UIView animateWithDuration:0.15 animations:^{
+        self.title = nil;
+        self.navigationItem.titleView = nil;
+        self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects: self.stopWatchBarButton, nil];
+        
+        [self updateTime];
+        //        }];
         //        NSLog (@"don't show Playlist Remaining");
     }
     //showPlaylistRemaining must persist so save to NSUserDefaults
@@ -1239,15 +1296,13 @@ BOOL stopWatchRunning;
 }
 - (void)goBackClick
 {
-//    LogMethod();
-
+    //    LogMethod();
+    
     //don't start networkActivityIndicator if stopwatch is running
     if (!stopWatchRunning) {
         [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     }
-    //remove the swipe gesture from the nav bar  (doesn't work to wait until dealloc)
-    [self.navigationController.navigationBar removeGestureRecognizer:self.swipeLeftRight];
-
+    
     if (iPodLibraryChanged) {
         [self.navigationController popToRootViewControllerAnimated:YES];
     } else {
@@ -1267,10 +1322,10 @@ BOOL stopWatchRunning;
     
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     
-//    [notificationCenter addObserver: self
-//                           selector: @selector (iCloudAccountAvailabilityChanged:)
-//                               name: NSUbiquityIdentityDidChangeNotification
-//                             object: nil];
+    //    [notificationCenter addObserver: self
+    //                           selector: @selector (iCloudAccountAvailabilityChanged:)
+    //                               name: NSUbiquityIdentityDidChangeNotification
+    //                             object: nil];
     
 	[notificationCenter addObserver: self
 						   selector: @selector (handle_NowPlayingItemChanged:)
@@ -1304,20 +1359,20 @@ BOOL stopWatchRunning;
 
 //- (void) iCloudAccountAvailabilityChanged:(NSNotification *) notification
 //{
-//    
+//
 //// need to know whether iCloud is available when a new song will play
-//    
+//
 //    [self initializeiCloudAccessWithCompletion:^(BOOL available) {
-//        
+//
 //        _iCloudAvailable = available;
 //        NSUserDefaults * standardUserDefaults = [NSUserDefaults standardUserDefaults];
 //        [standardUserDefaults setBool: _iCloudAvailable forKey:@"iCloudAvailable"];
 //        BOOL iCloudAvailable = [[NSUserDefaults standardUserDefaults] boolForKey:@"iCloudAvailable"];
 //        NSLog (@"iCloudAvailable BOOL from NSUserDefaults is %d", iCloudAvailable);
-//        
+//
 //    }];
 //
-//    
+//
 //}
 //
 //- (void)initializeiCloudAccessWithCompletion:(void (^)(BOOL available)) completion {
@@ -1357,7 +1412,7 @@ BOOL stopWatchRunning;
 
 // When the playback state changes, set the play/pause button appropriately.
 - (void) handle_PlaybackStateChanged: (id) notification {
-//    LogMethod();
+    //    LogMethod();
     //    //temporary nslogs for debugging
     //
     //    NSLog (@"size of nextSongLabel is %f, %f", self.nextSongLabel.frame.size.width, self.nextSongLabel.frame.size.height);
@@ -1365,28 +1420,33 @@ BOOL stopWatchRunning;
     
     //play is paused during scrubbing to prevent skipping to new song, so do not change the UI
     if (!userIsScrubbing) {
-    
+        
         MPMusicPlaybackState playbackState = [musicPlayer playbackState];
         
-//        NSLog (@" playbackState = %d", playbackState);
+        //        NSLog (@" playbackState = %d", playbackState);
         
         if (playbackState != MPMusicPlaybackStatePlaying) {
             
             [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
+            [playPauseButton setAccessibilityLabel: NSLocalizedString(@"Play", nil)];
+            
             savedPlaybackState = playbackState;
-
+            
         } else if (playbackState == MPMusicPlaybackStatePlaying) {
             
             [playPauseButton setImage: [UIImage imageNamed:@"bigpause.png"] forState:UIControlStateNormal];
+            [playPauseButton setAccessibilityLabel: NSLocalizedString(@"Pause", nil)];
+            
+            
             savedPlaybackState = playbackState;
-
-
+            
+            
         }
         if (playbackState == MPMusicPlaybackStateStopped) {
-                    
-//            [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
-//            savedPlaybackState = playbackState;
-
+            
+            //            [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
+            //            savedPlaybackState = playbackState;
+            
             
             if (!playNew) {
                 // Even though stopped, invoking 'stop' ensures that the music player will play
@@ -1398,11 +1458,11 @@ BOOL stopWatchRunning;
                 if (!userIsEditing) {
                     [self goBackClick];
                 }
-//                if (iPodLibraryChanged) {
-//                    [self.navigationController popToRootViewControllerAnimated:YES];
-//                } else {
-//                    [self.navigationController popViewControllerAnimated:YES];
-//                }
+                //                if (iPodLibraryChanged) {
+                //                    [self.navigationController popToRootViewControllerAnimated:YES];
+                //                } else {
+                //                    [self.navigationController popViewControllerAnimated:YES];
+                //                }
             }
         }
     }
@@ -1422,34 +1482,52 @@ BOOL stopWatchRunning;
         NSLog (@"savedPlaybackState is %d", savedPlaybackState);
         if (savedPlaybackState == MPMusicPlaybackStatePlaying) {
             [playPauseButton setImage:[UIImage imageNamed:@"bigpause.png"] forState:UIControlStateNormal];
+            [playPauseButton setAccessibilityLabel: NSLocalizedString(@"Play", nil)];
+            
+            
             [musicPlayer play];
-//            NSLog (@"****************Playing");
+            //            NSLog (@"****************Playing");
         } else {
             [playPauseButton setImage:[UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
+            [playPauseButton setAccessibilityLabel: NSLocalizedString(@"Pause", nil)];
+            
+            
             saveVolume = [musicPlayer volume];
             [musicPlayer setVolume: 0.0];
-            [self performSelector:@selector(delayedPlay) withObject:nil afterDelay:0.0];            
-//            NSLog (@"**************NOT Playing");
+            [self performSelector:@selector(delayedPlay) withObject:nil afterDelay:0.0];
+            //            NSLog (@"**************NOT Playing");
         }
     }
     NSLog (@"Shuffle Mode is %d", musicPlayer.shuffleMode);
     
     if (musicPlayer.shuffleMode == MPMusicShuffleModeSongs) {
         [self.shuffleButton setImage: [UIImage imageNamed: @"bigshuffleblue.png"] forState: UIControlStateNormal];
+        self.shuffleButton.isSelected = YES;
+        //        [self.shuffleButton setAccessibilityTraits: UIAccessibilityTraitSelected];
+        
+        
     } else {
         [self.shuffleButton setImage: [UIImage imageNamed: @"bigshuffle.png"] forState: UIControlStateNormal];
+        self.shuffleButton.isSelected = NO;
+        
         
     }
     NSLog (@"Repeat Mode is %d", musicPlayer.repeatMode);
     
     if (musicPlayer.repeatMode == MPMusicRepeatModeOne) {
         [self.repeatButton setImage: [UIImage imageNamed: @"bigrepeat1blue.png"] forState: UIControlStateNormal];
+        [self.repeatButton setAccessibilityLabel: NSLocalizedString(@"Repeat Track", nil)];
+        [self.repeatButton setAccessibilityHint: NSLocalizedString(@"Changes repeat settings", nil)];
         
     } else if (musicPlayer.repeatMode == MPMusicRepeatModeAll) {
         [self.repeatButton setImage: [UIImage imageNamed: @"bigrepeatblue.png"] forState: UIControlStateNormal];
+        [self.repeatButton setAccessibilityLabel: NSLocalizedString(@"Repeat All", nil)];
+        [self.repeatButton setAccessibilityHint: NSLocalizedString(@"Changes repeat settings", nil)];
         
     } else {
         [self.repeatButton setImage: [UIImage imageNamed: @"bigrepeat.png"] forState: UIControlStateNormal];
+        [self.repeatButton setAccessibilityLabel: NSLocalizedString(@"Repeat Off", nil)];
+        [self.repeatButton setAccessibilityHint: NSLocalizedString(@"Changes repeat settings", nil)];
         
     }
 }
@@ -1457,7 +1535,7 @@ BOOL stopWatchRunning;
     [musicPlayer play];
     [musicPlayer pause];
     [musicPlayer setVolume: saveVolume];
-
+    
 }
 #pragma mark Application playback control_________________
 
@@ -1484,9 +1562,9 @@ BOOL stopWatchRunning;
 //- (void) audioPlayerBeginInterruption: player {
 //    LogMethod();
 //	NSLog (@"Interrupted. The system has paused audio playback.");
-//	
+//
 //	if (playing) {
-//        
+//
 //		playing = NO;
 //		interruptedOnPlayback = YES;
 //	}
@@ -1495,13 +1573,13 @@ BOOL stopWatchRunning;
 //- (void) audioPlayerEndInterruption: player {
 //    LogMethod();
 //	NSLog (@"Interruption ended. Resuming audio playback.");
-//	
+//
 //	// Reactivates the audio session, whether or not audio was playing
 //	//		when the interruption arrived.
 //	[[AVAudioSession sharedInstance] setActive: YES error: nil];
-//	
+//
 //	if (interruptedOnPlayback) {
-//        
+//
 //		[appSoundPlayer prepareToPlay];
 //		[appSoundPlayer play];
 //		playing = YES;
@@ -1514,8 +1592,8 @@ BOOL stopWatchRunning;
 
 - (void)textMagnifierViewControllerDidCancel:(TextMagnifierViewController *)controller
 {
-//    LogMethod();
-
+    //    LogMethod();
+    
 	[controller dismissViewControllerAnimated:YES completion:nil];
     [self willAnimateRotationToInterfaceOrientation: self.interfaceOrientation duration: 1];
 }
@@ -1524,7 +1602,7 @@ BOOL stopWatchRunning;
 - (void)timeMagnifierViewControllerDidCancel:(TimeMagnifierViewController *)controller
 {
     stopWatchRunning = NO;
-//	[self dismissViewControllerAnimated:YES completion:nil];
+    //	[self dismissViewControllerAnimated:YES completion:nil];
     [controller dismissViewControllerAnimated:YES completion:nil];
     [self willAnimateRotationToInterfaceOrientation: self.interfaceOrientation duration: 1];
 }
@@ -1533,32 +1611,35 @@ BOOL stopWatchRunning;
 - (void)infoTabBarControllerDidCancel:(InfoTabBarController *)controller
 {
     [self willAnimateRotationToInterfaceOrientation: self.interfaceOrientation duration: 1];
-    //need to add back observer for playbackStatechanged because it was removed before going to info in case user edits 
+    //need to add back observer for playbackStatechanged because it was removed before going to info in case user edits
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 	[notificationCenter addObserver: self
 						   selector: @selector (handle_PlaybackStateChanged:)
 							   name: MPMusicPlayerControllerPlaybackStateDidChangeNotification
 							 object: musicPlayer];
-
+    
     MPMusicPlaybackState playbackState = [musicPlayer playbackState];
-
+    
     if (playbackState == MPMusicPlaybackStateStopped) {
         [self goBackClick];
     }
-
+    
 }
 - (void)viewWillDisappear:(BOOL)animated {
     LogMethod();
     [super viewWillDisappear: animated];
+    //remove the swipe gesture from the nav bar  (doesn't work to wait until dealloc)
+    [self.navigationController.navigationBar removeGestureRecognizer:self.swipeLeftRight];
+    
     [self.playbackTimer invalidate];
     
 }
 - (void)dealloc {
-//       LogMethod();
+    //       LogMethod();
     
-//    [[NSNotificationCenter defaultCenter] removeObserver: self
-//                                                    name: NSUbiquityIdentityDidChangeNotification
-//                                                  object: nil];
+    //    [[NSNotificationCenter defaultCenter] removeObserver: self
+    //                                                    name: NSUbiquityIdentityDidChangeNotification
+    //                                                  object: nil];
     
 	[[NSNotificationCenter defaultCenter] removeObserver: self
 													name: MPMusicPlayerControllerNowPlayingItemDidChangeNotification
@@ -1579,11 +1660,11 @@ BOOL stopWatchRunning;
     [[MPMediaLibrary defaultMediaLibrary] endGeneratingLibraryChangeNotifications];
     
 	[musicPlayer endGeneratingPlaybackNotifications];
-
+    
     
 }
 - (void) didReceiveMemoryWarning {
-//    LogMethod();
+    //    LogMethod();
 	// Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
     [self setNowPlayingLabel:nil];
@@ -1598,10 +1679,10 @@ BOOL stopWatchRunning;
     [self setShuffleButton:nil];
     [self setNextSongScrollView:nil];
     [self setNextSongLabel:nil];
-    [self setNextSongLabelWidthConstraint:nil];
-
-
-
+    //    [self setNextSongLabelWidthConstraint:nil];
+    
+    
+    
 	
 	// Release any cached data, images, etc that aren't in use.
 }

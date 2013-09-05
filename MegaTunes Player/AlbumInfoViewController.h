@@ -7,7 +7,7 @@
 //
 
 @interface AlbumInfoViewController : UIViewController  < UITableViewDelegate, UITableViewDataSource, MPMediaPickerControllerDelegate> {
-
+    
     NSManagedObjectContext *managedObjectContext_;
     
 }
@@ -18,12 +18,21 @@
 
 @property (strong, nonatomic) IBOutlet UITableView *infoTableView;
 @property (strong, nonatomic) IBOutlet UIImageView *albumImageView;
-@property (nonatomic, strong)   NSArray *songInfoData;
+@property (nonatomic, strong)   NSMutableArray *songInfoData;
 @property (nonatomic, copy) NSString *songName;
 @property (nonatomic, copy) NSString *album;
 @property (nonatomic, copy) NSString *artist;
 @property (nonatomic, copy) UIImage *albumImage;
 
-- (void) loadArrayForTable;
+@property (strong, nonatomic) IBOutlet NSString *lastPlayedDate;
+@property (strong, nonatomic) NSString *lastPlayedDateTitle;
+@property (strong, nonatomic) IBOutlet NSString *bpm;
+@property (strong, nonatomic) IBOutlet NSString *userGrouping;
+@property (strong, nonatomic) NSString *userGroupingTitle;
+@property (strong, nonatomic) NSNumber *saveBPM;
+
+@property (strong, nonatomic) UITextView *comments;
+
+- (void) loadTableData;
 
 @end

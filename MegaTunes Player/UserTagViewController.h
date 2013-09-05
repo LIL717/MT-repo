@@ -18,7 +18,7 @@
 @end
 
 @interface UserTagViewController : UIViewController <AddTagViewControllerDelegate, NSFetchedResultsControllerDelegate, FMMoveTableViewDataSource, FMMoveTableViewDelegate> {
-
+    
     NSManagedObjectContext *managedObjectContext_;
     
 }

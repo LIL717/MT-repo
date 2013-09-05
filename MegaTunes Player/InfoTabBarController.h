@@ -9,7 +9,7 @@
 
 @class InfoTabBarController;
 @class AlbumInfoViewController;
-@class ITunesInfoViewController;
+//@class ITunesInfoViewController;
 @class ITunesCommentsViewController;
 @class UserInfoViewController;
 
@@ -28,7 +28,7 @@
 @property (nonatomic, strong)	MPMusicPlayerController	*musicPlayer;
 
 @property (nonatomic, strong)   AlbumInfoViewController  *albumInfoViewController;
-@property (nonatomic, strong)   ITunesInfoViewController *iTunesInfoViewController;
+//@property (nonatomic, strong)   ITunesInfoViewController *iTunesInfoViewController;
 @property (nonatomic, strong)   ITunesCommentsViewController *iTunesCommentsViewController;
 @property (nonatomic, strong)   UserInfoViewController *userInfoViewController;
 
@@ -40,6 +40,17 @@
 
 @property (readwrite)           BOOL                    showPlayButton;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem  *rightBarButton;
+
+@property (nonatomic, retain)   NSTimer *playbackTimer;
+@property (readwrite)           BOOL                    showTimeLabels;
+@property (nonatomic, retain)   UIBarButtonItem         *elapsedTimeButton;
+@property (nonatomic, retain)   UIBarButtonItem         *remainingTimeButton;
+@property (nonatomic, retain)   NSString                *saveTitle;
+@property (readwrite)           BOOL                    mainViewIsSender;
+
+@property (strong, nonatomic) UISwipeGestureRecognizer *swipeLeftRight;
+
+
 
 
 

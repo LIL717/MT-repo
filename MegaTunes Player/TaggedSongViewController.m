@@ -89,7 +89,7 @@ BOOL excludeICloudItems;
 
 - (void)viewDidLoad
 {
-//    LogMethod();
+    //    LogMethod();
     [super viewDidLoad];
     
     //as this method starts, the whole collectionArray is available including ICloudItems
@@ -97,21 +97,14 @@ BOOL excludeICloudItems;
     
     firstLoad = YES;
     self.songShuffleButtonPressed = NO;
-
+    
     
     self.songViewTitle = self.title;
     self.showTagButton = NO;
     self.songTableView.scrollsToTop = YES;
     self.showTags = YES;
-
     
     
-    self.swipeLeftRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(toggleTagButtonAndTitle:)];
-    [self.swipeLeftRight setDirection:(UISwipeGestureRecognizerDirectionRight | UISwipeGestureRecognizerDirectionLeft )];
-    [self.navigationController.navigationBar addGestureRecognizer:self.swipeLeftRight];
-    
-    
-
     //set up grouped table view to look like plain (so that section headers won't stick to top)
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
     self.songTableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]];
@@ -133,6 +126,10 @@ BOOL excludeICloudItems;
     [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage48 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage58 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
     
+    [self.navigationItem.leftBarButtonItem setIsAccessibilityElement:YES];
+    [self.navigationItem.leftBarButtonItem setAccessibilityLabel: NSLocalizedString(@"Back", nil)];
+    [self.navigationItem.leftBarButtonItem setAccessibilityTraits: UIAccessibilityTraitButton];
+    
     self.playBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
                                                           style:UIBarButtonItemStyleBordered
                                                          target:self
@@ -143,6 +140,10 @@ BOOL excludeICloudItems;
     
     [self.playBarButton setBackgroundImage:menuBarImageDefault forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     [self.playBarButton setBackgroundImage:menuBarImageLandscape forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
+    
+    [self.playBarButton setIsAccessibilityElement:YES];
+    [self.playBarButton setAccessibilityLabel: NSLocalizedString(@"Now Playing", nil)];
+    [self.playBarButton setAccessibilityTraits: UIAccessibilityTraitButton];
     
     self.colorTagBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
                                                               style:UIBarButtonItemStyleBordered
@@ -155,6 +156,10 @@ BOOL excludeICloudItems;
     [self.colorTagBarButton setBackgroundImage:menuBarImageDefault forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     [self.colorTagBarButton setBackgroundImage:menuBarImageLandscape forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
     
+    [self.colorTagBarButton setIsAccessibilityElement:YES];
+    [self.colorTagBarButton setAccessibilityLabel: NSLocalizedString(@"Show tag colors", nil)];
+    [self.colorTagBarButton setAccessibilityTraits: UIAccessibilityTraitButton];
+    
     self.noColorTagBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
                                                                 style:UIBarButtonItemStyleBordered
                                                                target:self
@@ -165,6 +170,10 @@ BOOL excludeICloudItems;
     
     [self.noColorTagBarButton setBackgroundImage:menuBarImageDefault forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     [self.noColorTagBarButton setBackgroundImage:menuBarImageLandscape forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
+    
+    [self.noColorTagBarButton setIsAccessibilityElement:YES];
+    [self.noColorTagBarButton setAccessibilityLabel: NSLocalizedString(@"Hide tqg colors", nil)];
+    [self.noColorTagBarButton setAccessibilityTraits: UIAccessibilityTraitButton];
     
     musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
     
@@ -185,13 +194,13 @@ BOOL excludeICloudItems;
         
     }];
     
-
-
+    
+    
 }
 
 - (void) createTaggedSongArray {
-//    LogMethod();
-
+    //    LogMethod();
+    
     NSMutableArray *songDictMutableArray = [NSMutableArray arrayWithCapacity: 20];
     //    self.taggedSongArray = [NSMutableArray arrayWithCapacity: 20];
     
@@ -210,7 +219,7 @@ BOOL excludeICloudItems;
                                                                                      forProperty:  MPMediaItemPropertyPersistentID];
         [mySongQuery addFilterPredicate: filterPredicate];
         MPMediaPropertyPredicate *cloudPredicate = [MPMediaPropertyPredicate predicateWithValue:  [NSNumber numberWithInt: 0]
-                                                                                     forProperty:  MPMediaItemPropertyIsCloudItem];
+                                                                                    forProperty:  MPMediaItemPropertyIsCloudItem];
         if (excludeICloudItems) {
             //iCloud items have value 1 for MPMediaItemPropertyIsCloudItem so if excluding them, only choose items with value 0
             
@@ -282,8 +291,8 @@ BOOL excludeICloudItems;
     }
 }
 - (void) loadSectionData {
-//    LogMethod();
-
+    //    LogMethod();
+    
     self.songTableView.sectionIndexMinimumDisplayRowCount = 20;
     [self.songTableView setSectionIndexColor:[UIColor whiteColor]];
     
@@ -291,9 +300,9 @@ BOOL excludeICloudItems;
     
     savedTaggedDataSource = [self.taggedSongArray copy];
     savedTaggedPlaylistDuration = [self.collectionItem.duration copy];
-//    if (self.collectionContainsICloudItem) {
-//        [self adjustTaggedDataSource];
-//    }
+    //    if (self.collectionContainsICloudItem) {
+    //        [self adjustTaggedDataSource];
+    //    }
     [self createTagSections];
     if ([self.taggedSongArray count] >= self.songTableView.sectionIndexMinimumDisplayRowCount) {
         isIndexed = YES;
@@ -302,8 +311,8 @@ BOOL excludeICloudItems;
 }
 
 - (void) createTagSections {
-//    LogMethod();
-
+    //    LogMethod();
+    
     BOOL found;
     
     TagData *tagData = [TagData alloc];
@@ -315,12 +324,12 @@ BOOL excludeICloudItems;
     NSMutableArray * titles = [NSMutableArray arrayWithCapacity: arrayCount];
     
     // Loop through the songsDictArray and create our keys and 2 objects for each key, TagData and range (starting index which is location and number of items in the section which is length
-//    typedef struct _NSRange {
-//        NSUInteger location;
-//        NSUInteger length;
-//    } NSRange;
+    //    typedef struct _NSRange {
+    //        NSUInteger location;
+    //        NSUInteger length;
+    //    } NSRange;
     // format of taggedSongSections is  title=ABC, range={0, 5}, sectionIndexTitleIndex=1,
-
+    
     int currentLocation = 0;
     int sectionItemCount = 0;
     int sectionCount = 0;
@@ -333,7 +342,7 @@ BOOL excludeICloudItems;
         sectionName = tagData.tagName;
         
         found = NO;
-
+        
         for (NSString *fullTitle in titles) {
             if ([fullTitle isEqualToString:sectionName]) {
                 found = YES;
@@ -370,9 +379,9 @@ BOOL excludeICloudItems;
     }
     //add last entry when done looping
     if (sectionCount > 0) {
-//        [titles addObject: tagData.tagName];
+        //        [titles addObject: tagData.tagName];
         self.taggedSectionIndexData = [TaggedSectionIndexData alloc];
-
+        
         if ([sectionNameToSave length] > 3) {
             self.taggedSectionIndexData.sectionIndexTitle =  [sectionNameToSave substringToIndex: 3];
         } else {
@@ -409,12 +418,12 @@ BOOL excludeICloudItems;
     });
 }
 - (void) createDurationArray {
-
+    
     long playlistDuration = 0;
-
+    
     for (NSDictionary *dict in self.taggedSongArray) {  //dict is a dictionary with 2 objects, mediaItem (song) and TagData
         MPMediaItem *song = [dict objectForKey: @"Song"];
-
+        
         //calculate the duration of the the playlist
         
         long playbackDuration = [[song valueForProperty: MPMediaItemPropertyPlaybackDuration] longValue];
@@ -424,7 +433,7 @@ BOOL excludeICloudItems;
         NSString *itemDuration = [NSString stringWithFormat:@"%2d:%02d", playlistMinutes, playlistSeconds];
         [songDurations addObject: itemDuration];
         playlistDuration = (playlistDuration + [[song valueForProperty:MPMediaItemPropertyPlaybackDuration] longValue]);
-
+        
         
     }
     self.collectionItem.duration = [NSNumber numberWithLong: playlistDuration];
@@ -446,12 +455,12 @@ BOOL excludeICloudItems;
 //            //save the array with all the items and the duration
 //            savedTaggedDataSource = [self.taggedSongArray copy];
 //            savedTaggedPlaylistDuration = [self.taggedPlaylistDuration copy];
-//            
+//
 //            //create a new array without the iCloudItems
 //            NSMutableArray *songMutableArray = [[NSMutableArray alloc] init];
 //            long playlistDuration = 0;
 //            NSString *isCloudItem = @"0";  // the BOOL MPMediaItemPropertyIsCloudItem seems to be 0, but doesn't work as a BOOL
-//            
+//
 //            for (MPMediaItem *song in savedTaggedDataSource) {
 //                isCloudItem = [song valueForProperty: MPMediaItemPropertyIsCloudItem];
 //                if (isCloudItem.intValue != 1) {  //iCloud items should be 1
@@ -465,11 +474,16 @@ BOOL excludeICloudItems;
 //            currentDataSourceContainsICloudItems = NO;
 //        }
 //    }
-//    
+//
 //}
 - (void) viewWillAppear:(BOOL)animated
 {
-//    LogMethod();
+    //    LogMethod();
+    
+    
+    self.swipeLeftRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(toggleTagButtonAndTitle:)];
+    [self.swipeLeftRight setDirection:(UISwipeGestureRecognizerDirectionRight | UISwipeGestureRecognizerDirectionLeft )];
+    [self.navigationController.navigationBar addGestureRecognizer:self.swipeLeftRight];
     
     [self buildRightNavBarArray];
     
@@ -486,7 +500,7 @@ BOOL excludeICloudItems;
             SongCell *cell = (SongCell *)[self.songTableView cellForRowAtIndexPath:indexPath];
             [cell.scrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
         }
-
+        
         self.cellScrolled = NO;
     }
     [self updateLayoutForNewOrientation: self.interfaceOrientation];
@@ -523,7 +537,7 @@ BOOL excludeICloudItems;
     }
 }
 -(void) viewDidAppear:(BOOL)animated {
-//    LogMethod();
+    //    LogMethod();
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     [super viewDidAppear:(BOOL)animated];
 }
@@ -574,7 +588,7 @@ BOOL excludeICloudItems;
             }
         }
     }
-
+    
     
     // hide the search bar and All Songs cell
     CGFloat tableViewHeaderHeight = self.shuffleView.frame.size.height;
@@ -587,13 +601,13 @@ BOOL excludeICloudItems;
     int arrayCount;
     
     arrayCount = [self.taggedSongArray count];
-
+    
     if (arrayCount <= possibleRows) {
         [self performSelector:@selector(updateContentOffset) withObject:nil afterDelay:0.0];
     } else {
         if (firstRowVisible) {
             [self.songTableView setContentOffset:CGPointMake(0, adjustedHeaderHeight)];
-
+            
         }
     }
     [self.songTableView reloadData];
@@ -613,7 +627,7 @@ BOOL excludeICloudItems;
     CGFloat tableViewHeaderHeight = self.shuffleView.frame.size.height;
     
     [self.songTableView setContentOffset:CGPointMake(0, tableViewHeaderHeight - largeHeaderAdjustment)];
-
+    
 }
 - (void) viewWillLayoutSubviews {
     //need this to pin portrait view to bounds otherwise if start in landscape, push to next view, rotate to portrait then pop back the original view in portrait - it will be too wide and "scroll" horizontally
@@ -624,7 +638,7 @@ BOOL excludeICloudItems;
 #pragma mark - Search Display methods
 
 - (void)searchDisplayControllerDidBeginSearch:(UISearchDisplayController *)controller {
-//    LogMethod();
+    //    LogMethod();
     self.isSearching = YES;
     //    [[NSNotificationCenter defaultCenter] postNotificationName: @"Searching" object:nil];
     
@@ -636,7 +650,7 @@ BOOL excludeICloudItems;
 }
 
 - (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller {
-//    LogMethod();
+    //    LogMethod();
     self.isSearching = NO;
     //reload the original tableView otherwise section headers are not visible :(  this seems to be an Apple bug
     
@@ -655,7 +669,7 @@ BOOL excludeICloudItems;
 }
 - (void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope
 {
-//    LogMethod();
+    //    LogMethod();
     
     searchMediaItemProperty = MPMediaItemPropertyTitle;
     
@@ -668,34 +682,34 @@ BOOL excludeICloudItems;
     MPMediaQuery *mySongQuery = [self.collectionQueryType copy];
     [mySongQuery addFilterPredicate: filterPredicate];
     
-     NSArray *allMatchingSongs = [mySongQuery items];
+    NSArray *allMatchingSongs = [mySongQuery items];
     
-//    if (taggedList) {
-        NSMutableArray *taggedSongsSearchResults = [[NSMutableArray alloc] init];
-        for (MPMediaItem *song in allMatchingSongs) {
-            TagData *tagData = [self retrieveTagForMediaItem: song];
-            if (tagData) {
-                [taggedSongsSearchResults addObject: song];
-            }
+    //    if (taggedList) {
+    NSMutableArray *taggedSongsSearchResults = [[NSMutableArray alloc] init];
+    for (MPMediaItem *song in allMatchingSongs) {
+        TagData *tagData = [self retrieveTagForMediaItem: song];
+        if (tagData) {
+            [taggedSongsSearchResults addObject: song];
         }
-        self.searchResults = [taggedSongsSearchResults copy];
-//    } else {
-//        searchResults = [mySongQuery items];
-//    }
+    }
+    self.searchResults = [taggedSongsSearchResults copy];
+    //    } else {
+    //        searchResults = [mySongQuery items];
+    //    }
     
-//    NSLog (@"searchResults %@", searchResults);
+    //    NSLog (@"searchResults %@", searchResults);
     
     
 }
 - (TagData *) retrieveTagForMediaItem: (MPMediaItem *) mediaItem {
-
+    
     //check to see if there is user data for this media item
     MediaItemUserData *mediaItemUserData = [MediaItemUserData alloc];
     mediaItemUserData.managedObjectContext = self.managedObjectContext;
-
+    
     UserDataForMediaItem *userDataForMediaItem = [mediaItemUserData containsItem: [mediaItem valueForProperty: MPMediaItemPropertyPersistentID]];
     return userDataForMediaItem.tagData;
-
+    
 }
 -(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
 
@@ -720,7 +734,7 @@ BOOL excludeICloudItems;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-//    LogMethod();
+    //    LogMethod();
     
     // Return the number of sections.
     if (tableView == self.searchDisplayController.searchResultsTableView) {
@@ -732,15 +746,15 @@ BOOL excludeICloudItems;
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-//    LogMethod();
-
-        return [self.taggedSongSectionTitles objectAtIndex: section];
-
+    //    LogMethod();
+    
+    return [self.taggedSongSectionTitles objectAtIndex: section];
+    
 }
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
 {
-//    LogMethod();
+    //    LogMethod();
     if (tableView == self.searchDisplayController.searchResultsTableView) {
         return nil;
     } else if (isIndexed) {
@@ -755,9 +769,9 @@ BOOL excludeICloudItems;
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
 {
-//    LogMethod();
+    //    LogMethod();
     
-//    NSLog (@"SectionIndexTitle is %@ at index %d", title, index);
+    //    NSLog (@"SectionIndexTitle is %@ at index %d", title, index);
     //since search was added to the array, need to return index - 1 to get to correct title, for search, set content Offset to top of table :)
     if ([title isEqualToString: @"{search}"]) {
         [tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
@@ -769,28 +783,28 @@ BOOL excludeICloudItems;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-//    LogMethod();
+    //    LogMethod();
     
     // Return the number of rows in the section.
     if (tableView == self.searchDisplayController.searchResultsTableView) {
         
-//        NSLog (@" searchResults count is %d", [searchResults count]);
+        //        NSLog (@" searchResults count is %d", [searchResults count]);
         return [searchResults count];
     } else {
-
-//        NSString *tagName = [self.taggedSongSectionTitles objectAtIndex: section];
-//
-//        return [[self.taggedSongSections valueForKey: tagName] count];
+        
+        //        NSString *tagName = [self.taggedSongSectionTitles objectAtIndex: section];
+        //
+        //        return [[self.taggedSongSections valueForKey: tagName] count];
         TaggedSectionIndexData * sec = self.taggedSongSections[section];
         return sec.sectionRange.length;
-
+        
     }
-
+    
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-//    LogMethod();
+    //    LogMethod();
     //this must be nil or the section headers of the original tableView are awkwardly visible
     // original table must be reloaded after search to get them back :(  this seems to be an Apple bug
     if (self.isSearching) {
@@ -800,30 +814,30 @@ BOOL excludeICloudItems;
     } else {
         
         UIColor *sectionHeaderColor;
-
+        
         NSString *sectionTitle = [self tableView:tableView titleForHeaderInSection:section];
         if (sectionTitle == nil) {
             return nil;
         }
-
+        
         CGFloat sectionViewHeight;
         CGFloat sectionViewWidth;
         sectionViewWidth = tableView.bounds.size.width;
-     
+        
         UILabel *sectionTitleLabel;
         
         sectionViewHeight = 60;
         sectionTitleLabel = [[UILabel alloc] initWithFrame: CGRectMake( 0, 0, sectionViewWidth, sectionViewHeight)];
         sectionTitleLabel.font = [UIFont systemFontOfSize:44];
-
+        
         sectionTitleLabel.backgroundColor = [UIColor clearColor];
         sectionTitleLabel.textAlignment = NSTextAlignmentCenter;
         sectionTitleLabel.textColor = [UIColor yellowColor];
         sectionHeaderColor = [UIColor blackColor];
-
+        
         sectionTitleLabel.text = sectionTitle;
-
-
+        
+        
         UIView *sectionView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, sectionViewWidth, sectionViewHeight)];
         [sectionView setBackgroundColor:sectionHeaderColor];
         
@@ -842,18 +856,18 @@ BOOL excludeICloudItems;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-//    LogMethod();
+    //    LogMethod();
     
     if (self.isSearching) {
         return 0;
     } else {
-            return 60;
+        return 60;
     }
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-//    LogMethod();
+    //    LogMethod();
     //this must be nil or the section headers of the original tableView are awkwardly visible
     // original table must be reloaded after search to get them back :(  this seems to be an Apple bug
     if (self.isSearching) {
@@ -887,7 +901,7 @@ BOOL excludeICloudItems;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    LogMethod();
+    //    LogMethod();
     
     //don't use SongCell for searchResultsCell won't respond to touches to scroll anyway and terrible performance on GoBackClick when autoRotated
     static NSString *CellIdentifier = @"Cell";
@@ -905,7 +919,7 @@ BOOL excludeICloudItems;
     } else {
         cell.cellOffset = 10.0;
     }
-//    
+    //
     TaggedSectionIndexData * sec = self.taggedSongSections[indexPath.section];
     //    //    NSLog (@" section is %d", indexPath.section);
     
@@ -931,7 +945,7 @@ BOOL excludeICloudItems;
         
         MPMediaItem  *item = [searchResults objectAtIndex: indexPath.row];
         mediaItemName = [item valueForProperty: MPMediaItemPropertyTitle];
-
+        
         searchResultsCell.textLabel.text = mediaItemName;
         
         UIColor *tagColor;
@@ -954,10 +968,10 @@ BOOL excludeICloudItems;
     } else {
         
         MPMediaItem *song;
-
+        
         NSDictionary *dict = self.taggedSongArray [sec.sectionRange.location + indexPath.row];
         song = [dict objectForKey: @"Song"];
-
+        
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         
         cell.nameLabel.text = [song valueForProperty:  MPMediaItemPropertyTitle];
@@ -965,7 +979,7 @@ BOOL excludeICloudItems;
         
         UIColor *tagColor;
         tagColor = [UIColor blackColor];
-
+        
         if (showTags) {
             TagData *tagData = [dict objectForKey:@"TagData"];
             if (tagData.tagName) {
@@ -1000,10 +1014,10 @@ BOOL excludeICloudItems;
             showDuration = YES;
             cell.durationLabel.hidden = NO;
             
-
-        //if the array has been populated in the background at least to the point of the index, then use the table otherwise calculate the playlistDuration here
-
-
+            
+            //if the array has been populated in the background at least to the point of the index, then use the table otherwise calculate the playlistDuration here
+            
+            
             if ([songDurations count] > (sec.sectionRange.location + indexPath.row)) {
                 cell.durationLabel.text = songDurations[sec.sectionRange.location + indexPath.row];
             } else {
@@ -1039,6 +1053,11 @@ BOOL excludeICloudItems;
             [infoButton setImage:image forState:UIControlStateNormal];
             [infoButton setImage: infoBackgroundImage forState:UIControlStateHighlighted];
             [infoButton addTarget:self action:@selector(infoButtonTapped:event:)  forControlEvents:UIControlEventTouchUpInside];
+            
+            [infoButton setIsAccessibilityElement:YES];
+            [infoButton setAccessibilityLabel: NSLocalizedString(@"Info", nil)];
+            [infoButton setAccessibilityTraits: UIAccessibilityTraitButton];
+            [infoButton setAccessibilityHint: NSLocalizedString(@"View iTunes info and user notes.", nil)];
             
             UIView *superview = cell.contentView;
             
@@ -1081,13 +1100,13 @@ BOOL excludeICloudItems;
             cell.playingIndicator.image = [UIImage imageNamed:@"notPlaying"];
         }
         return [self handleCellScrolling: cell inTableView: tableView];
-
+        
     }
     
 }
 - (UIColor *) retrieveTagColorForMediaItem: (MPMediaItem *) mediaItem {
-//    LogMethod();
-
+    //    LogMethod();
+    
     //check to see if there is user data for this media item
     MediaItemUserData *mediaItemUserData = [MediaItemUserData alloc];
     mediaItemUserData.managedObjectContext = self.managedObjectContext;
@@ -1132,7 +1151,7 @@ BOOL excludeICloudItems;
     return [NSNumber numberWithLong: playlistDuration];
 }
 - (SongCell *) handleCellScrolling: (SongCell *) cell inTableView: (UITableView *) tableView {
-//    LogMethod();
+    //    LogMethod();
     
     //    cell.scrollViewToCellConstraint.constant = showDuration ? (30 + 130 + 5) : 48;
     cell.scrollViewToCellConstraint.constant = showDuration ? (30 + 130 + 5 + cell.cellOffset) : (48 + cell.cellOffset);
@@ -1214,23 +1233,23 @@ BOOL excludeICloudItems;
         selectedIndexPath = indexPath;
         
         TaggedSectionIndexData * sec = self.taggedSongSections[indexPath.section];
-//        selectedSong = self.collectionItem.collectionArray[sec.range.location + indexPath.row];
-//        
-//        self.songCollection = [MPMediaItemCollection collectionWithItems: self.collectionItem.collectionArray];
-//        
-//        NSString *tagName = [self.taggedSongSectionTitles objectAtIndex: indexPath.section];
-////            NSLog (@" tagName %@", tagName);
-//        
-////            NSArray *songArray = [[NSArray alloc] initWithArray: [self.taggedSongSections valueForKey: tagData.tagName]];
-//        NSArray *songArray = [[NSArray alloc] initWithArray: [self.taggedSongSections valueForKey: tagName]];
-//
-//        
-//        NSDictionary *dict = [songArray objectAtIndex: indexPath.row];
+        //        selectedSong = self.collectionItem.collectionArray[sec.range.location + indexPath.row];
+        //
+        //        self.songCollection = [MPMediaItemCollection collectionWithItems: self.collectionItem.collectionArray];
+        //
+        //        NSString *tagName = [self.taggedSongSectionTitles objectAtIndex: indexPath.section];
+        ////            NSLog (@" tagName %@", tagName);
+        //
+        ////            NSArray *songArray = [[NSArray alloc] initWithArray: [self.taggedSongSections valueForKey: tagData.tagName]];
+        //        NSArray *songArray = [[NSArray alloc] initWithArray: [self.taggedSongSections valueForKey: tagName]];
+        //
+        //
+        //        NSDictionary *dict = [songArray objectAtIndex: indexPath.row];
         
         NSDictionary *dict = self.taggedSongArray [sec.sectionRange.location + indexPath.row];
         selectedSong = [dict objectForKey: @"Song"];
         
-//            NSLog (@"song is %@", [selectedSong valueForProperty: MPMediaItemPropertyTitle]);
+        //            NSLog (@"song is %@", [selectedSong valueForProperty: MPMediaItemPropertyTitle]);
         
         NSMutableArray *collectionArray = [[NSMutableArray alloc] initWithCapacity: [self.taggedSongArray count]];
         for (NSDictionary *dict in self.taggedSongArray) {
@@ -1238,12 +1257,12 @@ BOOL excludeICloudItems;
             [collectionArray addObject: song];
         }
         self.songCollection = [MPMediaItemCollection collectionWithItems: collectionArray];
-
+        
         self.collectionItem.collection = self.songCollection;
         
         self.collectionItemToSave = self.collectionItem;
         
-//        NSLog (@" self.collectionItemToSave is %@", self.collectionItemToSave);
+        //        NSLog (@" self.collectionItemToSave is %@", self.collectionItemToSave);
         
         
         //set the "nowPlaying indicator" as the view disappears (already selected play indicator is still there too :(
@@ -1266,6 +1285,7 @@ BOOL excludeICloudItems;
         infoTabBarController.infoDelegate = self;
         infoTabBarController.title = [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyTitle];
         infoTabBarController.mediaItemForInfo = self.mediaItemForInfo;
+        infoTabBarController.mainViewIsSender = NO;
         
         //remove observer for playbackstatechanged because if editing, don't want to pop view
         //  observer will be added back in infoTabBarControllerDidCancel
@@ -1287,7 +1307,7 @@ BOOL excludeICloudItems;
         mainViewController.playNew = YES;
         mainViewController.songShuffleButtonPressed = self.songShuffleButtonPressed;
         self.songShuffleButtonPressed = NO;
-
+        
         mainViewController.iPodLibraryChanged = self.iPodLibraryChanged;
         
         //save collection in Core Data
@@ -1336,10 +1356,9 @@ BOOL excludeICloudItems;
 }
 - (IBAction)goBackClick
 {
-    //remove the swipe gesture from the nav bar  (doesn't work to wait until dealloc)
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
-    [self.navigationController.navigationBar removeGestureRecognizer:self.swipeLeftRight];
+    //    [self.navigationController.navigationBar removeGestureRecognizer:self.swipeLeftRight];
     
     if (iPodLibraryChanged) {
         [self.navigationController popToRootViewControllerAnimated:YES];
@@ -1372,10 +1391,10 @@ BOOL excludeICloudItems;
 }
 
 - (IBAction)playWithShuffle:(id)sender {
-//    LogMethod();
+    //    LogMethod();
     //Shuffle button selected
     //unpredictable end of playing shuffled songs when this is set here, works to set in mainViewController
-//    [musicPlayer setShuffleMode: MPMusicShuffleModeSongs];
+    //    [musicPlayer setShuffleMode: MPMusicShuffleModeSongs];
     self.songShuffleButtonPressed = YES;
     
     NSMutableArray *collectionArray = [[NSMutableArray alloc] initWithCapacity: [self.taggedSongArray count]];
@@ -1384,13 +1403,13 @@ BOOL excludeICloudItems;
         [collectionArray addObject: song];
     }
     NSMutableArray *shuffleArray = collectionArray;
-
+    
     int max = [shuffleArray count];
     int randNum = arc4random() % max;
     selectedSong = [shuffleArray objectAtIndex: randNum];
-
+    
     self.songCollection = [MPMediaItemCollection collectionWithItems: shuffleArray];
-
+    
     self.collectionItem.collection = self.songCollection;
     
     self.collectionItemToSave = self.collectionItem;
@@ -1424,7 +1443,7 @@ BOOL excludeICloudItems;
     //    LogMethod();
     
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-
+    
     [notificationCenter addObserver:self
                            selector:@selector(reachabilityChanged:)
                                name:kReachabilityChangedNotification
@@ -1578,7 +1597,7 @@ BOOL excludeICloudItems;
 }
 // When the playback state changes, if stopped remove nowplaying button
 - (void) handle_PlaybackStateChanged: (id) notification {
-//    LogMethod();
+    //    LogMethod();
     
 	MPMusicPlaybackState playbackState = [musicPlayer playbackState];
 	
@@ -1589,7 +1608,7 @@ BOOL excludeICloudItems;
 }
 // When the now-playing item changes, update the now-playing indicator and reload table
 - (void) handle_NowPlayingItemChanged: (id) notification {
-//    LogMethod();
+    //    LogMethod();
     
     [self.songTableView reloadData];
     self.cellScrolled = NO;
@@ -1645,7 +1664,15 @@ BOOL excludeICloudItems;
     [musicPlayer endGeneratingPlaybackNotifications];
     
 }
-
+- (void)viewWillDisappear:(BOOL)animated {
+    
+    //    LogMethod();
+    [super viewWillDisappear: animated];
+    //remove the swipe gesture from the nav bar  (doesn't work to wait until dealloc) and need to remove it for going forward to info or going backward
+    
+    [self.navigationController.navigationBar removeGestureRecognizer:self.swipeLeftRight];
+    
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

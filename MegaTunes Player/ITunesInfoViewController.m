@@ -14,8 +14,8 @@
 
 
 
-#import "bass.h"
-#import "bass_fx.h" 
+//#import "bass.h"
+//#import "bass_fx.h"
 #import <AudioToolbox/AudioToolbox.h> // for the core audio constants
 
 
@@ -136,7 +136,7 @@
 //    label.font = newFont;
 //    label.textColor = [UIColor yellowColor];
 //    label.text = self.title;
-//    
+//
 //    return label;
 //}
 #pragma mark Table view methods________________________
@@ -213,9 +213,9 @@
 
 //-(void) calculateBPM {
 //    LogMethod();
-//    
+//
 //    NSURL *url = [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyAssetURL];
-//    
+//
 //    AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL: url options:nil];
 //
 //    AVAssetExportSession *exporter = [[AVAssetExportSession alloc] initWithAsset: songAsset
@@ -224,18 +224,18 @@
 //    NSLog (@"created exporter. supportedFileTypes: %@", exporter.supportedFileTypes);
 //
 //    exporter.outputFileType = @"com.apple.m4a-audio";
-//    
+//
 //    NSString *exportFile = [myDocumentsDirectory() stringByAppendingPathComponent:
 //                            @"exported.m4a"];
-//   
+//
 //    myDeleteFile(exportFile);
 //
 //    NSURL *exportURL = [NSURL fileURLWithPath:exportFile];
-//    
+//
 //
 //    exporter.outputURL = exportURL;
-//    
-//   
+//
+//
 //    // do the export
 //    [exporter exportAsynchronouslyWithCompletionHandler:^{
 //        int exportStatus = exporter.status;
@@ -281,17 +281,17 @@
 //    LogMethod();
 //
 //    BASS_SetConfig(BASS_CONFIG_IOS_MIXAUDIO, 0); // Disable mixing. To be called before BASS_Init.
-//    
+//
 //    if (HIWORD(BASS_GetVersion()) != BASSVERSION) {
 //        NSLog(@"An incorrect version of BASS was loaded");
 //    }
-//    
+//
 //    // Initialize default device.
 //    if (!BASS_Init(-1, 44100, 0, NULL, NULL)) {
 //        NSLog(@"Can't initialize device");
-//        
+//
 //    }
-//    
+//
 //    NSString *respath = [myDocumentsDirectory() stringByAppendingPathComponent: @"exported.m4a"];
 //    NSError *error = nil;
 //    NSString *str = [NSString stringWithContentsOfFile:respath encoding:NSUTF8StringEncoding error:&error];
@@ -301,14 +301,14 @@
 //        NSLog(@"respath file data: %@", str);
 //    }
 ////    NSLog (@" respath is %@", respath);
-//    
+//
 //    DWORD chan1;
 //    if(!(chan1=BASS_StreamCreateFile(FALSE, [respath UTF8String], 0, 0, BASS_SAMPLE_LOOP))) {
 //        NSLog(@"Can't load stream!");
 //    }
-//    
+//
 //    HSTREAM mainStream=BASS_StreamCreateFile(FALSE, [respath cStringUsingEncoding:NSUTF8StringEncoding], 0, 0, BASS_SAMPLE_FLOAT|BASS_STREAM_PRESCAN|BASS_STREAM_DECODE);
-//    
+//
 //    float playBackDuration=BASS_ChannelBytes2Seconds(mainStream, BASS_ChannelGetLength(mainStream, BASS_POS_BYTE));
 //    NSLog(@"Play back duration is %f",playBackDuration);
 //    HSTREAM bpmStream=BASS_StreamCreateFile(FALSE, [respath UTF8String], 0, 0, BASS_STREAM_PRESCAN|BASS_SAMPLE_FLOAT|BASS_STREAM_DECODE);
@@ -327,7 +327,7 @@
 //    //fill in bpm for Core Data - if we went through here there was neither a bpm existing on the mediaItem or a previously calculated bpm
 //    userDataForMediaItem.bpm = [NSNumber numberWithFloat: BpmValue];
 //    NSLog(@"BPM is %f",BpmValue);
-//    
+//
 //}
 
 - (void)didReceiveMemoryWarning

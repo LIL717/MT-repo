@@ -116,6 +116,8 @@
 		707862B51626659900871260 /* ITunesInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 707862B41626659900871260 /* ITunesInfoViewController.m */; };
 		707862BC1629F33A00871260 /* AutoScrollLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 707862BB1629F33A00871260 /* AutoScrollLabel.m */; };
 		707862BF162C729300871260 /* TimeMagnifierViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 707862BE162C729300871260 /* TimeMagnifierViewController.m */; };
+		707AC0F217D933BD009B49CA /* AccessibleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 707AC0EF17D933BD009B49CA /* AccessibleButton.m */; };
+		707AC0F317D933BD009B49CA /* AccessibleLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 707AC0F117D933BD009B49CA /* AccessibleLabel.m */; };
 		70864FCB170605960030210C /* AllAlbumsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 70864FCA170605960030210C /* AllAlbumsCell.m */; };
 		70864FCE17092B5B0030210C /* GenreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70864FCD17092B5B0030210C /* GenreViewController.m */; };
 		70864FD1170B789E0030210C /* UIScrollView+PassTouches.m in Sources */ = {isa = PBXBuildFile; fileRef = 70864FD0170B789E0030210C /* UIScrollView+PassTouches.m */; };
@@ -405,6 +407,10 @@
 		707862BB1629F33A00871260 /* AutoScrollLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AutoScrollLabel.m; path = ../../../../AutoScrollLabel/AutoScrollLabel.m; sourceTree = "<group>"; };
 		707862BD162C729300871260 /* TimeMagnifierViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeMagnifierViewController.h; sourceTree = "<group>"; };
 		707862BE162C729300871260 /* TimeMagnifierViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeMagnifierViewController.m; sourceTree = "<group>"; };
+		707AC0EE17D933BD009B49CA /* AccessibleButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccessibleButton.h; sourceTree = "<group>"; };
+		707AC0EF17D933BD009B49CA /* AccessibleButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccessibleButton.m; sourceTree = "<group>"; };
+		707AC0F017D933BD009B49CA /* AccessibleLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccessibleLabel.h; sourceTree = "<group>"; };
+		707AC0F117D933BD009B49CA /* AccessibleLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccessibleLabel.m; sourceTree = "<group>"; };
 		70864FC9170605960030210C /* AllAlbumsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllAlbumsCell.h; sourceTree = "<group>"; };
 		70864FCA170605960030210C /* AllAlbumsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllAlbumsCell.m; sourceTree = "<group>"; };
 		70864FCC17092B5B0030210C /* GenreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenreViewController.h; sourceTree = "<group>"; };
@@ -1107,6 +1113,10 @@
 		70ADDC11161224BD00219873 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				707AC0EE17D933BD009B49CA /* AccessibleButton.h */,
+				707AC0EF17D933BD009B49CA /* AccessibleButton.m */,
+				707AC0F017D933BD009B49CA /* AccessibleLabel.h */,
+				707AC0F117D933BD009B49CA /* AccessibleLabel.m */,
 				70CF0BF9176EC82A007AB6CF /* add57.png */,
 				70CF0C01176ECCE3007AB6CF /* add57@2x.png */,
 				70CF0BFB176EC82C007AB6CF /* add68.png */,
@@ -1649,6 +1659,8 @@
 				70017F0B177EBC120022CEAF /* TaggedSongViewController.m in Sources */,
 				708EA29317931AE000A826D6 /* TaggedSectionIndexData.m in Sources */,
 				70D7C28F1794A40D00A8A5BF /* Reachability.m in Sources */,
+				707AC0F217D933BD009B49CA /* AccessibleButton.m in Sources */,
+				707AC0F317D933BD009B49CA /* AccessibleLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

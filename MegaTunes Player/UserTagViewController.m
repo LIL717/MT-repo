@@ -56,7 +56,7 @@ NSString *actionType;
     [self listenForChanges];
     
     [self setupFetchedResultsController];
-
+    
     NSError *error = nil;
     NSArray *allFetchedObjects = [self.managedObjectContext executeFetchRequest:[self fetchRequest] error:&error];
     for (TagData *tagData in allFetchedObjects) {
@@ -64,22 +64,22 @@ NSString *actionType;
         NSLog (@"tagData.sortOrder is %d", [tagData.sortOrder intValue]);
     }
     
-//
-//    
-//    //if the tag of the current mediaItem is already in the table, scroll that item to the top on first view
-//    scrollToTag = NO;
-//    NSString *tagOfCurrentItem = self.userDataForMediaItem.tagName;
-//    
-//    for (int i = 0 ; i < [self.tagItemArray count ] ; i++)
-//    {
-//        TagItem *tagItem= [self.tagItemArray objectAtIndex: i];
-//        if ([tagItem.tagName isEqualToString: tagOfCurrentItem]) {
-//
-//            indexOfCurrentTag = i;
-//            scrollToTag = YES;
-//        }
-//    }
-
+    //
+    //
+    //    //if the tag of the current mediaItem is already in the table, scroll that item to the top on first view
+    //    scrollToTag = NO;
+    //    NSString *tagOfCurrentItem = self.userDataForMediaItem.tagName;
+    //
+    //    for (int i = 0 ; i < [self.tagItemArray count ] ; i++)
+    //    {
+    //        TagItem *tagItem= [self.tagItemArray objectAtIndex: i];
+    //        if ([tagItem.tagName isEqualToString: tagOfCurrentItem]) {
+    //
+    //            indexOfCurrentTag = i;
+    //            scrollToTag = YES;
+    //        }
+    //    }
+    
     self.title = NSLocalizedString(@"Tags", nil);
     
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
@@ -98,6 +98,10 @@ NSString *actionType;
     [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage48 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage58 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
     
+    [self.navigationItem.leftBarButtonItem setIsAccessibilityElement:YES];
+    [self.navigationItem.leftBarButtonItem setAccessibilityLabel: NSLocalizedString(@"Back", nil)];
+    [self.navigationItem.leftBarButtonItem setAccessibilityTraits: UIAccessibilityTraitButton];
+    
     self.rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
                                                            style:UIBarButtonItemStyleBordered
                                                           target:self
@@ -105,9 +109,13 @@ NSString *actionType;
     
     UIImage *menuBarImageDefault = [[UIImage imageNamed:@"add57.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
     UIImage *menuBarImageLandscape = [[UIImage imageNamed:@"add68.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-
+    
     [self.rightBarButton setBackgroundImage:menuBarImageDefault forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     [self.rightBarButton setBackgroundImage:menuBarImageLandscape forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
+    
+    [self.rightBarButton setIsAccessibilityElement:YES];
+    [self.rightBarButton setAccessibilityLabel: NSLocalizedString(@"Add", nil)];
+    [self.rightBarButton setAccessibilityTraits: UIAccessibilityTraitButton];
     
     self.navigationItem.rightBarButtonItem = self.rightBarButton;
     
@@ -152,10 +160,10 @@ NSString *actionType;
     //    LogMethod();
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     tapCount = 0;
-
+    
     if (newTagInserted) {
         [self.userTagTableView reloadData];
-
+        
         NSInteger lastSectionIndex = [self.userTagTableView numberOfSections] - 1;
         
         // Then grab the number of rows in the last section
@@ -164,7 +172,7 @@ NSString *actionType;
         NSIndexPath *pathToLastRow = [NSIndexPath indexPathForRow:lastRowIndex inSection:lastSectionIndex];
         [self.userTagTableView scrollToRowAtIndexPath:pathToLastRow atScrollPosition:UITableViewScrollPositionTop animated:YES];
         newTagInserted = NO;
-
+        
     }
     [super viewDidAppear:(BOOL)animated];
 }
@@ -188,50 +196,50 @@ NSString *actionType;
 }
 - (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
     //    LogMethod();
-//    CGFloat navBarAdjustment;
+    //    CGFloat navBarAdjustment;
     
     if (UIInterfaceOrientationIsPortrait(orientation)) {
-//        navBarAdjustment = 11;
+        //        navBarAdjustment = 11;
         [self.userTagTableView setContentInset:UIEdgeInsetsMake(11,0,0,0)];
     } else {
-//        navBarAdjustment = 23;
+        //        navBarAdjustment = 23;
         [self.userTagTableView setContentInset:UIEdgeInsetsMake(23,0,0,0)];
         [self.userTagTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-
+        
     }
-//        [self.userTagTableView reloadData];
+    //        [self.userTagTableView reloadData];
     
-//    //if the first View, and there is a current Tag for the media item, scroll to that tag
-//    if (scrollToTag) {
-//        [self.userTagTableView  scrollToRowAtIndexPath: [NSIndexPath indexPathForRow:indexOfCurrentTag inSection:0]
-//                                      atScrollPosition:UITableViewScrollPositionTop animated:YES];
-//        scrollToTag = NO;
-//    } else {
+    //    //if the first View, and there is a current Tag for the media item, scroll to that tag
+    //    if (scrollToTag) {
+    //        [self.userTagTableView  scrollToRowAtIndexPath: [NSIndexPath indexPathForRow:indexOfCurrentTag inSection:0]
+    //                                      atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    //        scrollToTag = NO;
+    //    } else {
     
-//        BOOL firstRowVisible = NO;
-//        //visibleRows is always 0 the first time through here for a table, populated after that
-//        NSArray *visibleRows = [self.userTagTableView indexPathsForVisibleRows];
-//        NSIndexPath *index = [visibleRows objectAtIndex: 0];
-//        if (index.section == 0 && index.row == 0) {
-//            firstRowVisible = YES;
-//        }
-//        
-//    }
-
+    //        BOOL firstRowVisible = NO;
+    //        //visibleRows is always 0 the first time through here for a table, populated after that
+    //        NSArray *visibleRows = [self.userTagTableView indexPathsForVisibleRows];
+    //        NSIndexPath *index = [visibleRows objectAtIndex: 0];
+    //        if (index.section == 0 && index.row == 0) {
+    //            firstRowVisible = YES;
+    //        }
+    //
+    //    }
+    
     //    }
     
 }
 //- (void)updateContentOffset {
 //    //this is only necessary when screen will not be filled - this method is executed afterDelay because ContentOffset is probably not correct until after layoutSubviews happens
-//    
+//
 //    //    NSLog (@"tableView content size is %f %f",self.collectionTableView.contentSize.height, self.collectionTableView.contentSize.width);
-//    
+//
 //    BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
-//    
+//
 //    CGFloat largeHeaderAdjustment = isPortrait ? 11 : 23;
-//    
+//
 //    CGFloat tableViewHeaderHeight = self.searchView.frame.size.height;
-//    
+//
 //    [self.userTagTableView setContentOffset:CGPointMake(0, tableViewHeaderHeight - largeHeaderAdjustment)];
 //}
 - (void) viewWillLayoutSubviews {
@@ -246,10 +254,10 @@ NSString *actionType;
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     //    LogMethod();
-
-        return [[self.fetchedResultsController sections] count];
-
-//    }
+    
+    return [[self.fetchedResultsController sections] count];
+    
+    //    }
 }
 
 - (NSInteger)tableView:(FMMoveTableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -279,8 +287,8 @@ NSString *actionType;
 		}
 	}
     return numberOfRows;
-//        //---section 0 is the search button---
-//    }
+    //        //---section 0 is the search button---
+    //    }
 }
 
 
@@ -290,55 +298,55 @@ NSString *actionType;
     
 	UserTagCell *cell = (UserTagCell *)[tableView dequeueReusableCellWithIdentifier:@"UserTagCell"];
     
-        
-        /******************************** NOTE ********************************
-         * Implement this check in your table view data source to ensure that the moving
-         * row's content is being reseted
-         **********************************************************************/
-        if ([tableView indexPathIsMovingIndexPath:indexPath]) {
-            [cell prepareForMove];
-        } else {
+    
+    /******************************** NOTE ********************************
+     * Implement this check in your table view data source to ensure that the moving
+     * row's content is being reseted
+     **********************************************************************/
+    if ([tableView indexPathIsMovingIndexPath:indexPath]) {
+        [cell prepareForMove];
+    } else {
 		/******************************** NOTE ********************************
 		 * Implement this check in your table view data source to ensure correct access to the data source
 		 *
 		 * The data source is in a dirty state when moving a row and is only being updated after the user
 		 * releases the moving row
 		 **********************************************************************/
-            if ([tableView movingIndexPath]) {
-                indexPath = [tableView adaptedIndexPathForRowAtIndexPath:indexPath];
-            }
-            
-            TagData *tagData = [self.fetchedResultsController objectAtIndexPath:indexPath];
-            
-            [cell.tagLabel removeFromSuperview];
-
-            cell.tagLabel = [[KSLabel alloc] initWithFrame:CGRectMake(6, 0, self.userTagTableView.frame.size.width - 6, 55)];
-                        
-            cell.tagLabel.textColor = [UIColor whiteColor];
-            [cell.tagLabel setDrawOutline:YES];
-            [cell.tagLabel setOutlineColor:[UIColor blackColor]];
-            
-            [cell.tagLabel setDrawGradient:NO];
-            
-            cell.tagLabel.font = [UIFont systemFontOfSize:44];
-            cell.tagLabel.text = tagData.tagName;
-            [cell addSubview:cell.tagLabel];
-            
-            int red = [tagData.tagColorRed intValue];
-            int green = [tagData.tagColorGreen intValue];
-            int blue = [tagData.tagColorBlue intValue];
-            int alpha = [tagData.tagColorAlpha intValue];
-            
-            UIColor *tagColor = [UIColor colorWithRed:(red/255.0f) green:(green/255.0f) blue:(blue/255.0f) alpha:(alpha/255.0f)];
-
-            UIImage *cellBackgroundImage = [UIImage imageNamed: @"list-background.png"];
-            UIImage *coloredImage = [cellBackgroundImage imageWithTint: tagColor];
-            
-            [cell.cellBackgroundImageView  setImage: coloredImage];            
-
+        if ([tableView movingIndexPath]) {
+            indexPath = [tableView adaptedIndexPathForRowAtIndexPath:indexPath];
         }
+        
+        TagData *tagData = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        
+        [cell.tagLabel removeFromSuperview];
+        
+        cell.tagLabel = [[KSLabel alloc] initWithFrame:CGRectMake(6, 0, self.userTagTableView.frame.size.width - 6, 55)];
+        
+        cell.tagLabel.textColor = [UIColor whiteColor];
+        [cell.tagLabel setDrawOutline:YES];
+        [cell.tagLabel setOutlineColor:[UIColor blackColor]];
+        
+        [cell.tagLabel setDrawGradient:NO];
+        
+        cell.tagLabel.font = [UIFont systemFontOfSize:44];
+        cell.tagLabel.text = tagData.tagName;
+        [cell addSubview:cell.tagLabel];
+        
+        int red = [tagData.tagColorRed intValue];
+        int green = [tagData.tagColorGreen intValue];
+        int blue = [tagData.tagColorBlue intValue];
+        int alpha = [tagData.tagColorAlpha intValue];
+        
+        UIColor *tagColor = [UIColor colorWithRed:(red/255.0f) green:(green/255.0f) blue:(blue/255.0f) alpha:(alpha/255.0f)];
+        
+        UIImage *cellBackgroundImage = [UIImage imageNamed: @"list-background.png"];
+        UIImage *coloredImage = [cellBackgroundImage imageWithTint: tagColor];
+        
+        [cell.cellBackgroundImageView  setImage: coloredImage];
+        
+    }
     
-        return cell;
+    return cell;
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
@@ -355,8 +363,8 @@ NSString *actionType;
 //	 To conform to the Human Interface Guidelines, selections should not be persistent --
 //	 deselect the row after it has been selected.
 - (void) tableView: (UITableView *) tableView didSelectRowAtIndexPath: (NSIndexPath *) indexPath {
-//- (void) tapOnTableView: (UITableView *) tableView atIndexPath: (NSIndexPath *) indexPath {
-
+    //- (void) tapOnTableView: (UITableView *) tableView atIndexPath: (NSIndexPath *) indexPath {
+    
     tapCount++;
     switch (tapCount)
     {
@@ -376,26 +384,26 @@ NSString *actionType;
     [tableView deselectRowAtIndexPath: indexPath animated: YES];
 }
 
-    
-- (void)singleTap:(NSIndexPath *)indexPath {
 
+- (void)singleTap:(NSIndexPath *)indexPath {
+    
     NSLog (@"Single Tap");
     MediaItemUserData *mediaItemUserData = [MediaItemUserData alloc];
     mediaItemUserData.managedObjectContext = self.managedObjectContext;
-
+    
     TagData *tagData = [self.fetchedResultsController objectAtIndexPath:indexPath];
     tagData.managedObjectContext = self.managedObjectContext;
-
+    
     
     //update or add object to Core Data
     
-    self.userDataForMediaItem.tagData = tagData;    
+    self.userDataForMediaItem.tagData = tagData;
     [mediaItemUserData updateTagForItem: self.userDataForMediaItem];
     
-//    NSLog (@"add tag to mediaItemUserData");
-//    [mediaItemUserData listAll];
-//    [tagData listAll];
-
+    //    NSLog (@"add tag to mediaItemUserData");
+    //    [mediaItemUserData listAll];
+    //    [tagData listAll];
+    
     [self goBackClick];
     
 }
@@ -413,13 +421,13 @@ NSString *actionType;
     
     [tagData deleteTagDataFromCoreData: tagData];
     
-//    NSLog (@"Tag deleted from TagData");
-//    [tagData listAll];
-//    
-//    MediaItemUserData *mediaItemUserData = [MediaItemUserData alloc];
-//    mediaItemUserData.managedObjectContext = self. managedObjectContext;
-//    [mediaItemUserData listAll];
-
+    //    NSLog (@"Tag deleted from TagData");
+    //    [tagData listAll];
+    //
+    //    MediaItemUserData *mediaItemUserData = [MediaItemUserData alloc];
+    //    mediaItemUserData.managedObjectContext = self. managedObjectContext;
+    //    [mediaItemUserData listAll];
+    
 }
 
 -(UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -427,13 +435,13 @@ NSString *actionType;
 }
 
 - (BOOL) moveTableView:(FMMoveTableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-//    if (indexPath.row == 0) // Don't move the first row
-//        return NO;
+    //    if (indexPath.row == 0) // Don't move the first row
+    //        return NO;
     
     return YES;
 }
 - (void)moveTableView:(FMMoveTableView *)tableView moveRowFromIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
-
+    
     NSMutableArray *tagDataArray = [[self.fetchedResultsController fetchedObjects] mutableCopy];
     
     // Grab the item we're moving.
@@ -454,7 +462,7 @@ NSString *actionType;
     
     tagDataArray = nil;
     NSError * error = nil;
-
+    
     
     [self.managedObjectContext save:nil];
     
@@ -462,9 +470,9 @@ NSString *actionType;
         NSLog(@"%s: Problem saving: %@", __PRETTY_FUNCTION__, error);
     }
     [[NSNotificationCenter defaultCenter] postNotificationName: @"TagDataChanged" object:nil];
-
+    
     [self.userTagTableView reloadData];
-
+    
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -481,8 +489,8 @@ NSString *actionType;
             [self.userTagTableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
             //set a flag so that table can be scrolled after the updates happen other wise crashes with out of bounds index
             newTagInserted = YES;
-//            savedIndexPath = newIndexPath;
-//            [self.userTagTableView scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+            //            savedIndexPath = newIndexPath;
+            //            [self.userTagTableView scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
             break;
             
         case NSFetchedResultsChangeDelete:
@@ -497,7 +505,7 @@ NSString *actionType;
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
     [self.userTagTableView endUpdates];
-
+    
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -510,7 +518,7 @@ NSString *actionType;
         addTagViewController.managedObjectContext = self.managedObjectContext;
         addTagViewController.addTagViewControllerDelegate = self;
         addTagViewController.actionType = actionType;
-
+        
         if ([actionType isEqualToString: @"Add"]) {
             NSArray *tagDataArray = [[self.fetchedResultsController fetchedObjects] copy];
             TagData *tagData = [tagDataArray lastObject];
@@ -519,11 +527,11 @@ NSString *actionType;
             addTagViewController.hasColor = NO;
             
             NSLog (@"lastObjectIndex = %d", addTagViewController.lastObjectIndex);
-//        addTagViewController.iPodLibraryChanged = self.iPodLibraryChanged;
-        
+            //        addTagViewController.iPodLibraryChanged = self.iPodLibraryChanged;
+            
         }
         if ([actionType isEqualToString: @"Edit"]) {
-        
+            
             TagData *tagData = [self.fetchedResultsController objectAtIndexPath:savedIndexPath];
             addTagViewController.nameToEdit = tagData.tagName;
             addTagViewController.sortOrder = tagData.sortOrder;
@@ -534,7 +542,7 @@ NSString *actionType;
             CGFloat green = [tagData.tagColorGreen intValue];
             CGFloat blue = [tagData.tagColorBlue intValue];
             CGFloat alpha = [tagData.tagColorAlpha intValue];
-
+            
             UIColor *tagColor = [UIColor colorWithRed:(red/255.0f) green:(green/255.0f) blue:(blue/255.0f) alpha:(alpha/255.0f)];
             addTagViewController.hasColor = YES;
             addTagViewController.pickedColor = tagColor;
@@ -543,7 +551,7 @@ NSString *actionType;
             addTagViewController.title = NSLocalizedString(@"Edit Tag", nil);
             
             //        addTagViewController.iPodLibraryChanged = self.iPodLibraryChanged;
-        
+            
         }
     }
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
@@ -557,29 +565,29 @@ NSString *actionType;
 - (void)goBackClick
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
+    
     [self.navigationController popViewControllerAnimated:YES];
     [self.userTagViewControllerDelegate userTagViewControllerDidCancel:self];
-
-
+    
+    
 }
 - (void)addTagViewControllerDidCancel:(AddTagViewController *)controller
 {
-//    if (newTagInserted) {
-//        // First figure out how many sections there are
-//        NSInteger lastSectionIndex = [self.userTagTableView numberOfSections] - 1;
-//        
-//        // Then grab the number of rows in the last section
-//        NSInteger lastRowIndex = [self.userTagTableView numberOfRowsInSection:lastSectionIndex] - 1;
-//        
-//        NSIndexPath *pathToLastRow = [NSIndexPath indexPathForRow:lastRowIndex inSection:lastSectionIndex];
-//        [self.userTagTableView scrollToRowAtIndexPath:pathToLastRow atScrollPosition:UITableViewScrollPositionTop animated:YES];
-//        newTagInserted = NO;
-//        
-////        [self.userTagTableView reloadData];
-//
-//    }
-//    [self willAnimateRotationToInterfaceOrientation: self.interfaceOrientation duration: 1];
+    //    if (newTagInserted) {
+    //        // First figure out how many sections there are
+    //        NSInteger lastSectionIndex = [self.userTagTableView numberOfSections] - 1;
+    //
+    //        // Then grab the number of rows in the last section
+    //        NSInteger lastRowIndex = [self.userTagTableView numberOfRowsInSection:lastSectionIndex] - 1;
+    //
+    //        NSIndexPath *pathToLastRow = [NSIndexPath indexPathForRow:lastRowIndex inSection:lastSectionIndex];
+    //        [self.userTagTableView scrollToRowAtIndexPath:pathToLastRow atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    //        newTagInserted = NO;
+    //
+    ////        [self.userTagTableView reloadData];
+    //
+    //    }
+    //    [self willAnimateRotationToInterfaceOrientation: self.interfaceOrientation duration: 1];
     
     
 }
@@ -614,4 +622,5 @@ NSString *actionType;
 
 
 @end
+
 

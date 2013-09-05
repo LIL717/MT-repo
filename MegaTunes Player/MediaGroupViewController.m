@@ -75,7 +75,7 @@ BOOL listIsAlphabetic;
 
 - (void)awakeFromNib
 {
-//    LogMethod();
+    //    LogMethod();
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(orientationChanged:)
@@ -83,29 +83,29 @@ BOOL listIsAlphabetic;
                                                object:nil];
     
     [self.navigationController setDelegate: self];
-
+    
     self.pView =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background-568h.png"]];
     self.lView =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"backgroundLandscape-568h.png"]];
-
+    
 }
-    // Called when a new view is shown before viewDidAppear 
+// Called when a new view is shown before viewDidAppear
 
 - (void)navigationController:(UINavigationController *)navigationController
       willShowViewController:(UIViewController *)viewController
                     animated:(BOOL)animated
 {
-//    LogMethod();
+    //    LogMethod();
     // May be coming back from another controller to find we're
     // showing the wrong controller for the orientation.
     presentingViewController = (UIViewController *)viewController;
     [self createTempBackgroundForSwap];
 }
-    // Called when a new view is shown. (
+// Called when a new view is shown. (
 - (void)navigationController:(UINavigationController *)navigationController
        didShowViewController:(UIViewController *)viewController
                     animated:(BOOL)animated
 {
-//    LogMethod();
+    //    LogMethod();
     // May be coming back from another controller to find we're
     // showing the wrong controller for the orientation.
     [self swapControllersIfNeeded];
@@ -113,14 +113,14 @@ BOOL listIsAlphabetic;
 // Method to handle orientation changes.
 - (void)orientationChanged:(NSNotification *)notification
 {
-//    LogMethod();
-
+    //    LogMethod();
+    
     [self swapControllersIfNeeded];
 }
 - (void) createTempBackgroundForSwap
 {
-//    LogMethod();
-
+    //    LogMethod();
+    
     UIDeviceOrientation deviceOrientation = [UIDevice currentDevice].orientation;
     
     if (UIDeviceOrientationIsLandscape(deviceOrientation) &&
@@ -136,7 +136,7 @@ BOOL listIsAlphabetic;
         self.mediaGroupCarouselViewController.tinySongArray = self.tinySongArray;
         self.mediaGroupCarouselViewController.songArray = self.songArray;
         self.mediaGroupCarouselViewController.sortedTaggedArray = self.sortedTaggedArray;
-
+        
         //initialLandscapeImage is created from the Playlist carousel view the first time it is loaded
         if (self.initialLandscapeImage) {
             UIImageView *lImageView =[[UIImageView alloc] initWithImage: initialLandscapeImage];
@@ -144,39 +144,39 @@ BOOL listIsAlphabetic;
             frame.origin.x = (self.view.bounds.size.width / 2 - lImageView.frame.size.width / 2);
             frame.origin.y = (self.view.bounds.size.height / 2 - lImageView.frame.size.height / 2 - 11);
             lImageView.frame = frame;
-
+            
             [self.lView addSubview: lImageView];
-
+            
         }
         [self.view addSubview: self.lView];
     }
-
+    
     else if (UIDeviceOrientationIsPortrait(deviceOrientation) &&
              presentingViewController == self.mediaGroupCarouselViewController)
     {
-            //initialPortraitImage is a screen image of the portrait screen the first time it is loaded
+        //initialPortraitImage is a screen image of the portrait screen the first time it is loaded
         
         if (self.initialPortraitImage) {
-//            self.pView =[[UIImageView alloc] initWithImage: initialPortraitImage];
-//            CGRect frame = self.pView.frame;
-//            frame.origin.y = 11.0f;
-//            self.pView.frame = frame;
+            //            self.pView =[[UIImageView alloc] initWithImage: initialPortraitImage];
+            //            CGRect frame = self.pView.frame;
+            //            frame.origin.y = 11.0f;
+            //            self.pView.frame = frame;
             UIImageView *pImageView =[[UIImageView alloc] initWithImage: initialPortraitImage];
             CGRect frame = pImageView.frame;
-//            frame.origin.x = (self.view.bounds.size.width / 2 - pImageView.frame.size.width / 2);
-//            frame.origin.y = (self.view.bounds.size.height / 2 - pImageView.frame.size.height / 2 - 11);
+            //            frame.origin.x = (self.view.bounds.size.width / 2 - pImageView.frame.size.width / 2);
+            //            frame.origin.y = (self.view.bounds.size.height / 2 - pImageView.frame.size.height / 2 - 11);
             frame.origin.y = 11.0f;
             pImageView.frame = frame;
             
             [self.pView addSubview: pImageView];
         }
         [self.mediaGroupCarouselViewController.view addSubview: self.pView];
-
+        
     }
 }
 - (void)swapControllersIfNeeded
 {
-//    LogMethod();
+    //    LogMethod();
     UIDeviceOrientation deviceOrientation = [UIDevice currentDevice].orientation;
     
     // Check that we're not showing the wrong controller for the orientation.
@@ -203,9 +203,9 @@ BOOL listIsAlphabetic;
         // Push the new controller rather than use a segue so that we can do it
         // without animation.
         [self.navigationController pushViewController:self.mediaGroupCarouselViewController
-                                                 animated:NO];
+                                             animated:NO];
         [self.lView removeFromSuperview];
-
+        
     }
     else if (UIDeviceOrientationIsPortrait(deviceOrientation) &&
              self.navigationController.visibleViewController == self.mediaGroupCarouselViewController)
@@ -213,23 +213,23 @@ BOOL listIsAlphabetic;
         // Orientation is portrait but the visible controller is
         // the landscape controller. Pop the top controller, we
         // know the portrait controller, self, is the next one down.
-//        [self.navigationController popViewControllerAnimated:NO];
+        //        [self.navigationController popViewControllerAnimated:NO];
         [self.navigationController popToRootViewControllerAnimated:NO];
         self.mediaGroupCarouselViewController = nil;
         [self.pView removeFromSuperview];
-
+        
     }
 }
 
 - (void)viewDidLoad
 {
-//    LogMethod();
+    //    LogMethod();
     [super viewDidLoad];
     
     self.initialView = YES;
     
     songArrayToLoad = [[NSMutableArray alloc] initWithCapacity: 19];
-        
+    
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
     
     self.rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
@@ -243,24 +243,28 @@ BOOL listIsAlphabetic;
     [self.rightBarButton setBackgroundImage:menuBarImageDefault forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     [self.rightBarButton setBackgroundImage:menuBarImageLandscape forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
     
+    [self.rightBarButton setIsAccessibilityElement:YES];
+    [self.rightBarButton setAccessibilityLabel: NSLocalizedString(@"Now Playing", nil)];
+    [self.rightBarButton setAccessibilityTraits: UIAccessibilityTraitButton];
+    
     musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
     
     [self registerForMediaPlayerNotifications];
-
+    
     self.appDelegate = (id) [[UIApplication sharedApplication] delegate];
     self.managedObjectContext = [self.appDelegate managedObjectContext];
-
-//    BOOL networkAvailable = [[NSUserDefaults standardUserDefaults] boolForKey:@"networkAvailable"];
-//    if (networkAvailable) {
-//        excludeICloudItems = NO;
-//    } else {
-//        excludeICloudItems = YES;
-//    }
+    
+    //    BOOL networkAvailable = [[NSUserDefaults standardUserDefaults] boolForKey:@"networkAvailable"];
+    //    if (networkAvailable) {
+    //        excludeICloudItems = NO;
+    //    } else {
+    //        excludeICloudItems = YES;
+    //    }
     [self loadSongArraysInBackground];
-
+    
     
     [self loadGroupingData];
-
+    
 }
 -(void) loadSongArraysInBackground  {
     //    //create the tinySongArray in the background
@@ -277,10 +281,10 @@ BOOL listIsAlphabetic;
         
     }];
     
-//    self.collectionContainsICloudItem = NO;
-//    [self checkForICloudItemsWithCompletion:^(BOOL result) {
-//        
-//    }];
+    //    self.collectionContainsICloudItem = NO;
+    //    [self checkForICloudItemsWithCompletion:^(BOOL result) {
+    //
+    //    }];
 }
 
 - (void)loadTinySongArrayWithCompletion:(void (^)(BOOL result))completionHandler {
@@ -300,14 +304,14 @@ BOOL listIsAlphabetic;
             //        NSLog (@"song in tinyArray is %@", [song valueForProperty: MPMediaItemPropertyTitle]);
             
         }
-
+        
         self.tinySongArray = [self.tinySongMutableArray mutableCopy];
         //uncomment to slow the load way way down to test tinyArray
         
-//        NSArray *tempArray = [mySongQuery items];
-//        for (MPMediaItem *song in self.tinySongArray) {
-//            NSLog (@"TinySongName is %@", [song valueForProperty: MPMediaItemPropertyTitle]);
-//        }
+        //        NSArray *tempArray = [mySongQuery items];
+        //        for (MPMediaItem *song in self.tinySongArray) {
+        //            NSLog (@"TinySongName is %@", [song valueForProperty: MPMediaItemPropertyTitle]);
+        //        }
         
         // Check that there was not a nil handler passed.
         if( completionHandler ){
@@ -338,15 +342,15 @@ BOOL listIsAlphabetic;
 }
 
 - (void) createSongArray {
-        
+    
     MPMediaQuery *mySongQuery = [MPMediaQuery songsQuery];
-
+    
     self.songArray = [mySongQuery items];
     
-//    //uncomment to slow the load way way down to test tinyArray
-//    for (MPMediaItem *song in self.songArray) {
-//        NSLog (@"SongName is %@", [song valueForProperty: MPMediaItemPropertyTitle]);
-//    }
+    //    //uncomment to slow the load way way down to test tinyArray
+    //    for (MPMediaItem *song in self.songArray) {
+    //        NSLog (@"SongName is %@", [song valueForProperty: MPMediaItemPropertyTitle]);
+    //    }
     
 }
 - (void)loadTaggedSongArrayWithCompletion:(void (^)(BOOL result))completionHandler {
@@ -368,17 +372,17 @@ BOOL listIsAlphabetic;
 - (void) createTaggedSongArray {
     
     NSMutableArray *songDictMutableArray = [NSMutableArray arrayWithCapacity: 20];
-//    self.taggedSongArray = [NSMutableArray arrayWithCapacity: 20];
-
+    //    self.taggedSongArray = [NSMutableArray arrayWithCapacity: 20];
+    
     long taggedDuration = 0;
     
     MediaItemUserData *mediaItemUserData = [MediaItemUserData alloc];
     mediaItemUserData.managedObjectContext = self.managedObjectContext;
     
-    NSArray *taggedMediaItems = [mediaItemUserData containsTag];    
+    NSArray *taggedMediaItems = [mediaItemUserData containsTag];
     
     for (MediaItemUserData *taggedMediaItem in taggedMediaItems) {
-//        NSLog (@" song is %@ with persistentID %@", taggedMediaItem.title, taggedMediaItem.persistentID);
+        //        NSLog (@" song is %@ with persistentID %@", taggedMediaItem.title, taggedMediaItem.persistentID);
         
         MPMediaQuery *mySongQuery = [MPMediaQuery songsQuery];
         MPMediaPropertyPredicate *filterPredicate = [MPMediaPropertyPredicate predicateWithValue: taggedMediaItem.persistentID
@@ -386,13 +390,13 @@ BOOL listIsAlphabetic;
         [mySongQuery addFilterPredicate: filterPredicate];
         NSArray *filteredArray = [mySongQuery items];
         if ([filteredArray count] > 0) {
-    
+            
             MPMediaItem *song = [MPMediaItem alloc];
             for (MPMediaItem *filteredItem in filteredArray) {
-//                NSLog (@"item with persistentID %@", [filteredItem valueForProperty: MPMediaItemPropertyPersistentID]);
+                //                NSLog (@"item with persistentID %@", [filteredItem valueForProperty: MPMediaItemPropertyPersistentID]);
                 song = filteredItem;
             }
-
+            
             NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys: song, @"Song", taggedMediaItem.tagData, @"TagData", nil];
             
             [songDictMutableArray addObject: dict];
@@ -402,7 +406,7 @@ BOOL listIsAlphabetic;
         }
     }
     
-        self.sortedTaggedArray = [songDictMutableArray sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
+    self.sortedTaggedArray = [songDictMutableArray sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
         TagData *firstTagData = [(NSDictionary *)a objectForKey: @"TagData"];
         TagData *secondTagData = [(NSDictionary *)b objectForKey: @"TagData"];
         return [firstTagData.sortOrder compare: secondTagData.sortOrder];
@@ -411,7 +415,7 @@ BOOL listIsAlphabetic;
     self.taggedPlaylistDuration = [NSNumber numberWithLong: taggedDuration];
 }
 //- (void)checkForICloudItemsWithCompletion:(void (^)(BOOL result))completionHandler {
-//    
+//
 //    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 //        MPMediaQuery *mySongQuery = [[MPMediaQuery alloc] init];
 //        mySongQuery = [MPMediaQuery songsQuery];
@@ -422,7 +426,7 @@ BOOL listIsAlphabetic;
 //        if ([filteredArray count] > 0) {
 //            self.collectionContainsICloudItem = YES;
 //        }
-//        
+//
 //        // Check that there was not a nil handler passed.
 //        if( completionHandler ){
 //            dispatch_sync(dispatch_get_main_queue(), ^(void) {
@@ -466,36 +470,36 @@ BOOL listIsAlphabetic;
 
 - (void) viewWillAppear:(BOOL)animated
 {
-//    LogMethod();
+    //    LogMethod();
     [super viewWillAppear: animated];
-
+    
     [self setIPodLibraryChanged: NO];
     self.title = NSLocalizedString(@"Select Music", nil);
     self.navigationItem.titleView = [self customizeTitleView];
-
+    
     NSString *playingItem = [[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyTitle];
-
+    
     if (playingItem) {
         if (self.initialView) {
             self.initialView = NO;
             [self viewNowPlaying];
         } else {
-        self.navigationItem.rightBarButtonItem = self.rightBarButton;
+            self.navigationItem.rightBarButtonItem = self.rightBarButton;
         }
     } else {
         self.navigationItem.rightBarButtonItem= nil;
     }
     [self updateLayoutForNewOrientation: self.interfaceOrientation];
-
+    
     return;
 }
 -(void) viewDidAppear:(BOOL)animated {
-//    LogMethod();
+    //    LogMethod();
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     initialView = NO;
     
     UIDeviceOrientation deviceOrientation = [UIDevice currentDevice].orientation;
-
+    
     if (UIDeviceOrientationIsPortrait(deviceOrientation)) {
         self.initialPortraitImage = ([self makeImage]);
     }
@@ -511,30 +515,30 @@ BOOL listIsAlphabetic;
     UIGraphicsEndImageContext();
     
     return portraitImage;
-
+    
 }
 - (UILabel *) customizeTitleView
-   {
-       CGRect frame = CGRectMake(0, 0, [self.title sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 48);
-       UILabel *label = [[UILabel alloc] initWithFrame:frame];
-       label.backgroundColor = [UIColor clearColor];
-       label.textAlignment = NSTextAlignmentCenter;
-       label.font = [UIFont systemFontOfSize:44];
-       label.textColor = [UIColor yellowColor];
-       label.text = self.title;
-       
-       return label;
-   }
+{
+    CGRect frame = CGRectMake(0, 0, [self.title sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 48);
+    UILabel *label = [[UILabel alloc] initWithFrame:frame];
+    label.backgroundColor = [UIColor clearColor];
+    label.textAlignment = NSTextAlignmentCenter;
+    label.font = [UIFont systemFontOfSize:44];
+    label.textColor = [UIColor yellowColor];
+    label.text = self.title;
+    
+    return label;
+}
 
 
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
-//    LogMethod();
+    //    LogMethod();
     [self updateLayoutForNewOrientation: orientation];
-
+    
 }
 - (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
-
-//    LogMethod();
+    
+    //    LogMethod();
     if (UIInterfaceOrientationIsPortrait(orientation)) {
         [self.groupTableView setContentInset:UIEdgeInsetsMake(11,0,0,0)];
     } else {
@@ -543,7 +547,7 @@ BOOL listIsAlphabetic;
     }
 }
 - (void) viewWillLayoutSubviews {
-//    LogMethod();
+    //    LogMethod();
     //need this to pin portrait view to bounds otherwise if start in landscape, push to next view, rotate to portrait then pop back the original view in portrait - it will be too wide and "scroll" horizontally
     self.groupTableView.contentSize = CGSizeMake(self.groupTableView.frame.size.width, self.groupTableView.contentSize.height);
     [super viewWillLayoutSubviews];
@@ -567,7 +571,7 @@ BOOL listIsAlphabetic;
 - (UITableViewCell *) tableView: (UITableView *) tableView cellForRowAtIndexPath: (NSIndexPath *) indexPath {
     
 	MediaGroupCell *cell = (MediaGroupCell *)[tableView
-                                          dequeueReusableCellWithIdentifier:@"MediaGroupCell"];
+                                              dequeueReusableCellWithIdentifier:@"MediaGroupCell"];
     MediaGroup *group = [self.groupingData objectAtIndex:indexPath.row];
     cell.nameLabel.text = NSLocalizedString(group.name, nil);
     DTCustomColoredAccessory *accessory = [DTCustomColoredAccessory accessoryWithColor:cell.nameLabel.textColor];
@@ -582,8 +586,8 @@ BOOL listIsAlphabetic;
 //	 To conform to the Human Interface Guidelines, selections should not be persistent --
 //	 deselect the row after it has been selected.
 - (void) tableView: (UITableView *) tableView didSelectRowAtIndexPath: (NSIndexPath *) indexPath {
-//    LogMethod();
-
+    //    LogMethod();
+    
 	[tableView deselectRowAtIndexPath: indexPath animated: YES];
     
     //self.selectedGroup is a MediaGroup with a name and a querytype
@@ -636,8 +640,8 @@ BOOL listIsAlphabetic;
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-//    LogMethod();
-
+    //    LogMethod();
+    
 	if ([segue.identifier isEqualToString:@"ViewGenres"])
 	{
 		GenreViewController *genreViewController = segue.destinationViewController;
@@ -648,15 +652,15 @@ BOOL listIsAlphabetic;
         [myCollectionQuery addFilterPredicate: [MPMediaPropertyPredicate
                                                 predicateWithValue:[NSNumber numberWithInteger:MPMediaTypeMusic]
                                                 forProperty:MPMediaItemPropertyMediaType]];
-         
+        
         self.collection = [myCollectionQuery collections];
-
+        
 		genreViewController.collection = self.collection;
         genreViewController.collectionType = selectedGroup.name;
         genreViewController.collectionQueryType = myCollectionQuery;
         genreViewController.title = NSLocalizedString(selectedGroup.name, nil);
         genreViewController.iPodLibraryChanged = self.iPodLibraryChanged;
-
+        
 	}
     if ([segue.identifier isEqualToString:@"ArtistCollections"])
 	{
@@ -673,13 +677,13 @@ BOOL listIsAlphabetic;
         artistViewController.iPodLibraryChanged = self.iPodLibraryChanged;
         
 	}
-
+    
     if ([segue.identifier isEqualToString:@"AlbumCollections"])
 	{
 		AlbumViewController *albumViewController = segue.destinationViewController;
         albumViewController.managedObjectContext = self.managedObjectContext;
         
-//        MPMediaQuery *myCollectionQuery = selectedGroup.queryType;
+        //        MPMediaQuery *myCollectionQuery = selectedGroup.queryType;
         
         self.collection = [selectedGroup.queryType collections];
 		albumViewController.collection = self.collection;
@@ -694,59 +698,59 @@ BOOL listIsAlphabetic;
 	{
         SongViewController *songViewController = segue.destinationViewController;
         songViewController.managedObjectContext = self.managedObjectContext;
-
+        
         CollectionItem *collectionItem = [CollectionItem alloc];
         collectionItem.name = selectedGroup.name;
-//        collectionItem.duration = self.playlistDuration;
-//        collectionItem.collection = [MPMediaItemCollection collectionWithItems: songMutableArray];
-//        collectionItem.collectionArray = self.songMutableArray;
+        //        collectionItem.duration = self.playlistDuration;
+        //        collectionItem.collection = [MPMediaItemCollection collectionWithItems: songMutableArray];
+        //        collectionItem.collectionArray = self.songMutableArray;
         collectionItem.collectionArray = songArrayToLoad;
-
         
-
+        
+        
         songViewController.title = NSLocalizedString(collectionItem.name, nil);
         songViewController.collectionItem = collectionItem;
         songViewController.iPodLibraryChanged = self.iPodLibraryChanged;
         songViewController.listIsAlphabetic = listIsAlphabetic;
         NSLog (@"TinySongArrayLoaded = %d", self.tinySongArrayLoaded);
         songViewController.tinyArray = self.tinySongArrayLoaded;
-
+        
         songViewController.collectionQueryType = [selectedGroup.queryType copy];
         songViewController.mediaGroupViewController = self;
-
+        
         
 	}
     if ([segue.identifier isEqualToString:@"ViewTaggedSongCollection"])
 	{
         TaggedSongViewController *songViewController = segue.destinationViewController;
         songViewController.managedObjectContext = self.managedObjectContext;
-
+        
         CollectionItem *collectionItem = [CollectionItem alloc];
         collectionItem.name = selectedGroup.name;
         collectionItem.duration = self.taggedPlaylistDuration;
-//        collectionItem.collectionArray = [self.songArray mutableCopy];
-
+        //        collectionItem.collectionArray = [self.songArray mutableCopy];
+        
         songViewController.title = NSLocalizedString(collectionItem.name, nil);
         songViewController.collectionItem = collectionItem;
         songViewController.iPodLibraryChanged = self.iPodLibraryChanged;
-//        songViewController.listIsAlphabetic = NO;
+        //        songViewController.listIsAlphabetic = NO;
         songViewController.collectionQueryType = [selectedGroup.queryType copy];
         songViewController.taggedSongArray = [self.sortedTaggedArray mutableCopy];
         
 	}
-   if ([segue.identifier isEqualToString:@"ViewNowPlaying"])
+    if ([segue.identifier isEqualToString:@"ViewNowPlaying"])
 	{
 		MainViewController *mainViewController = segue.destinationViewController;
         mainViewController.managedObjectContext = self.managedObjectContext;
-
+        
         mainViewController.playNew = NO;
         mainViewController.iPodLibraryChanged = self.iPodLibraryChanged;
-
+        
     }
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 }
 - (void)hideActivityIndicator {
-
+    
     if (alert) {
         
         [alert dismissWithClickedButtonIndex:0 animated:YES];
@@ -785,20 +789,20 @@ BOOL listIsAlphabetic;
 
 - (IBAction)viewNowPlaying {
     
-//    LogMethod();
+    //    LogMethod();
     
     [self performSegueWithIdentifier: @"ViewNowPlaying" sender: self];
 }
 
 - (void) registerForMediaPlayerNotifications {
-//    LogMethod();
+    //    LogMethod();
     
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     
-//    [notificationCenter addObserver:self
-//                         selector:@selector(reachabilityChanged:)
-//                             name:kReachabilityChangedNotification
-//                           object:nil];
+    //    [notificationCenter addObserver:self
+    //                         selector:@selector(reachabilityChanged:)
+    //                             name:kReachabilityChangedNotification
+    //                           object:nil];
     
     [notificationCenter addObserver:self
                            selector:@selector(tagDataChanged:)
@@ -822,7 +826,7 @@ BOOL listIsAlphabetic;
     
     [[MPMediaLibrary defaultMediaLibrary] beginGeneratingLibraryChangeNotifications];
     [musicPlayer beginGeneratingPlaybackNotifications];
-
+    
 }
 //- (void)reachabilityChanged:(NSNotification *)notification {
 //    NSLog(@"reachability changed");
@@ -842,7 +846,7 @@ BOOL listIsAlphabetic;
 //            }
 //        }
 //    }
-//    
+//
 //}
 
 - (void)tagDataChanged:(NSNotification *)notification {
@@ -851,7 +855,7 @@ BOOL listIsAlphabetic;
     [self loadTaggedSongArrayWithCompletion:^(BOOL result) {
         
     }];
-
+    
 }
 
 - (void) handle_iPodLibraryChanged: (id) changeNotification {
@@ -860,12 +864,12 @@ BOOL listIsAlphabetic;
 	// user performs a sync while application is running.
     [self setIPodLibraryChanged: YES];
     [self loadSongArraysInBackground];
-
+    
     
 }
 // When the playback state changes, if stopped remove nowplaying button
 - (void) handle_PlaybackStateChanged: (id) notification {
-//    LogMethod();
+    //    LogMethod();
     
 	MPMusicPlaybackState playbackState = [musicPlayer playbackState];
 	
@@ -875,11 +879,11 @@ BOOL listIsAlphabetic;
     
 }
 - (void)dealloc {
-//    LogMethod();
+    //    LogMethod();
     
-//    [[NSNotificationCenter defaultCenter] removeObserver:self
-//                                                    name:kReachabilityChangedNotification
-//                                                  object:nil];
+    //    [[NSNotificationCenter defaultCenter] removeObserver:self
+    //                                                    name:kReachabilityChangedNotification
+    //                                                  object:nil];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:@"TagDataForItemChanged"
@@ -896,21 +900,20 @@ BOOL listIsAlphabetic;
     [[NSNotificationCenter defaultCenter] removeObserver: self
 													name: MPMusicPlayerControllerPlaybackStateDidChangeNotification
 												  object: musicPlayer];
-
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                 name:UIDeviceOrientationDidChangeNotification
-                                               object:nil];
+                                                    name:UIDeviceOrientationDidChangeNotification
+                                                  object:nil];
     
     [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
     [[MPMediaLibrary defaultMediaLibrary] endGeneratingLibraryChangeNotifications];
     [musicPlayer endGeneratingPlaybackNotifications];
-
+    
     [alert dismissWithClickedButtonIndex:0 animated:YES];
-
+    
 }
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
 }
 @end
-

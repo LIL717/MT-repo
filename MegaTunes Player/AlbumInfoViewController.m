@@ -30,49 +30,68 @@
 @synthesize artist;
 @synthesize albumImage;
 
+@synthesize lastPlayedDate;
+@synthesize lastPlayedDateTitle;
+@synthesize bpm;
+@synthesize userGrouping;
+@synthesize userGroupingTitle;
+
+@synthesize saveBPM;
+
+@synthesize comments;
+
+BOOL iTunesComments;
+
+
 #pragma mark - Initial Display methods
 
 - (void)viewDidLoad
 {
-//    LogMethod();
+    //    LogMethod();
     [super viewDidLoad];
     
 	// Do any additional setup after loading the view, typically from a nib.
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
     
-    UIImage *unselectedImage0 = [UIImage imageNamed:@"unselectedTabAlbumButton.png"];
-    UIImage *selectedImage0 = [UIImage imageNamed:@"selectedTabAlbumButton.png"];
+    //    UIImage *unselectedImage0 = [UIImage imageNamed:@"unselectedTabAlbumButton.png"];
+    //    UIImage *selectedImage0 = [UIImage imageNamed:@"selectedTabAlbumButton.png"];
     
-    UIImage *unselectedImage1 = [UIImage imageNamed:@"unselectedTabInfoButton.png"];
-    UIImage *selectedImage1 = [UIImage imageNamed:@"selectedTabInfoButton.png"];
+    UIImage *unselectedImage0 = [UIImage imageNamed:@"unselectedTabInfoButton.png"];
+    UIImage *selectedImage0 = [UIImage imageNamed:@"selectedTabInfoButton.png"];
     
-    UIImage *unselectedImage2 = [UIImage imageNamed:@"unselectedTabCommentsButton.png"];
-    UIImage *selectedImage2 = [UIImage imageNamed:@"selectedTabCommentsButton.png"];
+    UIImage *unselectedImage1 = [UIImage imageNamed:@"unselectedTabCommentsButton.png"];
+    UIImage *selectedImage1 = [UIImage imageNamed:@"selectedTabCommentsButton.png"];
     
-    UIImage *unselectedImage3 = [UIImage imageNamed:@"unselectedTabUserButton.png"];
-    UIImage *selectedImage3 = [UIImage imageNamed:@"selectedTabUserButton.png"];
+    UIImage *unselectedImage2 = [UIImage imageNamed:@"unselectedTabUserButton.png"];
+    UIImage *selectedImage2 = [UIImage imageNamed:@"selectedTabUserButton.png"];
     
     UITabBar *tabBar = self.tabBarController.tabBar;
     UITabBarItem *item0 = [tabBar.items objectAtIndex:0];
     UITabBarItem *item1 = [tabBar.items objectAtIndex:1];
     UITabBarItem *item2 = [tabBar.items objectAtIndex:2];
-    UITabBarItem *item3 = [tabBar.items objectAtIndex:3];
+    //    UITabBarItem *item3 = [tabBar.items objectAtIndex:3];
     
+    //    item0.title = NSLocalizedString(@"Album info", nil);
+    item0.title = NSLocalizedString(@"iTunes info", nil);
+    item1.title = NSLocalizedString(@"iTunes comments", nil);
+    item2.title = NSLocalizedString(@"Tag info", nil);
     
     [item0 setFinishedSelectedImage:selectedImage0 withFinishedUnselectedImage:unselectedImage0];
     [item1 setFinishedSelectedImage:selectedImage1 withFinishedUnselectedImage:unselectedImage1];
     [item2 setFinishedSelectedImage:selectedImage2 withFinishedUnselectedImage:unselectedImage2];
-    [item3 setFinishedSelectedImage:selectedImage3 withFinishedUnselectedImage:unselectedImage3];
-
-    [self loadArrayForTable];
-
-//    [self registerForMediaPlayerNotifications];
+    //    [item3 setFinishedSelectedImage:selectedImage3 withFinishedUnselectedImage:unselectedImage3];
+    
+    [self loadTableData];
+    
+    //    [self registerForMediaPlayerNotifications];
     
     [self updateLayoutForNewOrientation: self.interfaceOrientation];
     
 }
-- (void) loadArrayForTable {
+- (void) loadTableData {
     //get the specific info from the
+    
+    self.songInfoData = [[NSMutableArray alloc] initWithCapacity: 7];
     
     self.songName = [self.mediaItemForInfo valueForProperty:  MPMediaItemPropertyTitle];
     self.album = [self.mediaItemForInfo valueForProperty:  MPMediaItemPropertyAlbumTitle];
@@ -89,20 +108,86 @@
     [self.albumImageView addSubview:imageView];
     
     if (!self.artist) {
-        self.artist = @"Unknown";
+        self.artist = NSLocalizedString(@"Unknown", nil);
     }
+    [self.songInfoData addObject: self.artist];
+    
     if (!self.songName) {
-        self.songName = @"Unknown";
+        self.songName = NSLocalizedString(@"Unknown", nil);
     }
+    [self.songInfoData addObject: self.songName];
+    
     if (!self.album) {
-        self.album = @"Unknown";
+        self.album = NSLocalizedString(@"Unknown", nil);
+    }
+    [self.songInfoData addObject: self.album];
+    
+    [self updateLayoutForNewOrientation: self.interfaceOrientation];
+    
+    [self loadiTunesInfoData];
+    
+}
+- (void) loadiTunesInfoData {
+    NSDate *date = [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyLastPlayedDate];
+    
+    if (date) {
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateStyle:NSDateFormatterShortStyle];
+        [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
+        NSString *formattedDateString = [dateFormatter stringFromDate:date];
+        self.lastPlayedDate = [NSString stringWithFormat: @"%@ %@", self.lastPlayedDateTitle, formattedDateString];
+        [self.songInfoData addObject: self.lastPlayedDate];
     }
     
-    self.songInfoData = [NSArray arrayWithObjects: self.artist, self.songName, self.album, nil];
+    //    //check to see if there is user data for this media item
+    //    MediaItemUserData *mediaItemUserData = [MediaItemUserData alloc];
+    //    mediaItemUserData.managedObjectContext = self.managedObjectContext;
+    //
+    //    self.userDataForMediaItem = [mediaItemUserData containsItem: [mediaItemForInfo valueForProperty: MPMediaItemPropertyPersistentID]];
+    //
+    //    //if there is an MPMediaItemPropertyBeatsPerMinute value, use that, otherwise see if one has been stored in User Data and if not, then calculate one (will be stored in user data when this view is deallocated)
+    if ([[self.mediaItemForInfo valueForProperty: MPMediaItemPropertyBeatsPerMinute]  intValue] > 0) {
+        self.saveBPM= [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyBeatsPerMinute];
+        //    } else {
+        //        if (self.userDataForMediaItem.bpm > 0) {
+        //            self.saveBPM = self.userDataForMediaItem.bpm;
+        //        } else {
+        ////            [self calculateBPM];
+        //            //self.userDataForMediaItem.bpm is set when it is calculated
+        //        }
+    }
+    if (self.saveBPM > 0) {
+        self.bpm = [[NSString alloc] initWithFormat:@"%2d BPM", [self.saveBPM intValue]];
+        [self.songInfoData addObject: self.bpm];
+    }
+    
+    if ([self.mediaItemForInfo valueForProperty: MPMediaItemPropertyUserGrouping]) {
+        self.userGrouping = [NSString stringWithFormat: @"%@ %@", self.userGroupingTitle, [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyUserGrouping]];
+        [self.songInfoData addObject: self.userGrouping];
+    }
+    
+    
+    //    if ([self.mediaItemForInfo valueForProperty: MPMediaItemPropertyComments]) {
+    //        //check to see if there is user data for this media item
+    ////        [self.comments removeFromSuperview];
+    //        //display Comments   height is view height minus nav bar minus tab bar
+    //        self.comments = [[UITextView alloc] initWithFrame:CGRectMake (0, (([self.songInfoData count] * 55) + self.albumImageView.frame.size.height), self.view.bounds.size.width, self.view.bounds.size.height)];
+    ////        [self.comments setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
+    //        self.comments.backgroundColor = [UIColor redColor];
+    //        self.comments.font = [UIFont systemFontOfSize: 44];
+    //        self.comments.textAlignment = NSTextAlignmentLeft;
+    //        self.comments.textColor = [UIColor whiteColor];
+    //        self.comments.editable = NO;
+    //        self.comments.text= [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyComments];
+    //        iTunesComments = YES;
+    //
+    //        [self.infoTableView addSubview: self.comments];
+    //    }
+    
 }
 - (void) viewWillAppear:(BOOL)animated
 {
-//    LogMethod();
+    //    LogMethod();
     for (NSIndexPath *indexPath in [self.infoTableView indexPathsForVisibleRows]) {
         
         //            NSLog (@" indexPath to scroll %@", indexPath);
@@ -111,18 +196,18 @@
     }
     
     [super viewWillAppear: animated];
-
-//    if (self.tabBarController.selectedIndex = 0) {
-//        self.title = @"Info";
-////        self.navigationItem.titleView = [self customizeTitleView];
-//    self.navItem.titleView = [self customizeTitleView];
-//
-//        NSLog (@"self.navigationItem.titleview is %@", self.navigationItem.titleView);
-//    } else {
-//        self.title = @"Notes";
-//        self.navigationItem.titleView = [self customizeTitleView];
-//        NSLog (@"self.navigationItem.titleview is %@", self.navigationItem.titleView);
-//    }
+    
+    //    if (self.tabBarController.selectedIndex = 0) {
+    //        self.title = @"Info";
+    ////        self.navigationItem.titleView = [self customizeTitleView];
+    //    self.navItem.titleView = [self customizeTitleView];
+    //
+    //        NSLog (@"self.navigationItem.titleview is %@", self.navigationItem.titleView);
+    //    } else {
+    //        self.title = @"Notes";
+    //        self.navigationItem.titleView = [self customizeTitleView];
+    //        NSLog (@"self.navigationItem.titleview is %@", self.navigationItem.titleView);
+    //    }
 }
 //- (UILabel *) customizeTitleView
 //{
@@ -135,24 +220,31 @@
 //    label.font = newFont;
 //    label.textColor = [UIColor yellowColor];
 //    label.text = self.title;
-//    
+//
 //    return label;
 //}
 
 - (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
     
+    CGFloat commentsHeight = self.comments.frame.size.height;
+    
     if (UIInterfaceOrientationIsPortrait(orientation)) {
         NSLog (@"portrait");
-        [self.infoTableView setContentInset:UIEdgeInsetsMake(11,0,-11,0)];
         [self.infoTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-
+        [self.infoTableView setContentInset:UIEdgeInsetsMake(11,0,commentsHeight,0)];
+        self.lastPlayedDateTitle = @"Played:";
+        self.userGroupingTitle = @"Grouping:";
+        
         
     } else {
         NSLog (@"landscape");
-        [self.infoTableView setContentInset:UIEdgeInsetsMake(23,0,0,0)];
+        [self.infoTableView setContentInset:UIEdgeInsetsMake(23,0,commentsHeight,0)];
         [self.infoTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-
+        self.lastPlayedDateTitle = @"Last Played:";
+        self.userGroupingTitle = @"iTunes Grouping:";
+        
     }
+    //    [self.infoTableView reloadData];
 }
 
 #pragma mark Table view methods________________________
@@ -166,24 +258,24 @@
 
 - (NSInteger) tableView: (UITableView *) table numberOfRowsInSection: (NSInteger)section {
     
-//    NSLog (@"self.songInfoData count is %d", [self.songInfoData count]);
+    //    NSLog (@"self.songInfoData count is %d", [self.songInfoData count]);
     return [self.songInfoData count];
 }
 
 - (UITableViewCell *) tableView: (UITableView *) tableView cellForRowAtIndexPath: (NSIndexPath *) indexPath {
     
     SongInfoCell *cell = (SongInfoCell *)[tableView
-                                  dequeueReusableCellWithIdentifier:@"SongInfoCell"];
-        
+                                          dequeueReusableCellWithIdentifier:@"SongInfoCell"];
+    
     cell.nameLabel.text = [self.songInfoData objectAtIndex:indexPath.row];
-//    NSLog (@"cell.nameLabel.frame.size.width is %f", CGRectGetWidth(cell.scrollView.bounds));
-
-
+    //    NSLog (@"cell.nameLabel.frame.size.width is %f", CGRectGetWidth(cell.scrollView.bounds));
+    
+    
     //calculate the label size to fit the text with the font size
     //    NSLog (@"size of nextSongLabel is %f", self.nextSongLabel.frame.size.width);
     CGSize labelSize = [cell.nameLabel.text sizeWithFont:cell.nameLabel.font
-                                           constrainedToSize:CGSizeMake(INT16_MAX, CGRectGetHeight(cell.nameLabel.bounds))
-                                               lineBreakMode:NSLineBreakByClipping];
+                                       constrainedToSize:CGSizeMake(INT16_MAX, CGRectGetHeight(cell.nameLabel.bounds))
+                                           lineBreakMode:NSLineBreakByClipping];
     
     //build a new label that will hold all the text
     UILabel *newLabel = [[UILabel alloc] initWithFrame: cell.nameLabel.frame];
@@ -192,8 +284,8 @@
     frame.size.width = labelSize.width + 1;
     newLabel.frame = frame;
     
-//    NSLog (@"size of newLabel is %f", frame.size.width);
-
+    //    NSLog (@"size of newLabel is %f", frame.size.width);
+    
     //calculate the size (w x h) for the scrollview content
     CGSize size;
     size.width = CGRectGetWidth(newLabel.bounds);
@@ -205,17 +297,17 @@
     cell.nameLabel.frame = newLabel.frame;
     
     [cell.scrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-
-//    NSLog (@"cell.scrollView.contentSize.width is %f", cell.scrollView.contentSize.width);
-//    NSLog (@"cell.scrollView.frame.size.width is %f", cell.scrollView.frame.size.width);
+    
+    //    NSLog (@"cell.scrollView.contentSize.width is %f", cell.scrollView.contentSize.width);
+    //    NSLog (@"cell.scrollView.frame.size.width is %f", cell.scrollView.frame.size.width);
     //enable scroll if the content will not fit within the scrollView
     if (cell.scrollView.contentSize.width>cell.scrollView.frame.size.width) {
         cell.scrollView.scrollEnabled = YES;
-//        NSLog (@"scrollEnabled");
+        //        NSLog (@"scrollEnabled");
     }
     else {
         cell.scrollView.scrollEnabled = NO;
-//        NSLog (@"scrollDisabled");
+        //        NSLog (@"scrollDisabled");
         
     }
     
@@ -235,16 +327,16 @@
 
 //- (void) registerForMediaPlayerNotifications {
 //    //    LogMethod();
-//    
+//
 //	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-//    
+//
 //    [notificationCenter addObserver: self
 //						   selector: @selector (handle_NowPlayingItemChanged:)
 //							   name: MPMusicPlayerControllerNowPlayingItemDidChangeNotification
 //							 object: musicPlayer];
-//    
+//
 //    [musicPlayer beginGeneratingPlaybackNotifications];
-//    
+//
 //}
 //
 //// If displaying now-playing item when it changes, update mediaItemForInfo and show info for currently playing song
@@ -254,7 +346,7 @@
 //    if (!self.navigationItem.rightBarButtonItem) {
 //        self.mediaItemForInfo = [musicPlayer nowPlayingItem];
 //        NSLog (@"newTitle is %@", [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyTitle]);
-//        
+//
 ////        self.albumInfoViewController.mediaItemForInfo = self.mediaItemForInfo;
 ////        self.iTunesInfoViewController.mediaItemForInfo = self.mediaItemForInfo;
 ////        self.iTunesCommentsViewController.mediaItemForInfo = self.mediaItemForInfo;
@@ -262,12 +354,12 @@
 ////        [self loadArrayForTable];
 ////        [self.infoTableView reloadData];
 ////        [self.albumImageView setNeedsDisplay];
-//        
+//
 ////        [self.albumInfoViewController.view setNeedsDisplay];
 ////        [self.iTunesInfoViewController.view setNeedsDisplay];
 ////        [self.iTunesCommentsViewController.view setNeedsDisplay];
 ////        [self.userInfoViewController.view setNeedsDisplay];
-//        
+//
 //    }
 //}
 //

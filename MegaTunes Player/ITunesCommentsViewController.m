@@ -59,19 +59,19 @@
         
         [self.comments setContentInset:UIEdgeInsetsMake(11,0,-11,0)];
         [self.comments scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-//        [self.view removeConstraint:self.verticalSpaceToTop28];
-//        [self.view addConstraint:self.verticalSpaceToTop];
-//        // Set top row spacing to superview top
-//        
+        //        [self.view removeConstraint:self.verticalSpaceToTop28];
+        //        [self.view addConstraint:self.verticalSpaceToTop];
+        //        // Set top row spacing to superview top
+        //
     } else {
         NSLog (@"landscape");
         [self.comments setContentInset:UIEdgeInsetsMake(23,0,0,0)];
         [self.comments scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-//        [self.view removeConstraint:self.verticalSpaceToTop];
-//        
-//        // Set top row spacing to superview top
-//        self.verticalSpaceToTop28 = [NSLayoutConstraint constraintWithItem:self.comments attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1.0 constant:28];
-//        [self.view addConstraint: self.verticalSpaceToTop28];
+        //        [self.view removeConstraint:self.verticalSpaceToTop];
+        //
+        //        // Set top row spacing to superview top
+        //        self.verticalSpaceToTop28 = [NSLayoutConstraint constraintWithItem:self.comments attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1.0 constant:28];
+        //        [self.view addConstraint: self.verticalSpaceToTop28];
     }
 }
 
@@ -86,7 +86,7 @@
 //    label.font = newFont;
 //    label.textColor = [UIColor yellowColor];
 //    label.text = self.title;
-//    
+//
 //    return label;
 //}
 
