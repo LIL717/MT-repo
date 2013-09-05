@@ -346,11 +346,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MegaTunes Player/MediaGroupCarouselViewController.m"
-         timestampString = "395986125.25462"
+         timestampString = "400112782.790616"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "97"
-         endingLineNumber = "97"
+         startingLineNumber = "101"
+         endingLineNumber = "101"
          landmarkName = "-viewDidLoad"
          landmarkType = "5">
       </FileBreakpoint>
@@ -372,11 +372,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MegaTunes Player/MediaGroupCarouselViewController.m"
-         timestampString = "395986125.25462"
+         timestampString = "400112782.790616"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "279"
-         endingLineNumber = "279"
+         startingLineNumber = "283"
+         endingLineNumber = "283"
          landmarkName = "-carousel:didSelectItemAtIndex:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -385,11 +385,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MegaTunes Player/MediaGroupCarouselViewController.m"
-         timestampString = "395986125.25462"
+         timestampString = "400112782.790616"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "272"
-         endingLineNumber = "272"
+         startingLineNumber = "276"
+         endingLineNumber = "276"
          landmarkName = "-carousel:didSelectItemAtIndex:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -411,11 +411,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MegaTunes Player/MediaGroupCarouselViewController.m"
-         timestampString = "395986125.25462"
+         timestampString = "400112782.790616"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "504"
-         endingLineNumber = "504"
+         startingLineNumber = "508"
+         endingLineNumber = "508"
          landmarkName = "-viewController:didFinishLoadingTaggedSongArray:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -424,11 +424,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MegaTunes Player/MediaGroupCarouselViewController.m"
-         timestampString = "395986125.25462"
+         timestampString = "400112782.790616"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "443"
-         endingLineNumber = "443"
+         startingLineNumber = "447"
+         endingLineNumber = "447"
          landmarkName = "-hideActivityIndicator"
          landmarkType = "5">
       </FileBreakpoint>
