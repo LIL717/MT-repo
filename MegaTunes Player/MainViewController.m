@@ -797,7 +797,7 @@ BOOL stopWatchRunning;
         int mins = (int) (elapsed / 60.0);
         elapsed -= mins * 60;
         int secs = (int) (elapsed);
-        elapsed -= secs;
+//        elapsed -= secs;
 //        int fraction = elapsed * 10.0;
         
         //update text string using a format of 0:00.0

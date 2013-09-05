@@ -153,9 +153,9 @@ static const NSUInteger kNavigationBarHeight = 60;
     //*** beginning of TestFlight code
     // comment out #define TESTING 1 before production!!!!
 #define TESTING 1
-#ifdef TESTING
-    [TestFlight setDeviceIdentifier:[[UIDevice currentDevice] uniqueIdentifier]];
-#endif
+//#ifdef TESTING
+//    [TestFlight setDeviceIdentifier:[[UIDevice currentDevice] uniqueIdentifier]];
+//#endif
     [TestFlight takeOff:@"3ec22a1e-ddac-483c-8152-21c537a9fb42"];
 
     //*** end of TestFlight code
