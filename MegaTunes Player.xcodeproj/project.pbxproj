@@ -116,6 +116,7 @@
 		707862B51626659900871260 /* ITunesInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 707862B41626659900871260 /* ITunesInfoViewController.m */; };
 		707862BC1629F33A00871260 /* AutoScrollLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 707862BB1629F33A00871260 /* AutoScrollLabel.m */; };
 		707862BF162C729300871260 /* TimeMagnifierViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 707862BE162C729300871260 /* TimeMagnifierViewController.m */; };
+		707AC0ED17D905CE009B49CA /* menubar-button ♫.png in Resources */ = {isa = PBXBuildFile; fileRef = 707AC0EC17D905CE009B49CA /* menubar-button ♫.png */; };
 		70864FCB170605960030210C /* AllAlbumsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 70864FCA170605960030210C /* AllAlbumsCell.m */; };
 		70864FCE17092B5B0030210C /* GenreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70864FCD17092B5B0030210C /* GenreViewController.m */; };
 		70864FD1170B789E0030210C /* UIScrollView+PassTouches.m in Sources */ = {isa = PBXBuildFile; fileRef = 70864FD0170B789E0030210C /* UIScrollView+PassTouches.m */; };
@@ -405,6 +406,7 @@
 		707862BB1629F33A00871260 /* AutoScrollLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AutoScrollLabel.m; path = ../../../../AutoScrollLabel/AutoScrollLabel.m; sourceTree = "<group>"; };
 		707862BD162C729300871260 /* TimeMagnifierViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeMagnifierViewController.h; sourceTree = "<group>"; };
 		707862BE162C729300871260 /* TimeMagnifierViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeMagnifierViewController.m; sourceTree = "<group>"; };
+		707AC0EC17D905CE009B49CA /* menubar-button ♫.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menubar-button ♫.png"; sourceTree = "<group>"; };
 		70864FC9170605960030210C /* AllAlbumsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllAlbumsCell.h; sourceTree = "<group>"; };
 		70864FCA170605960030210C /* AllAlbumsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllAlbumsCell.m; sourceTree = "<group>"; };
 		70864FCC17092B5B0030210C /* GenreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenreViewController.h; sourceTree = "<group>"; };
@@ -1096,6 +1098,7 @@
 				70A6444E16CE08120059C561 /* ITunesCommentsViewController.m */,
 				70A6445016CE0FEE0059C561 /* UserInfoViewController.h */,
 				70A6445116CE0FEE0059C561 /* UserInfoViewController.m */,
+				707AC0EC17D905CE009B49CA /* menubar-button ♫.png */,
 				700443771763B49800DA8BB8 /* UserTagViewController.h */,
 				700443781763B49800DA8BB8 /* UserTagViewController.m */,
 				70CF0BCF176A655D007AB6CF /* AddTagViewController.h */,
@@ -1552,6 +1555,7 @@
 				701052A817A1EAA0001BD625 /* stopWatchIcon57@2x.png in Resources */,
 				701052A917A1EAA0001BD625 /* stopWatchIcon68.png in Resources */,
 				701052AA17A1EAA0001BD625 /* stopWatchIcon68@2x.png in Resources */,
+				707AC0ED17D905CE009B49CA /* menubar-button ♫.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
