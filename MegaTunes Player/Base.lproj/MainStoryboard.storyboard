@@ -60,7 +60,7 @@
                         </view>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" restorationIdentifier="SongCell" selectionStyle="gray" hidesAccessoryWhenEditing="NO" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="SongCell" rowHeight="55" id="85O-dY-K1B" userLabel="cell" customClass="SongCell">
-                                <rect key="frame" x="0.0" y="146" width="480" height="57"/>
+                                <rect key="frame" x="0.0" y="146" width="480" height="56"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="10" y="1" width="460" height="54"/>
@@ -897,7 +897,7 @@
                         </view>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="CollectionItemCell" rowHeight="55" id="DFq-ZQ-3yg" userLabel="cell" customClass="CollectionItemCell">
-                                <rect key="frame" x="0.0" y="146" width="480" height="57"/>
+                                <rect key="frame" x="0.0" y="146" width="480" height="56"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="10" y="1" width="440" height="54"/>
@@ -1213,7 +1213,7 @@
                         </view>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="CollectionItemCell" rowHeight="55" id="WIN-8k-Cc9" userLabel="cell" customClass="CollectionItemCell">
-                                <rect key="frame" x="0.0" y="146" width="480" height="57"/>
+                                <rect key="frame" x="0.0" y="146" width="480" height="56"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="10" y="1" width="440" height="54"/>
@@ -1345,7 +1345,7 @@
                         </view>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="CollectionItemCell" rowHeight="55" id="Kxz-v9-piZ" userLabel="cell" customClass="CollectionItemCell">
-                                <rect key="frame" x="0.0" y="91" width="480" height="57"/>
+                                <rect key="frame" x="0.0" y="91" width="480" height="56"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="10" y="1" width="440" height="54"/>
@@ -1743,14 +1743,14 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="5Qv-VH-YKH"/>
-        <segue reference="hv1-71-OGq"/>
+        <segue reference="cs7-xB-URz"/>
         <segue reference="OaX-wz-MBb"/>
+        <segue reference="ZlS-b1-pog"/>
+        <segue reference="hv1-71-OGq"/>
+        <segue reference="hot-4h-GjM"/>
         <segue reference="qWI-HD-eSG"/>
-        <segue reference="kZ2-Sr-P63"/>
-        <segue reference="dXX-zY-4vR"/>
-        <segue reference="5Lm-x9-p1k"/>
-        <segue reference="hHs-2t-p2p"/>
         <segue reference="Xbd-a7-Wgl"/>
+        <segue reference="pO3-jk-z6Z"/>
+        <segue reference="hHs-2t-p2p"/>
     </inferredMetricsTieBreakers>
 </document>

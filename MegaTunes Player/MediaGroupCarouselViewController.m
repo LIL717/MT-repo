@@ -68,6 +68,21 @@ BOOL listIsAlphabetic;
     //    LogMethod();
     [self loadGroupingData];
     
+//130906 1.1 add Store Button begin
+    self.navigationItem.backBarButtonItem = nil; // Important
+    //initWithTitle cannot be nil, must be @""
+	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                             style:UIBarButtonItemStyleBordered
+                                                                            target:self
+                                                                            action:@selector(linkToiTunesStore)];
+    
+    UIImage *menuBarImage48 = [[UIImage imageNamed:@"iTunesStoreIcon57.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    UIImage *menuBarImage58 = [[UIImage imageNamed:@"iTunesStoreIcon68.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage48 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage58 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
+    
+//130906 1.1 add Store Button end
+    
     self.rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
                                                            style:UIBarButtonItemStyleBordered
                                                           target:self
@@ -509,6 +524,20 @@ BOOL listIsAlphabetic;
     self.taggedSongArrayLoaded = YES;
     [self hideActivityIndicator];
 }
+//130906 1.1 add Store Button begin
+
+- (IBAction)linkToiTunesStore {
+    
+    LogMethod();
+    
+    NSLocale *locale = [NSLocale currentLocale];
+    NSString *countryCode = [locale objectForKey: NSLocaleCountryCode];
+    
+    NSString *iTunesLink = [NSString stringWithFormat: @"itms://itunes.apple.com/%@", countryCode];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:iTunesLink]];
+    
+}
+//130906 1.1 add Store Button end
 
 - (IBAction)viewNowPlaying {
     
