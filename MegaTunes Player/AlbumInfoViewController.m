@@ -5,11 +5,19 @@
 //  Created by Lori Hill on 11/16/12.
 //
 //
+//130911 1.1 add iTunesStoreButton begin
+#define kBgQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
+#define kBgQueue2 dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
+//130911 1.1 add iTunesStoreButton end
 
 #import "AlbumInfoViewController.h"
 #import "AppDelegate.h"
 #import "SongInfoCell.h"
 #import "UIImage+AdditionalFunctionalities.h"
+#import "InCellScrollView.h"
+//130911 1.1 add iTunesStoreButton begin
+#import "StoreViewController.h"
+//130911 1.1 add iTunesStoreButton end
 
 
 @interface AlbumInfoViewController ()
@@ -41,6 +49,18 @@
 @synthesize comments;
 
 BOOL iTunesComments;
+//130909 1.1 add iTunesStoreButton begin
+@synthesize iTunesStoreSelector;
+@synthesize artistLinkUrl;
+@synthesize albumLinkUrl;
+@synthesize locale;
+@synthesize countryCode;
+@synthesize artistNameFormatted;
+@synthesize iTunesLinkUrl;
+
+//130909 1.1 add iTunesStoreButton end
+
+
 
 
 #pragma mark - Initial Display methods
@@ -122,9 +142,46 @@ BOOL iTunesComments;
     }
     [self.songInfoData addObject: self.album];
     
-    [self updateLayoutForNewOrientation: self.interfaceOrientation];
-    
     [self loadiTunesInfoData];
+    
+    //130911 1.1 add iTunesStoreButton begin
+    //fetch the iTunes link info in the background
+    
+    self.locale = [NSLocale currentLocale];
+    self.countryCode = [self.locale objectForKey: NSLocaleCountryCode];
+    
+    //if artist is known, get itunes link
+    if (![self.artist isEqualToString: @"Unknown"]) {
+        
+        self.artistNameFormatted = [self.artist stringByReplacingOccurrencesOfString:@" "
+                                                                          withString:@"+"];
+        
+        NSString *iTunesSearchString = [NSString stringWithFormat: @"http://ax.phobos.apple.com.edgesuite.net/WebObjects/MZStoreServices.woa/wa/itmsSearch?lang=1&output=json&country=%@&term=%@&media=music&limit=1", self.countryCode, self.artistNameFormatted];
+        
+        NSURL *iTunesSearchURL = [NSURL URLWithString: iTunesSearchString];
+        
+        dispatch_async(kBgQueue, ^{
+            NSData* data = [NSData dataWithContentsOfURL:
+                            iTunesSearchURL];
+            [self performSelectorOnMainThread:@selector(fetchedArtist:)
+                                   withObject:data waitUntilDone:YES];
+        });
+        iTunesSearchString = [NSString stringWithFormat: @"http://ax.phobos.apple.com.edgesuite.net/WebObjects/MZStoreServices.woa/wa/itmsSearch?lang=1&output=json&country=%@&term=%@&media=music&entity=album&limit=500", self.countryCode, self.artistNameFormatted];
+        
+        iTunesSearchURL = [NSURL URLWithString: iTunesSearchString];
+        
+        dispatch_async(kBgQueue2, ^{
+            NSData* data = [NSData dataWithContentsOfURL:
+                            iTunesSearchURL];
+            [self performSelectorOnMainThread:@selector(fetchedAlbum:)
+                                   withObject:data waitUntilDone:YES];
+        });
+        
+    }
+    //130911 1.1 add iTunesStoreButton end
+    
+    [self updateLayoutForNewOrientation: self.interfaceOrientation];
+
     
 }
 - (void) loadiTunesInfoData {
@@ -166,25 +223,66 @@ BOOL iTunesComments;
         [self.songInfoData addObject: self.userGrouping];
     }
     
-    
-    //    if ([self.mediaItemForInfo valueForProperty: MPMediaItemPropertyComments]) {
-    //        //check to see if there is user data for this media item
-    ////        [self.comments removeFromSuperview];
-    //        //display Comments   height is view height minus nav bar minus tab bar
-    //        self.comments = [[UITextView alloc] initWithFrame:CGRectMake (0, (([self.songInfoData count] * 55) + self.albumImageView.frame.size.height), self.view.bounds.size.width, self.view.bounds.size.height)];
-    ////        [self.comments setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
-    //        self.comments.backgroundColor = [UIColor redColor];
-    //        self.comments.font = [UIFont systemFontOfSize: 44];
-    //        self.comments.textAlignment = NSTextAlignmentLeft;
-    //        self.comments.textColor = [UIColor whiteColor];
-    //        self.comments.editable = NO;
-    //        self.comments.text= [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyComments];
-    //        iTunesComments = YES;
-    //
-    //        [self.infoTableView addSubview: self.comments];
-    //    }
-    
 }
+//130911 1.1 add iTunesStoreButton begin
+- (void)fetchedArtist:(NSData *)responseData {
+    //parse out the json data
+    NSError* error;
+    self.artistLinkUrl = nil;
+
+    if (responseData) {
+        NSDictionary* json = [NSJSONSerialization
+                              JSONObjectWithData:responseData
+                              
+                              options:kNilOptions
+                              error:&error];
+        
+        NSArray* results = [json objectForKey:@"results"];
+        
+        NSDictionary* artistDictionary = [results objectAtIndex:0];
+
+        artistLinkUrl = [artistDictionary objectForKey:@"artistLinkUrl"];
+    }
+    if (self.artistLinkUrl) {
+        NSLog(@"artistLinkUrl is %@", self.artistLinkUrl);
+        [self.infoTableView reloadData];
+    }
+    //artistLinkUrl = "https://itunes.apple.com/us/artist/phillip-phillips/id199170038?uo=4";
+}
+- (void)fetchedAlbum:(NSData *)responseData {
+    //parse out the json data
+    NSError* error;
+    self.albumLinkUrl = nil;
+
+    if (responseData) {
+        NSDictionary* json = [NSJSONSerialization
+                              JSONObjectWithData:responseData 
+                        
+                              options:kNilOptions
+                              error:&error];
+        
+        NSArray* results = [json objectForKey:@"results"];
+        
+        
+        for (NSDictionary *item in results) {
+    //        if ([[item objectForKey: @"itemName"] isEqualToString: self.album] && [[item objectForKey: @"artistName"] isEqualToString: self.artist]) {
+        if ([[item objectForKey: @"itemName"] isEqualToString: self.album]) {
+
+                    self.albumLinkUrl = [item objectForKey: @"itemLinkUrl"];
+                break;
+            }
+        }
+    }
+    
+    if (self.albumLinkUrl) {
+        NSLog (@"albumLinkUrl is %@", self.albumLinkUrl);
+
+        [self.infoTableView reloadData];
+    }
+    //itemLinkUrl = "https://itunes.apple.com/us/album/you-love-me/id464532842?i=464532972&uo=4";
+}
+//130911 1.1 add iTunesStoreButton end
+
 - (void) viewWillAppear:(BOOL)animated
 {
     //    LogMethod();
@@ -270,46 +368,113 @@ BOOL iTunesComments;
     cell.nameLabel.text = [self.songInfoData objectAtIndex:indexPath.row];
     //    NSLog (@"cell.nameLabel.frame.size.width is %f", CGRectGetWidth(cell.scrollView.bounds));
     
+//130909 1.1 add iTunesStoreButton begin
     
+    self.iTunesStoreSelector = nil;
+    
+    if (![cell.nameLabel.text isEqualToString: @"Unknown"]) {
+        if (indexPath.row == 0 && self.artistLinkUrl) {
+            self.iTunesStoreSelector = @"artist";
+        } else {
+            if (indexPath.row == 2 && self.albumLinkUrl) {
+            self.iTunesStoreSelector = @"album";
+            }
+        }
+    }
+    
+    cell.accessoryType = UITableViewCellAccessoryNone;
+
+    if (self.iTunesStoreSelector) {
+        
+        cell.scrollViewToCellConstraint.constant = 54;
+        cell.iTunesStoreButton.hidden = NO;
+
+        [cell.iTunesStoreButton addTarget:self action:@selector(linkToiTunesStore:event:)  forControlEvents:UIControlEventTouchUpInside];
+        
+        [cell.iTunesStoreButton setIsAccessibilityElement:YES];
+        [cell.iTunesStoreButton setAccessibilityLabel: NSLocalizedString(@"ITunesStore", nil)];
+        [cell.iTunesStoreButton setAccessibilityTraits: UIAccessibilityTraitButton];
+        if ([self.iTunesStoreSelector isEqualToString: @"artist"]) {
+            [cell.iTunesStoreButton setAccessibilityHint: NSLocalizedString(@"View more by this artist.", nil)];
+        } else {
+            [cell.iTunesStoreButton setAccessibilityHint: NSLocalizedString(@"View songs on this album.", nil)];
+        }
+//        UIView *superview = cell.contentView;
+//        
+//        [iTunesStoreButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+//        
+//        [superview addSubview:iTunesStoreButton];
+//        
+//        NSLayoutConstraint *myConstraint = [NSLayoutConstraint
+//                                            constraintWithItem:iTunesStoreButton
+//                                            attribute:NSLayoutAttributeTrailing
+//                                            relatedBy:NSLayoutRelationEqual
+//                                            toItem:superview
+//                                            attribute:NSLayoutAttributeTrailing
+//                                            multiplier:1.0
+//                                            constant:0];
+//        
+//        [superview addConstraint:myConstraint];
+//        
+//        myConstraint = [NSLayoutConstraint
+//                        constraintWithItem:iTunesStoreButton
+//                        attribute:NSLayoutAttributeTop
+//                        relatedBy:NSLayoutRelationEqual
+//                        toItem:superview
+//                        attribute:NSLayoutAttributeTop
+//                        multiplier:1.0
+//                        constant:-3];
+//        
+//        [superview addConstraint:myConstraint];
+
+        
+    } else {
+        //not artist or album row
+        cell.scrollViewToCellConstraint.constant = 0;
+        cell.iTunesStoreButton.hidden = YES;
+//        [iTunesStoreButton removeFromSuperview];
+    }
+
+        
+//    cell.scrollViewToCellConstraint.constant = iTunesStoreSelector ? -54 : 0;
+    
+//    NSLog (@"constraintConstant is %f", cell.scrollViewToCellConstraint.constant);
+    
+    NSUInteger scrollViewWidth;
+    
+    if (iTunesStoreSelector) {
+        scrollViewWidth = (tableView.frame.size.width - 54);
+    } else {
+        scrollViewWidth = tableView.frame.size.width;
+    }
+            
     //calculate the label size to fit the text with the font size
-    //    NSLog (@"size of nextSongLabel is %f", self.nextSongLabel.frame.size.width);
     CGSize labelSize = [cell.nameLabel.text sizeWithFont:cell.nameLabel.font
-                                       constrainedToSize:CGSizeMake(INT16_MAX, CGRectGetHeight(cell.nameLabel.bounds))
+                                       constrainedToSize:CGSizeMake(INT16_MAX,cell.frame.size.height)
                                            lineBreakMode:NSLineBreakByClipping];
     
-    //build a new label that will hold all the text
-    UILabel *newLabel = [[UILabel alloc] initWithFrame: cell.nameLabel.frame];
-    CGRect frame = newLabel.frame;
-    frame.size.height = CGRectGetHeight(cell.nameLabel.bounds);
-    frame.size.width = labelSize.width + 1;
-    newLabel.frame = frame;
-    
-    //    NSLog (@"size of newLabel is %f", frame.size.width);
-    
-    //calculate the size (w x h) for the scrollview content
-    CGSize size;
-    size.width = CGRectGetWidth(newLabel.bounds);
-    size.height = CGRectGetHeight(newLabel.bounds);
-    cell.scrollView.contentSize = size;
-    cell.scrollView.contentOffset = CGPointZero;
-    
-    //set the UIOutlet label's frame to the new sized frame
-    cell.nameLabel.frame = newLabel.frame;
-    
+//    //Make sure that label is aligned with scrollView
     [cell.scrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+    cell.scrollView.delegate = cell.scrollView;
     
-    //    NSLog (@"cell.scrollView.contentSize.width is %f", cell.scrollView.contentSize.width);
-    //    NSLog (@"cell.scrollView.frame.size.width is %f", cell.scrollView.frame.size.width);
-    //enable scroll if the content will not fit within the scrollView
-    if (cell.scrollView.contentSize.width>cell.scrollView.frame.size.width) {
+    [cell.scrollView removeConstraint:cell.centerXAlignmentConstraint];
+    
+    NSLog (@"labelSize.width is %f and scrollViewWidth is %d", labelSize.width, scrollViewWidth);
+    if (labelSize.width>scrollViewWidth) {
         cell.scrollView.scrollEnabled = YES;
-        //        NSLog (@"scrollEnabled");
+        NSLog (@"scroll YES");
+//        //this code is needed to prevent scrollable song titles from "flying" around in their scrollview on the 3GS
+//        [cell.scrollView addConstraint:cell.centerYAlignmentConstraint];
     }
     else {
         cell.scrollView.scrollEnabled = NO;
-        //        NSLog (@"scrollDisabled");
-        
+        NSLog (@"scroll NO");
+
     }
+
+//130909 1.1 add iTunesStoreButton end
+    
+
     
     if (indexPath.row == 1) {
         cell.nameLabel.font = [UIFont boldSystemFontOfSize: 44];
@@ -372,7 +537,38 @@ BOOL iTunesComments;
 //    [musicPlayer endGeneratingPlaybackNotifications];
 //    
 //}
+//130909 1.1 add iTunesStoreButton begin
 
+- (IBAction)linkToiTunesStore:(id)sender event:(id)event {
+    NSSet *touches = [event allTouches];
+    UITouch *touch = [touches anyObject];
+    //    NSLog (@"touch is %@" ,touch);
+    CGPoint currentTouchPosition = [touch locationInView:self.infoTableView];
+    //    NSLog (@"touchpoint  is %f %f" , currentTouchPosition.x, currentTouchPosition.y);
+    
+    NSIndexPath *indexPath = [self.infoTableView indexPathForRowAtPoint: currentTouchPosition];
+    
+    if (indexPath != nil)
+    {
+        [self tableView: self.infoTableView accessoryButtonTappedForRowWithIndexPath: indexPath];
+    }
+}
+
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
+    
+    if (indexPath.row == 0) {
+        self.iTunesLinkUrl = self.artistLinkUrl;
+    } else {
+        self.iTunesLinkUrl = self.albumLinkUrl;
+    }
+    
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.iTunesLinkUrl]];
+
+    NSLog (@"iTunesLink is %@", self.iTunesLinkUrl);
+    
+}
+
+//130909 1.1 add iTunesStoreButton end
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

@@ -113,7 +113,6 @@
 		707862A51626385700871260 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 707862A41626385700871260 /* CoreData.framework */; };
 		707862A81626391600871260 /* MegaTunes Player.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 707862A61626391600871260 /* MegaTunes Player.xcdatamodeld */; };
 		707862B21626631700871260 /* TextMagnifierViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 707862B11626631700871260 /* TextMagnifierViewController.m */; };
-		707862B51626659900871260 /* ITunesInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 707862B41626659900871260 /* ITunesInfoViewController.m */; };
 		707862BC1629F33A00871260 /* AutoScrollLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 707862BB1629F33A00871260 /* AutoScrollLabel.m */; };
 		707862BF162C729300871260 /* TimeMagnifierViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 707862BE162C729300871260 /* TimeMagnifierViewController.m */; };
 		707AC0F217D933BD009B49CA /* AccessibleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 707AC0EF17D933BD009B49CA /* AccessibleButton.m */; };
@@ -407,8 +406,6 @@
 		707862A71626391600871260 /* MegaTunes Player.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "MegaTunes Player.xcdatamodel"; sourceTree = "<group>"; };
 		707862B01626631700871260 /* TextMagnifierViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextMagnifierViewController.h; sourceTree = "<group>"; };
 		707862B11626631700871260 /* TextMagnifierViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextMagnifierViewController.m; sourceTree = "<group>"; };
-		707862B31626659900871260 /* ITunesInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITunesInfoViewController.h; sourceTree = "<group>"; };
-		707862B41626659900871260 /* ITunesInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITunesInfoViewController.m; sourceTree = "<group>"; };
 		707862BA1629F33900871260 /* AutoScrollLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AutoScrollLabel.h; path = ../../../../AutoScrollLabel/AutoScrollLabel.h; sourceTree = "<group>"; };
 		707862BB1629F33A00871260 /* AutoScrollLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AutoScrollLabel.m; path = ../../../../AutoScrollLabel/AutoScrollLabel.m; sourceTree = "<group>"; };
 		707862BD162C729300871260 /* TimeMagnifierViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeMagnifierViewController.h; sourceTree = "<group>"; };
@@ -1108,8 +1105,6 @@
 				702B4148165714E7004A9265 /* InfoTabBarController.m */,
 				702B414B165715C2004A9265 /* AlbumInfoViewController.h */,
 				702B414C165715C2004A9265 /* AlbumInfoViewController.m */,
-				707862B31626659900871260 /* ITunesInfoViewController.h */,
-				707862B41626659900871260 /* ITunesInfoViewController.m */,
 				70A6444D16CE08120059C561 /* ITunesCommentsViewController.h */,
 				70A6444E16CE08120059C561 /* ITunesCommentsViewController.m */,
 				70A6445016CE0FEE0059C561 /* UserInfoViewController.h */,
@@ -1630,7 +1625,6 @@
 				70ADDC33161AC09C00219873 /* InitialViewController.m in Sources */,
 				707862A81626391600871260 /* MegaTunes Player.xcdatamodeld in Sources */,
 				707862B21626631700871260 /* TextMagnifierViewController.m in Sources */,
-				707862B51626659900871260 /* ITunesInfoViewController.m in Sources */,
 				707862BC1629F33A00871260 /* AutoScrollLabel.m in Sources */,
 				707862BF162C729300871260 /* TimeMagnifierViewController.m in Sources */,
 				70974B511630698200A33B7D /* UIImage+iPhone5.m in Sources */,

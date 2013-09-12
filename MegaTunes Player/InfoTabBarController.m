@@ -332,13 +332,6 @@
         [self.albumInfoViewController loadTableData];
         [self.albumInfoViewController.infoTableView reloadData];
         
-        //        [self.iTunesInfoViewController.infoTableView setContentInset:UIEdgeInsetsMake(11,0,0,0)];
-        //        [self.iTunesInfoViewController.infoTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-        //        self.iTunesInfoViewController.lastPlayedDateTitle = @"Played:";
-        //        self.iTunesInfoViewController.userGroupingTitle = @"Grouping:";
-        //        [self.iTunesInfoViewController loadTableData];
-        //        [self.iTunesInfoViewController.infoTableView reloadData];
-        
         [self.iTunesCommentsViewController.comments setContentInset:UIEdgeInsetsMake(11,0,-11,0)];
         [self.iTunesCommentsViewController.comments scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
         
@@ -361,13 +354,6 @@
         self.albumInfoViewController.userGroupingTitle = @"iTunes Grouping:";
         [self.albumInfoViewController loadTableData];
         [self.albumInfoViewController.infoTableView reloadData];
-        
-        //        [self.iTunesInfoViewController.infoTableView setContentInset:UIEdgeInsetsMake(23,0,0,0)];
-        //        [self.iTunesInfoViewController.infoTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-        //        self.iTunesInfoViewController.lastPlayedDateTitle = @"Last Played:";
-        //        self.iTunesInfoViewController.userGroupingTitle = @"iTunes Grouping:";
-        //        [self.iTunesInfoViewController loadTableData];
-        //        [self.iTunesInfoViewController.infoTableView reloadData];
         
         [self.iTunesCommentsViewController.comments setContentInset:UIEdgeInsetsMake(23,0,0,0)];
         [self.iTunesCommentsViewController.comments scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
@@ -551,11 +537,6 @@
             [self.albumInfoViewController.infoTableView reloadData];
             [self.albumInfoViewController.albumImageView setNeedsDisplay];
             [self.albumInfoViewController.comments setNeedsDisplay];
-            
-            //
-            //            self.iTunesInfoViewController.mediaItemForInfo = self.mediaItemForInfo;
-            //            [self.iTunesInfoViewController loadTableData];
-            //            [self.iTunesInfoViewController.infoTableView reloadData];
             
             self.iTunesCommentsViewController.mediaItemForInfo = self.mediaItemForInfo;
             [self.iTunesCommentsViewController loadDataForView];

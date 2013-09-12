@@ -33,6 +33,17 @@
 
 @property (strong, nonatomic) UITextView *comments;
 
+//130909 1.1 add iTunesStoreButton begin
+@property (strong, nonatomic) NSString *iTunesStoreSelector;
+@property (strong, nonatomic) NSString *artistLinkUrl;
+@property (strong, nonatomic) NSString *albumLinkUrl;
+@property (strong, nonatomic) NSLocale *locale;
+@property (strong, nonatomic) NSString *countryCode;
+@property (strong, nonatomic) NSString *artistNameFormatted;
+@property (strong, nonatomic) NSString *iTunesLinkUrl;
+
+//130909 1.1 add iTunesStoreButton end
+
 - (void) loadTableData;
 
 @end

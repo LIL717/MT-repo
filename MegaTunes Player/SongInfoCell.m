@@ -9,6 +9,14 @@
 #import "SongInfoCell.h"
 
 @implementation SongInfoCell
+//130909 1.1 add iTunesStoreButton begin
+@synthesize scrollView;
+@synthesize nameLabel;
+@synthesize iTunesStoreButton;
+@synthesize scrollViewToCellConstraint;
+@synthesize centerXAlignmentConstraint;
+//130909 1.1 add iTunesStoreButton end
+
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
