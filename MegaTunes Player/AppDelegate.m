@@ -159,7 +159,11 @@ static const NSUInteger kNavigationBarHeight = 60;
     [TestFlight takeOff:@"3ec22a1e-ddac-483c-8152-21c537a9fb42"];
     
     //*** end of TestFlight code
-    
+//130906 1.1 add Store Button begin
+    NSUserDefaults * standardUserDefaults = [NSUserDefaults standardUserDefaults];
+    [standardUserDefaults setObject: @"at=10l9mp" forKey:@"affiliateID"];
+//130906 1.1 add Store Button end
+
     //Load a couple defaults to userTag Core Data if there aren't any objects in TagData
     
     TagData *tagData = [TagData alloc];
@@ -221,7 +225,6 @@ static const NSUInteger kNavigationBarHeight = 60;
         NSLog(@"REACHABLE!");
         NSUserDefaults * standardUserDefaults = [NSUserDefaults standardUserDefaults];
         [standardUserDefaults setBool: YES forKey:@"networkAvailable"];
-        
     };
     
     reach.unreachableBlock = ^(Reachability*reach)
@@ -240,6 +243,7 @@ static const NSUInteger kNavigationBarHeight = 60;
     
     //prevent app from timing out due to idelness
     [UIApplication sharedApplication].idleTimerDisabled = YES;
+
     
     //    [self.window setRootViewController:navigationController];
     

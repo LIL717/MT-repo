@@ -40,6 +40,9 @@
 @property (strong, nonatomic) NSLocale *locale;
 @property (strong, nonatomic) NSString *countryCode;
 @property (strong, nonatomic) NSString *artistNameFormatted;
+@property (strong, nonatomic) NSString *albumNameFormatted;
+@property (strong, nonatomic) NSString *songNameFormatted;
+
 @property (strong, nonatomic) NSString *iTunesLinkUrl;
 
 //130909 1.1 add iTunesStoreButton end

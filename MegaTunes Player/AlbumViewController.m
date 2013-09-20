@@ -828,6 +828,14 @@ BOOL firstLoad;
         selectedQuery = [self.collectionQueryType copy];
         [selectedQuery setGroupingType: MPMediaGroupingTitle];
         songViewController.collectionQueryType = selectedQuery;
+        //130912 1.1 add iTunesStoreButton begin
+        if ([self.collectionType isEqualToString: @"Artists"]) {
+            //if displaying all songs by one artist, iTunes search will be for Artist
+            songViewController.collectionType = @"Artists";
+        } else {
+            songViewController.collectionType = @"All";
+        }
+        //130912 1.1 add iTunesStoreButton end
 
 	}
     
@@ -864,6 +872,14 @@ BOOL firstLoad;
         songViewController.title = collectionItem.name;        
         songViewController.collectionItem = collectionItem;
         songViewController.collectionQueryType = selectedQuery;
+//130912 1.1 add iTunesStoreButton begin
+        if ([self.collectionType isEqualToString: @"Artists"]) {
+            //going to show song list from album so want to set iTunes store search to album rather than artist
+            songViewController.collectionType = @"Albums";
+        } else {
+            songViewController.collectionType = self.collectionType;
+        }
+//130912 1.1 add iTunesStoreButton end
 
 //        }
 	}

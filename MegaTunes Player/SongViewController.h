@@ -26,6 +26,10 @@
 @property (strong, nonatomic)   IBOutlet UIView *shuffleView;
 @property (strong, nonatomic)   IBOutlet UIButton *shuffleButton;
 @property (strong, nonatomic)   IBOutlet MTSearchBar *searchBar;
+//130912 1.1 add iTunesStoreButton begin
+@property (strong, nonatomic)   IBOutlet UIButton *completeAlbumButton;
+@property (strong, nonatomic)   NSString *collectionType;
+//130912 1.1 add iTunesStoreButton end
 
 @property (nonatomic, retain)   NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong)   CollectionItem *collectionItem;
@@ -61,7 +65,18 @@
 @property (nonatomic, weak)     MediaGroupCarouselViewController *mediaGroupCarouselViewController;
 
 
+//130909 1.1 add iTunesStoreButton begin
+@property (strong, nonatomic) NSString *iTunesStoreSelector;
+@property (strong, nonatomic) NSString *artistLinkUrl;
+@property (strong, nonatomic) NSString *albumLinkUrl;
+@property (strong, nonatomic) NSLocale *locale;
+@property (strong, nonatomic) NSString *countryCode;
+@property (strong, nonatomic) NSString *albumNameFormatted;
+@property (strong, nonatomic) NSString *artistNameFormatted;
+@property (strong, nonatomic) NSString *songNameFormatted;
+@property (strong, nonatomic) NSString *iTunesLinkUrl;
 
+//130909 1.1 add iTunesStoreButton end
 
 
 

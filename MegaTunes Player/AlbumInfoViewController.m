@@ -56,8 +56,11 @@ BOOL iTunesComments;
 @synthesize locale;
 @synthesize countryCode;
 @synthesize artistNameFormatted;
+@synthesize albumNameFormatted;
+@synthesize songNameFormatted;
 @synthesize iTunesLinkUrl;
 
+NSString *myAffiliateID;
 //130909 1.1 add iTunesStoreButton end
 
 
@@ -147,6 +150,9 @@ BOOL iTunesComments;
     //130911 1.1 add iTunesStoreButton begin
     //fetch the iTunes link info in the background
     
+    //get the affliate ID
+    myAffiliateID = [[NSUserDefaults standardUserDefaults] stringForKey:@"affiliateID"];
+    
     self.locale = [NSLocale currentLocale];
     self.countryCode = [self.locale objectForKey: NSLocaleCountryCode];
     
@@ -155,9 +161,13 @@ BOOL iTunesComments;
         
         self.artistNameFormatted = [self.artist stringByReplacingOccurrencesOfString:@" "
                                                                           withString:@"+"];
+        self.albumNameFormatted = [self.album stringByReplacingOccurrencesOfString:@" "
+                                                                          withString:@"+"];
+        self.songNameFormatted = [self.songName stringByReplacingOccurrencesOfString:@" "
+                                                                          withString:@"+"];
         
-        NSString *iTunesSearchString = [NSString stringWithFormat: @"http://ax.phobos.apple.com.edgesuite.net/WebObjects/MZStoreServices.woa/wa/itmsSearch?lang=1&output=json&country=%@&term=%@&media=music&limit=1", self.countryCode, self.artistNameFormatted];
-        
+//        NSString *iTunesSearchString = [NSString stringWithFormat: @"http://ax.phobos.apple.com.edgesuite.net/WebObjects/MZStoreServices.woa/wa/itmsSearch?lang=1&output=json&country=%@&term=%@&media=music&limit=1", self.countryCode, self.artistNameFormatted];
+        NSString *iTunesSearchString = [NSString stringWithFormat: @"http://ax.phobos.apple.com.edgesuite.net/WebObjects/MZStoreServices.woa/wa/itmsSearch?lang=1&output=json&country=%@&term=%@%%20%@&media=music&limit=50", self.countryCode, self.artistNameFormatted, self.songNameFormatted];
         NSURL *iTunesSearchURL = [NSURL URLWithString: iTunesSearchString];
         
         dispatch_async(kBgQueue, ^{
@@ -166,8 +176,8 @@ BOOL iTunesComments;
             [self performSelectorOnMainThread:@selector(fetchedArtist:)
                                    withObject:data waitUntilDone:YES];
         });
-        iTunesSearchString = [NSString stringWithFormat: @"http://ax.phobos.apple.com.edgesuite.net/WebObjects/MZStoreServices.woa/wa/itmsSearch?lang=1&output=json&country=%@&term=%@&media=music&entity=album&limit=500", self.countryCode, self.artistNameFormatted];
-        
+//        iTunesSearchString = [NSString stringWithFormat: @"http://ax.phobos.apple.com.edgesuite.net/WebObjects/MZStoreServices.woa/wa/itmsSearch?lang=1&output=json&country=%@&term=%@&media=music&entity=album&limit=500", self.countryCode, self.artistNameFormatted];
+        iTunesSearchString = [NSString stringWithFormat: @"http://ax.phobos.apple.com.edgesuite.net/WebObjects/MZStoreServices.woa/wa/itmsSearch?lang=1&output=json&country=%@&term=%@%%20%@%%20%@&media=music&limit=50", self.countryCode, self.artistNameFormatted, self.albumNameFormatted, self.songNameFormatted];
         iTunesSearchURL = [NSURL URLWithString: iTunesSearchString];
         
         dispatch_async(kBgQueue2, ^{
@@ -238,10 +248,21 @@ BOOL iTunesComments;
                               error:&error];
         
         NSArray* results = [json objectForKey:@"results"];
-        
-        NSDictionary* artistDictionary = [results objectAtIndex:0];
+    
+        if ([results count] > 0) {
+//            NSDictionary* artistDictionary = [results objectAtIndex:0];
+//
+//            artistLinkUrl = [artistDictionary objectForKey:@"artistLinkUrl"];
+            for (NSDictionary *item in results) {
 
-        artistLinkUrl = [artistDictionary objectForKey:@"artistLinkUrl"];
+                if ([[item objectForKey: @"kind"] isEqualToString: @"song"]
+                    && [[item objectForKey: @"artistName"] isEqualToString: self.artist]) {
+                    
+                    self.artistLinkUrl = [item objectForKey: @"artistLinkUrl"];
+                    break;
+                }
+            }
+        }
     }
     if (self.artistLinkUrl) {
         NSLog(@"artistLinkUrl is %@", self.artistLinkUrl);
@@ -261,15 +282,23 @@ BOOL iTunesComments;
                               options:kNilOptions
                               error:&error];
         
-        NSArray* results = [json objectForKey:@"results"];
-        
-        
-        for (NSDictionary *item in results) {
-    //        if ([[item objectForKey: @"itemName"] isEqualToString: self.album] && [[item objectForKey: @"artistName"] isEqualToString: self.artist]) {
-        if ([[item objectForKey: @"itemName"] isEqualToString: self.album]) {
-
-                    self.albumLinkUrl = [item objectForKey: @"itemLinkUrl"];
-                break;
+            NSArray* results = [json objectForKey:@"results"];
+            
+        if ([results count] > 0) {
+            for (NSDictionary *item in results) {
+        //        if ([[item objectForKey: @"itemName"] isEqualToString: self.album] && [[item objectForKey: @"artistName"] isEqualToString: self.artist]) {
+//            if ([[item objectForKey: @"itemName"] isEqualToString: self.album]) {
+//
+//                        self.albumLinkUrl = [item objectForKey: @"itemLinkUrl"];
+//                    break;
+//                }
+                if ([[item objectForKey: @"itemParentName"] isEqualToString: self.album]
+                    && [[item objectForKey: @"kind"] isEqualToString: @"song"]
+                    && [[item objectForKey: @"artistName"] isEqualToString: self.artist]) {
+                    
+                    self.albumLinkUrl = [item objectForKey: @"itemParentLinkUrl"];
+                    break;
+                }
             }
         }
     }
@@ -557,9 +586,9 @@ BOOL iTunesComments;
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
     
     if (indexPath.row == 0) {
-        self.iTunesLinkUrl = self.artistLinkUrl;
+        self.iTunesLinkUrl = [NSString stringWithFormat: @"%@&%@", self.artistLinkUrl, myAffiliateID];
     } else {
-        self.iTunesLinkUrl = self.albumLinkUrl;
+        self.iTunesLinkUrl = [NSString stringWithFormat: @"%@&%@", self.albumLinkUrl, myAffiliateID];
     }
     
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.iTunesLinkUrl]];

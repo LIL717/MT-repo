@@ -823,6 +823,9 @@ BOOL firstLoad;
 
         songViewController.collectionItem = collectionItem;
         songViewController.collectionQueryType = selectedQuery;
+//130912 1.1 add iTunesStoreButton begin
+        songViewController.collectionType = self.collectionType;
+//130912 1.1 add iTunesStoreButton end
 
 	}
     if ([segue.identifier isEqualToString:@"AlbumCollections"])

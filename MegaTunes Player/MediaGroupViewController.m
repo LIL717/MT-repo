@@ -69,6 +69,10 @@ NSMutableArray *songArrayToLoad;
 UIAlertView *alert;
 BOOL listIsAlphabetic;
 
+//130906 1.1 add Store Button begin
+NSString *myAffiliateID;
+//130906 1.1 add Store Button end
+
 
 
 #pragma mark - Initial Display methods
@@ -233,6 +237,9 @@ BOOL listIsAlphabetic;
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
     
 //130906 1.1 add Store Button begin
+    //get the affliate ID
+    myAffiliateID = [[NSUserDefaults standardUserDefaults] stringForKey:@"affiliateID"];
+    
     self.navigationItem.backBarButtonItem = nil; // Important
     //initWithTitle cannot be nil, must be @""
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle: @""
@@ -727,6 +734,9 @@ BOOL listIsAlphabetic;
         songViewController.collectionItem = collectionItem;
         songViewController.iPodLibraryChanged = self.iPodLibraryChanged;
         songViewController.listIsAlphabetic = listIsAlphabetic;
+//130912 1.1 add iTunesStoreButton begin
+        songViewController.collectionType = selectedGroup.name;
+//130912 1.1 add iTunesStoreButton end
         NSLog (@"TinySongArrayLoaded = %d", self.tinySongArrayLoaded);
         songViewController.tinyArray = self.tinySongArrayLoaded;
         
@@ -810,7 +820,7 @@ BOOL listIsAlphabetic;
     NSLocale *locale = [NSLocale currentLocale];
     NSString *countryCode = [locale objectForKey: NSLocaleCountryCode];
     
-    NSString *iTunesLink = [NSString stringWithFormat: @"itms://itunes.apple.com/%@", countryCode];
+    NSString *iTunesLink = [NSString stringWithFormat: @"itms://itunes.apple.com/%@?%@", countryCode, myAffiliateID];
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:iTunesLink]];
 
 }

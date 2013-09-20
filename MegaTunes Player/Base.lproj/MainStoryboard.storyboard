@@ -58,6 +58,18 @@
                                 <constraint firstItem="852-3o-ZMl" firstAttribute="top" secondItem="YP5-7A-NUT" secondAttribute="top" constant="55" type="user" id="wo3-sm-xHc"/>
                             </constraints>
                         </view>
+                        <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="jWM-VD-TZ4">
+                            <rect key="frame" x="0.0" y="203" width="480" height="55"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="44"/>
+                            <state key="normal" title=" iTunes Store" image="iTunesStoreIcon.png" backgroundImage="black-button.png">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <state key="highlighted">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" restorationIdentifier="SongCell" selectionStyle="gray" hidesAccessoryWhenEditing="NO" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="SongCell" rowHeight="55" id="85O-dY-K1B" userLabel="cell" customClass="SongCell">
                                 <rect key="frame" x="0.0" y="146" width="480" height="56"/>
@@ -151,6 +163,7 @@
                     <navigationItem key="navigationItem" id="n9y-KG-rl2"/>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <connections>
+                        <outlet property="completeAlbumButton" destination="jWM-VD-TZ4" id="ItX-8I-0y3"/>
                         <outlet property="searchBar" destination="l1i-Kb-yaE" id="CLv-Jd-LFD"/>
                         <outlet property="searchDisplayController" destination="gGh-Bj-P7U" id="pdf-Eb-3NC"/>
                         <outlet property="shuffleButton" destination="852-3o-ZMl" id="c9C-Oh-92s"/>
@@ -1948,6 +1961,7 @@
             <source key="sourceIdentifier" type="project" relativePath="./Classes/SongViewController.h"/>
             <relationships>
                 <relationship kind="action" name="playWithShuffle:"/>
+                <relationship kind="outlet" name="completeAlbumButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="searchBar" candidateClass="MTSearchBar"/>
                 <relationship kind="outlet" name="shuffleButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="shuffleView" candidateClass="UIView"/>
