@@ -5,7 +5,9 @@
 //  Created by Lori Hill on 10/1/12.
 //
 //
-
+//130911 1.1 add iTunesStoreButton begin
+#define kBgQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
+//130911 1.1 add iTunesStoreButton end
 #import "ArtistViewController.h"
 #import "CollectionItemCell.h"
 #import "CollectionItem.h"
@@ -39,6 +41,23 @@
 @synthesize rightBarButton;
 @synthesize searchResults;
 @synthesize cellScrolled;
+
+//130912 1.1 add iTunesStoreButton begin
+@synthesize moreGenreButton;
+
+@synthesize iTunesStoreSelector;
+@synthesize genreLinkUrl;
+@synthesize locale;
+@synthesize countryCode;
+@synthesize genreNameFormatted;
+@synthesize albumNameFormatted;
+@synthesize artistNameFormatted;
+@synthesize songNameFormatted;
+@synthesize iTunesLinkUrl;
+
+NSString *myAffiliateID;
+
+//130912 1.1 add iTunesStoreButton end
 
 
 NSMutableArray *collectionDurations;
@@ -138,8 +157,49 @@ BOOL firstLoad;
 
 
 //    self.searchDisplayController.searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
+    //130912 1.1 add iTunesStoreButton begin
+    if ([self.collectionType isEqualToString: @"Genres"]) {
+        //get the affliate ID
+        myAffiliateID = [[NSUserDefaults standardUserDefaults] stringForKey:@"affiliateID"];
+        //show the More button for iTunes
+        [self establishITunesLink];
+        self.moreGenreButton.hidden = YES;
+        [self.moreGenreButton addTarget:self action:@selector(linkToiTunesStore:)  forControlEvents:UIControlEventTouchUpInside];
+        
+        [self.moreGenreButton setIsAccessibilityElement:YES];
+        [self.moreGenreButton setAccessibilityLabel: NSLocalizedString(@"ITunesStore", nil)];
+        [self.moreGenreButton setAccessibilityTraits: UIAccessibilityTraitButton];
+        [self.moreGenreButton setAccessibilityHint: NSLocalizedString(@"View more in this genre.", nil)];
+    } else {
+        self.moreGenreButton.hidden = YES;
+    }
+    //130912 1.1 add iTunesStoreButton end
 
 }
+//130911 1.1 add iTunesStoreButton begin
+//fetch the iTunes link info in the background
+- (void) establishITunesLink {
+    self.locale = [NSLocale currentLocale];
+    self.countryCode = [self.locale objectForKey: NSLocaleCountryCode];
+
+    
+    //get itunes link for genre which is the title of this view
+    
+    self.genreNameFormatted = [self.title stringByReplacingOccurrencesOfString:@" "
+                                                                    withString:@"+"];
+    NSString *iTunesSearchString = [NSString stringWithFormat: @"https://itunes.apple.com/WebObjects/MZStoreServices.woa/ws/genres"];
+    
+    NSURL *iTunesSearchURL = [NSURL URLWithString: iTunesSearchString];
+    
+    dispatch_async(kBgQueue, ^{
+        NSData* data = [NSData dataWithContentsOfURL:
+                        iTunesSearchURL];
+        [self performSelectorOnMainThread:@selector(fetchedGenre:)
+                               withObject:data waitUntilDone:YES];
+    });
+    
+}
+//130911 1.1 add iTunesStoreButton end
 - (void) createDurationArray {
 
     for (MPMediaItemCollection* currentQueue in self.collection) {
@@ -156,6 +216,64 @@ BOOL firstLoad;
 
     }
 }
+//130911 1.1 add iTunesStoreButton begin
+
+- (void)fetchedGenre:(NSData *)responseData {
+    //parse out the json data
+    NSError* error;
+    self.genreLinkUrl = nil;
+    
+    if (responseData) {
+        NSDictionary* json = [NSJSONSerialization
+                              JSONObjectWithData:responseData
+                              
+                              options:kNilOptions
+                              error:&error];
+        //music is 34
+        NSDictionary* musicCategory = [json objectForKey: @"34"];
+        if ([musicCategory count] >0) {
+//            
+//            NSLog (@"musicCategory %@", musicCategory);//this is everything with id=34
+//            NSLog (@"MgenreID %@, MgenreName %@", [musicCategory objectForKey: @"id"], [musicCategory objectForKey: @"name"]);
+            
+            NSDictionary *genres = [musicCategory objectForKey: @"subgenres"];
+//            NSDictionary *genres = @"20" : @"Alternative",
+
+            [genres enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+//                NSString *genreID = key;
+                NSDictionary *genreDictionary = obj;
+                NSString *genreName = [genreDictionary objectForKey: @"name"];
+//                NSLog(@"Genre %@ is %@.",genreID, genreName);
+
+                if ([genreName isEqualToString: self.title]) {
+                    self.genreLinkUrl = [NSString stringWithFormat: @"https://itunes.apple.com/%@/genre/id%@", self.countryCode, [genreDictionary objectForKey: @"id"]];
+                    *stop = YES;
+                }
+                NSDictionary *subGenres = [genreDictionary objectForKey: @"subgenres"];
+                                           
+                [subGenres enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+//                    NSString *subGenreID = key;
+                    NSDictionary *subGenreDictionary = obj;
+                    NSString *subGenreName = [subGenreDictionary objectForKey: @"name"];
+//                    NSLog(@"SubGenre %@ is %@.", subGenreID, subGenreName);
+                    
+                    if ([subGenreName isEqualToString: self.title]) {
+                        self.genreLinkUrl = [NSString stringWithFormat: @"https://itunes.apple.com/%@/genre/id%@", self.countryCode, [subGenreDictionary objectForKey: @"id"]];
+                        *stop = YES;
+                    }
+                }];
+            }];
+        }
+    }
+    
+    if (self.genreLinkUrl) {
+        self.moreGenreButton.hidden = NO;
+    }
+    NSLog (@"genreLinkUrl is %@", self.genreLinkUrl);
+    
+}
+//130911 1.1 add iTunesStoreButton end
+
 - (void) viewWillAppear:(BOOL)animated
 {
 //    LogMethod();
@@ -720,6 +838,9 @@ BOOL firstLoad;
     
     if ([self.collectionType isEqualToString: @"Artists"] || [self.collectionType isEqualToString: @"Genres"]) {
         mediaItemProperty = MPMediaItemPropertyAlbumArtist;
+//130912 1.1 add iTunesStoreButton begin
+        self.collectionType = @"Artists";
+//130912 1.1 add iTunesStoreButton end
     } else {
         if ([self.collectionType isEqualToString: @"Composers"]) {
             mediaItemProperty = MPMediaItemPropertyComposer;
@@ -885,6 +1006,22 @@ BOOL firstLoad;
 //    [self.collectionTableView.delegate tableView:self.collectionTableView didSelectRowAtIndexPath:indexPath];
 //    [self performSegueWithIdentifier: @"ViewSongs" sender: [self.collectionTableView cellForRowAtIndexPath:indexPath]];
 //}
+//130909 1.1 add iTunesStoreButton begin
+
+- (IBAction)linkToiTunesStore:(id)sender {
+    
+    self.iTunesLinkUrl = [NSString stringWithFormat: @"%@?%@", self.genreLinkUrl, myAffiliateID];
+//    self.iTunesLinkUrl = [NSString stringWithFormat: @"%@", self.genreLinkUrl];
+
+//    self.ITunesLinkUrl = @"https://itunes.apple.com/us/genre/music-dance/id17";
+//    self.ITunesLinkUrl = @"https://itunes.apple.com/us/genre/id17";
+
+
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.iTunesLinkUrl]];
+    
+    NSLog (@"iTunesLink is %@", self.iTunesLinkUrl);
+    
+}
 
 - (void) registerForMediaPlayerNotifications {
 //    LogMethod();

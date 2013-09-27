@@ -17,6 +17,9 @@
 @property (strong, nonatomic)   IBOutlet UIView *allAlbumsView;
 @property (strong, nonatomic)   IBOutlet UIButton *allAlbumsButton;
 @property (strong, nonatomic)   IBOutlet MTSearchBar *searchBar;
+//130912 1.1 add iTunesStoreButton begin
+@property (strong, nonatomic)   IBOutlet UIButton *moreGenreButton;
+//130912 1.1 add iTunesStoreButton end
 
 @property (nonatomic, retain)   NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong)   NSArray *collection;
@@ -32,7 +35,18 @@
 @property (nonatomic, strong)   NSArray *searchResults;
 @property (readwrite)           BOOL cellScrolled;
 
+//130909 1.1 add iTunesStoreButton begin
+@property (strong, nonatomic) NSString *iTunesStoreSelector;
+@property (strong, nonatomic) NSString *genreLinkUrl;
+@property (strong, nonatomic) NSLocale *locale;
+@property (strong, nonatomic) NSString *countryCode;
+@property (strong, nonatomic) NSString *genreNameFormatted;
+@property (strong, nonatomic) NSString *albumNameFormatted;
+@property (strong, nonatomic) NSString *artistNameFormatted;
+@property (strong, nonatomic) NSString *songNameFormatted;
+@property (strong, nonatomic) NSString *iTunesLinkUrl;
 
+//130909 1.1 add iTunesStoreButton end
 
 - (NSNumber *) calculatePlaylistDuration: (MPMediaItemCollection *) currentQueue;
 

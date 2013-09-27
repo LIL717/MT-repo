@@ -381,6 +381,7 @@ BOOL stopWatchRunning;
     } else {
         
         [self.view removeConstraint:self.topSpaceToPlayButton];
+//130926  ios 7 problem is here
         [self.view addConstraint: self.playButtonToBottomSpace];
         self.playButtonToBottomSpace.constant = 190;
         
