@@ -6,7 +6,9 @@
 //
 //
 
-
+//130911 1.1 add iTunesStoreButton begin
+#define kBgQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
+//130911 1.1 add iTunesStoreButton end
 #import "AlbumViewController.h"
 #import "CollectionItemCell.h"
 #import "CollectionItem.h"
@@ -55,7 +57,22 @@ UIImage *backgroundImage;
 MPMediaQuery *myAlbumQuery;
 MPMediaQuery *selectedQuery;
 MPMediaPropertyPredicate *selectedPredicate;
+//130912 1.1 add iTunesStoreButton begin
+@synthesize moreByArtistButton;
 
+@synthesize iTunesStoreSelector;
+@synthesize artistLinkUrl;
+@synthesize locale;
+@synthesize countryCode;
+//@synthesize genreNameFormatted;
+//@synthesize albumNameFormatted;
+@synthesize artistNameFormatted;
+//@synthesize songNameFormatted;
+@synthesize iTunesLinkUrl;
+
+NSString *myAffiliateID;
+
+//130912 1.1 add iTunesStoreButton end
 
 BOOL showDuration;
 BOOL firstLoad;
@@ -181,8 +198,90 @@ BOOL firstLoad;
         albumMediaItemProperty = MPMediaItemPropertyAlbumTitle;
         albumMediaGrouping = MPMediaGroupingAlbum;
     }
-
+//130912 1.1 add iTunesStoreButton begin
+    if ([self.collectionType isEqualToString: @"Artists"]) {
+        //get the affliate ID
+        myAffiliateID = [[NSUserDefaults standardUserDefaults] stringForKey:@"affiliateID"];
+        //show the More button for iTunes
+        [self establishITunesLink];
+        self.moreByArtistButton.hidden = YES;
+        [self.moreByArtistButton addTarget:self action:@selector(linkToiTunesStore:)  forControlEvents:UIControlEventTouchUpInside];
+        
+        [self.moreByArtistButton setIsAccessibilityElement:YES];
+        [self.moreByArtistButton setAccessibilityLabel: NSLocalizedString(@"ITunesStore", nil)];
+        [self.moreByArtistButton setAccessibilityTraits: UIAccessibilityTraitButton];
+        [self.moreByArtistButton setAccessibilityHint: NSLocalizedString(@"View more in this genre.", nil)];
+    } else {
+        self.moreByArtistButton.hidden = YES;
+    }
+//130912 1.1 add iTunesStoreButton end
 }
+//130911 1.1 add iTunesStoreButton begin
+//fetch the iTunes link info in the background
+- (void) establishITunesLink {
+    self.locale = [NSLocale currentLocale];
+    self.countryCode = [self.locale objectForKey: NSLocaleCountryCode];
+    
+    
+    //get itunes link for artist which is the title of this view
+    
+    self.artistNameFormatted = [self.title stringByReplacingOccurrencesOfString:@" "
+                                                                    withString:@"+"];
+    NSString *iTunesSearchString = [NSString stringWithFormat: @"http://ax.phobos.apple.com.edgesuite.net/WebObjects/MZStoreServices.woa/wa/itmsSearch?lang=1&output=json&country=%@&term=%@&media=music&limit=50", self.countryCode, self.artistNameFormatted];
+    
+    NSURL *iTunesSearchURL = [NSURL URLWithString: iTunesSearchString];
+    
+    dispatch_async(kBgQueue, ^{
+        NSData* data = [NSData dataWithContentsOfURL:
+                        iTunesSearchURL];
+        [self performSelectorOnMainThread:@selector(fetchedArtist:)
+                               withObject:data waitUntilDone:YES];
+    });
+    
+}
+//130911 1.1 add iTunesStoreButton end
+//130911 1.1 add iTunesStoreButton begin
+
+- (void)fetchedArtist:(NSData *)responseData {
+    //parse out the json data
+    NSError* error;
+    self.artistLinkUrl = nil;
+    
+//    MPMediaItem *song = [self.collectionItem.collectionArray objectAtIndex: 0];
+    
+    if (responseData) {
+        NSDictionary* json = [NSJSONSerialization
+                              JSONObjectWithData:responseData
+                              
+                              options:kNilOptions
+                              error:&error];
+        
+        NSArray* results = [json objectForKey:@"results"];
+        if ([results count] >0) {
+            
+            NSLog (@"results %@", results);
+            
+            for (NSDictionary *item in results) {
+                NSLog (@"%@   %@  %@  %@  %@", [item objectForKey: @"itemParentName"], [item objectForKey: @"trackCount"], [item objectForKey: @"trackNumber"], [item objectForKey: @"itemName"], [item objectForKey: @"artistName"]);
+
+                    if ([[item objectForKey: @"kind"] isEqualToString: @"song"]
+                        //                    && [[item objectForKey: @"itemName"] isEqualToString: [song valueForProperty:  MPMediaItemPropertyTitle]]
+                        && [[item objectForKey: @"artistName"] isEqualToString: self.title]) {
+                        self.artistLinkUrl = [item objectForKey: @"artistLinkUrl"];
+                        break;
+                    }
+            }
+        }
+    }
+    
+    if (self.artistLinkUrl) {
+        self.moreByArtistButton.hidden = NO;
+    }
+    NSLog (@"artistLinkUrl is %@", self.artistLinkUrl);
+    
+    //itemLinkUrl = "https://itunes.apple.com/us/album/you-love-me/id464532842?i=464532972&uo=4";
+}
+//130911 1.1 add iTunesStoreButton end
 - (void) createDurationArray {
     
     for (MPMediaItemCollection* currentQueue in self.collection) {
@@ -1029,7 +1128,23 @@ BOOL firstLoad;
         
     }
 }
+//130909 1.1 add iTunesStoreButton begin
 
+- (IBAction)linkToiTunesStore:(id)sender {
+    
+    self.iTunesLinkUrl = [NSString stringWithFormat: @"%@?%@", self.artistLinkUrl, myAffiliateID];
+    //    self.iTunesLinkUrl = [NSString stringWithFormat: @"%@", self.genreLinkUrl];
+    
+    //    self.ITunesLinkUrl = @"https://itunes.apple.com/us/genre/music-dance/id17";
+    //    self.ITunesLinkUrl = @"https://itunes.apple.com/us/genre/id17";
+    
+    
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.iTunesLinkUrl]];
+    
+    NSLog (@"iTunesLink is %@", self.iTunesLinkUrl);
+    
+}
+//130909 1.1 add iTunesStoreButton end
 - (void) registerForMediaPlayerNotifications {
     //    LogMethod();
     

@@ -157,7 +157,7 @@ BOOL firstLoad;
 
 
 //    self.searchDisplayController.searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
-    //130912 1.1 add iTunesStoreButton begin
+//130912 1.1 add iTunesStoreButton begin
     if ([self.collectionType isEqualToString: @"Genres"]) {
         //get the affliate ID
         myAffiliateID = [[NSUserDefaults standardUserDefaults] stringForKey:@"affiliateID"];
@@ -173,7 +173,7 @@ BOOL firstLoad;
     } else {
         self.moreGenreButton.hidden = YES;
     }
-    //130912 1.1 add iTunesStoreButton end
+//130912 1.1 add iTunesStoreButton end
 
 }
 //130911 1.1 add iTunesStoreButton begin
@@ -1022,6 +1022,7 @@ BOOL firstLoad;
     NSLog (@"iTunesLink is %@", self.iTunesLinkUrl);
     
 }
+//130909 1.1 add iTunesStoreButton end
 
 - (void) registerForMediaPlayerNotifications {
 //    LogMethod();
