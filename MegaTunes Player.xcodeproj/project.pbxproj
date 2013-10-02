@@ -106,9 +106,6 @@
 		706A9A5E177542DE00E559C8 /* color68.png in Resources */ = {isa = PBXBuildFile; fileRef = 706A9A5A177542DE00E559C8 /* color68.png */; };
 		706A9A5F177542DE00E559C8 /* color68@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 706A9A5B177542DE00E559C8 /* color68@2x.png */; };
 		7071DF90164D6D0200942E6A /* CustomNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 7071DF8F164D6D0200942E6A /* CustomNavigationBar.m */; };
-		707797F416EFF3B90026FD56 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 707797F016EFF3B90026FD56 /* libTestFlight.a */; };
-		707797F516EFF3B90026FD56 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 707797F116EFF3B90026FD56 /* README.md */; };
-		707797F616EFF3B90026FD56 /* release_notes.md in Resources */ = {isa = PBXBuildFile; fileRef = 707797F216EFF3B90026FD56 /* release_notes.md */; };
 		707797F816EFF4A90026FD56 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 707797F716EFF4A90026FD56 /* libz.dylib */; };
 		707862A51626385700871260 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 707862A41626385700871260 /* CoreData.framework */; };
 		707862A81626391600871260 /* MegaTunes Player.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 707862A61626391600871260 /* MegaTunes Player.xcdatamodeld */; };
@@ -261,6 +258,9 @@
 		70E8E83D175C5EAB0012CE74 /* PodcastsIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70E8E83C175C5EA70012CE74 /* PodcastsIcon@2x.png */; };
 		70F9F1D316E591980061C05E /* redWhitePlay68@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70F9F1D216E591970061C05E /* redWhitePlay68@2x.png */; };
 		70F9F1D516E592650061C05E /* redWhitePlay57@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70F9F1D416E592650061C05E /* redWhitePlay57@2x.png */; };
+		8AA679A517FCCD8C00EBC84F /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AA6799F17FCCD8C00EBC84F /* libTestFlight.a */; };
+		8AA679A617FCCD8C00EBC84F /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 8AA679A017FCCD8C00EBC84F /* README.md */; };
+		8AA679A717FCCD8C00EBC84F /* release_notes.md in Resources */ = {isa = PBXBuildFile; fileRef = 8AA679A117FCCD8C00EBC84F /* release_notes.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -397,10 +397,6 @@
 		706A9A5B177542DE00E559C8 /* color68@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "color68@2x.png"; sourceTree = "<group>"; };
 		7071DF8E164D6D0200942E6A /* CustomNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomNavigationBar.h; path = "../../../../podradio/sample-project/podradio/Classes/CustomNavigationBar.h"; sourceTree = "<group>"; };
 		7071DF8F164D6D0200942E6A /* CustomNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CustomNavigationBar.m; path = "../../../../podradio/sample-project/podradio/Classes/CustomNavigationBar.m"; sourceTree = "<group>"; };
-		707797F016EFF3B90026FD56 /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
-		707797F116EFF3B90026FD56 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
-		707797F216EFF3B90026FD56 /* release_notes.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = release_notes.md; sourceTree = "<group>"; };
-		707797F316EFF3B90026FD56 /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = "<group>"; };
 		707797F716EFF4A90026FD56 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		707862A41626385700871260 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		707862A71626391600871260 /* MegaTunes Player.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "MegaTunes Player.xcdatamodel"; sourceTree = "<group>"; };
@@ -659,6 +655,12 @@
 		70E8E83C175C5EA70012CE74 /* PodcastsIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PodcastsIcon@2x.png"; sourceTree = "<group>"; };
 		70F9F1D216E591970061C05E /* redWhitePlay68@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "redWhitePlay68@2x.png"; sourceTree = "<group>"; };
 		70F9F1D416E592650061C05E /* redWhitePlay57@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "redWhitePlay57@2x.png"; sourceTree = "<group>"; };
+		8AA6799F17FCCD8C00EBC84F /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
+		8AA679A017FCCD8C00EBC84F /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		8AA679A117FCCD8C00EBC84F /* release_notes.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = release_notes.md; sourceTree = "<group>"; };
+		8AA679A217FCCD8C00EBC84F /* TestFlight+AsyncLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+AsyncLogging.h"; sourceTree = "<group>"; };
+		8AA679A317FCCD8C00EBC84F /* TestFlight+ManualSessions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+ManualSessions.h"; sourceTree = "<group>"; };
+		8AA679A417FCCD8C00EBC84F /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -687,7 +689,7 @@
 				70A13E0E163DD02200244866 /* libbasswv.a in Frameworks */,
 				70A13E0F163DD02200244866 /* libbass.a in Frameworks */,
 				709F239216C3525400521158 /* libbass_fx.a in Frameworks */,
-				707797F416EFF3B90026FD56 /* libTestFlight.a in Frameworks */,
+				8AA679A517FCCD8C00EBC84F /* libTestFlight.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -707,9 +709,9 @@
 		7060521C14F88D43001A1CDB = {
 			isa = PBXGroup;
 			children = (
+				8AA6799E17FCCD8C00EBC84F /* TestFlightSDK */,
 				7010C866178C4AFA004B6D94 /* MegaTunes.entitlements */,
 				707797F716EFF4A90026FD56 /* libz.dylib */,
-				707797EF16EFF3B80026FD56 /* TestFlightSDK1-2 */,
 				7060523114F88D43001A1CDB /* MegaTunes Player */,
 				7060524F14F88D44001A1CDB /* MegaTunes PlayerTests */,
 				7060522A14F88D43001A1CDB /* Frameworks */,
@@ -789,17 +791,6 @@
 				7060525214F88D44001A1CDB /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		707797EF16EFF3B80026FD56 /* TestFlightSDK1-2 */ = {
-			isa = PBXGroup;
-			children = (
-				707797F016EFF3B90026FD56 /* libTestFlight.a */,
-				707797F116EFF3B90026FD56 /* README.md */,
-				707797F216EFF3B90026FD56 /* release_notes.md */,
-				707797F316EFF3B90026FD56 /* TestFlight.h */,
-			);
-			path = "TestFlightSDK1-2";
 			sourceTree = "<group>";
 		};
 		70974B241630698200A33B7D /* Classes */ = {
@@ -1330,6 +1321,20 @@
 			path = iCarousel;
 			sourceTree = "<group>";
 		};
+		8AA6799E17FCCD8C00EBC84F /* TestFlightSDK */ = {
+			isa = PBXGroup;
+			children = (
+				8AA6799F17FCCD8C00EBC84F /* libTestFlight.a */,
+				8AA679A017FCCD8C00EBC84F /* README.md */,
+				8AA679A117FCCD8C00EBC84F /* release_notes.md */,
+				8AA679A217FCCD8C00EBC84F /* TestFlight+AsyncLogging.h */,
+				8AA679A317FCCD8C00EBC84F /* TestFlight+ManualSessions.h */,
+				8AA679A417FCCD8C00EBC84F /* TestFlight.h */,
+			);
+			name = TestFlightSDK;
+			path = "MegaTunes Player/TestFlightSDK";
+			sourceTree = SOURCE_ROOT;
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1500,8 +1505,6 @@
 				70AB1ECA16E96B5E0019B789 /* unselectedTabCommentsButton@2x.png in Resources */,
 				70AB1ECD16E982C50019B789 /* black-button.png in Resources */,
 				70AB1ECE16E982C50019B789 /* black-button@2x copy.png in Resources */,
-				707797F516EFF3B90026FD56 /* README.md in Resources */,
-				707797F616EFF3B90026FD56 /* release_notes.md in Resources */,
 				70A0493016F6814700F70A90 /* LICENSE.txt in Resources */,
 				70A0493716F6814700F70A90 /* README.mdown in Resources */,
 				7098DEBC172E310900A72F63 /* searchIcon.png in Resources */,
@@ -1581,6 +1584,8 @@
 				70A22BCB17DE32D600A7C0B1 /* iTunesStoreIcon57@2x.png in Resources */,
 				70A22BCC17DE32D600A7C0B1 /* iTunesStoreIcon68.png in Resources */,
 				70A22BCD17DE32D600A7C0B1 /* iTunesStoreIcon68@2x.png in Resources */,
+				8AA679A617FCCD8C00EBC84F /* README.md in Resources */,
+				8AA679A717FCCD8C00EBC84F /* release_notes.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1886,6 +1891,7 @@
 					"\"$(SRCROOT)/bass24-iphone/bass_fx24-iphone\"",
 					"\"$(SRCROOT)/TestFlightSDK1-2\"",
 					"\"$(SRCROOT)/MegaTunes Player/TestFlightSDK1-2\"",
+					"\"$(SRCROOT)/MegaTunes Player/TestFlightSDK\"",
 				);
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				OTHER_LDFLAGS = "-lstdc++";
@@ -1918,6 +1924,7 @@
 					"\"$(SRCROOT)/bass24-iphone/bass_fx24-iphone\"",
 					"\"$(SRCROOT)/TestFlightSDK1-2\"",
 					"\"$(SRCROOT)/MegaTunes Player/TestFlightSDK1-2\"",
+					"\"$(SRCROOT)/MegaTunes Player/TestFlightSDK\"",
 				);
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				OTHER_LDFLAGS = "-lstdc++";

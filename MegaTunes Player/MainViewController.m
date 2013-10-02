@@ -185,7 +185,7 @@ BOOL stopWatchRunning;
     //    LogMethod();
     [super viewDidLoad];
     
-    [TestFlight passCheckpoint:@"MainViewController"];
+//    [TestFlight passCheckpoint:@"MainViewController"];
     
     UIImage *backgroundImage = [UIImage imageNamed: @"infoSelectedButtonImage.png"];
     [self.nowPlayingInfoButton setImage: backgroundImage forState:UIControlStateHighlighted];
