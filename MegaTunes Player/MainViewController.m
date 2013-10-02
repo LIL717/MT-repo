@@ -462,6 +462,25 @@ BOOL stopWatchRunning;
         //        self.title = @"";
         //        self.navigationItem.titleView = [self customizeTitleView];
     }
+//131001 make player compatible with iTunes Radio begin
+
+    //if iTunes radio is playing the mainViewController will open, but need to hide info button and unused buttons
+    long songDuration = [[self.musicPlayer.nowPlayingItem valueForProperty:MPMediaItemPropertyPlaybackDuration] floatValue];
+    
+    if (!songDuration) {
+        self.nowPlayingInfoButton.hidden = YES;
+        self.progressSlider.hidden = YES;
+        self.remainingTimeLabel.hidden = YES;
+        self.rewindButton.hidden = YES;
+        self.repeatButton.hidden = YES;
+        self.shuffleButton.hidden = YES;
+        self.nextSongScrollView.hidden = YES;
+        self.nextSongLabel.hidden = YES;
+        self.nextLabel.hidden = YES;
+        
+    }
+//131001 make player compatible with iTunes Radio end
+
     
 }
 - (UILabel *) customizeTitleView
@@ -596,6 +615,23 @@ BOOL stopWatchRunning;
     
     
     self.savedNowPlaying = [musicPlayer nowPlayingItem];
+//131001 make player compatible with iTunes Radio begin
+    //if iTunes radio is playing the mainViewController will open, but need to hide info button
+    long songDuration = [[self.musicPlayer.nowPlayingItem valueForProperty:MPMediaItemPropertyPlaybackDuration] floatValue];
+    
+    if (!songDuration) {
+        self.nowPlayingInfoButton.hidden = YES;
+        self.progressSlider.hidden = YES;
+        self.remainingTimeLabel.hidden = YES;
+        self.rewindButton.hidden = YES;
+        self.repeatButton.hidden = YES;
+        self.shuffleButton.hidden = YES;
+        self.nextSongScrollView.hidden = YES;
+        self.nextSongLabel.hidden = YES;
+        self.nextLabel.hidden = YES;
+    }
+//131001 make player compatible with iTunes Radio end
+
     
 }
 - (void) refreshNowPlayingLabel:  (id) notification {
@@ -655,6 +691,13 @@ BOOL stopWatchRunning;
     //    NSLog (@"nowPlayingLabel.text is %@", self.nowPlayingLabel.text);
     UIFont *newFont = [UIFont systemFontOfSize:44];
     [self.nowPlayingLabel setFont: newFont];
+//131001 make player compatible with iTunes Radio begin
+
+    if (!self.nowPlayingLabel.text) {
+        self.nowPlayingLabel.text = @"  iTunes Radio";
+    }
+//131001 make player compatible with iTunes Radio end
+
 }
 - (void) prepareNextSongLabel {
     //    LogMethod();
@@ -874,7 +917,15 @@ BOOL stopWatchRunning;
     self.elapsedTimeLabel.text = [formatter stringFromDate:elapsedTime];
     
     NSDate *songRemainingTime = [formatter dateFromString:songRemaining];
-    self.remainingTimeLabel.text = [NSString stringWithFormat:@"-%@",[formatter stringFromDate:songRemainingTime]];
+//131001 make player compatible with iTunes Radio begin
+
+    if (songDuration) {
+        self.remainingTimeLabel.text = [NSString stringWithFormat:@"-%@",[formatter stringFromDate:songRemainingTime]];
+    } else {
+        self.remainingTimeLabel.text = @"";
+    }
+//131001 make player compatible with iTunes Radio end
+
     self.remainingTimeLabel.textColor = [UIColor whiteColor];
     
     if (!self.userIsScrubbing) {
