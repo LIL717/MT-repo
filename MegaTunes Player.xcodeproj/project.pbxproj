@@ -1889,8 +1889,6 @@
 					"\"$(SRCROOT)/bass24-iphone\"",
 					"\"$(SRCROOT)/bass24-iphone/mp3-free\"",
 					"\"$(SRCROOT)/bass24-iphone/bass_fx24-iphone\"",
-					"\"$(SRCROOT)/TestFlightSDK1-2\"",
-					"\"$(SRCROOT)/MegaTunes Player/TestFlightSDK1-2\"",
 					"\"$(SRCROOT)/MegaTunes Player/TestFlightSDK\"",
 				);
 				LINK_WITH_STANDARD_LIBRARIES = YES;
@@ -1922,8 +1920,6 @@
 					"\"$(SRCROOT)/bass24-iphone\"",
 					"\"$(SRCROOT)/bass24-iphone/mp3-free\"",
 					"\"$(SRCROOT)/bass24-iphone/bass_fx24-iphone\"",
-					"\"$(SRCROOT)/TestFlightSDK1-2\"",
-					"\"$(SRCROOT)/MegaTunes Player/TestFlightSDK1-2\"",
 					"\"$(SRCROOT)/MegaTunes Player/TestFlightSDK\"",
 				);
 				LINK_WITH_STANDARD_LIBRARIES = YES;
