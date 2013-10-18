@@ -1199,7 +1199,7 @@ BOOL firstLoad;
 }
 // When the playback state changes, if stopped remove nowplaying button
 - (void) handle_PlaybackStateChanged: (id) notification {
-    LogMethod();
+//    LogMethod();
     
 	MPMusicPlaybackState playbackState = [musicPlayer playbackState];
 	
