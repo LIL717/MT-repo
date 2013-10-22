@@ -176,7 +176,7 @@ NSTimeInterval stopWatchStartTime;
 BOOL stopWatchRunning;
 //131011 1.1 fix musicPlayer bug begin
 BOOL isPlaying;
-BOOL isPaused;
+BOOL isPausedOrStopped;
 BOOL delayPlaybackStateChange;
 //131011 1.1 fix musicPlayer bug end
 
@@ -1537,12 +1537,12 @@ BOOL delayPlaybackStateChange;
 
 
         }
-        if (isPaused) {
+        if (isPausedOrStopped) {
             [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
             [playPauseButton setAccessibilityLabel: NSLocalizedString(@"Play", nil)];
 
             savedPlaybackState = playbackState;
-            isPaused = NO;
+            isPausedOrStopped = NO;
             [musicPlayer play];
             [musicPlayer pause];
             [musicPlayer setVolume: saveVolume];
@@ -1591,7 +1591,7 @@ BOOL delayPlaybackStateChange;
 
 -(BOOL) isPlaybackStateBugActive {
     MPMusicPlaybackState playbackState = self.musicPlayer.playbackState;
-    isPaused = NO;
+    isPausedOrStopped = NO;
     isPlaying = NO;
     if (playbackState == MPMusicPlaybackStatePlaying) {
         AudioSessionInitialize (NULL, NULL, NULL, NULL);
@@ -1605,13 +1605,13 @@ BOOL delayPlaybackStateChange;
         
         if (!audioIsPlaying){
             NSLog(@"                                           PlaybackState bug is active");
-            isPaused = YES;
+            isPausedOrStopped = YES;
 //            [playPauseButton setImage:[UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
 //            [playPauseButton setAccessibilityLabel: NSLocalizedString(@"Pause", nil)];
             return YES;
         }
     }
-    if (playbackState == MPMusicPlaybackStatePaused) {
+    if (playbackState == MPMusicPlaybackStatePaused || playbackState == MPMusicPlaybackStateStopped) {
         AudioSessionInitialize (NULL, NULL, NULL, NULL);
         UInt32 sessionCategory = kAudioSessionCategory_AmbientSound;
         AudioSessionSetProperty (kAudioSessionProperty_AudioCategory, sizeof (sessionCategory), &sessionCategory);
