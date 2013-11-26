@@ -492,7 +492,7 @@ BOOL delayPlaybackStateChange;
 - (UILabel *) customizeTitleView
 {
     //    LogMethod();
-    
+
     CGRect frame = CGRectMake(0, 0, [self.title sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 48);
     UILabel *label = [[UILabel alloc] initWithFrame:frame];
     label.backgroundColor = [UIColor clearColor];
