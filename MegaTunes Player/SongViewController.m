@@ -216,7 +216,12 @@ BOOL excludeICloudItems;
     //list can be alphabetic - if All Songs was chosen or in track order, only index alphabetic with more than 20 rows
     
     self.songTableView.sectionIndexMinimumDisplayRowCount = 20;
-    [self.songTableView setSectionIndexColor:[UIColor whiteColor]];
+    //131203 1.2 iOS 7 begin
+    
+    //    [self.songTableView setSectionIndexColor:[UIColor whiteColor]];
+    [self.songTableView setSectionIndexBackgroundColor:[UIColor blackColor]];
+    
+    //131203 1.2 iOS 7 end
     
     isIndexed = NO;
     
