@@ -99,12 +99,18 @@ BOOL firstLoad;
             [self createDurationArray];
         });
     }
-    //set up grouped table view to look like plain (so that section headers won't stick to top)
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
-    self.collectionTableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]];
-    self.collectionTableView.opaque = NO;
-    self.collectionTableView.backgroundView = nil; // THIS ONE TRIPPED ME UP!
-    backgroundImage = [UIImage imageNamed: @"list-background.png"];
+
+//131203 1.2 iOS 7 begin
+
+//    //set up grouped table view to look like plain (so that section headers won't stick to top)
+//    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
+//    self.collectionTableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]];
+//    self.collectionTableView.opaque = NO;
+//    self.collectionTableView.backgroundView = nil; // THIS ONE TRIPPED ME UP!
+//    backgroundImage = [UIImage imageNamed: @"list-background.png"];
+    
+//131203 1.2 iOS 7 end
+
     
     self.navigationItem.hidesBackButton = YES; // Important
     //initWithTitle cannot be nil, must be @""
@@ -516,8 +522,14 @@ BOOL firstLoad;
     //    LogMethod();
     self.searchDisplayController.searchResultsTableView.rowHeight = 55;
     //    self.searchDisplayController.searchResultsTableView.backgroundColor = [UIColor whiteColor];
-    [self.searchDisplayController.searchResultsTableView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
     
+//131203 1.2 iOS 7 begin
+    
+//    [self.searchDisplayController.searchResultsTableView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
+    [self.searchDisplayController.searchResultsTableView setBackgroundColor:[UIColor blackColor]];
+    
+//131203 1.2 iOS 7 end
+
 }
 
 #pragma mark - Table view data source

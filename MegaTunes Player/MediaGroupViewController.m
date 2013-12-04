@@ -234,8 +234,12 @@ NSString *myAffiliateID;
     
     songArrayToLoad = [[NSMutableArray alloc] initWithCapacity: 19];
     
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
+//131203 1.2 iOS 7 begin
+
+    //[self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
     
+//131203 1.2 iOS 7 end
+
 //130906 1.1 add Store Button begin
     //get the affliate ID
     myAffiliateID = [[NSUserDefaults standardUserDefaults] stringForKey:@"affiliateID"];

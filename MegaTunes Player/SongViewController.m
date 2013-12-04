@@ -126,13 +126,17 @@ BOOL excludeICloudItems;
     self.showTags = [[NSUserDefaults standardUserDefaults] boolForKey:@"showTags"];
     
     
+//131203 1.2 iOS 7 begin
+
+//    //set up grouped table view to look like plain (so that section headers won't stick to top)
+//    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
+//    self.songTableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]];
+//    self.songTableView.opaque = NO;
+//    self.songTableView.backgroundView = nil; // THIS ONE TRIPPED ME UP!
+//    //    backgroundImage = [UIImage imageNamed: @"list-background.png"];
     
-    //set up grouped table view to look like plain (so that section headers won't stick to top)
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
-    self.songTableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]];
-    self.songTableView.opaque = NO;
-    self.songTableView.backgroundView = nil; // THIS ONE TRIPPED ME UP!
-    //    backgroundImage = [UIImage imageNamed: @"list-background.png"];
+//131203 1.2 iOS 7 end
+
     
     //make the back arrow for left bar button item
     
@@ -715,8 +719,13 @@ BOOL excludeICloudItems;
     //    LogMethod();
     self.searchDisplayController.searchResultsTableView.rowHeight = 55;
     //    self.searchDisplayController.searchResultsTableView.backgroundColor = [UIColor whiteColor];
-    [self.searchDisplayController.searchResultsTableView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
     
+//131203 1.2 iOS 7 begin
+    //[self.searchDisplayController.searchResultsTableView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
+    [self.searchDisplayController.searchResultsTableView setBackgroundColor:[UIColor blackColor]];
+    
+//131203 1.2 iOS 7 end
+
 }
 
 #pragma mark - Table view data source
@@ -910,7 +919,11 @@ BOOL excludeICloudItems;
         if ( searchResultsCell == nil ) {
             searchResultsCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
             searchResultsCell.selectionStyle = UITableViewCellSelectionStyleGray;
-            searchResultsCell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed: @"list-background.png"]];
+            
+//131203 1.2 iOS 7 begin
+            //searchResultsCell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed: @"list-background.png"]];
+//131203 1.2 iOS 7 end
+
             searchResultsCell.textLabel.font = [UIFont systemFontOfSize:44];
             searchResultsCell.textLabel.textColor = [UIColor whiteColor];
             searchResultsCell.textLabel.highlightedTextColor = [UIColor blueColor];
@@ -941,16 +954,21 @@ BOOL excludeICloudItems;
         } else {
             tagColor = [UIColor blackColor];
         }
+
+//131203 1.2 iOS 7 begin
+//        UIImage *cellBackgroundImage = [UIImage imageNamed: @"list-background.png"];
+//        UIImage *coloredImage = [cellBackgroundImage imageWithTint: tagColor];
+//        //        [searchResultsCell.backgroundView  setImage: coloredImage];
+//        //        searchResultsCell.textLabel.backgroundColor = tagColor;
+//        searchResultsCell.backgroundView = [[UIImageView alloc] initWithImage:coloredImage];
+//        UIImage *coloredBackgroundImage = [[UIImage imageNamed: @"list-background.png"] imageWithTint:tagColor];
+//        [searchResultsCell.textLabel setBackgroundColor:[UIColor colorWithPatternImage: coloredBackgroundImage]];
+
+        searchResultsCell.backgroundColor = tagColor;
+        searchResultsCell.textLabel.backgroundColor = tagColor;
         
-        UIImage *cellBackgroundImage = [UIImage imageNamed: @"list-background.png"];
-        UIImage *coloredImage = [cellBackgroundImage imageWithTint: tagColor];
-        //        [searchResultsCell.backgroundView  setImage: coloredImage];
-        //        searchResultsCell.textLabel.backgroundColor = tagColor;
-        searchResultsCell.backgroundView = [[UIImageView alloc] initWithImage:coloredImage];
-        UIImage *coloredBackgroundImage = [[UIImage imageNamed: @"list-background.png"] imageWithTint:tagColor];
-        [searchResultsCell.textLabel setBackgroundColor:[UIColor colorWithPatternImage: coloredBackgroundImage]];
-        
-        
+//131203 1.2 iOS 7 end
+
         return searchResultsCell;
         
     } else {
@@ -962,8 +980,14 @@ BOOL excludeICloudItems;
         
         cell.nameLabel.text = [song valueForProperty:  MPMediaItemPropertyTitle];
         //        NSLog (@"song in table is %@", cell.nameLabel.text);
-        cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed: @"list-background.png"]];
         
+//131203 1.2 iOS 7 begin
+
+//        cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed: @"list-background.png"]];
+        cell.selectedBackgroundView = [UIImageView alloc];
+
+//131203 1.2 iOS 7 end
+
         UIColor *tagColor;
         
         if (showTags) {
@@ -971,17 +995,29 @@ BOOL excludeICloudItems;
         } else {
             tagColor = [UIColor blackColor];
         }
-        UIImage *cellBackgroundImage = [UIImage imageNamed: @"list-background.png"];
-        UIImage *coloredImage = [cellBackgroundImage imageWithTint: tagColor];
-        [cell.cellBackgroundImageView  setImage: coloredImage];
         
+//131203 1.2 iOS 7 begin
+
+//        UIImage *cellBackgroundImage = [UIImage imageNamed: @"list-background.png"];
+//        UIImage *coloredImage = [cellBackgroundImage imageWithTint: tagColor];
+//        [cell.cellBackgroundImageView  setImage: coloredImage];
+        
+        cell.backgroundColor = tagColor;
+        
+//131203 1.2 iOS 7 end
+
         CGRect frame = CGRectMake(0, 53, self.songTableView.frame.size.width, 1);
         UIView *separatorLine = [[UILabel alloc] initWithFrame:frame];
         separatorLine.backgroundColor = [UIColor whiteColor];
         [cell.cellBackgroundImageView addSubview: separatorLine];
         
-        [cell.scrollView.scrollViewImageView  setImage: coloredImage];
+//131203 1.2 iOS 7 begin
+
+//        [cell.scrollView.scrollViewImageView  setImage: coloredImage];
+        cell.scrollView.backgroundColor = tagColor;
         
+//131203 1.2 iOS 7 end
+
         
         //playback duration of the song
         

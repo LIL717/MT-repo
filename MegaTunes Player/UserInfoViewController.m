@@ -53,8 +53,12 @@
     
 //    [TestFlight passCheckpoint:@"UserInfoViewController"];
     
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
-    [self.userInfoTagTable setBackgroundColor: [UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
+//131203 1.2 iOS 7 begin
+    
+//    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
+//    [self.userInfoTagTable setBackgroundColor: [UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
+    
+//131203 1.2 iOS 7 end
     
     musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
     
@@ -108,10 +112,15 @@
         
         self.tagButton.frame = CGRectMake(0.0, tagButtonY, self.view.bounds.size.width, 54.0);
 
+//131203 1.2 iOS 7 begin
+        
+//        UIImage *labelBackgroundImage = [UIImage imageNamed: @"list-background.png"];
+//        UIImage *coloredImage = [labelBackgroundImage imageWithTint: [UIColor darkGrayColor]];
+//        [self.tagButton setBackgroundImage: coloredImage forState: UIControlStateNormal];
+        [self.tagButton setBackgroundColor: [UIColor darkGrayColor]];
 
-        UIImage *labelBackgroundImage = [UIImage imageNamed: @"list-background.png"];
-        UIImage *coloredImage = [labelBackgroundImage imageWithTint: [UIColor darkGrayColor]];
-        [self.tagButton setBackgroundImage: coloredImage forState: UIControlStateNormal];
+//131203 1.2 iOS 7 end
+        
         [self.tagButton setTitleColor: [UIColor whiteColor] forState: UIControlStateNormal];
         self.tagButton.titleLabel.font = [UIFont systemFontOfSize:44];
 //        self.tagButton.titleLabel.textAlignment = NSTextAlignmentLeft;
@@ -224,9 +233,14 @@
     
     [self registerForKeyboardNotifications];
 
-    UIImage *coloredBackgroundImage = [[UIImage imageNamed: @"background.png"] imageWithTint:[UIColor darkGrayColor]];
-    [textView setBackgroundColor:[UIColor colorWithPatternImage: coloredBackgroundImage]];
+//131203 1.2 iOS 7 begin
     
+//    UIImage *coloredBackgroundImage = [[UIImage imageNamed: @"background.png"] imageWithTint:[UIColor darkGrayColor]];
+//    [textView setBackgroundColor:[UIColor colorWithPatternImage: coloredBackgroundImage]];
+    textView.backgroundColor = [UIColor darkGrayColor];
+    
+//131203 1.2 iOS 7 end
+
     if([textView isEqual:self.comments]){
         [self.placeholderLabel setHidden:YES];
     }
@@ -242,8 +256,12 @@
 - (void) textViewDidEndEditing: (UITextView *) textView {
     LogMethod();
 
-    [textView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
+//131203 1.2 iOS 7 begin
     
+    //[textView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
+    textView.backgroundColor = [UIColor blackColor];
+    
+//131203 1.2 iOS 7 end
     //update or add object to Core Data
     MediaItemUserData *mediaItemUserData = [MediaItemUserData alloc];
     mediaItemUserData.managedObjectContext = self.managedObjectContext;
@@ -379,12 +397,17 @@
     UIColor *tagColor = [UIColor colorWithRed:(red/255.0f) green:(green/255.0f) blue:(blue/255.0f) alpha:(alpha/255.0f)];
 //    }
     [cell addSubview:cell.tagLabel];
-    UIImage *cellBackgroundImage = [UIImage imageNamed: @"list-background.png"];
-    UIImage *coloredImage = [cellBackgroundImage imageWithTint: tagColor];
     
-    [cell.cellBackgroundImageView  setImage: coloredImage];
-    //        cell.tagLabel.backgroundColor = tagColor;
-    
+//131203 1.2 iOS 7 begin
+//    UIImage *cellBackgroundImage = [UIImage imageNamed: @"list-background.png"];
+//    UIImage *coloredImage = [cellBackgroundImage imageWithTint: tagColor];
+//    
+//    [cell.cellBackgroundImageView  setImage: coloredImage];
+//    //        cell.tagLabel.backgroundColor = tagColor;
+    cell.backgroundColor = tagColor;
+
+//131203 1.2 iOS 7 end
+
     return cell;
     //    }
 }

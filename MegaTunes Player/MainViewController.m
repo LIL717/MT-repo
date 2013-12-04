@@ -235,9 +235,13 @@ BOOL delayPlaybackStateChange;
     
     //need this to use MPNowPlayingInfoCenter
     [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
+
+//131203 1.2 iOS 7 begin
+
+    //[self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
     
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
-    
+//131203 1.2 iOS 7 end
+
     [self setPlayedMusicOnce: NO];
     
     [self setMusicPlayer: [MPMusicPlayerController iPodMusicPlayer]];

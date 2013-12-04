@@ -82,7 +82,11 @@ NSString *actionType;
     
     self.title = NSLocalizedString(@"Tags", nil);
     
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
+//131203 1.2 iOS 7 begin
+    
+    //    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
+    
+//131203 1.2 iOS 7 end
     
     //make the back arrow for left bar button item
     
@@ -338,12 +342,15 @@ NSString *actionType;
         int alpha = [tagData.tagColorAlpha intValue];
         
         UIColor *tagColor = [UIColor colorWithRed:(red/255.0f) green:(green/255.0f) blue:(blue/255.0f) alpha:(alpha/255.0f)];
-        
-        UIImage *cellBackgroundImage = [UIImage imageNamed: @"list-background.png"];
-        UIImage *coloredImage = [cellBackgroundImage imageWithTint: tagColor];
-        
-        [cell.cellBackgroundImageView  setImage: coloredImage];
-        
+
+//131203 1.2 iOS 7 begin
+//        UIImage *cellBackgroundImage = [UIImage imageNamed: @"list-background.png"];
+//        UIImage *coloredImage = [cellBackgroundImage imageWithTint: tagColor];
+//        
+//        [cell.cellBackgroundImageView  setImage: coloredImage];
+        cell.backgroundColor = tagColor;
+//131203 1.2 iOS 7 end
+
     }
     
     return cell;

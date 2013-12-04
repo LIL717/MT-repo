@@ -57,9 +57,13 @@
     
     landscapeOffset = 11.0;
     
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
-    [self.colorView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
+//131203 1.2 iOS 7 begin
     
+//    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
+//    [self.colorView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
+    
+//131203 1.2 iOS 7 end
+
     //make the back arrow for left bar button item
     
     self.navigationItem.hidesBackButton = YES; // Important
@@ -114,8 +118,16 @@
     if ([self.actionType isEqualToString: @"Edit"]) {
         self.tagName.text = self.nameToEdit;
         NSLog (@"self.tagName is %@", self.tagName.text);
-        UIImage *coloredBackgroundImage = [[UIImage imageNamed: @"list-background.png"] imageWithTint:pickedColor];
-        [self.tagName setBackgroundColor:[UIColor colorWithPatternImage: coloredBackgroundImage]];
+        
+//131203 1.2 iOS 7 begin
+
+//        UIImage *coloredBackgroundImage = [[UIImage imageNamed: @"list-background.png"] imageWithTint:pickedColor];
+//        [self.tagName setBackgroundColor:[UIColor colorWithPatternImage: coloredBackgroundImage]];
+        [self.tagName setBackgroundColor:[UIColor blackColor]];
+
+        
+//131203 1.2 iOS 7 end
+
     }
 }
 - (void) viewWillAppear:(BOOL)animated
@@ -197,6 +209,13 @@
     if (!self.hasColor) {
         UIImage *coloredBackgroundImage = [[UIImage imageNamed: @"list-background.png"] imageWithTint:[UIColor darkGrayColor]];
         [textField setBackgroundColor:[UIColor colorWithPatternImage: coloredBackgroundImage]];
+//131203 1.2 iOS 7 begin
+        
+        //UIImage *coloredBackgroundImage = [[UIImage imageNamed: @"list-background.png"] imageWithTint:[UIColor darkGrayColor]];
+        //[textField setBackgroundColor:[UIColor colorWithPatternImage: coloredBackgroundImage]];
+        [textField setBackgroundColor:[UIColor blackColor]];
+
+//131203 1.2 iOS 7 end
     }
 }
 
@@ -290,8 +309,16 @@
     //    [self.pickedColor getRed:&red green:&green blue:&blue alpha:&alpha];
     NSLog (@"pickedColor after saturation change is %f %f %f %f", red, green, blue, alpha);
     
-    UIImage *coloredBackgroundImage = [[UIImage imageNamed: @"list-background.png"] imageWithTint:self.pickedColor];
-    [self.tagName setBackgroundColor:[UIColor colorWithPatternImage: coloredBackgroundImage]];
+//131203 1.2 iOS 7 begin
+    
+//    UIImage *coloredBackgroundImage = [[UIImage imageNamed: @"list-background.png"] imageWithTint:self.pickedColor];
+//    [self.tagName setBackgroundColor:[UIColor colorWithPatternImage: coloredBackgroundImage]];
+    [self.tagName setBackgroundColor: self.pickedColor];
+    
+//131203 1.2 iOS 7 end
+
+
+    
     self.hasColor = YES;
     [self.tagName setNeedsDisplay];
     //    [self.tagName setNeedsDisplay];

@@ -34,7 +34,11 @@
 	// Do any additional setup after loading the view.
     musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
 
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
+//131203 1.2 iOS 7 begin
+    
+    //[self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
+    
+//131203 1.2 iOS 7 end
 
     [self.magnifiedText.titleLabel setNumberOfLines: 1];
     [self.magnifiedText.titleLabel setAdjustsFontSizeToFitWidth: YES];
