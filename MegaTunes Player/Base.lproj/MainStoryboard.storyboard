@@ -828,13 +828,9 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="54"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <scrollView contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4BY-yf-XEu" customClass="InCellScrollView">
+                                        <scrollView contentMode="scaleToFill" ambiguous="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4BY-yf-XEu" customClass="InCellScrollView">
                                             <rect key="frame" x="0.0" y="0.0" width="266" height="55"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ge9-LO-oIi">
-                                                    <rect key="frame" x="0.0" y="0.0" width="320" height="53"/>
-                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                </imageView>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HeX-3y-Fhb">
                                                     <rect key="frame" x="0.0" y="0.0" width="266" height="53"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -849,11 +845,7 @@
                                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstItem="HeX-3y-Fhb" firstAttribute="top" secondItem="4BY-yf-XEu" secondAttribute="top" id="5MU-yg-ggf"/>
-                                                <constraint firstAttribute="bottom" secondItem="Ge9-LO-oIi" secondAttribute="bottom" constant="2" id="BHx-Ux-nY8"/>
-                                                <constraint firstItem="Ge9-LO-oIi" firstAttribute="top" secondItem="4BY-yf-XEu" secondAttribute="top" id="LsN-3d-w1H"/>
                                                 <constraint firstItem="HeX-3y-Fhb" firstAttribute="centerX" secondItem="4BY-yf-XEu" secondAttribute="centerX" id="azC-5O-IBE"/>
-                                                <constraint firstItem="Ge9-LO-oIi" firstAttribute="leading" secondItem="4BY-yf-XEu" secondAttribute="leading" id="cgu-78-oKh"/>
-                                                <constraint firstItem="HeX-3y-Fhb" firstAttribute="bottom" secondItem="Ge9-LO-oIi" secondAttribute="bottom" id="k5q-Ww-dvw"/>
                                                 <constraint firstItem="HeX-3y-Fhb" firstAttribute="trailing" secondItem="4BY-yf-XEu" secondAttribute="trailing" id="lP5-0w-lYL"/>
                                                 <constraint firstItem="HeX-3y-Fhb" firstAttribute="leading" secondItem="4BY-yf-XEu" secondAttribute="leading" id="tkD-yF-PFV"/>
                                             </constraints>
@@ -1000,7 +992,7 @@
                             </state>
                         </button>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="CollectionItemCell" rowHeight="55" id="DFq-ZQ-3yg" userLabel="cell" customClass="CollectionItemCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="CollectionItemCell" rowHeight="55" id="DFq-ZQ-3yg" userLabel="cell" customClass="CollectionItemCell">
                                 <rect key="frame" x="0.0" y="165" width="480" height="55"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="DFq-ZQ-3yg" id="Ohx-RA-Hhp">

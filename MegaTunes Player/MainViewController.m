@@ -197,25 +197,30 @@ BOOL delayPlaybackStateChange;
     [self.nowPlayingInfoButton setImage: backgroundImage forState:UIControlStateHighlighted];
     self.nextLabel.textColor = [UIColor yellowColor];
     
+//131204 1.2 iOS 7 begin
+//    self.navigationItem.hidesBackButton = YES; // Important
+//    //initWithTitle cannot be nil, must be @""
+//	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
+//                                                                             style:UIBarButtonItemStyleBordered
+//                                                                            target:self
+//                                                                            action:@selector(goBackClick)];
+//    
+//    self.navigationItem.leftBarButtonItem.title = @"";
+//    UIImage *menuBarImage48 = [[UIImage imageNamed:@"arrow_left_48_white.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+//    UIImage *menuBarImage58 = [[UIImage imageNamed:@"arrow_left_58_white.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+//    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage48 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+//    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage58 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
+//    
+//    [self.navigationItem.leftBarButtonItem setIsAccessibilityElement:YES];
+//    [self.navigationItem.leftBarButtonItem setAccessibilityLabel: NSLocalizedString(@"Back", nil)];
+//    [self.navigationItem.leftBarButtonItem setAccessibilityTraits: UIAccessibilityTraitButton];
+//    
+//    self.navigationItem.backBarButtonItem = self.navigationItem.leftBarButtonItem;
+    self.navigationController.navigationBar.topItem.title = @"";
+
     
-    self.navigationItem.hidesBackButton = YES; // Important
-    //initWithTitle cannot be nil, must be @""
-	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                             style:UIBarButtonItemStyleBordered
-                                                                            target:self
-                                                                            action:@selector(goBackClick)];
-    
-    self.navigationItem.leftBarButtonItem.title = @"";
-    UIImage *menuBarImage48 = [[UIImage imageNamed:@"arrow_left_48_white.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    UIImage *menuBarImage58 = [[UIImage imageNamed:@"arrow_left_58_white.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage48 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage58 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
-    
-    [self.navigationItem.leftBarButtonItem setIsAccessibilityElement:YES];
-    [self.navigationItem.leftBarButtonItem setAccessibilityLabel: NSLocalizedString(@"Back", nil)];
-    [self.navigationItem.leftBarButtonItem setAccessibilityTraits: UIAccessibilityTraitButton];
-    
-    self.navigationItem.backBarButtonItem = self.navigationItem.leftBarButtonItem;
+//131204 1.2 iOS 7 end
+
     
     self.stopWatchBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
                                                                style:UIBarButtonItemStyleBordered
