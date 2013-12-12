@@ -18,6 +18,13 @@
 		702B414D165715C2004A9265 /* AlbumInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 702B414C165715C2004A9265 /* AlbumInfoViewController.m */; };
 		702B4158165743AB004A9265 /* UserDataForMediaItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 702B4157165743AB004A9265 /* UserDataForMediaItem.m */; };
 		703E3EA116811FC7004C152C /* UINavigationBar+AdditionalFunctionalities.m in Sources */ = {isa = PBXBuildFile; fileRef = 703E3EA016811FC7004C152C /* UINavigationBar+AdditionalFunctionalities.m */; };
+		703E4375184FB227001499B9 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 703E436D184FB227001499B9 /* .gitignore */; };
+		703E4376184FB227001499B9 /* ios6-default.png in Resources */ = {isa = PBXBuildFile; fileRef = 703E436E184FB227001499B9 /* ios6-default.png */; };
+		703E4377184FB227001499B9 /* ios7-default.png in Resources */ = {isa = PBXBuildFile; fileRef = 703E436F184FB227001499B9 /* ios7-default.png */; };
+		703E4378184FB227001499B9 /* ios7-fixed.png in Resources */ = {isa = PBXBuildFile; fileRef = 703E4370184FB227001499B9 /* ios7-fixed.png */; };
+		703E4379184FB227001499B9 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 703E4371184FB227001499B9 /* LICENSE */; };
+		703E437A184FB227001499B9 /* README1.md in Resources */ = {isa = PBXBuildFile; fileRef = 703E4372184FB227001499B9 /* README1.md */; };
+		703E437B184FB227001499B9 /* UINavigationItem+iOS7Spacing.m in Sources */ = {isa = PBXBuildFile; fileRef = 703E4374184FB227001499B9 /* UINavigationItem+iOS7Spacing.m */; };
 		7044022017A0630500AFAA98 /* bigrepeat1blue.psd in Resources */ = {isa = PBXBuildFile; fileRef = 7044021D17A0630500AFAA98 /* bigrepeat1blue.psd */; };
 		7049301816E808E1005A66C4 /* DTCustomColoredAccessory.m in Sources */ = {isa = PBXBuildFile; fileRef = 7049301516E808E1005A66C4 /* DTCustomColoredAccessory.m */; };
 		7049301C16E80A0D005A66C4 /* ArtistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7049301B16E80A0D005A66C4 /* ArtistViewController.m */; };
@@ -135,6 +142,14 @@
 		702B4157165743AB004A9265 /* UserDataForMediaItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserDataForMediaItem.m; sourceTree = "<group>"; };
 		703E3E9F16811FC7004C152C /* UINavigationBar+AdditionalFunctionalities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationBar+AdditionalFunctionalities.h"; sourceTree = "<group>"; };
 		703E3EA016811FC7004C152C /* UINavigationBar+AdditionalFunctionalities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationBar+AdditionalFunctionalities.m"; sourceTree = "<group>"; };
+		703E436D184FB227001499B9 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		703E436E184FB227001499B9 /* ios6-default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ios6-default.png"; sourceTree = "<group>"; };
+		703E436F184FB227001499B9 /* ios7-default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ios7-default.png"; sourceTree = "<group>"; };
+		703E4370184FB227001499B9 /* ios7-fixed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ios7-fixed.png"; sourceTree = "<group>"; };
+		703E4371184FB227001499B9 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		703E4372184FB227001499B9 /* README1.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README1.md; sourceTree = "<group>"; };
+		703E4373184FB227001499B9 /* UINavigationItem+iOS7Spacing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationItem+iOS7Spacing.h"; sourceTree = "<group>"; };
+		703E4374184FB227001499B9 /* UINavigationItem+iOS7Spacing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationItem+iOS7Spacing.m"; sourceTree = "<group>"; };
 		7044021D17A0630500AFAA98 /* bigrepeat1blue.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = bigrepeat1blue.psd; sourceTree = "<group>"; };
 		7049301416E808E1005A66C4 /* DTCustomColoredAccessory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTCustomColoredAccessory.h; sourceTree = "<group>"; };
 		7049301516E808E1005A66C4 /* DTCustomColoredAccessory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTCustomColoredAccessory.m; sourceTree = "<group>"; };
@@ -194,8 +209,8 @@
 		70864FCA170605960030210C /* AllAlbumsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllAlbumsCell.m; sourceTree = "<group>"; };
 		70864FCC17092B5B0030210C /* GenreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenreViewController.h; sourceTree = "<group>"; };
 		70864FCD17092B5B0030210C /* GenreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenreViewController.m; sourceTree = "<group>"; };
-		70864FCF170B789E0030210C /* UIScrollView+PassTouches.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+PassTouches.h"; sourceTree = "<group>"; };
-		70864FD0170B789E0030210C /* UIScrollView+PassTouches.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+PassTouches.m"; sourceTree = "<group>"; };
+		70864FCF170B789E0030210C /* UIScrollView+PassTouches.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIScrollView+PassTouches.h"; path = "../../../../podradio/sample-project/podradio/Classes/Libraries/Categories/UIScrollView+PassTouches.h"; sourceTree = "<group>"; };
+		70864FD0170B789E0030210C /* UIScrollView+PassTouches.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIScrollView+PassTouches.m"; path = "../../../../podradio/sample-project/podradio/Classes/Libraries/Categories/UIScrollView+PassTouches.m"; sourceTree = "<group>"; };
 		70864FD2170B93100030210C /* WindowSubClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowSubClass.h; sourceTree = "<group>"; };
 		70864FD3170B93100030210C /* WindowSubClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WindowSubClass.m; sourceTree = "<group>"; };
 		70890D2017663D2800D338A8 /* TagItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TagItem.h; sourceTree = "<group>"; };
@@ -369,6 +384,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		703E436C184FB227001499B9 /* UINavigationItem-iOS7Spacing-master */ = {
+			isa = PBXGroup;
+			children = (
+				703E436D184FB227001499B9 /* .gitignore */,
+				703E436E184FB227001499B9 /* ios6-default.png */,
+				703E436F184FB227001499B9 /* ios7-default.png */,
+				703E4370184FB227001499B9 /* ios7-fixed.png */,
+				703E4371184FB227001499B9 /* LICENSE */,
+				703E4372184FB227001499B9 /* README1.md */,
+				703E4373184FB227001499B9 /* UINavigationItem+iOS7Spacing.h */,
+				703E4374184FB227001499B9 /* UINavigationItem+iOS7Spacing.m */,
+			);
+			path = "UINavigationItem-iOS7Spacing-master";
+			sourceTree = "<group>";
+		};
 		7060521C14F88D43001A1CDB = {
 			isa = PBXGroup;
 			children = (
@@ -497,8 +527,7 @@
 				70974B2C1630698200A33B7D /* UIImage+iPhone5.m */,
 				70AA4D8316F27948002E9EE5 /* UINavigationController+MaskAll.h */,
 				70AA4D8416F27948002E9EE5 /* UINavigationController+MaskAll.m */,
-				70864FCF170B789E0030210C /* UIScrollView+PassTouches.h */,
-				70864FD0170B789E0030210C /* UIScrollView+PassTouches.m */,
+				703E436C184FB227001499B9 /* UINavigationItem-iOS7Spacing-master */,
 			);
 			name = Categories;
 			path = Libraries/Categories;
@@ -561,6 +590,8 @@
 		70A13D9216320F6500244866 /* Unused */ = {
 			isa = PBXGroup;
 			children = (
+				70864FCF170B789E0030210C /* UIScrollView+PassTouches.h */,
+				70864FD0170B789E0030210C /* UIScrollView+PassTouches.m */,
 				70AAF9BA177A680700AA8C2F /* SongTableView.h */,
 				70AAF9BB177A680800AA8C2F /* SongTableView.m */,
 				70974B2D1630698200A33B7D /* ColorSwitcher */,
@@ -848,11 +879,17 @@
 			files = (
 				7060523614F88D43001A1CDB /* InfoPlist.strings in Resources */,
 				7060523F14F88D43001A1CDB /* MainStoryboard.storyboard in Resources */,
+				703E4376184FB227001499B9 /* ios6-default.png in Resources */,
 				70515C49161126B400D96335 /* Localizable.strings in Resources */,
 				707214F9184473720018B931 /* README.md in Resources */,
+				703E4375184FB227001499B9 /* .gitignore in Resources */,
+				703E437A184FB227001499B9 /* README1.md in Resources */,
 				707214FC184477950018B931 /* Images.xcassets in Resources */,
+				703E4377184FB227001499B9 /* ios7-default.png in Resources */,
 				70A0493016F6814700F70A90 /* LICENSE.txt in Resources */,
+				703E4379184FB227001499B9 /* LICENSE in Resources */,
 				70A0493716F6814700F70A90 /* README.mdown in Resources */,
+				703E4378184FB227001499B9 /* ios7-fixed.png in Resources */,
 				70E8E839175C2AB80012CE74 /* page@2x in Resources */,
 				707214FA184473720018B931 /* release_notes.md in Resources */,
 				7044022017A0630500AFAA98 /* bigrepeat1blue.psd in Resources */,
@@ -933,6 +970,7 @@
 				70BAC6251700C9A100C39980 /* AlbumViewController.m in Sources */,
 				70BAC6281701434100C39980 /* AllSongsCell.m in Sources */,
 				70864FCB170605960030210C /* AllAlbumsCell.m in Sources */,
+				703E437B184FB227001499B9 /* UINavigationItem+iOS7Spacing.m in Sources */,
 				70864FCE17092B5B0030210C /* GenreViewController.m in Sources */,
 				70864FD1170B789E0030210C /* UIScrollView+PassTouches.m in Sources */,
 				70864FD4170B93110030210C /* WindowSubClass.m in Sources */,

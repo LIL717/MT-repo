@@ -563,7 +563,12 @@ BOOL excludeICloudItems;
 }
 - (UILabel *) customizeTitleView
 {
-    CGRect frame = CGRectMake(0, 0, [self.title sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 48);
+//131205 1.2 iOS 7 begin
+    
+    //    CGRect frame = CGRectMake(0, 0, [self.title sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 48);
+    CGRect frame = CGRectMake(0, 0, [self.title sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:44]}].width, 48);
+    
+//131205 1.2 iOS 7 end
     UILabel *label = [[UILabel alloc] initWithFrame:frame];
     label.backgroundColor = [UIColor clearColor];
     label.textAlignment = NSTextAlignmentCenter;
@@ -1241,10 +1246,22 @@ BOOL excludeICloudItems;
     
     [cell.scrollView removeConstraint:cell.centerXAlignmentConstraint];
     
+//131210 1.2 iOS 7 begin
+    
     //calculate the label size to fit the text with the font size
-    CGSize labelSize = [cell.nameLabel.text sizeWithFont:cell.nameLabel.font
-                                       constrainedToSize:CGSizeMake(INT16_MAX,cell.frame.size.height)
-                                           lineBreakMode:NSLineBreakByClipping];
+//    CGSize labelSize = [cell.nameLabel.text sizeWithFont:cell.nameLabel.font
+//                                       constrainedToSize:CGSizeMake(INT16_MAX,cell.frame.size.height)
+//                                           lineBreakMode:NSLineBreakByClipping];
+    
+    NSAttributedString *attributedText =[[NSAttributedString alloc] initWithString:cell.nameLabel.text
+                                                                        attributes:@{NSFontAttributeName: cell.nameLabel.font}];
+    
+    CGRect rect = [attributedText boundingRectWithSize:(CGSize)CGSizeMake(INT16_MAX,cell.frame.size.height)
+                                               options:NSStringDrawingUsesLineFragmentOrigin
+                                               context:nil];
+    CGSize labelSize = rect.size;
+    
+//131210 1.2 iOS 7 end
     
     //Make sure that label is aligned with scrollView
     [cell.scrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];

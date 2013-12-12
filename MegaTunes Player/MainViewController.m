@@ -502,7 +502,13 @@ BOOL delayPlaybackStateChange;
 {
     //    LogMethod();
 
-    CGRect frame = CGRectMake(0, 0, [self.title sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 48);
+//131205 1.2 iOS 7 begin
+    
+    //    CGRect frame = CGRectMake(0, 0, [self.title sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 48);
+    CGRect frame = CGRectMake(0, 0, [self.title sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:44]}].width, 48);
+    
+//131205 1.2 iOS 7 end
+
     UILabel *label = [[UILabel alloc] initWithFrame:frame];
     label.backgroundColor = [UIColor clearColor];
     label.textAlignment = NSTextAlignmentCenter;
@@ -766,9 +772,22 @@ BOOL delayPlaybackStateChange;
     //    LogMethod();
     
     //calculate the label size to fit the text with the font size
-    CGSize labelSize = [self.nextSongLabel.text sizeWithFont:self.nextSongLabel.font
-                                           constrainedToSize:CGSizeMake(INT16_MAX, CGRectGetHeight(self.nextSongScrollView.bounds))
-                                               lineBreakMode:NSLineBreakByClipping];
+
+//131210 1.2 iOS 7 begin
+    
+//    CGSize labelSize = [self.nextSongLabel.text sizeWithFont:self.nextSongLabel.font
+//                                           constrainedToSize:CGSizeMake(INT16_MAX, CGRectGetHeight(self.nextSongScrollView.bounds))
+//                                               lineBreakMode:NSLineBreakByClipping];
+    
+    NSAttributedString *attributedText =[[NSAttributedString alloc] initWithString:self.nextSongLabel.text
+                                                                        attributes:@{NSFontAttributeName: self.nextSongLabel.font}];
+    
+    CGRect rect = [attributedText boundingRectWithSize:CGSizeMake(INT16_MAX, CGRectGetHeight(self.nextSongScrollView.bounds))
+                                               options:NSStringDrawingUsesLineFragmentOrigin
+                                               context:nil];
+    CGSize labelSize = rect.size;
+    
+//131210 1.2 iOS 7 end
     
     [self.nextSongScrollView removeConstraint:self.centerXInScrollView];
     
@@ -1033,7 +1052,11 @@ BOOL delayPlaybackStateChange;
                                                                                style: UIBarButtonItemStyleBordered
                                                                               target: self
                                                                               action: @selector(magnify)];
-            [durationButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIFont systemFontOfSize:44], UITextAttributeFont,nil] forState:UIControlStateNormal];
+//131211 1.2 iOS 7 begin
+
+//            [durationButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIFont systemFontOfSize:44], UITextAttributeFont,nil] forState:UIControlStateNormal];
+            [durationButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIFont systemFontOfSize:44], NSFontAttributeName,nil] forState:UIControlStateNormal];
+//131211 1.2 iOS 7 end
             [durationButton setBackgroundImage:[UIImage imageNamed:@"rightButtonBackground.png"] forState: UIControlStateNormal barMetrics:UIBarMetricsDefault];
             
             const CGFloat TextOffset = 10.0f;

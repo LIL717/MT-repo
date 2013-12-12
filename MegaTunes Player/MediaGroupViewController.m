@@ -244,17 +244,39 @@ NSString *myAffiliateID;
     //get the affliate ID
     myAffiliateID = [[NSUserDefaults standardUserDefaults] stringForKey:@"affiliateID"];
     
-    self.navigationItem.backBarButtonItem = nil; // Important
-    //initWithTitle cannot be nil, must be @""
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle: @""
-                                                                    style:UIBarButtonItemStyleBordered
-                                                                   target:self
-                                                                   action:@selector(linkToiTunesStore)];
+//131204 1.2 iOS 7 begin
 
-    UIImage *menuBarImage48 = [[UIImage imageNamed:@"iTunesStoreIcon57.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    UIImage *menuBarImage58 = [[UIImage imageNamed:@"iTunesStoreIcon68.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage48 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage58 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
+//    self.navigationItem.backBarButtonItem = nil; // Important
+//    //initWithTitle cannot be nil, must be @""
+//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle: @""
+//                                                                    style:UIBarButtonItemStyleBordered
+//                                                                   target:self
+//                                                                   action:@selector(linkToiTunesStore)];
+
+//    UIImage *menuBarImage48 = [[UIImage imageNamed:@"iTunesStoreIcon57.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+//    UIImage *menuBarImage58 = [[UIImage imageNamed:@"iTunesStoreIcon68.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+//    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage48 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+//    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage58 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
+    
+//    [[UINavigationBar appearance] setBackIndicatorImage:[UIImage imageNamed:@"iTunesStoreIcon.png"]];
+//    [[UINavigationBar appearance] setBackIndicatorTransitionMaskImage:[UIImage imageNamed:@"iTunesStoreIcon.png"]];
+    UIButton *iTunesButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIImage *iTunesImage = [UIImage imageNamed:@"iTunesStoreIcon.png"];
+    UIImage *iTunesImageHighlighted = [UIImage imageNamed:@"iTunesStoreIcon57.png"];
+    
+    NSInteger halfImageWidth = ceilf([iTunesImage size].width/2.0f);
+    
+    [iTunesButton setBackgroundImage:[iTunesImage stretchableImageWithLeftCapWidth:halfImageWidth topCapHeight:0] forState:UIControlStateNormal];
+    [iTunesButton setBackgroundImage:[iTunesImageHighlighted stretchableImageWithLeftCapWidth:halfImageWidth topCapHeight:0] forState:UIControlStateHighlighted];
+    [iTunesButton addTarget:self action:@selector(linkToiTunesStore) forControlEvents:UIControlEventTouchUpInside];
+    [iTunesButton sizeToFit];
+    
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc]  initWithCustomView:iTunesButton];
+
+    self.navigationItem.leftBarButtonItem = barButtonItem;
+    
+//131204 1.2 iOS 7 end
+
 
 //130906 1.1 add Store Button end
 
@@ -545,7 +567,14 @@ NSString *myAffiliateID;
 }
 - (UILabel *) customizeTitleView
 {
-    CGRect frame = CGRectMake(0, 0, [self.title sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 48);
+    
+//131205 1.2 iOS 7 begin
+    
+//    CGRect frame = CGRectMake(0, 0, [self.title sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 48);
+    CGRect frame = CGRectMake(0, 0, [self.title sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:44]}].width, 48);
+
+//131205 1.2 iOS 7 end
+    
     UILabel *label = [[UILabel alloc] initWithFrame:frame];
     label.backgroundColor = [UIColor clearColor];
     label.textAlignment = NSTextAlignmentCenter;

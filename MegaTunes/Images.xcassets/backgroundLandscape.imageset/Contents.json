@@ -1,19 +1,6 @@
 {
   "images" : [
-    {
-      "idiom" : "universal",
-      "filename" : "backgroundLandscape-568h.png",
-      "unassigned" : true,
-      "subtype" : "retina4",
-      "scale" : "1x"
-    },
-    {
-      "idiom" : "universal",
-      "filename" : "backgroundLandscape-568h@2x.png",
-      "unassigned" : true,
-      "subtype" : "retina4",
-      "scale" : "2x"
-    }
+
   ],
   "info" : {
     "version" : 1,

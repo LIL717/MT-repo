@@ -258,9 +258,23 @@ static void each_object(NSArray *objects, void (^block)(id object))
 	__block float offset = 0;
     
     // calculate the label size
-    CGSize labelSize = [self.mainLabel.text sizeWithFont:self.mainLabel.font
-                                       constrainedToSize:CGSizeMake(INT16_MAX, CGRectGetHeight(self.bounds))
-                                           lineBreakMode:NSLineBreakByClipping];
+    
+//131210 1.2 iOS 7 begin
+    
+//    CGSize labelSize = [self.mainLabel.text sizeWithFont:self.mainLabel.font
+//                                       constrainedToSize:CGSizeMake(INT16_MAX, CGRectGetHeight(self.bounds))
+//                                           lineBreakMode:NSLineBreakByClipping];
+    
+    NSAttributedString *attributedText =[[NSAttributedString alloc] initWithString:self.mainLabel.text
+                                                                        attributes:@{NSFontAttributeName: self.mainLabel.font}];
+    
+    CGRect rect = [attributedText boundingRectWithSize:CGSizeMake(INT16_MAX, CGRectGetHeight(self.bounds))
+                                               options:NSStringDrawingUsesLineFragmentOrigin
+                                               context:nil];
+    CGSize labelSize = rect.size;
+    
+//131210 1.2 iOS 7 end
+
     
     each_object(self.labels, ^(UILabel *label) {
         CGRect frame = label.frame;

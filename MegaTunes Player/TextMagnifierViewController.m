@@ -55,10 +55,23 @@
     self.magnifiedLabel.text = self.textToMagnify;
 
     //calculate the label size to fit the text with the font size
-    CGSize labelSize = [self.magnifiedLabel.text sizeWithFont:self.magnifiedLabel.font
-                                    constrainedToSize:CGSizeMake(INT16_MAX, CGRectGetHeight(scrollView.bounds))
-                                           lineBreakMode:NSLineBreakByClipping];
+
+//131210 1.2 iOS 7 begin
     
+//    CGSize labelSize = [self.magnifiedLabel.text sizeWithFont:self.magnifiedLabel.font
+//                                            constrainedToSize:CGSizeMake(INT16_MAX, CGRectGetHeight(scrollView.bounds))
+//                                                lineBreakMode:NSLineBreakByClipping];
+    
+    NSAttributedString *attributedText =[[NSAttributedString alloc] initWithString:self.magnifiedLabel.text
+                                                                        attributes:@{NSFontAttributeName: self.magnifiedLabel.font}];
+    
+    CGRect rect = [attributedText boundingRectWithSize:CGSizeMake(INT16_MAX, CGRectGetHeight(scrollView.bounds))
+                                               options:NSStringDrawingUsesLineFragmentOrigin
+                                               context:nil];
+    CGSize labelSize = rect.size;
+    
+//131210 1.2 iOS 7 end
+
     //set the UIOutlet label's frame to the new sized frame
     CGRect frame = self.magnifiedLabel.frame;
     frame.size = labelSize;
@@ -165,9 +178,22 @@
 
         //calculate the label size to fit the text with the font size
         //    NSLog (@"size of magnifiedLabel is %f", self.magnifiedLabel.frame.size.width);
-        CGSize labelSize = [self.magnifiedLabel.text sizeWithFont:self.magnifiedLabel.font
-                                                constrainedToSize:CGSizeMake(INT16_MAX, CGRectGetHeight(scrollView.bounds))
-                                                    lineBreakMode:NSLineBreakByClipping];
+        
+//131210 1.2 iOS 7 begin
+        
+//        CGSize labelSize = [self.magnifiedLabel.text sizeWithFont:self.magnifiedLabel.font
+//                                                constrainedToSize:CGSizeMake(INT16_MAX, CGRectGetHeight(scrollView.bounds))
+//                                                    lineBreakMode:NSLineBreakByClipping];
+        
+        NSAttributedString *attributedText =[[NSAttributedString alloc] initWithString:self.magnifiedLabel.text
+                                                                            attributes:@{NSFontAttributeName: self.magnifiedLabel.font}];
+        
+        CGRect rect = [attributedText boundingRectWithSize:CGSizeMake(INT16_MAX, CGRectGetHeight(scrollView.bounds))
+                                                   options:NSStringDrawingUsesLineFragmentOrigin
+                                                   context:nil];
+        CGSize labelSize = rect.size;
+        
+//131210 1.2 iOS 7 end
         
         //set the UIOutlet label's frame to the new sized frame
         CGRect frame = self.magnifiedLabel.frame;

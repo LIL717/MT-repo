@@ -80,10 +80,6 @@ NSString *myAffiliateID;
 //    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
     
 //131203 1.2 iOS 7 end
-
-    
-    //    UIImage *unselectedImage0 = [UIImage imageNamed:@"unselectedTabAlbumButton.png"];
-    //    UIImage *selectedImage0 = [UIImage imageNamed:@"selectedTabAlbumButton.png"];
     
     UIImage *unselectedImage0 = [UIImage imageNamed:@"unselectedTabInfoButton.png"];
     UIImage *selectedImage0 = [UIImage imageNamed:@"selectedTabInfoButton.png"];
@@ -98,17 +94,24 @@ NSString *myAffiliateID;
     UITabBarItem *item0 = [tabBar.items objectAtIndex:0];
     UITabBarItem *item1 = [tabBar.items objectAtIndex:1];
     UITabBarItem *item2 = [tabBar.items objectAtIndex:2];
-    //    UITabBarItem *item3 = [tabBar.items objectAtIndex:3];
-    
-    //    item0.title = NSLocalizedString(@"Album info", nil);
+
     item0.title = NSLocalizedString(@"iTunes info", nil);
     item1.title = NSLocalizedString(@"iTunes comments", nil);
     item2.title = NSLocalizedString(@"Tag info", nil);
     
-    [item0 setFinishedSelectedImage:selectedImage0 withFinishedUnselectedImage:unselectedImage0];
-    [item1 setFinishedSelectedImage:selectedImage1 withFinishedUnselectedImage:unselectedImage1];
-    [item2 setFinishedSelectedImage:selectedImage2 withFinishedUnselectedImage:unselectedImage2];
-    //    [item3 setFinishedSelectedImage:selectedImage3 withFinishedUnselectedImage:unselectedImage3];
+//131212 1.2 iOS 7 begin
+    //    [item0 setFinishedSelectedImage:selectedImage0 withFinishedUnselectedImage:unselectedImage0];
+    //    [item1 setFinishedSelectedImage:selectedImage1 withFinishedUnselectedImage:unselectedImage1];
+    //    [item2 setFinishedSelectedImage:selectedImage2 withFinishedUnselectedImage:unselectedImage2];
+    
+    item0.image = [unselectedImage0 imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    item0.selectedImage = [selectedImage0 imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    item1.image = [unselectedImage1 imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    item1.selectedImage = [selectedImage1 imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    item2.image = [unselectedImage2 imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    item2.selectedImage = [selectedImage2 imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    
+//131212 1.2 iOS 7 end
     
     [self loadTableData];
     
@@ -484,9 +487,23 @@ NSString *myAffiliateID;
     }
             
     //calculate the label size to fit the text with the font size
-    CGSize labelSize = [cell.nameLabel.text sizeWithFont:cell.nameLabel.font
-                                       constrainedToSize:CGSizeMake(INT16_MAX,cell.frame.size.height)
-                                           lineBreakMode:NSLineBreakByClipping];
+    
+//131210 1.2 iOS 7 begin
+    
+//    CGSize labelSize = [cell.nameLabel.text sizeWithFont:cell.nameLabel.font
+//                                       constrainedToSize:CGSizeMake(INT16_MAX,cell.frame.size.height)
+//                                           lineBreakMode:NSLineBreakByClipping];
+    
+    NSAttributedString *attributedText =[[NSAttributedString alloc] initWithString:cell.nameLabel.text
+                                                                        attributes:@{NSFontAttributeName: cell.nameLabel.font}];
+    
+    CGRect rect = [attributedText boundingRectWithSize:CGSizeMake(INT16_MAX, cell.frame.size.height)
+                                               options:NSStringDrawingUsesLineFragmentOrigin
+                                               context:nil];
+    CGSize labelSize = rect.size;
+    
+//131210 1.2 iOS 7 end
+
     
 //    //Make sure that label is aligned with scrollView
     [cell.scrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];

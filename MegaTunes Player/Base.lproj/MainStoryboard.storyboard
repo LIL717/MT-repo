@@ -10,7 +10,7 @@
             <objects>
                 <viewController id="mNb-57-5Xm" customClass="SongViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="55" sectionHeaderHeight="1" sectionFooterHeight="1" id="EmK-pd-wau">
-                        <rect key="frame" x="0.0" y="94" width="480" height="226"/>
+                        <rect key="frame" x="0.0" y="64" width="480" height="256"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
@@ -812,7 +812,7 @@
             <objects>
                 <viewController title="Info" modalTransitionStyle="partialCurl" id="0BK-h9-5Yl" customClass="AlbumInfoViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" sectionIndexMinimumDisplayRowCount="3" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="55" sectionHeaderHeight="22" sectionFooterHeight="22" id="Km2-GT-jmW">
-                        <rect key="frame" x="0.0" y="94" width="320" height="386"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="separatorColor" white="0.80000000000000004" alpha="1" colorSpace="deviceWhite"/>
                         <imageView key="tableFooterView" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="1" verticalHuggingPriority="1" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" id="xgF-dE-gGX">
@@ -934,7 +934,7 @@
             <objects>
                 <viewController id="DPV-A8-OP5" customClass="ArtistViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="55" sectionHeaderHeight="1" sectionFooterHeight="1" id="tE6-jE-hH7">
-                        <rect key="frame" x="0.0" y="94" width="480" height="226"/>
+                        <rect key="frame" x="0.0" y="64" width="480" height="256"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
@@ -1101,10 +1101,10 @@
             </objects>
             <point key="canvasLocation" x="-273" y="-1345"/>
         </scene>
-        <!--Media Group View Controller-->
+        <!--Media Group View Controller - Select Music-->
         <scene sceneID="6h3-Cd-qc6">
             <objects>
-                <viewController useStoryboardIdentifierAsRestorationIdentifier="YES" id="tmU-Ze-HBf" customClass="MediaGroupViewController" sceneMemberID="viewController">
+                <viewController title="Select Music" useStoryboardIdentifierAsRestorationIdentifier="YES" id="tmU-Ze-HBf" customClass="MediaGroupViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="55" sectionHeaderHeight="22" sectionFooterHeight="22" id="YsO-DA-zBM">
                         <rect key="frame" x="0.0" y="94" width="320" height="386"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1934,14 +1934,14 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="pWB-et-bqe"/>
-        <segue reference="dXX-zY-4vR"/>
-        <segue reference="iCw-Zw-zSF"/>
-        <segue reference="qWI-HD-eSG"/>
-        <segue reference="hv1-71-OGq"/>
-        <segue reference="oc8-HG-QrB"/>
         <segue reference="SvT-2g-rDr"/>
-        <segue reference="Xbd-a7-Wgl"/>
+        <segue reference="ZlS-b1-pog"/>
+        <segue reference="hot-4h-GjM"/>
+        <segue reference="OaX-wz-MBb"/>
+        <segue reference="cs7-xB-URz"/>
+        <segue reference="hv1-71-OGq"/>
+        <segue reference="qWI-HD-eSG"/>
         <segue reference="hHs-2t-p2p"/>
+        <segue reference="Xbd-a7-Wgl"/>
     </inferredMetricsTieBreakers>
 </document>
