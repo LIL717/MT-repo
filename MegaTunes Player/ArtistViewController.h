@@ -16,7 +16,9 @@
 @property (strong, nonatomic)   IBOutlet UITableView *collectionTableView;
 @property (strong, nonatomic)   IBOutlet UIView *allAlbumsView;
 @property (strong, nonatomic)   IBOutlet UIButton *allAlbumsButton;
-@property (strong, nonatomic)   IBOutlet MTSearchBar *searchBar;
+//140114 1.2 iOS 7 begin
+@property (strong, nonatomic)   IBOutlet UISearchBar *searchBar;
+//140114 1.2 iOS 7 end
 //130912 1.1 add iTunesStoreButton begin
 @property (strong, nonatomic)   IBOutlet UIButton *moreGenreButton;
 //130912 1.1 add iTunesStoreButton end

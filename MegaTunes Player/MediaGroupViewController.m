@@ -520,6 +520,9 @@ NSString *myAffiliateID;
 {
     //    LogMethod();
     [super viewWillAppear: animated];
+//131216 1.2 iOS 7 begin
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+//131216 1.2 iOS 7 end
     
     [self setIPodLibraryChanged: NO];
     self.title = NSLocalizedString(@"Select Music", nil);
@@ -595,9 +598,16 @@ NSString *myAffiliateID;
     
     //    LogMethod();
     if (UIInterfaceOrientationIsPortrait(orientation)) {
-        [self.groupTableView setContentInset:UIEdgeInsetsMake(11,0,0,0)];
+//141022 1.2 iOS 7 begin
+//        [self.groupTableView setContentInset:UIEdgeInsetsMake(11,0,0,0)];
+        [self.groupTableView setContentInset:UIEdgeInsetsMake(0,0,0,0)];
+//141022 1.2 iOS 7 begin
     } else {
-        [self.groupTableView setContentInset:UIEdgeInsetsMake(23,0,0,0)];
+//141022 1.2 iOS 7 begin
+
+//        [self.groupTableView setContentInset:UIEdgeInsetsMake(23,0,0,0)];
+        [self.groupTableView setContentInset:UIEdgeInsetsMake(0,0,0,0)];
+//141022 1.2 iOS 7 begin
         [self.groupTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
     }
 }

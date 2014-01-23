@@ -9,7 +9,8 @@
 
 @interface InCellScrollView : UIScrollView <UIScrollViewDelegate> 
 
-
-@property (nonatomic, strong) IBOutlet UIImageView *scrollViewImageView;
+//131216 1.2 iOS 7 begin
+//@property (nonatomic, strong) IBOutlet UIImageView *scrollViewImageView;
+//131216 1.2 iOS 7 end
 
 @end

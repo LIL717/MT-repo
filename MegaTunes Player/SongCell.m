@@ -15,7 +15,9 @@
 @synthesize scrollView;
 @synthesize nameLabel;
 @synthesize durationLabel;
-@synthesize cellBackgroundImageView;
+//140122 1.2 iOS 7 begin
+//@synthesize cellBackgroundImageView;
+//140122 1.2 iOS 7 end
 
 @synthesize infoBackground;
 //@synthesize BPM;
@@ -24,7 +26,9 @@
 @synthesize centerYAlignmentConstraint;
 @synthesize durationToCellConstraint;
 @synthesize textLabelOffset;
-@synthesize cellOffset;
+//140116 1.2 iOS 7 begin
+//@synthesize cellOffset;
+//140116 1.2 iOS 7 end
 
 
 
@@ -64,7 +68,7 @@
         CGRect frame = CGRectMake(0, 53, self.frame.size.width, 1);
         UIView *separatorLine = [[UILabel alloc] initWithFrame:frame];
         separatorLine.backgroundColor = [UIColor whiteColor];
-        [self.cellBackgroundImageView addSubview: separatorLine];
+        [self.backgroundView addSubview: separatorLine];
 
 //131203 1.2 iOS 7 begin
         
@@ -88,11 +92,14 @@
 //    cellFrame.size.width += self.xOffset;
 //    self.frame = cellFrame;
 }
-- (void)setFrame:(CGRect)frame {
-    
-    //do this to make cell the same width as ungrouped table cell - otherwise wastes space on right)
-    //resource intensive!!
-    frame.size.width += self.cellOffset;
-    [super setFrame:frame];
-}
+//140116 1.2 iOS 7 begin
+//- (void)setFrame:(CGRect)frame {
+//    
+//    //do this to make cell the same width as ungrouped table cell - otherwise wastes space on right)
+//    //resource intensive!!
+//    frame.size.width += self.cellOffset;
+//    [super setFrame:frame];
+//}
+//140116 1.2 iOS 7 end
+
 @end

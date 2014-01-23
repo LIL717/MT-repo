@@ -11,8 +11,9 @@
 
 @property (strong, nonatomic) IBOutlet UIImageView *playingIndicator;
 @property (strong, nonatomic) IBOutlet InCellScrollView *scrollView;
-
-@property (strong, nonatomic) IBOutlet UIImageView *cellBackgroundImageView;
+//140122 1.2 iOS 7 begin
+//@property (strong, nonatomic) IBOutlet UIImageView *cellBackgroundImageView;
+//140122 1.2 iOS 7 end
 @property (nonatomic, strong) IBOutlet UILabel *nameLabel;
 @property (nonatomic, strong) IBOutlet UILabel *durationLabel;
 //@property (strong, nonatomic) IBOutlet UILabel *BPM;

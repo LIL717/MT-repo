@@ -160,6 +160,9 @@ NSString *myAffiliateID;
 {
     //    LogMethod();
     [super viewWillAppear: animated];
+//131216 1.2 iOS 7 begin
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+//131216 1.2 iOS 7 end
     
     [self setIPodLibraryChanged: NO];
     self.title = NSLocalizedString(@"Select Music", nil);

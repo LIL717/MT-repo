@@ -72,6 +72,9 @@ MPMediaPropertyPredicate *selectedPredicate;
 
 BOOL showDuration;
 BOOL firstLoad;
+//131203 1.2 iOS 7 begin
+//BOOL viewIsAppearing;
+//131203 1.2 iOS 7 end
 
 #pragma mark - Initial Display methods
 
@@ -292,7 +295,9 @@ BOOL firstLoad;
 {
 //    LogMethod();
     [super viewWillAppear: animated];
-    
+//131216 1.2 iOS 7 begin
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+//131216 1.2 iOS 7 end
     self.navigationItem.titleView = [self customizeTitleView];
   
     NSString *playingItem = [[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyTitle];
@@ -319,6 +324,9 @@ BOOL firstLoad;
 -(void) viewDidAppear:(BOOL)animated {
     //    LogMethod();
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+//131216 1.2 iOS 7 begin
+//    viewIsAppearing = YES;
+//131216 1.2 iOS 7 end
     [super viewDidAppear:(BOOL)animated];
 }
 - (UILabel *) customizeTitleView
@@ -338,29 +346,32 @@ BOOL firstLoad;
     
     return label;
 }
-//- (BOOL)shouldAutorotate {
-//    if (disableRotation) {
-//        return NO;
-//    } else {
-//        return [self.navigationController.topViewController shouldAutorotate];
-//    }
-//}
+
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
 //    LogMethod();
     [self updateLayoutForNewOrientation: orientation];
 }
 - (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
 //    LogMethod();
-    CGFloat navBarAdjustment;
+    
+//131216 1.2 iOS 7 begin
+    
+    BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
 
-    if (UIInterfaceOrientationIsPortrait(orientation)) {
-        navBarAdjustment = 11;
-        [self.collectionTableView setContentInset:UIEdgeInsetsMake(11,0,0,0)]; 
+    CGFloat navBarAdjustment = isPortrait ? 0 : 3;
 
-    } else {
-        navBarAdjustment = 23;
-        [self.collectionTableView setContentInset:UIEdgeInsetsMake(23,0,0,0)];
-    }
+
+//    CGFloat navBarAdjustment;
+//
+//    if (UIInterfaceOrientationIsPortrait(orientation)) {
+//        navBarAdjustment = 11;
+//        [self.collectionTableView setContentInset:UIEdgeInsetsMake(11,0,0,0)]; 
+//
+//    } else {
+//        navBarAdjustment = 23;
+//        [self.collectionTableView setContentInset:UIEdgeInsetsMake(23,0,0,0)];
+//    }
+//131216 1.2 iOS 7 end
     
     //don't need to do this if the search table is showing
     if (!self.isSearching) {
@@ -384,35 +395,31 @@ BOOL firstLoad;
         // hide the search bar and All Albums cell
         CGFloat tableViewHeaderHeight = self.allAlbumsView.frame.size.height;
         CGFloat adjustedHeaderHeight = tableViewHeaderHeight - navBarAdjustment;
-        NSInteger possibleRows = self.collectionTableView.frame.size.height / self.collectionTableView.rowHeight;
-//        NSLog (@"possibleRows = %d collection count = %d", possibleRows, [self.collection count]);
-        
-        //if the table won't fill the screen need to wait for delay in order for tableView header to hide properly - so ugly
-        if ([self.collection count] <= possibleRows) {
-            [self performSelector:@selector(updateContentOffset) withObject:nil afterDelay:0.0];
-        } else {
+//140113 1.2 iOS 7 begin
+//        NSInteger possibleRows = self.collectionTableView.frame.size.height / self.collectionTableView.rowHeight;
+////        NSLog (@"possibleRows = %d collection count = %d", possibleRows, [self.collection count]);
+//        //if the table won't fill the screen need to wait for delay in order for tableView header to hide properly - so ugly
+//        if (firstLoad && [self.collection count] <= possibleRows) {
+//                [self performSelector:@selector(updateContentOffset) withObject:nil afterDelay:1.0];
+////            } else {
+////                [self performSelector:@selector(updateContentOffset) withObject:nil afterDelay:0.0];
+////            }
+//        } else {
+//140113 1.2 iOS 7 end
             if (firstRowVisible) {
     //        [self.collectionTableView scrollRectToVisible:CGRectMake(0, adjustedHeaderHeight, 1, 1) animated:NO];
             [self.collectionTableView setContentOffset:CGPointMake(0, adjustedHeaderHeight)];
-            }
-        }
+//140113 1.2 iOS 7 begin
 
+
+            }
+//        }
+//        firstLoad = NO;
+//140113 1.2 iOS 7 end
+        
         [self.collectionTableView reloadData];
     }
     self.cellScrolled = NO;
-}
-- (void)updateContentOffset {
-    //this is only necessary when screen will not be filled - this method is executed afterDelay because ContentOffset is probably not correct until after layoutSubviews happens
-    
-//    NSLog (@"tableView content size is %f %f",self.collectionTableView.contentSize.height, self.collectionTableView.contentSize.width);
-
-    BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
-    
-    CGFloat largeHeaderAdjustment = isPortrait ? 11 : 23;
-
-    CGFloat tableViewHeaderHeight = self.allAlbumsView.frame.size.height;
-
-    [self.collectionTableView setContentOffset:CGPointMake(0, tableViewHeaderHeight - largeHeaderAdjustment)];
 }
 - (void) viewWillLayoutSubviews {
 //    LogMethod();
@@ -420,6 +427,37 @@ BOOL firstLoad;
     self.collectionTableView.contentSize = CGSizeMake(self.collectionTableView.frame.size.width, self.collectionTableView.contentSize.height);
     [super viewWillLayoutSubviews];
 }
+//140113 1.2 iOS 7 begin
+//just can't get this to work consistently
+//-(void) viewDidLayoutSubviews {
+//    [super viewDidLayoutSubviews];
+//    
+//    NSInteger possibleRows = self.collectionTableView.frame.size.height / self.collectionTableView.rowHeight;
+//    ////        NSLog (@"possibleRows = %d collection count = %d", possibleRows, [self.collection count]);
+//    
+//    //if the table won't fill the screen need to update here for tableView header to hide properly - so ugly
+//    if (firstLoad && [self.collection count] <= possibleRows && viewIsAppearing) {
+//        
+//        //this is only necessary when screen will not be filled - this method is executed afterDelay because ContentOffset is probably not correct until after layoutSubviews happens
+//        
+////        NSLog (@"tableView content size is %f %f",self.collectionTableView.contentSize.height, self.collectionTableView.contentSize.width);
+//        
+//        BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
+//        
+//        CGFloat largeHeaderAdjustment = isPortrait ? 11 : 11;
+//        
+//        CGFloat tableViewHeaderHeight = self.allAlbumsView.frame.size.height;
+//        
+//        [self.collectionTableView setContentOffset:CGPointMake(0, tableViewHeaderHeight - largeHeaderAdjustment)];
+//        
+//        [self.collectionTableView reloadData];
+//        
+//        firstLoad = NO;
+//        viewIsAppearing = NO;
+//    }
+//
+//}
+//140113 1.2 iOS 7 end
 #pragma mark - Search Display methods
 
 - (void)searchDisplayControllerDidBeginSearch:(UISearchDisplayController *)controller {
@@ -429,6 +467,7 @@ BOOL firstLoad;
 
 }
 - (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller {
+//    LogMethod();
     //this needs to be here rather than DidEndSearch to avoid flashing wrong data first
 
 //    [self.collectionTableView reloadData];
@@ -509,14 +548,6 @@ BOOL firstLoad;
 -(void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
 //    LogMethod();
     self.searchDisplayController.searchResultsTableView.rowHeight = 55;
-//    self.searchDisplayController.searchResultsTableView.backgroundColor = [UIColor whiteColor];
-
-//131203 1.2 iOS 7 begin
-    
-    //    [self.searchDisplayController.searchResultsTableView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
-    [self.searchDisplayController.searchResultsTableView setBackgroundColor:[UIColor blackColor]];
-    
-//131203 1.2 iOS 7 end
     
 }
 
@@ -648,13 +679,21 @@ BOOL firstLoad;
     BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
 
     if (tableView == self.searchDisplayController.searchResultsTableView) {
+//140113 1.2 iOS 7 begin
+        tableView.backgroundColor = [UIColor blackColor];
+//140113 1.2 iOS 7 end
 
         if ( searchResultsCell == nil ) {
             searchResultsCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-            searchResultsCell.selectionStyle = UITableViewCellSelectionStyleGray;            
-            searchResultsCell.selectedBackgroundView = [[UIImageView alloc] initWithImage:backgroundImage];
+//140113 1.2 iOS 7 begin
+//            searchResultsCell.selectionStyle = UITableViewCellSelectionStyleGray;            
+//            searchResultsCell.selectedBackgroundView = [[UIImageView alloc] initWithImage:backgroundImage];
+//140113 1.2 iOS 7 end
             searchResultsCell.textLabel.font = [UIFont systemFontOfSize:44];
             searchResultsCell.textLabel.textColor = [UIColor whiteColor];
+//140113 1.2 iOS 7 begin
+            searchResultsCell.backgroundColor = [UIColor blackColor];
+//140113 1.2 iOS 7 end
             searchResultsCell.textLabel.highlightedTextColor = [UIColor blueColor];
             searchResultsCell.textLabel.lineBreakMode = NSLineBreakByClipping;
             
@@ -793,8 +832,9 @@ BOOL firstLoad;
     //cell.durationLabel.frame.size.width = 130- have to hard code because not calculated yet at this point
     
     //this is the constraint from scrollView to Cell  needs to just handle accessory in portrait and handle duration and accessory in landscape
-    
-    cell.scrollViewToCellConstraint.constant = showDuration ? (30 + 130 + 5) : 30;
+//140113 1.2 iOS 7 begin
+    cell.scrollViewToCellConstraint.constant = showDuration ? (0 + 130 + 5) : 5;
+//140113 1.2 iOS 7 end
 //    NSLog (@"constraintConstant is %f", cell.scrollViewToCellConstraint.constant);
 
     

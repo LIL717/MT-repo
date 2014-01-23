@@ -496,6 +496,9 @@ BOOL excludeICloudItems;
 - (void) viewWillAppear:(BOOL)animated
 {
     //    LogMethod();
+//131216 1.2 iOS 7 begin
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+//131216 1.2 iOS 7 end
     self.swipeLeftRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(toggleTagButtonAndTitle:)];
     [self.swipeLeftRight setDirection:(UISwipeGestureRecognizerDirectionRight | UISwipeGestureRecognizerDirectionLeft )];
     [self.navigationController.navigationBar addGestureRecognizer:self.swipeLeftRight];
@@ -586,15 +589,24 @@ BOOL excludeICloudItems;
 }
 - (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
     //    LogMethod();
-    CGFloat navBarAdjustment;
+//131216 1.2 iOS 7 begin
     
-    if (UIInterfaceOrientationIsPortrait(orientation)) {
-        navBarAdjustment = 11;
-        [self.songTableView setContentInset:UIEdgeInsetsMake(11,0,0,0)];
-    } else {
-        navBarAdjustment = 23;
-        [self.songTableView setContentInset:UIEdgeInsetsMake(23,0,0,0)];
-    }
+    BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
+    
+    CGFloat navBarAdjustment = isPortrait ? 0 : 3;
+    
+    
+    //    CGFloat navBarAdjustment;
+    //
+    //    if (UIInterfaceOrientationIsPortrait(orientation)) {
+    //        navBarAdjustment = 11;
+    //        [self.collectionTableView setContentInset:UIEdgeInsetsMake(11,0,0,0)];
+    //
+    //    } else {
+    //        navBarAdjustment = 23;
+    //        [self.collectionTableView setContentInset:UIEdgeInsetsMake(23,0,0,0)];
+    //    }
+//131216 1.2 iOS 7 end
     //    //don't need to do this if the search table is showing
     //    if (!isSearching) {
     
@@ -619,17 +631,20 @@ BOOL excludeICloudItems;
     // hide the search bar and All Songs cell
     CGFloat tableViewHeaderHeight = self.shuffleView.frame.size.height;
     CGFloat adjustedHeaderHeight = tableViewHeaderHeight - navBarAdjustment;
-    NSInteger possibleRows = self.songTableView.frame.size.height / self.songTableView.rowHeight;
-    //        NSLog (@"possibleRows = %d collection count = %d", possibleRows, [self.collection count]);
-    
-    //if the table won't fill the screen need to wait for delay in order for tableView header to hide properly - so ugly
-    if ([self.collectionItem.collectionArray count] <= possibleRows) {
-        [self performSelector:@selector(updateContentOffset) withObject:nil afterDelay:0.0];
-    } else {
-        if (firstRowVisible) {
-            //        [self.collectionTableView scrollRectToVisible:CGRectMake(0, adjustedHeaderHeight, 1, 1) animated:NO];
-            [self.songTableView setContentOffset:CGPointMake(0, adjustedHeaderHeight)];
-        }
+//140113 1.2 iOS 7 begin
+    //        NSInteger possibleRows = self.collectionTableView.frame.size.height / self.collectionTableView.rowHeight;
+    ////        NSLog (@"possibleRows = %d collection count = %d", possibleRows, [self.collection count]);
+    //        //if the table won't fill the screen need to wait for delay in order for tableView header to hide properly - so ugly
+    //        if (firstLoad && [self.collection count] <= possibleRows) {
+    //                [self performSelector:@selector(updateContentOffset) withObject:nil afterDelay:1.0];
+    ////            } else {
+    ////                [self performSelector:@selector(updateContentOffset) withObject:nil afterDelay:0.0];
+    ////            }
+    //        } else {
+    if (firstRowVisible) {
+        //        [self.collectionTableView scrollRectToVisible:CGRectMake(0, adjustedHeaderHeight, 1, 1) animated:NO];
+        [self.songTableView setContentOffset:CGPointMake(0, adjustedHeaderHeight)];
+//140113 1.2 iOS 7 end
     }
     [self.songTableView reloadData];
     //    }
@@ -723,13 +738,6 @@ BOOL excludeICloudItems;
 -(void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
     //    LogMethod();
     self.searchDisplayController.searchResultsTableView.rowHeight = 55;
-    //    self.searchDisplayController.searchResultsTableView.backgroundColor = [UIColor whiteColor];
-    
-//131203 1.2 iOS 7 begin
-    //[self.searchDisplayController.searchResultsTableView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
-    [self.searchDisplayController.searchResultsTableView setBackgroundColor:[UIColor blackColor]];
-    
-//131203 1.2 iOS 7 end
 
 }
 
@@ -902,16 +910,16 @@ BOOL excludeICloudItems;
     
 	SongCell *cell = (SongCell *)[tableView
                                   dequeueReusableCellWithIdentifier:@"SongCell"];
-    
-    //these are necessary to make the grouped cell look like ungrouped (makes the cell wider like ungrouped)
-    cell.textLabelOffset = 8.0;
-    
-    // the info button is not far enough to the left with grouped cell, adjust for it here
-    if (isIndexed) {
-        cell.cellOffset = 0.0;
-    } else {
-        cell.cellOffset = 10.0;
-    }
+//140116 1.2 iOS 7 begin
+//    //these are necessary to make the grouped cell look like ungrouped (makes the cell wider like ungrouped)
+//    cell.textLabelOffset = 8.0;
+//    // the info button is not far enough to the left with grouped cell, adjust for it here
+//    if (isIndexed) {
+//        cell.cellOffset = 0.0;
+//    } else {
+//        cell.cellOffset = 10.0;
+//    }
+//140116 1.2 iOS 7 end
     
     MPMediaQuerySection * sec = self.songSections[indexPath.section];
     //    NSLog (@" section is %d", indexPath.section);
@@ -920,17 +928,20 @@ BOOL excludeICloudItems;
     BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
     
     if (tableView == self.searchDisplayController.searchResultsTableView) {
-        
+//140113 1.2 iOS 7 begin
+        tableView.backgroundColor = [UIColor blackColor];
+//140113 1.2 iOS 7 end
         if ( searchResultsCell == nil ) {
             searchResultsCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-            searchResultsCell.selectionStyle = UITableViewCellSelectionStyleGray;
-            
-//131203 1.2 iOS 7 begin
-            //searchResultsCell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed: @"list-background.png"]];
-//131203 1.2 iOS 7 end
-
+//140113 1.2 iOS 7 begin
+            //            searchResultsCell.selectionStyle = UITableViewCellSelectionStyleGray;
+            //            searchResultsCell.selectedBackgroundView = [[UIImageView alloc] initWithImage:backgroundImage];
+//140113 1.2 iOS 7 end
             searchResultsCell.textLabel.font = [UIFont systemFontOfSize:44];
             searchResultsCell.textLabel.textColor = [UIColor whiteColor];
+//140113 1.2 iOS 7 begin
+            searchResultsCell.backgroundColor = [UIColor blackColor];
+//140113 1.2 iOS 7 end
             searchResultsCell.textLabel.highlightedTextColor = [UIColor blueColor];
             searchResultsCell.textLabel.lineBreakMode = NSLineBreakByClipping;
             
@@ -1007,21 +1018,16 @@ BOOL excludeICloudItems;
 //        UIImage *coloredImage = [cellBackgroundImage imageWithTint: tagColor];
 //        [cell.cellBackgroundImageView  setImage: coloredImage];
         
-        cell.backgroundColor = tagColor;
+        cell.contentView.backgroundColor = tagColor;
         
 //131203 1.2 iOS 7 end
 
         CGRect frame = CGRectMake(0, 53, self.songTableView.frame.size.width, 1);
         UIView *separatorLine = [[UILabel alloc] initWithFrame:frame];
         separatorLine.backgroundColor = [UIColor whiteColor];
-        [cell.cellBackgroundImageView addSubview: separatorLine];
+//        [cell.cellBackgroundImageView addSubview: separatorLine];
+        [cell.backgroundView addSubview:separatorLine];
         
-//131203 1.2 iOS 7 begin
-
-//        [cell.scrollView.scrollViewImageView  setImage: coloredImage];
-        cell.scrollView.backgroundColor = tagColor;
-        
-//131203 1.2 iOS 7 end
 
         
         //playback duration of the song
@@ -1227,7 +1233,15 @@ BOOL excludeICloudItems;
     //    LogMethod();
     
     //    cell.scrollViewToCellConstraint.constant = showDuration ? (30 + 130 + 5) : 48;
-    cell.scrollViewToCellConstraint.constant = showDuration ? (30 + 130 + 5 + cell.cellOffset) : (48 + cell.cellOffset);
+//140113 1.2 iOS 7 begin
+    int portraitConstant;
+    if (isIndexed || tinyArray) {
+        portraitConstant = 5;
+    } else {
+        portraitConstant = 48;
+    }
+    cell.scrollViewToCellConstraint.constant = showDuration ? (0 + 130 + 5) : portraitConstant;
+//140113 1.2 iOS 7 end
     
     //    NSLog (@"constraintConstant is %f", cell.scrollViewToCellConstraint.constant);
     
@@ -1235,13 +1249,14 @@ BOOL excludeICloudItems;
     
     if (showDuration) {
         //        scrollViewWidth = (tableView.frame.size.width - durationLabelSize.width - cell.accessoryView.frame.size.width);
-        //        scrollViewWidth = (tableView.frame.size.width - 178);
-        scrollViewWidth = (tableView.frame.size.width - 178 - cell.cellOffset);
+//140116 1.2 iOS 7 begin
+        scrollViewWidth = (tableView.frame.size.width - 178);
+//        scrollViewWidth = (tableView.frame.size.width - 178 - cell.cellOffset);
         
     } else {
-        //        scrollViewWidth = (tableView.frame.size.width - 61);
-        scrollViewWidth = (tableView.frame.size.width - 61 - cell.cellOffset);
-        
+        scrollViewWidth = (tableView.frame.size.width - 61);
+//        scrollViewWidth = (tableView.frame.size.width - 61 - cell.cellOffset);
+//140116 1.2 iOS 7 end
     }
     
     [cell.scrollView removeConstraint:cell.centerXAlignmentConstraint];
