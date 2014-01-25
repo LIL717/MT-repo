@@ -150,33 +150,29 @@ BOOL excludeICloudItems;
     [self.playBarButton setIsAccessibilityElement:YES];
     [self.playBarButton setAccessibilityLabel: NSLocalizedString(@"Now Playing", nil)];
     [self.playBarButton setAccessibilityTraits: UIAccessibilityTraitButton];
+//140124 1.2 iOS 7 begin
+    UIButton *tempColorButton = [UIButton buttonWithType:UIButtonTypeCustom];
     
-    self.colorTagBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                              style:UIBarButtonItemStyleBordered
-                                                             target:self
-                                                             action:@selector(showTagColors)];
+    [tempColorButton addTarget:self action:@selector(showTagColors) forControlEvents:UIControlEventTouchUpInside];
+    [tempColorButton setImage:[UIImage imageNamed:@"colorImage.png"] forState:UIControlStateNormal];
+    [tempColorButton setShowsTouchWhenHighlighted:NO];
+    [tempColorButton sizeToFit];
     
-    menuBarImageDefault = [[UIImage imageNamed:@"color57.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    menuBarImageLandscape = [[UIImage imageNamed:@"color68.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    
-    [self.colorTagBarButton setBackgroundImage:menuBarImageDefault forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    [self.colorTagBarButton setBackgroundImage:menuBarImageLandscape forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
-    
+    self.colorTagBarButton = [[UIBarButtonItem alloc] initWithCustomView:tempColorButton];
+//140124 1.2 iOS 7 end
     [self.colorTagBarButton setIsAccessibilityElement:YES];
     [self.colorTagBarButton setAccessibilityLabel: NSLocalizedString(@"Show tag colors", nil)];
     [self.colorTagBarButton setAccessibilityTraits: UIAccessibilityTraitButton];
+//140124 1.2 iOS 7 begin
+    UIButton *tempNoColorButton = [UIButton buttonWithType:UIButtonTypeCustom];
     
-    self.noColorTagBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                style:UIBarButtonItemStyleBordered
-                                                               target:self
-                                                               action:@selector(showTagColors)];
+    [tempNoColorButton addTarget:self action:@selector(showTagColors) forControlEvents:UIControlEventTouchUpInside];
+    [tempNoColorButton setImage:[UIImage imageNamed:@"noColorImage.png"] forState:UIControlStateNormal];
+    [tempNoColorButton setShowsTouchWhenHighlighted:NO];
+    [tempNoColorButton sizeToFit];
     
-    menuBarImageDefault = [[UIImage imageNamed:@"noColor57.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    menuBarImageLandscape = [[UIImage imageNamed:@"noColor68.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    
-    [self.noColorTagBarButton setBackgroundImage:menuBarImageDefault forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    [self.noColorTagBarButton setBackgroundImage:menuBarImageLandscape forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
-    
+    self.noColorTagBarButton = [[UIBarButtonItem alloc] initWithCustomView:tempNoColorButton];
+//140124 1.2 iOS 7 end
     [self.noColorTagBarButton setIsAccessibilityElement:YES];
     [self.noColorTagBarButton setAccessibilityLabel: NSLocalizedString(@"Hide tqg colors", nil)];
     [self.noColorTagBarButton setAccessibilityTraits: UIAccessibilityTraitButton];
@@ -533,7 +529,6 @@ BOOL excludeICloudItems;
         [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects:self.playBarButton, self.tagBarButton, nil]];
         self.title = nil;
     } else if (!playingItem && showTagButton) {
-        //        self.navigationItem.rightBarButtonItem= nil;
         [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects: self.tagBarButton, nil]];
         self.title = nil;
     } else if (!showTagButton && playingItem) {
@@ -578,7 +573,7 @@ BOOL excludeICloudItems;
     
     BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
     
-    CGFloat navBarAdjustment = isPortrait ? 0 : 3;
+    CGFloat navBarAdjustment = isPortrait ? 0 : 7;
     
     
     //    CGFloat navBarAdjustment;
