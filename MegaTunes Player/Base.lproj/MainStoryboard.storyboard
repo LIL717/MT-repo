@@ -185,7 +185,7 @@
                         <viewControllerLayoutGuide type="bottom" id="odI-eg-HCw"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="1ht-Bf-15S">
-                        <rect key="frame" x="0.0" y="94" width="320" height="386"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hvR-vh-6Bp" customClass="AutoScrollLabel">
@@ -209,8 +209,8 @@
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" contentMode="left" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jp7-Ow-fVH">
-                                <rect key="frame" x="10" y="114" width="126" height="52"/>
+                            <label opaque="NO" clipsSubviews="YES" contentMode="left" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jp7-Ow-fVH" userLabel="elapsedLabel">
+                                <rect key="frame" x="4" y="114" width="126" height="52"/>
                                 <accessibility key="accessibilityConfiguration" hint="Tap to magnify." label="Elapsed time">
                                     <accessibilityTraits key="traits" none="YES" staticText="YES" updatesFrequently="YES"/>
                                     <bool key="isElement" value="YES"/>
@@ -228,13 +228,12 @@
                                 </connections>
                             </label>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1000" translatesAutoresizingMaskIntoConstraints="NO" id="vBs-Pg-YLN" customClass="OBSlider">
-                                <rect key="frame" x="18" y="83" width="284" height="24"/>
+                                <rect key="frame" x="18" y="83" width="283" height="24"/>
                                 <accessibility key="accessibilityConfiguration" label="Progress Bar">
                                     <bool key="isElement" value="YES"/>
                                 </accessibility>
                                 <constraints>
-                                    <constraint firstAttribute="width" priority="500" constant="250" id="OUB-yb-lG0"/>
-                                    <constraint firstAttribute="height" constant="23" id="rGt-3F-w2X"/>
+                                    <constraint firstAttribute="height" constant="23" id="jZV-5Z-gZx"/>
                                 </constraints>
                                 <connections>
                                     <action selector="handleScrub:" destination="SKu-HW-GrJ" eventType="valueChanged" id="WW8-Zn-cHw"/>
@@ -243,8 +242,8 @@
                                     <action selector="handleScrubberTouchUp:" destination="SKu-HW-GrJ" eventType="touchUpInside" id="iAh-SQ-xkS"/>
                                 </connections>
                             </slider>
-                            <label opaque="NO" clipsSubviews="YES" contentMode="left" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r00-yo-I0n">
-                                <rect key="frame" x="183" y="114" width="128" height="52"/>
+                            <label opaque="NO" clipsSubviews="YES" contentMode="left" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r00-yo-I0n" userLabel="remainingLabel">
+                                <rect key="frame" x="188" y="114" width="128" height="52"/>
                                 <accessibility key="accessibilityConfiguration" hint="Tap to magnify." label="Remaining time">
                                     <accessibilityTraits key="traits" none="YES" staticText="YES" updatesFrequently="YES"/>
                                     <bool key="isElement" value="YES"/>
@@ -262,7 +261,7 @@
                                 </connections>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="926" text="" lineBreakMode="clip" minimumFontSize="10" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pNh-na-wBJ" userLabel="Next:">
-                                <rect key="frame" x="3" y="336" width="108" height="46"/>
+                                <rect key="frame" x="3" y="366" width="108" height="46"/>
                                 <accessibility key="accessibilityConfiguration" label="Next track">
                                     <bool key="isElement" value="YES"/>
                                 </accessibility>
@@ -275,10 +274,10 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <scrollView clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UXV-Pt-1xE">
-                                <rect key="frame" x="108" y="333" width="212" height="52"/>
+                                <rect key="frame" x="112" y="363" width="208" height="52"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="clip" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="819-GM-MVw">
-                                        <rect key="frame" x="0.0" y="0.0" width="212" height="52"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="209" height="52"/>
                                         <accessibility key="accessibilityConfiguration" hint="Tap to magnify."/>
                                         <fontDescription key="fontDescription" type="system" pointSize="44"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -299,7 +298,7 @@
                                 </connections>
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EYp-S6-Fep" customClass="AccessibleButton">
-                                <rect key="frame" x="11" y="185" width="92" height="62"/>
+                                <rect key="frame" x="11" y="215" width="92" height="62"/>
                                 <accessibility key="accessibilityConfiguration" label="Previous track">
                                     <bool key="isElement" value="YES"/>
                                 </accessibility>
@@ -308,7 +307,7 @@
                                     <constraint firstAttribute="height" constant="62" id="yCs-Gp-uvO"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" image="bigrewind.png" backgroundImage="black-button.png">
+                                <state key="normal" image="bigrewind">
                                     <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -320,7 +319,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U4I-PN-hea" customClass="AccessibleButton">
-                                <rect key="frame" x="114" y="185" width="92" height="62"/>
+                                <rect key="frame" x="114" y="215" width="92" height="62"/>
                                 <accessibility key="accessibilityConfiguration" hint="" label="">
                                     <bool key="isElement" value="YES"/>
                                 </accessibility>
@@ -328,7 +327,7 @@
                                     <constraint firstAttribute="height" constant="62" id="Sbt-LP-BMB"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" image="bigplay.png" backgroundImage="black-button.png">
+                                <state key="normal" image="bigplay">
                                     <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -340,12 +339,12 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xek-mb-ENQ" customClass="AccessibleButton">
-                                <rect key="frame" x="218" y="185" width="92" height="62"/>
+                                <rect key="frame" x="218" y="215" width="92" height="62"/>
                                 <accessibility key="accessibilityConfiguration" label="Next track">
                                     <bool key="isElement" value="YES"/>
                                 </accessibility>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" image="bigforward.png" backgroundImage="black-button.png">
+                                <state key="normal" image="bigforward">
                                     <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -357,7 +356,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wwo-eb-cjv">
-                                <rect key="frame" x="11" y="257" width="92" height="62"/>
+                                <rect key="frame" x="11" y="287" width="92" height="62"/>
                                 <accessibility key="accessibilityConfiguration" label="">
                                     <accessibilityTraits key="traits" none="YES" button="YES"/>
                                     <bool key="isElement" value="YES"/>
@@ -367,7 +366,7 @@
                                     <constraint firstAttribute="height" constant="62" id="wMa-Cu-Ntc"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" image="bigrepeat.png" backgroundImage="black-button.png">
+                                <state key="normal" image="bigrepeat">
                                     <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -379,13 +378,13 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YF1-6P-sPE" customClass="AccessibleButton">
-                                <rect key="frame" x="218" y="257" width="92" height="62"/>
+                                <rect key="frame" x="218" y="287" width="92" height="62"/>
                                 <accessibility key="accessibilityConfiguration" label="Shuffle">
                                     <accessibilityTraits key="traits" none="YES" button="YES"/>
                                     <bool key="isElement" value="YES"/>
                                 </accessibility>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" image="bigshuffle.png" backgroundImage="black-button.png">
+                                <state key="normal" image="bigshuffle">
                                     <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -397,7 +396,7 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jQh-tN-5vH" customClass="MPVolumeView">
-                                <rect key="frame" x="20" y="341" width="280" height="40"/>
+                                <rect key="frame" x="20" y="371" width="280" height="40"/>
                                 <accessibility key="accessibilityConfiguration" label="">
                                     <bool key="isElement" value="NO"/>
                                 </accessibility>
@@ -415,7 +414,7 @@
                                     <constraint firstAttribute="width" constant="42" id="czy-2P-RZM"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" image="infoLightButtonImage.png" backgroundImage="infoSelectedButtonImage.png">
+                                <state key="normal" image="infoLightButtonImage" backgroundImage="infoSelectedButtonImage">
                                     <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -436,7 +435,6 @@
                             <constraint firstItem="hvR-vh-6Bp" firstAttribute="leading" secondItem="1ht-Bf-15S" secondAttribute="leading" id="90T-EH-bHM"/>
                             <constraint firstItem="U4I-PN-hea" firstAttribute="bottom" secondItem="Xek-mb-ENQ" secondAttribute="bottom" id="AGq-Zl-Vyg"/>
                             <constraint firstItem="vBs-Pg-YLN" firstAttribute="top" secondItem="uyn-go-sp7" secondAttribute="bottom" constant="8" symbolic="YES" id="B3b-sj-fJ7"/>
-                            <constraint firstAttribute="trailing" secondItem="vBs-Pg-YLN" secondAttribute="trailing" constant="20" symbolic="YES" id="BW5-tL-gmS"/>
                             <constraint firstAttribute="bottom" secondItem="pNh-na-wBJ" secondAttribute="bottom" constant="4" id="C5y-rx-YhF"/>
                             <constraint firstItem="jQh-tN-5vH" firstAttribute="leading" secondItem="1ht-Bf-15S" secondAttribute="leading" constant="20" symbolic="YES" id="CP9-v2-Nfe"/>
                             <constraint firstAttribute="centerX" secondItem="U4I-PN-hea" secondAttribute="centerX" id="EAz-n6-niJ"/>
@@ -445,12 +443,13 @@
                             <constraint firstItem="wwo-eb-cjv" firstAttribute="leading" secondItem="EYp-S6-Fep" secondAttribute="leading" id="FqK-az-kxZ"/>
                             <constraint firstItem="hvR-vh-6Bp" firstAttribute="leading" secondItem="AEk-F1-SJe" secondAttribute="leading" id="Fqk-pi-N1B"/>
                             <constraint firstAttribute="bottom" secondItem="UXV-Pt-1xE" secondAttribute="bottom" constant="1" id="GGi-So-jWx"/>
+                            <constraint firstAttribute="trailing" secondItem="vBs-Pg-YLN" secondAttribute="trailing" constant="21" id="Jld-bM-wPW"/>
                             <constraint firstItem="r00-yo-I0n" firstAttribute="baseline" secondItem="jp7-Ow-fVH" secondAttribute="baseline" id="LDJ-yd-4v6"/>
                             <constraint firstItem="UXV-Pt-1xE" firstAttribute="trailing" secondItem="1ht-Bf-15S" secondAttribute="trailing" id="Nn0-9R-Zo2"/>
                             <constraint firstItem="hvR-vh-6Bp" firstAttribute="top" secondItem="1ht-Bf-15S" secondAttribute="top" constant="20" symbolic="YES" id="NwT-bl-Ibg"/>
                             <constraint firstItem="wwo-eb-cjv" firstAttribute="top" secondItem="EYp-S6-Fep" secondAttribute="bottom" constant="10" id="PQO-7M-bj7"/>
                             <constraint firstItem="EYp-S6-Fep" firstAttribute="leading" secondItem="1ht-Bf-15S" secondAttribute="leading" constant="11" id="Qi8-Uh-bpY"/>
-                            <constraint firstItem="UXV-Pt-1xE" firstAttribute="leading" secondItem="1ht-Bf-15S" secondAttribute="leading" constant="108" id="QtE-LH-iN9"/>
+                            <constraint firstItem="UXV-Pt-1xE" firstAttribute="leading" secondItem="1ht-Bf-15S" secondAttribute="leading" constant="112" id="QtE-LH-iN9"/>
                             <constraint firstAttribute="trailing" secondItem="uyn-go-sp7" secondAttribute="trailing" id="VH7-h6-HTD"/>
                             <constraint firstItem="U4I-PN-hea" firstAttribute="top" secondItem="1ht-Bf-15S" secondAttribute="top" constant="185" id="WX7-20-H70"/>
                             <constraint firstItem="UXV-Pt-1xE" firstAttribute="centerY" secondItem="pNh-na-wBJ" secondAttribute="centerY" id="XWw-xC-Sng"/>
@@ -461,21 +460,21 @@
                             <constraint firstItem="U4I-PN-hea" firstAttribute="width" secondItem="EYp-S6-Fep" secondAttribute="width" id="c6c-nJ-dcp"/>
                             <constraint firstItem="YF1-6P-sPE" firstAttribute="leading" secondItem="Xek-mb-ENQ" secondAttribute="leading" id="c7F-Ou-Ys4"/>
                             <constraint firstItem="hvR-vh-6Bp" firstAttribute="top" secondItem="AEk-F1-SJe" secondAttribute="top" id="dX5-01-Ej3"/>
+                            <constraint firstItem="vBs-Pg-YLN" firstAttribute="leading" secondItem="1ht-Bf-15S" secondAttribute="leading" constant="20" id="eNp-wC-9Ew"/>
                             <constraint firstItem="EYp-S6-Fep" firstAttribute="top" secondItem="U4I-PN-hea" secondAttribute="top" id="ecR-fA-kBu"/>
                             <constraint firstItem="EYp-S6-Fep" firstAttribute="top" secondItem="Xek-mb-ENQ" secondAttribute="top" id="gO7-xD-xEL"/>
-                            <constraint firstItem="vBs-Pg-YLN" firstAttribute="leading" secondItem="1ht-Bf-15S" secondAttribute="leading" constant="20" symbolic="YES" id="glp-ve-JGO"/>
-                            <constraint firstAttribute="trailing" secondItem="r00-yo-I0n" secondAttribute="trailing" constant="9" id="guC-xg-p6J"/>
+                            <constraint firstAttribute="trailing" secondItem="r00-yo-I0n" secondAttribute="trailing" constant="4" id="guC-xg-p6J"/>
                             <constraint firstItem="U4I-PN-hea" firstAttribute="baseline" secondItem="EYp-S6-Fep" secondAttribute="baseline" id="jl1-5J-8SQ"/>
-                            <constraint firstItem="jp7-Ow-fVH" firstAttribute="leading" secondItem="1ht-Bf-15S" secondAttribute="leading" constant="10" id="ki7-ku-aXi"/>
+                            <constraint firstItem="jp7-Ow-fVH" firstAttribute="leading" secondItem="1ht-Bf-15S" secondAttribute="leading" constant="4" id="ki7-ku-aXi"/>
                             <constraint firstItem="EYp-S6-Fep" firstAttribute="width" secondItem="Xek-mb-ENQ" secondAttribute="width" id="lmi-J6-t6I"/>
                             <constraint firstItem="AEk-F1-SJe" firstAttribute="trailing" secondItem="hvR-vh-6Bp" secondAttribute="trailing" id="nMI-HC-u3f"/>
+                            <constraint firstItem="odI-eg-HCw" firstAttribute="top" secondItem="U4I-PN-hea" secondAttribute="bottom" constant="139" id="pNo-N6-J1i"/>
                             <constraint firstItem="uyn-go-sp7" firstAttribute="top" secondItem="1ht-Bf-15S" secondAttribute="top" constant="20" symbolic="YES" id="pWC-ac-eYL"/>
                             <constraint firstAttribute="trailing" secondItem="jQh-tN-5vH" secondAttribute="trailing" constant="20" symbolic="YES" id="rsD-rx-8hJ"/>
                             <constraint firstItem="U4I-PN-hea" firstAttribute="baseline" secondItem="Xek-mb-ENQ" secondAttribute="baseline" id="tZC-PC-7A0"/>
                             <constraint firstItem="wwo-eb-cjv" firstAttribute="top" secondItem="YF1-6P-sPE" secondAttribute="top" id="uRn-oZ-muf"/>
                             <constraint firstAttribute="trailing" secondItem="Xek-mb-ENQ" secondAttribute="trailing" constant="10" id="xja-DQ-pUS"/>
                             <constraint firstItem="hvR-vh-6Bp" firstAttribute="trailing" secondItem="1ht-Bf-15S" secondAttribute="trailing" constant="-40" id="ypq-yz-qeW"/>
-                            <constraint firstAttribute="centerX" secondItem="vBs-Pg-YLN" secondAttribute="centerX" id="zvS-op-ef9"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="p1X-hF-phx"/>
@@ -488,12 +487,13 @@
                         <outlet property="elapsedTimeLabel" destination="jp7-Ow-fVH" id="XRO-tm-sfx"/>
                         <outlet property="forwardButton" destination="Xek-mb-ENQ" id="dtw-nc-89v"/>
                         <outlet property="initialNowPlayingLabel" destination="AEk-F1-SJe" id="jG8-SL-2IW"/>
-                        <outlet property="leadingSpaceToSliderConstraint" destination="glp-ve-JGO" id="2Ke-u6-i8s"/>
+                        <outlet property="leadingSpaceToSliderConstraint" destination="eNp-wC-9Ew" id="ypq-PR-p1I"/>
                         <outlet property="nextLabel" destination="pNh-na-wBJ" id="miO-kU-qIM"/>
                         <outlet property="nextSongLabel" destination="819-GM-MVw" id="2kV-hL-AR7"/>
                         <outlet property="nextSongScrollView" destination="UXV-Pt-1xE" id="B9h-AU-WyF"/>
                         <outlet property="nowPlayingInfoButton" destination="uyn-go-sp7" id="Vaa-CZ-no2"/>
                         <outlet property="nowPlayingLabel" destination="hvR-vh-6Bp" id="xdE-lz-O9B"/>
+                        <outlet property="playButtonToBottomSpace" destination="pNo-N6-J1i" id="S6E-Is-hED"/>
                         <outlet property="playPauseButton" destination="U4I-PN-hea" id="IKd-YN-7LN"/>
                         <outlet property="progressSlider" destination="vBs-Pg-YLN" id="r3f-gC-8qq"/>
                         <outlet property="remainingTimeLabel" destination="r00-yo-I0n" id="unW-43-0PV"/>
@@ -501,7 +501,7 @@
                         <outlet property="rewindButton" destination="EYp-S6-Fep" id="Evi-ip-XTu"/>
                         <outlet property="shuffleButton" destination="YF1-6P-sPE" id="81D-xE-uol"/>
                         <outlet property="topSpaceToPlayButton" destination="WX7-20-H70" id="yHs-dh-Tut"/>
-                        <outlet property="trailingSpaceFromSliderConstraint" destination="BW5-tL-gmS" id="dYf-2E-As2"/>
+                        <outlet property="trailingSpaceFromSliderConstraint" destination="Jld-bM-wPW" id="xGx-fu-Pp4"/>
                         <outlet property="verticalSpaceBetweenRewindAndReplay" destination="Fjt-Rx-bCJ" id="qIv-KA-gt3"/>
                         <outlet property="verticalSpaceBetweenSliderAndElapsedTime" destination="8LE-Kx-iS3" id="pov-WZ-Lcj"/>
                         <outlet property="verticalSpaceBetweenSliderAndRemainingTime" destination="1UV-e5-F7v" id="rAW-Oa-Wxx"/>
@@ -1112,7 +1112,9 @@
                             <outlet property="delegate" destination="tmU-Ze-HBf" id="yNJ-HZ-E8p"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="h9m-ba-eXf"/>
+                    <navigationItem key="navigationItem" id="h9m-ba-eXf">
+                        <barButtonItem key="backBarButtonItem" title=" " id="gUr-9d-4DC"/>
+                    </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO"/>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <connections>
@@ -1816,16 +1818,16 @@
         </scene>
     </scenes>
     <resources>
-        <image name="bigforward.png" width="64" height="60"/>
-        <image name="bigplay.png" width="64" height="60"/>
-        <image name="bigrepeat.png" width="64" height="64"/>
-        <image name="bigrewind.png" width="64" height="60"/>
-        <image name="bigshuffle.png" width="62" height="62"/>
+        <image name="bigforward" width="64" height="60"/>
+        <image name="bigplay" width="64" height="60"/>
+        <image name="bigrepeat" width="64" height="64"/>
+        <image name="bigrewind" width="64" height="60"/>
+        <image name="bigshuffle" width="62" height="62"/>
         <image name="black-button.png" width="301" height="58"/>
         <image name="iTunesStoreIcon" width="45" height="45"/>
         <image name="iTunesStoreIcon.png" width="45" height="45"/>
-        <image name="infoLightButtonImage.png" width="42" height="55"/>
-        <image name="infoSelectedButtonImage.png" width="42" height="55"/>
+        <image name="infoLightButtonImage" width="42" height="55"/>
+        <image name="infoSelectedButtonImage" width="42" height="55"/>
         <image name="list-background.png" width="320" height="77"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
@@ -1834,14 +1836,14 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="5Qv-VH-YKH"/>
+        <segue reference="pO3-jk-z6Z"/>
+        <segue reference="cs7-xB-URz"/>
+        <segue reference="qWI-HD-eSG"/>
         <segue reference="hv1-71-OGq"/>
         <segue reference="OaX-wz-MBb"/>
         <segue reference="hot-4h-GjM"/>
-        <segue reference="qWI-HD-eSG"/>
         <segue reference="pWB-et-bqe"/>
-        <segue reference="TSf-v1-yU3"/>
-        <segue reference="hHs-2t-p2p"/>
         <segue reference="Xbd-a7-Wgl"/>
+        <segue reference="hHs-2t-p2p"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -384,8 +384,12 @@ BOOL delayPlaybackStateChange;
     [self.volumeView setVolumeThumbImage:[UIImage imageNamed:@"shinyVolumeHandle.png"] forState:UIControlStateNormal];
     
     if (!UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
-        [self.view removeConstraint:self.leadingSpaceToSliderConstraint];
-        [self.view removeConstraint:self.trailingSpaceFromSliderConstraint];
+//140127 1.2 iOS 7 begin
+        //        [self.view removeConstraint:self.leadingSpaceToSliderConstraint];
+        //        [self.view removeConstraint:self.trailingSpaceFromSliderConstraint];
+        self.leadingSpaceToSliderConstraint.constant = 120;
+        self.trailingSpaceFromSliderConstraint.constant = 135;
+//140127 1.2 iOS 7 end
         [self.view removeConstraint:self.verticalSpaceBetweenSliderAndElapsedTime];
         [self.view removeConstraint:self.verticalSpaceBetweenSliderAndRemainingTime];
         [self.view removeConstraint:self.verticalSpaceBetweenRewindAndReplay];
@@ -396,10 +400,12 @@ BOOL delayPlaybackStateChange;
     } else {
         
         [self.view removeConstraint:self.topSpaceToPlayButton];
-//130926  ios 7 problem is here
         [self.view addConstraint: self.playButtonToBottomSpace];
         self.playButtonToBottomSpace.constant = 190;
-        
+//140127 1.2 iOS 7 begin
+        self.leadingSpaceToSliderConstraint.constant = 20;
+        self.trailingSpaceFromSliderConstraint.constant = 20;
+//140127 1.2 iOS 7 end
         
     }
     
@@ -434,8 +440,10 @@ BOOL delayPlaybackStateChange;
     
     [nowPlayingLabel  refreshLabels];
     if (UIInterfaceOrientationIsLandscape(orientation)) {
-        [self.view removeConstraint:self.leadingSpaceToSliderConstraint];
-        [self.view removeConstraint:self.trailingSpaceFromSliderConstraint];
+//140127 1.2 iOS 7 begin
+        self.leadingSpaceToSliderConstraint.constant = 120;
+        self.trailingSpaceFromSliderConstraint.constant = 135;
+//140127 1.2 iOS 7 end
         [self.view removeConstraint:self.verticalSpaceBetweenSliderAndElapsedTime];
         [self.view removeConstraint:self.verticalSpaceBetweenSliderAndRemainingTime];
         [self.view removeConstraint:self.verticalSpaceBetweenRewindAndReplay];
@@ -458,8 +466,10 @@ BOOL delayPlaybackStateChange;
         
     } else {
         
-        [self.view addConstraint:self.leadingSpaceToSliderConstraint];
-        [self.view addConstraint:self.trailingSpaceFromSliderConstraint];
+//140127 1.2 iOS 7 begin
+        self.leadingSpaceToSliderConstraint.constant = 20;
+        self.trailingSpaceFromSliderConstraint.constant = 20;
+//140127 1.2 iOS 7 end
         [self.view addConstraint:self.verticalSpaceBetweenSliderAndElapsedTime];
         [self.view addConstraint:self.verticalSpaceBetweenSliderAndRemainingTime];
         [self.view addConstraint:self.verticalSpaceBetweenRewindAndReplay];
@@ -522,6 +532,9 @@ BOOL delayPlaybackStateChange;
 - (void)viewWillAppear:(BOOL)animated {
     LogMethod();
     [super viewWillAppear: animated];
+//131216 1.2 iOS 7 begin
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+//131216 1.2 iOS 7 end
     
     self.swipeLeftRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(togglePlaylistRemainingAndTitle:)];
     [self.swipeLeftRight setDirection:(UISwipeGestureRecognizerDirectionRight | UISwipeGestureRecognizerDirectionLeft )];

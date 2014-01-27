@@ -279,17 +279,16 @@ NSString *myAffiliateID;
 
 
 //130906 1.1 add Store Button end
-
-    self.rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                           style:UIBarButtonItemStyleBordered
-                                                          target:self
-                                                          action:@selector(viewNowPlaying)];
+//140127 1.2 iOS 7 begin
+    UIButton *tempPlayButton = [UIButton buttonWithType:UIButtonTypeCustom];
     
-    UIImage *menuBarImageDefault = [[UIImage imageNamed:@"redWhitePlay57.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    UIImage *menuBarImageLandscape = [[UIImage imageNamed:@"redWhitePlay68.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    [tempPlayButton addTarget:self action:@selector(viewNowPlaying) forControlEvents:UIControlEventTouchUpInside];
+    [tempPlayButton setImage:[UIImage imageNamed:@"redWhitePlayImage.png"] forState:UIControlStateNormal];
+    [tempPlayButton setShowsTouchWhenHighlighted:NO];
+    [tempPlayButton sizeToFit];
     
-    [self.rightBarButton setBackgroundImage:menuBarImageDefault forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    [self.rightBarButton setBackgroundImage:menuBarImageLandscape forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
+    self.rightBarButton = [[UIBarButtonItem alloc] initWithCustomView:tempPlayButton];
+//140127 1.2 iOS 7 end
     
     [self.rightBarButton setIsAccessibilityElement:YES];
     [self.rightBarButton setAccessibilityLabel: NSLocalizedString(@"Now Playing", nil)];
@@ -525,8 +524,6 @@ NSString *myAffiliateID;
 //131216 1.2 iOS 7 end
     
     [self setIPodLibraryChanged: NO];
-    self.title = NSLocalizedString(@"Select Music", nil);
-    self.navigationItem.titleView = [self customizeTitleView];
     
     NSString *playingItem = [[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyTitle];
     
@@ -540,6 +537,9 @@ NSString *myAffiliateID;
     } else {
         self.navigationItem.rightBarButtonItem= nil;
     }
+    self.title = NSLocalizedString(@"Select Music", nil);
+    self.navigationItem.titleView = [self customizeTitleView];
+    
     [self updateLayoutForNewOrientation: self.interfaceOrientation];
     
     return;

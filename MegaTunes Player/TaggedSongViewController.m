@@ -135,18 +135,16 @@ BOOL excludeICloudItems;
     self.navigationController.navigationBar.topItem.title = @"";
     
 //131204 1.2 iOS 7 end
+//140127 1.2 iOS 7 begin
+    UIButton *tempPlayButton = [UIButton buttonWithType:UIButtonTypeCustom];
     
-    self.playBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                          style:UIBarButtonItemStyleBordered
-                                                         target:self
-                                                         action:@selector(viewNowPlaying)];
+    [tempPlayButton addTarget:self action:@selector(viewNowPlaying) forControlEvents:UIControlEventTouchUpInside];
+    [tempPlayButton setImage:[UIImage imageNamed:@"redWhitePlayImage.png"] forState:UIControlStateNormal];
+    [tempPlayButton setShowsTouchWhenHighlighted:NO];
+    [tempPlayButton sizeToFit];
     
-    UIImage *menuBarImageDefault = [[UIImage imageNamed:@"redWhitePlay57.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    UIImage *menuBarImageLandscape = [[UIImage imageNamed:@"redWhitePlay68.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    
-    [self.playBarButton setBackgroundImage:menuBarImageDefault forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    [self.playBarButton setBackgroundImage:menuBarImageLandscape forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
-    
+    self.playBarButton = [[UIBarButtonItem alloc] initWithCustomView:tempPlayButton];
+//140127 1.2 iOS 7 end
     [self.playBarButton setIsAccessibilityElement:YES];
     [self.playBarButton setAccessibilityLabel: NSLocalizedString(@"Now Playing", nil)];
     [self.playBarButton setAccessibilityTraits: UIAccessibilityTraitButton];
