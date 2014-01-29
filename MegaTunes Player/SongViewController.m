@@ -127,35 +127,9 @@ BOOL excludeICloudItems;
     
     
 //131203 1.2 iOS 7 begin
-
-//    //set up grouped table view to look like plain (so that section headers won't stick to top)
-//    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
-//    self.songTableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]];
-//    self.songTableView.opaque = NO;
-//    self.songTableView.backgroundView = nil; // THIS ONE TRIPPED ME UP!
-//    //    backgroundImage = [UIImage imageNamed: @"list-background.png"];
-    
-//131203 1.2 iOS 7 end
-
-    
-//131204 1.2 iOS 7 begin
-    
-    //    self.navigationItem.hidesBackButton = YES; // Important
-    //    //initWithTitle cannot be nil, must be @""
-    //	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
-    //                                                                             style:UIBarButtonItemStyleBordered
-    //                                                                            target:self
-    //                                                                            action:@selector(goBackClick)];
-    //
-    //    UIImage *menuBarImage48 = [[UIImage imageNamed:@"arrow_left_48_white.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    //    UIImage *menuBarImage58 = [[UIImage imageNamed:@"arrow_left_58_white.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    //    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage48 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    //    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage58 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
     
     self.navigationController.navigationBar.topItem.title = @"";
     
-//131204 1.2 iOS 7 end
-//140127 1.2 iOS 7 begin
     UIButton *tempPlayButton = [UIButton buttonWithType:UIButtonTypeCustom];
     
     [tempPlayButton addTarget:self action:@selector(viewNowPlaying) forControlEvents:UIControlEventTouchUpInside];
@@ -967,14 +941,6 @@ BOOL excludeICloudItems;
         }
 
 //131203 1.2 iOS 7 begin
-//        UIImage *cellBackgroundImage = [UIImage imageNamed: @"list-background.png"];
-//        UIImage *coloredImage = [cellBackgroundImage imageWithTint: tagColor];
-//        //        [searchResultsCell.backgroundView  setImage: coloredImage];
-//        //        searchResultsCell.textLabel.backgroundColor = tagColor;
-//        searchResultsCell.backgroundView = [[UIImageView alloc] initWithImage:coloredImage];
-//        UIImage *coloredBackgroundImage = [[UIImage imageNamed: @"list-background.png"] imageWithTint:tagColor];
-//        [searchResultsCell.textLabel setBackgroundColor:[UIColor colorWithPatternImage: coloredBackgroundImage]];
-
         searchResultsCell.backgroundColor = tagColor;
         searchResultsCell.textLabel.backgroundColor = tagColor;
         
@@ -994,7 +960,6 @@ BOOL excludeICloudItems;
         
 //131203 1.2 iOS 7 begin
 
-//        cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed: @"list-background.png"]];
         cell.selectedBackgroundView = [UIImageView alloc];
 
 //131203 1.2 iOS 7 end
@@ -1009,10 +974,6 @@ BOOL excludeICloudItems;
         
 //131203 1.2 iOS 7 begin
 
-//        UIImage *cellBackgroundImage = [UIImage imageNamed: @"list-background.png"];
-//        UIImage *coloredImage = [cellBackgroundImage imageWithTint: tagColor];
-//        [cell.cellBackgroundImageView  setImage: coloredImage];
-        
         cell.contentView.backgroundColor = tagColor;
         
 //131203 1.2 iOS 7 end
@@ -1305,22 +1266,6 @@ BOOL excludeICloudItems;
 }
 #pragma mark - Table view delegate
 
-//-(NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-//
-//    SongCell *cell = (SongCell *)[tableView cellForRowAtIndexPath:indexPath];
-//    UIImage *cellBackgroundImage = [UIImage imageNamed: @"list-background.png"];
-//    [cell.cellBackgroundImageView  setImage: cellBackgroundImage];
-////    cell.nameLabel.highlightedTextColor = [UIColor blueColor];
-//
-//    CGRect frame = CGRectMake(0, 53, self.songTableView.frame.size.width, 1);
-//    UIView *separatorLine = [[UILabel alloc] initWithFrame:frame];
-//    separatorLine.backgroundColor = [UIColor whiteColor];
-//    [cell.cellBackgroundImageView addSubview: separatorLine];
-//
-//    [cell.scrollView.scrollViewImageView  setImage: cellBackgroundImage];
-//
-//    return indexPath;
-//}
 //	 To conform to the Human Interface Guidelines, selections should not be persistent --
 //	 deselect the row after it has been selected.
 - (void) tableView: (UITableView *) tableView didSelectRowAtIndexPath: (NSIndexPath *) indexPath {

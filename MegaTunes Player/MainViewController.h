@@ -101,7 +101,7 @@
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceBetweenSliderAndElapsedTime;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceBetweenSliderAndRemainingTime;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceBetweenRewindAndReplay;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *topSpaceToPlayButton;
+//@property (strong, nonatomic) IBOutlet NSLayoutConstraint *topSpaceToPlayButton;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *playButtonToBottomSpace;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *centerXInScrollView;
 

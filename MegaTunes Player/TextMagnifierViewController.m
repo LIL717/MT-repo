@@ -34,12 +34,6 @@
     LogMethod();
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    
-//131203 1.2 iOS 7 begin
-    
-    //[self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
-
-//131203 1.2 iOS 7 end
 
     musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
     

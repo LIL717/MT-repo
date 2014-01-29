@@ -59,30 +59,6 @@
     
 //131203 1.2 iOS 7 begin
     
-//    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
-//    [self.colorView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
-    
-//131203 1.2 iOS 7 end
-
-    //make the back arrow for left bar button item
-    
-    //131204 1.2 iOS 7 begin
-    //    self.navigationItem.hidesBackButton = YES; // Important
-    //    //initWithTitle cannot be nil, must be @""
-    //	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
-    //                                                                             style:UIBarButtonItemStyleBordered
-    //                                                                            target:self
-    //                                                                            action:@selector(goBackClick)];
-    //
-    //    UIImage *menuBarImage48 = [[UIImage imageNamed:@"arrow_left_48_white.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    //    UIImage *menuBarImage58 = [[UIImage imageNamed:@"arrow_left_58_white.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    //    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage48 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    //    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage58 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
-    //
-    //    [self.navigationItem.leftBarButtonItem setIsAccessibilityElement:YES];
-    //    [self.navigationItem.leftBarButtonItem setAccessibilityLabel: NSLocalizedString(@"Back", nil)];
-    //    [self.navigationItem.leftBarButtonItem setAccessibilityTraits: UIAccessibilityTraitButton];
-    
     self.navigationController.navigationBar.topItem.title = @"";
     
     //131204 1.2 iOS 7 end
@@ -127,8 +103,6 @@
         
 //131203 1.2 iOS 7 begin
 
-//        UIImage *coloredBackgroundImage = [[UIImage imageNamed: @"list-background.png"] imageWithTint:pickedColor];
-//        [self.tagName setBackgroundColor:[UIColor colorWithPatternImage: coloredBackgroundImage]];
         [self.tagName setBackgroundColor:[UIColor blackColor]];
 
         
@@ -218,12 +192,8 @@
 - (void) textFieldDidBeginEditing: (UITextField *) textField {
     //    LogMethod();
     if (!self.hasColor) {
-        UIImage *coloredBackgroundImage = [[UIImage imageNamed: @"list-background.png"] imageWithTint:[UIColor darkGrayColor]];
-        [textField setBackgroundColor:[UIColor colorWithPatternImage: coloredBackgroundImage]];
 //131203 1.2 iOS 7 begin
         
-        //UIImage *coloredBackgroundImage = [[UIImage imageNamed: @"list-background.png"] imageWithTint:[UIColor darkGrayColor]];
-        //[textField setBackgroundColor:[UIColor colorWithPatternImage: coloredBackgroundImage]];
         [textField setBackgroundColor:[UIColor blackColor]];
 
 //131203 1.2 iOS 7 end
@@ -322,8 +292,6 @@
     
 //131203 1.2 iOS 7 begin
     
-//    UIImage *coloredBackgroundImage = [[UIImage imageNamed: @"list-background.png"] imageWithTint:self.pickedColor];
-//    [self.tagName setBackgroundColor:[UIColor colorWithPatternImage: coloredBackgroundImage]];
     [self.tagName setBackgroundColor: self.pickedColor];
     
 //131203 1.2 iOS 7 end

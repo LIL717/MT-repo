@@ -57,24 +57,12 @@
         NSLog(@"setSelected:YES");
 //        self.selectionStyle = UITableViewCellSelectionStyleGray;
 
-//131203 1.2 iOS 7 begin
-        
-        //[self.cellBackgroundImageView  setImage: [UIImage imageNamed: @"list-background.png"]];
-        
-//131203 1.2 iOS 7 end
-
 //        self.nameLabel.highlightedTextColor = [UIColor blueColor];
 
         CGRect frame = CGRectMake(0, 53, self.frame.size.width, 1);
         UIView *separatorLine = [[UILabel alloc] initWithFrame:frame];
         separatorLine.backgroundColor = [UIColor whiteColor];
         [self.backgroundView addSubview: separatorLine];
-
-//131203 1.2 iOS 7 begin
-        
-        //[self.cellBackgroundImageView  setImage: [UIImage imageNamed: @"list-background.png"]];
-        
-//131203 1.2 iOS 7 end
     } else {
         self.nameLabel.textColor = [UIColor whiteColor];
         self.durationLabel.textColor = [UIColor whiteColor];

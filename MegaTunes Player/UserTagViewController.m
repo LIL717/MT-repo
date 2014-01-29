@@ -84,29 +84,6 @@ NSString *actionType;
     
 //131203 1.2 iOS 7 begin
     
-    //    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
-    
-//131203 1.2 iOS 7 end
-    
-    //make the back arrow for left bar button item
-    
-    //131204 1.2 iOS 7 begin
-    //    self.navigationItem.hidesBackButton = YES; // Important
-    //    //initWithTitle cannot be nil, must be @""
-    //	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
-    //                                                                             style:UIBarButtonItemStyleBordered
-    //                                                                            target:self
-    //                                                                            action:@selector(goBackClick)];
-    //
-    //    UIImage *menuBarImage48 = [[UIImage imageNamed:@"arrow_left_48_white.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    //    UIImage *menuBarImage58 = [[UIImage imageNamed:@"arrow_left_58_white.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    //    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage48 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    //    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage58 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
-    //
-    //    [self.navigationItem.leftBarButtonItem setIsAccessibilityElement:YES];
-    //    [self.navigationItem.leftBarButtonItem setAccessibilityLabel: NSLocalizedString(@"Back", nil)];
-    //    [self.navigationItem.leftBarButtonItem setAccessibilityTraits: UIAccessibilityTraitButton];
-    
     self.navigationController.navigationBar.topItem.title = @"";
     
     //131204 1.2 iOS 7 end
@@ -354,10 +331,6 @@ NSString *actionType;
         UIColor *tagColor = [UIColor colorWithRed:(red/255.0f) green:(green/255.0f) blue:(blue/255.0f) alpha:(alpha/255.0f)];
 
 //131203 1.2 iOS 7 begin
-//        UIImage *cellBackgroundImage = [UIImage imageNamed: @"list-background.png"];
-//        UIImage *coloredImage = [cellBackgroundImage imageWithTint: tagColor];
-//        
-//        [cell.cellBackgroundImageView  setImage: coloredImage];
         cell.backgroundColor = tagColor;
 //131203 1.2 iOS 7 end
 

@@ -105,37 +105,9 @@ BOOL excludeICloudItems;
     self.showTags = YES;
     
 //131203 1.2 iOS 7 begin
-
-//    //set up grouped table view to look like plain (so that section headers won't stick to top)
-//    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
-//    self.songTableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]];
-//    self.songTableView.opaque = NO;
-//    self.songTableView.backgroundView = nil; // THIS ONE TRIPPED ME UP!
-//    //    backgroundImage = [UIImage imageNamed: @"list-background.png"];
-    
-//131203 1.2 iOS 7 end
-
-    
-    //make the back arrow for left bar button item
-    
-//131204 1.2 iOS 7 begin
-    
-    //    self.navigationItem.hidesBackButton = YES; // Important
-    //    //initWithTitle cannot be nil, must be @""
-    //	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
-    //                                                                             style:UIBarButtonItemStyleBordered
-    //                                                                            target:self
-    //                                                                            action:@selector(goBackClick)];
-    //
-    //    UIImage *menuBarImage48 = [[UIImage imageNamed:@"arrow_left_48_white.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    //    UIImage *menuBarImage58 = [[UIImage imageNamed:@"arrow_left_58_white.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    //    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage48 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    //    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage58 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
     
     self.navigationController.navigationBar.topItem.title = @"";
-    
-//131204 1.2 iOS 7 end
-//140127 1.2 iOS 7 begin
+
     UIButton *tempPlayButton = [UIButton buttonWithType:UIButtonTypeCustom];
     
     [tempPlayButton addTarget:self action:@selector(viewNowPlaying) forControlEvents:UIControlEventTouchUpInside];
@@ -976,13 +948,7 @@ BOOL excludeICloudItems;
             tagColor = [UIColor blackColor];
         }
 //131203 1.2 iOS 7 begin
-        
-        //        UIImage *cellBackgroundImage = [UIImage imageNamed: @"list-background.png"];
-        //        UIImage *coloredImage = [cellBackgroundImage imageWithTint: tagColor];
-        //        searchResultsCell.backgroundView = [[UIImageView alloc] initWithImage:coloredImage];
-        //        UIImage *coloredBackgroundImage = [[UIImage imageNamed: @"list-background.png"] imageWithTint:tagColor];
-        //        [searchResultsCell.textLabel setBackgroundColor:[UIColor colorWithPatternImage: coloredBackgroundImage]];
-        
+
         searchResultsCell.backgroundColor = tagColor;
         searchResultsCell.textLabel.backgroundColor = tagColor;
         
@@ -1000,15 +966,6 @@ BOOL excludeICloudItems;
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         
         cell.nameLabel.text = [song valueForProperty:  MPMediaItemPropertyTitle];
-//131203 1.2 iOS 7 begin
-        
-        //        cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed: @"list-background.png"]];
-//        cell.selectedBackgroundView = [UIImageView alloc];
-        
-//131203 1.2 iOS 7 end
-        
-        
-
         
         UIColor *tagColor;
         tagColor = [UIColor blackColor];
@@ -1028,10 +985,6 @@ BOOL excludeICloudItems;
         
 //131203 1.2 iOS 7 begin
 
-//        UIImage *cellBackgroundImage = [UIImage imageNamed: @"list-background.png"];
-//        UIImage *coloredImage = [cellBackgroundImage imageWithTint: tagColor];
-//        [cell.cellBackgroundImageView  setImage: coloredImage];
-        
         cell.contentView.backgroundColor = tagColor;
         
 //131203 1.2 iOS 7 end

@@ -157,7 +157,7 @@
 @synthesize verticalSpaceBetweenSliderAndElapsedTime;
 @synthesize verticalSpaceBetweenSliderAndRemainingTime;
 @synthesize verticalSpaceBetweenRewindAndReplay;
-@synthesize topSpaceToPlayButton;
+//@synthesize topSpaceToPlayButton;
 @synthesize playButtonToBottomSpace;
 @synthesize centerXInScrollView;
 
@@ -220,19 +220,17 @@ BOOL delayPlaybackStateChange;
 
     
 //131204 1.2 iOS 7 end
+    //140127 1.2 iOS 7 begin
+    UIButton *tempStopWatchButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    
+    [tempStopWatchButton addTarget:self action:@selector(startStopWatch) forControlEvents:UIControlEventTouchUpInside];
+    [tempStopWatchButton setImage:[UIImage imageNamed:@"stopWatchImage.png"] forState:UIControlStateNormal];
+    [tempStopWatchButton setShowsTouchWhenHighlighted:NO];
+    [tempStopWatchButton sizeToFit];
+    
+    self.stopWatchBarButton = [[UIBarButtonItem alloc] initWithCustomView:tempStopWatchButton];
+    //140127 1.2 iOS 7 end
 
-    
-    self.stopWatchBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                               style:UIBarButtonItemStyleBordered
-                                                              target:self
-                                                              action:@selector(startStopWatch)];
-    
-    UIImage *menuBarImageDefault = [[UIImage imageNamed:@"stopWatchIcon57.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    UIImage *menuBarImageLandscape = [[UIImage imageNamed:@"stopWatchIcon68.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    
-    [self.stopWatchBarButton setBackgroundImage:menuBarImageDefault forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    [self.stopWatchBarButton setBackgroundImage:menuBarImageLandscape forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
-    
     [self.stopWatchBarButton setIsAccessibilityElement:YES];
     [self.stopWatchBarButton setAccessibilityLabel: NSLocalizedString(@"Stopwatch", nil)];
     [self.stopWatchBarButton setAccessibilityTraits: UIAccessibilityTraitButton];
@@ -240,12 +238,6 @@ BOOL delayPlaybackStateChange;
     
     //need this to use MPNowPlayingInfoCenter
     [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
-
-//131203 1.2 iOS 7 begin
-
-    //[self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
-    
-//131203 1.2 iOS 7 end
 
     [self setPlayedMusicOnce: NO];
     
@@ -393,13 +385,13 @@ BOOL delayPlaybackStateChange;
         [self.view removeConstraint:self.verticalSpaceBetweenSliderAndElapsedTime];
         [self.view removeConstraint:self.verticalSpaceBetweenSliderAndRemainingTime];
         [self.view removeConstraint:self.verticalSpaceBetweenRewindAndReplay];
-        [self.view removeConstraint:self.topSpaceToPlayButton];
+//        [self.view removeConstraint:self.topSpaceToPlayButton];
         
         self.playButtonToBottomSpace.constant = 70;
         
     } else {
         
-        [self.view removeConstraint:self.topSpaceToPlayButton];
+//        [self.view removeConstraint:self.topSpaceToPlayButton];
         [self.view addConstraint: self.playButtonToBottomSpace];
         self.playButtonToBottomSpace.constant = 190;
 //140127 1.2 iOS 7 begin
@@ -447,7 +439,7 @@ BOOL delayPlaybackStateChange;
         [self.view removeConstraint:self.verticalSpaceBetweenSliderAndElapsedTime];
         [self.view removeConstraint:self.verticalSpaceBetweenSliderAndRemainingTime];
         [self.view removeConstraint:self.verticalSpaceBetweenRewindAndReplay];
-        [self.view removeConstraint:self.topSpaceToPlayButton];
+//        [self.view removeConstraint:self.topSpaceToPlayButton];
         self.playButtonToBottomSpace.constant = 70;
         
         
@@ -474,7 +466,7 @@ BOOL delayPlaybackStateChange;
         [self.view addConstraint:self.verticalSpaceBetweenSliderAndRemainingTime];
         [self.view addConstraint:self.verticalSpaceBetweenRewindAndReplay];
         
-        [self.view removeConstraint:self.topSpaceToPlayButton];
+//        [self.view removeConstraint:self.topSpaceToPlayButton];
         [self.view addConstraint:self.playButtonToBottomSpace];
         
         self.playButtonToBottomSpace.constant = 190;
@@ -1060,26 +1052,17 @@ BOOL delayPlaybackStateChange;
         if (collectionRemainingSeconds > 0) {
             
             NSString *collectionRemainingLabel = [NSString stringWithFormat:@"-%@",[formatter stringFromDate:collectionRemainingTime]];
+//140128 1.2 iOS 7 begin
+            UIButton *tempDurationButton = [UIButton buttonWithType:UIButtonTypeCustom];
             
-            UIBarButtonItem *durationButton = [[UIBarButtonItem alloc] initWithTitle: collectionRemainingLabel
-                                                                               style: UIBarButtonItemStyleBordered
-                                                                              target: self
-                                                                              action: @selector(magnify)];
-//131211 1.2 iOS 7 begin
+            [tempDurationButton setTitle: collectionRemainingLabel forState:UIControlStateNormal];
+            [tempDurationButton addTarget:self action:@selector(magnify) forControlEvents:UIControlEventTouchUpInside];
+            [tempDurationButton setShowsTouchWhenHighlighted:NO];
+            tempDurationButton.titleLabel.font            = [UIFont systemFontOfSize: 44];
+            [tempDurationButton sizeToFit];
 
-//            [durationButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIFont systemFontOfSize:44], UITextAttributeFont,nil] forState:UIControlStateNormal];
-            [durationButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIFont systemFontOfSize:44], NSFontAttributeName,nil] forState:UIControlStateNormal];
-//131211 1.2 iOS 7 end
-            [durationButton setBackgroundImage:[UIImage imageNamed:@"rightButtonBackground.png"] forState: UIControlStateNormal barMetrics:UIBarMetricsDefault];
-            
-            const CGFloat TextOffset = 10.0f;
-            [durationButton setTitlePositionAdjustment: UIOffsetMake(TextOffset, 5.0f) forBarMetrics: UIBarMetricsDefault];
-            [durationButton setTitlePositionAdjustment: UIOffsetMake(TextOffset, 9.0f) forBarMetrics: UIBarMetricsLandscapePhone];
-            
-            
-            //        UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-            //        [negativeSpacer setWidth:-15];
-            //            self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:durationButton, self.stopWatchBarButton, negativeSpacer, nil];
+            UIBarButtonItem *durationButton = [[UIBarButtonItem alloc] initWithCustomView:tempDurationButton];
+//140128 1.2 iOS 7 end
             self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:durationButton, self.stopWatchBarButton, nil];
             
         } else {

@@ -53,13 +53,6 @@
     
 //    [TestFlight passCheckpoint:@"UserInfoViewController"];
     
-//131203 1.2 iOS 7 begin
-    
-//    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
-//    [self.userInfoTagTable setBackgroundColor: [UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
-    
-//131203 1.2 iOS 7 end
-    
     musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
     
     landscapeOffset = 12.0;
@@ -113,10 +106,7 @@
         self.tagButton.frame = CGRectMake(0.0, tagButtonY, self.view.bounds.size.width, 54.0);
 
 //131203 1.2 iOS 7 begin
-        
-//        UIImage *labelBackgroundImage = [UIImage imageNamed: @"list-background.png"];
-//        UIImage *coloredImage = [labelBackgroundImage imageWithTint: [UIColor darkGrayColor]];
-//        [self.tagButton setBackgroundImage: coloredImage forState: UIControlStateNormal];
+
         [self.tagButton setBackgroundColor: [UIColor darkGrayColor]];
 
 //131203 1.2 iOS 7 end
@@ -235,8 +225,6 @@
 
 //131203 1.2 iOS 7 begin
     
-//    UIImage *coloredBackgroundImage = [[UIImage imageNamed: @"background.png"] imageWithTint:[UIColor darkGrayColor]];
-//    [textView setBackgroundColor:[UIColor colorWithPatternImage: coloredBackgroundImage]];
     textView.backgroundColor = [UIColor darkGrayColor];
     
 //131203 1.2 iOS 7 end
@@ -258,7 +246,6 @@
 
 //131203 1.2 iOS 7 begin
     
-    //[textView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
     textView.backgroundColor = [UIColor blackColor];
     
 //131203 1.2 iOS 7 end
@@ -399,11 +386,7 @@
     [cell addSubview:cell.tagLabel];
     
 //131203 1.2 iOS 7 begin
-//    UIImage *cellBackgroundImage = [UIImage imageNamed: @"list-background.png"];
-//    UIImage *coloredImage = [cellBackgroundImage imageWithTint: tagColor];
-//    
-//    [cell.cellBackgroundImageView  setImage: coloredImage];
-//    //        cell.tagLabel.backgroundColor = tagColor;
+
     cell.backgroundColor = tagColor;
 
 //131203 1.2 iOS 7 end

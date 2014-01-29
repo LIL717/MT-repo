@@ -43,10 +43,6 @@
 	[[self detailTextLabel] setText:@""];
 	[[self imageView] setImage:nil];
     [self.tagLabel setText: @""];
-//131203 1.2 iOS 7 begin
-//    UIImage *cellBackgroundImage = [UIImage imageNamed: @"list-background.png"];
-//    [self.cellBackgroundImageView  setImage: cellBackgroundImage];
-//131203 1.2 iOS 7 end
 
 }
 @end

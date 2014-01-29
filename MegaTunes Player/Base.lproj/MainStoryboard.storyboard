@@ -384,7 +384,7 @@
                                     <bool key="isElement" value="YES"/>
                                 </accessibility>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" image="bigshuffle">
+                                <state key="normal" image="bigshuffle" backgroundImage="buttonBackground">
                                     <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -451,7 +451,6 @@
                             <constraint firstItem="EYp-S6-Fep" firstAttribute="leading" secondItem="1ht-Bf-15S" secondAttribute="leading" constant="11" id="Qi8-Uh-bpY"/>
                             <constraint firstItem="UXV-Pt-1xE" firstAttribute="leading" secondItem="1ht-Bf-15S" secondAttribute="leading" constant="112" id="QtE-LH-iN9"/>
                             <constraint firstAttribute="trailing" secondItem="uyn-go-sp7" secondAttribute="trailing" id="VH7-h6-HTD"/>
-                            <constraint firstItem="U4I-PN-hea" firstAttribute="top" secondItem="1ht-Bf-15S" secondAttribute="top" constant="185" id="WX7-20-H70"/>
                             <constraint firstItem="UXV-Pt-1xE" firstAttribute="centerY" secondItem="pNh-na-wBJ" secondAttribute="centerY" id="XWw-xC-Sng"/>
                             <constraint firstItem="jQh-tN-5vH" firstAttribute="top" secondItem="wwo-eb-cjv" secondAttribute="bottom" constant="22" id="YWp-gW-4Jg"/>
                             <constraint firstItem="Xek-mb-ENQ" firstAttribute="width" secondItem="YF1-6P-sPE" secondAttribute="width" id="Z50-L7-ayN"/>
@@ -500,7 +499,6 @@
                         <outlet property="repeatButton" destination="wwo-eb-cjv" id="SM2-5Y-kU4"/>
                         <outlet property="rewindButton" destination="EYp-S6-Fep" id="Evi-ip-XTu"/>
                         <outlet property="shuffleButton" destination="YF1-6P-sPE" id="81D-xE-uol"/>
-                        <outlet property="topSpaceToPlayButton" destination="WX7-20-H70" id="yHs-dh-Tut"/>
                         <outlet property="trailingSpaceFromSliderConstraint" destination="Jld-bM-wPW" id="xGx-fu-Pp4"/>
                         <outlet property="verticalSpaceBetweenRewindAndReplay" destination="Fjt-Rx-bCJ" id="qIv-KA-gt3"/>
                         <outlet property="verticalSpaceBetweenSliderAndElapsedTime" destination="8LE-Kx-iS3" id="pov-WZ-Lcj"/>
@@ -1232,9 +1230,11 @@
             <objects>
                 <navigationController id="1j9-19-lml" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Hwl-Z5-CfT">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="Hwl-Z5-CfT">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="barTintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -1824,6 +1824,7 @@
         <image name="bigrewind" width="64" height="60"/>
         <image name="bigshuffle" width="62" height="62"/>
         <image name="black-button.png" width="301" height="58"/>
+        <image name="buttonBackground" width="92" height="62"/>
         <image name="iTunesStoreIcon" width="45" height="45"/>
         <image name="iTunesStoreIcon.png" width="45" height="45"/>
         <image name="infoLightButtonImage" width="42" height="55"/>

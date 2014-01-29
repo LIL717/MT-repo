@@ -74,12 +74,6 @@ NSString *myAffiliateID;
     [super viewDidLoad];
     
 	// Do any additional setup after loading the view, typically from a nib.
-
-//131203 1.2 iOS 7 begin
-
-//    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
-    
-//131203 1.2 iOS 7 end
     
     UIImage *unselectedImage0 = [UIImage imageNamed:@"unselectedTabInfoButton.png"];
     UIImage *selectedImage0 = [UIImage imageNamed:@"selectedTabInfoButton.png"];
