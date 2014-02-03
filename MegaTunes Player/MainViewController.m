@@ -193,7 +193,7 @@ BOOL delayPlaybackStateChange;
     
 //    [TestFlight passCheckpoint:@"MainViewController"];
     
-    UIImage *backgroundImage = [UIImage imageNamed: @"infoSelectedButtonImage.png"];
+    UIImage *backgroundImage = [UIImage imageNamed: @"blueInfoImage.png"];
     [self.nowPlayingInfoButton setImage: backgroundImage forState:UIControlStateHighlighted];
     self.nextLabel.textColor = [UIColor yellowColor];
     

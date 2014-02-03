@@ -74,29 +74,25 @@ NSString *myAffiliateID;
     [super viewDidLoad];
     
 	// Do any additional setup after loading the view, typically from a nib.
-    
-    UIImage *unselectedImage0 = [UIImage imageNamed:@"unselectedTabInfoButton.png"];
-    UIImage *selectedImage0 = [UIImage imageNamed:@"selectedTabInfoButton.png"];
-    
-    UIImage *unselectedImage1 = [UIImage imageNamed:@"unselectedTabCommentsButton.png"];
-    UIImage *selectedImage1 = [UIImage imageNamed:@"selectedTabCommentsButton.png"];
-    
-    UIImage *unselectedImage2 = [UIImage imageNamed:@"unselectedTabUserButton.png"];
-    UIImage *selectedImage2 = [UIImage imageNamed:@"selectedTabUserButton.png"];
+//140203 1.2 iOS 7 begin
+    UIImage *unselectedImage0 = [UIImage imageNamed:@"whiteInfoTabImage.png"];
+    UIImage *selectedImage0 =   [UIImage imageNamed:@"blueInfoTabImage.png"];
+    UIImage *unselectedImage1 = [UIImage imageNamed:@"whiteCommentsImage.png"];
+    UIImage *selectedImage1 =   [UIImage imageNamed:@"blueCommentsImage.png"];
+    UIImage *unselectedImage2 = [UIImage imageNamed:@"whiteTagImage.png"];
+    UIImage *selectedImage2 =   [UIImage imageNamed:@"blueTagImage.png"];
     
     UITabBar *tabBar = self.tabBarController.tabBar;
     UITabBarItem *item0 = [tabBar.items objectAtIndex:0];
     UITabBarItem *item1 = [tabBar.items objectAtIndex:1];
     UITabBarItem *item2 = [tabBar.items objectAtIndex:2];
-
-    item0.title = NSLocalizedString(@"iTunes info", nil);
-    item1.title = NSLocalizedString(@"iTunes comments", nil);
-    item2.title = NSLocalizedString(@"Tag info", nil);
+//    item0.title = NSLocalizedString(@"iTunes info", nil);
+//    item1.title = NSLocalizedString(@"iTunes comments", nil);
+//    item2.title = NSLocalizedString(@"Tag info", nil);
     
-//131212 1.2 iOS 7 begin
-    //    [item0 setFinishedSelectedImage:selectedImage0 withFinishedUnselectedImage:unselectedImage0];
-    //    [item1 setFinishedSelectedImage:selectedImage1 withFinishedUnselectedImage:unselectedImage1];
-    //    [item2 setFinishedSelectedImage:selectedImage2 withFinishedUnselectedImage:unselectedImage2];
+    item0.title = nil;
+    item1.title = nil;
+    item2.title = nil;
     
     item0.image = [unselectedImage0 imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     item0.selectedImage = [selectedImage0 imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
@@ -105,7 +101,11 @@ NSString *myAffiliateID;
     item2.image = [unselectedImage2 imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     item2.selectedImage = [selectedImage2 imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     
-//131212 1.2 iOS 7 end
+//    UIImage* tabBarBackground = [UIImage imageNamed:@"transparentImage.png"];
+//    [[UITabBar appearance] setShadowImage:tabBarBackground];
+//    [[UITabBar appearance] setBackgroundImage:tabBarBackground];
+
+//140203 1.2 iOS 7 end
     
     [self loadTableData];
     

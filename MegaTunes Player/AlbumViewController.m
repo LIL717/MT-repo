@@ -152,7 +152,7 @@ BOOL firstLoad;
     
 //131203 1.2 iOS 7 begin
     
-    //    [self.collectionTableView setSectionIndexColor:[UIColor whiteColor]];
+    [self.collectionTableView setSectionIndexColor:[UIColor whiteColor]];
     [self.collectionTableView setSectionIndexBackgroundColor:[UIColor blackColor]];
     
 //131203 1.2 iOS 7 end

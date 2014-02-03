@@ -1036,8 +1036,8 @@ BOOL excludeICloudItems;
             // need to adjust for widened cell for info button
             cell.durationToCellConstraint.constant = 54;
             
-            UIImage *image = [UIImage imageNamed: @"infoLightButtonImage.png"];
-            UIImage *infoBackgroundImage = [UIImage imageNamed: @"infoSelectedButtonImage.png"];
+            UIImage *image = [UIImage imageNamed: @"whiteInfoImage.png"];
+            UIImage *infoBackgroundImage = [UIImage imageNamed: @"blueInfoImage.png"];
             
             infoButton = [UIButton buttonWithType:UIButtonTypeCustom];
             
@@ -1077,7 +1077,7 @@ BOOL excludeICloudItems;
                             toItem:superview
                             attribute:NSLayoutAttributeTop
                             multiplier:1.0
-                            constant:-3];
+                            constant:7];
             
             [superview addConstraint:myConstraint];
             

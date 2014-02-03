@@ -192,7 +192,7 @@ BOOL excludeICloudItems;
     self.songTableView.sectionIndexMinimumDisplayRowCount = 20;
     //131203 1.2 iOS 7 begin
     
-    //    [self.songTableView setSectionIndexColor:[UIColor whiteColor]];
+    [self.songTableView setSectionIndexColor:[UIColor whiteColor]];
     [self.songTableView setSectionIndexBackgroundColor:[UIColor blackColor]];
     
     //131203 1.2 iOS 7 end
@@ -1020,11 +1020,11 @@ BOOL excludeICloudItems;
             // need to adjust for widened cell for info button
             cell.durationToCellConstraint.constant = 54;
             
-            UIImage *image = [UIImage imageNamed: @"infoLightButtonImage.png"];
-            UIImage *infoBackgroundImage = [UIImage imageNamed: @"infoSelectedButtonImage.png"];
-            
+            UIImage *image = [UIImage imageNamed: @"whiteInfoImage.png"];
+            UIImage *infoBackgroundImage = [UIImage imageNamed: @"blueInfoImage.png"];
+
             infoButton = [UIButton buttonWithType:UIButtonTypeCustom];
-            
+
             CGRect frame = CGRectMake(0.0, 0.0, image.size.width, image.size.height);
             
             infoButton.frame = frame;
@@ -1061,7 +1061,7 @@ BOOL excludeICloudItems;
                             toItem:superview
                             attribute:NSLayoutAttributeTop
                             multiplier:1.0
-                            constant:-3];
+                            constant:7];
             
             [superview addConstraint:myConstraint];
             
