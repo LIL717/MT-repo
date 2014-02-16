@@ -31,9 +31,7 @@
 @property (readwrite)         BOOL             editingUserInfo;
 @property (readwrite)           BOOL            showCheckMarkButton;
 
-@property (readwrite)           CGFloat landscapeOffset;
 @property (nonatomic, strong)   NSArray *userInfoTagArray;
-@property (nonatomic, strong)   UIButton *tagButton;
 
 
 - (void) loadDataForView;

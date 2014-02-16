@@ -75,65 +75,26 @@
     [self.playBarButton setAccessibilityLabel: NSLocalizedString(@"Now Playing", nil)];
     [self.playBarButton setAccessibilityTraits: UIAccessibilityTraitButton];
     
-    self.checkMarkButton = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                            style:UIBarButtonItemStyleBordered
-                                                           target:self
-                                                           action:@selector(saveTextViewData)];
+    //131203 1.2 iOS 7 begin
     
-    UIImage *menuBarImageDefault = [[UIImage imageNamed:@"checkMark57.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    UIImage *menuBarImageLandscape = [[UIImage imageNamed:@"checkMark68.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    UIButton *tempCheckMarkButton = [UIButton buttonWithType:UIButtonTypeCustom];
     
-    [self.checkMarkButton setBackgroundImage:menuBarImageDefault forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    [self.checkMarkButton setBackgroundImage:menuBarImageLandscape forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
+    [tempCheckMarkButton addTarget:self action:@selector(saveTextViewData) forControlEvents:UIControlEventTouchUpInside];
+    [tempCheckMarkButton setImage:[UIImage imageNamed:@"checkMarkImage.png"] forState:UIControlStateNormal];
+    [tempCheckMarkButton setShowsTouchWhenHighlighted:NO];
+    [tempCheckMarkButton sizeToFit];
+    
+    self.checkMarkButton = [[UIBarButtonItem alloc] initWithCustomView:tempCheckMarkButton];
+    //140127 1.2 iOS 7 end
     
     [self.checkMarkButton setIsAccessibilityElement:YES];
     [self.checkMarkButton setAccessibilityLabel: NSLocalizedString(@"Done", nil)];
     [self.checkMarkButton setAccessibilityTraits: UIAccessibilityTraitButton];
     
-    self.elapsedTimeButton = [[UIBarButtonItem alloc] initWithTitle: @"0:00"
-                                                              style: UIBarButtonItemStyleBordered
-                                                             target: self
-                                                             action: nil];
-//131211 1.2 iOS 7 begin
-//    [self.elapsedTimeButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIFont systemFontOfSize:44], UITextAttributeFont,nil] forState:UIControlStateNormal];
-    [self.elapsedTimeButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIFont systemFontOfSize:44], NSFontAttributeName,nil] forState:UIControlStateNormal];
-//131211 1.2 iOS 7 end
-
-    [self.elapsedTimeButton setBackgroundImage:[UIImage imageNamed:@"rightButtonBackground.png"] forState: UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    
-    const CGFloat TextOffset = 10.0f;
-    [self.elapsedTimeButton setTitlePositionAdjustment: UIOffsetMake(TextOffset, 5.0f) forBarMetrics: UIBarMetricsDefault];
-    [self.elapsedTimeButton setTitlePositionAdjustment: UIOffsetMake(TextOffset, 9.0f) forBarMetrics: UIBarMetricsLandscapePhone];
-    
-    self.remainingTimeButton = [[UIBarButtonItem alloc] initWithTitle: @"-0:00"
-                                                                style: UIBarButtonItemStyleBordered
-                                                               target: self
-                                                               action: nil];
-//131211 1.2 iOS 7 begin
-//    [self.remainingTimeButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIFont systemFontOfSize:44], UITextAttributeFont,nil] forState:UIControlStateNormal];
-    [self.remainingTimeButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIFont systemFontOfSize:44], NSFontAttributeName,nil] forState:UIControlStateNormal];
-//131211 1.2 iOS 7 end
-
-    [self.remainingTimeButton setBackgroundImage:[UIImage imageNamed:@"rightButtonBackground.png"] forState: UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    
-    [self.remainingTimeButton setTitlePositionAdjustment: UIOffsetMake(TextOffset, 5.0f) forBarMetrics: UIBarMetricsDefault];
-    [self.remainingTimeButton setTitlePositionAdjustment: UIOffsetMake(TextOffset, 9.0f) forBarMetrics: UIBarMetricsLandscapePhone];
-    
     self.saveTitle = self.title;
     
     self.albumInfoViewController = [[self viewControllers] objectAtIndex:0];
     self.albumInfoViewController.mediaItemForInfo = self.mediaItemForInfo;
-    
-    //    NSLog (@" in NotesTabBar  self.songInfo.songName = %@", self.songInfo.songName);
-    //    NSLog (@" in NotesTabBar  self.songInfo.album = %@", self.songInfo.album);
-    //    NSLog (@" in NotesTabBar  self.songInfo.artist = %@", self.songInfo.artist);
-    //    self.title = @"Info";
-    //    self.navigationItem.titleView = [self customizeTitleView];
-    //    [self.songInfoViewController.navigationController.navigationItem setTitle:@"Info"];
-    
-    //    self.iTunesInfoViewController = [[self viewControllers] objectAtIndex:1];
-    //    self.iTunesInfoViewController.mediaItemForInfo = self.mediaItemForInfo;
-    //    self.iTunesInfoViewController.managedObjectContext = self.managedObjectContext;
     
     self.iTunesCommentsViewController = [[self viewControllers] objectAtIndex:1];
     self.iTunesCommentsViewController.mediaItemForInfo = self.mediaItemForInfo;
@@ -183,18 +144,33 @@
     
     [self registerForMediaPlayerNotifications];
     
-    //    self.title = @"Notes";
-    //    self.navigationItem.titleView = [self customizeTitleView];
-    //    [self.notesViewController.navigationController.navigationItem setTitle:@"Notes"];
-    
 }
 - (void) updateTime {
     MainViewController *mainViewController =( MainViewController *) self.infoDelegate;
     
     [mainViewController updateTime];
     
-    self.elapsedTimeButton.title = mainViewController.elapsedTimeLabel.text;
-    self.remainingTimeButton.title = mainViewController.remainingTimeLabel.text;
+//140128 1.2 iOS 7 begin
+    UIButton *tempElapsedTimeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    
+    [tempElapsedTimeButton setTitle: mainViewController.elapsedTimeLabel.text forState: UIControlStateNormal];
+    [tempElapsedTimeButton addTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+    [tempElapsedTimeButton setShowsTouchWhenHighlighted:NO];
+    tempElapsedTimeButton.titleLabel.font            = [UIFont systemFontOfSize: 44];
+    [tempElapsedTimeButton sizeToFit];
+    
+    self.elapsedTimeButton = [[UIBarButtonItem alloc] initWithCustomView:tempElapsedTimeButton];
+
+    UIButton *tempRemainingTimeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    
+    [tempRemainingTimeButton setTitle: mainViewController.remainingTimeLabel.text forState: UIControlStateNormal];
+    [tempRemainingTimeButton addTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+    [tempRemainingTimeButton setShowsTouchWhenHighlighted:NO];
+    tempRemainingTimeButton.titleLabel.font            = [UIFont systemFontOfSize: 44];
+    [tempRemainingTimeButton sizeToFit];
+    
+    self.remainingTimeButton = [[UIBarButtonItem alloc] initWithCustomView:tempRemainingTimeButton];
+//140128 1.2 iOS 7 end
     
     [self buildRightNavBarArray];
     
@@ -203,6 +179,11 @@
 {
     //    LogMethod();
     [super viewWillAppear: animated];
+
+    //131216 1.2 iOS 7 begin
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    //131216 1.2 iOS 7 end
+    
     if (self.viewingNowPlaying && self.mainViewIsSender) {
         self.playbackTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
                                                               target:self
@@ -275,7 +256,7 @@
             self.saveTitle = self.title;
             self.title = nil;
             self.navigationItem.titleView = nil;
-            [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects: self.remainingTimeButton, self.elapsedTimeButton, nil] animated: YES];
+            [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects: self.remainingTimeButton, self.elapsedTimeButton, nil] animated: NO];
         } else {
             [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects: nil] animated: YES];
             //                    self.title = self.saveTitle;
@@ -319,52 +300,43 @@
 }
 - (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
     //executes the method in the individual view on initial load and the one here after that, so they need to stay in synch with each other and with the constaints set in interface builder
-    CGFloat commentsHeight = self.albumInfoViewController.comments.frame.size.height;
+//140215 1.2 iOS 7 begin
+    BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
     
+    CGFloat navBarAdjustment = isPortrait ? 0 : 3;
+
+
     if (UIInterfaceOrientationIsPortrait(orientation)) {
         //        NSLog (@"portrait");
-        [self.albumInfoViewController.infoTableView setContentInset:UIEdgeInsetsMake(11,0,commentsHeight,0)];
-        [self.albumInfoViewController.infoTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+
         self.albumInfoViewController.lastPlayedDateTitle = @"Played:";
         self.albumInfoViewController.userGroupingTitle = @"Grouping:";
-        [self.albumInfoViewController loadTableData];
-        [self.albumInfoViewController.infoTableView reloadData];
-        
-        [self.iTunesCommentsViewController.comments setContentInset:UIEdgeInsetsMake(11,0,-11,0)];
-        [self.iTunesCommentsViewController.comments scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-        
-        //        [self.userInfoViewController.view removeConstraint:self.userInfoViewController.verticalSpaceToTop28];
-        //        [self.userInfoViewController.view addConstraint:self.userInfoViewController.verticalSpaceToTop];
-        self.userInfoViewController.verticalSpaceTopToTableViewConstraint.constant = 11;
-        self.userInfoViewController.verticalSpaceTopToCommentsConstraint.constant = 66;
-        //don't reload the userInfoData if it is being edited
-        if (!userInfoViewController.editingUserInfo) {
-            [self.userInfoViewController loadDataForView];
-        }
-        [self.userInfoViewController.userInfoTagTable reloadData];
-        
         
     } else {
         //        NSLog (@"landscape");
-        [self.albumInfoViewController.infoTableView setContentInset:UIEdgeInsetsMake(23,0,commentsHeight,0)];
-        [self.albumInfoViewController.infoTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+
         self.albumInfoViewController.lastPlayedDateTitle = @"Last Played:";
         self.albumInfoViewController.userGroupingTitle = @"iTunes Grouping:";
-        [self.albumInfoViewController loadTableData];
-        [self.albumInfoViewController.infoTableView reloadData];
-        
-        [self.iTunesCommentsViewController.comments setContentInset:UIEdgeInsetsMake(23,0,0,0)];
-        [self.iTunesCommentsViewController.comments scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-        
-        // Set top row spacing to superview top
-        self.userInfoViewController.verticalSpaceTopToTableViewConstraint.constant = 23;
-        self.userInfoViewController.verticalSpaceTopToCommentsConstraint.constant = 78;
-        //don't reload the userInfoData if it is being edited
-        if (!userInfoViewController.editingUserInfo) {
-            [self.userInfoViewController loadDataForView];
-        }
-        [self.userInfoViewController.userInfoTagTable reloadData];
+
     }
+    
+    [self.albumInfoViewController.infoTableView setContentOffset:CGPointMake(0, navBarAdjustment)];
+    [self.albumInfoViewController.infoTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+    [self.albumInfoViewController loadTableData];
+    [self.albumInfoViewController.infoTableView reloadData];
+    
+    [self.iTunesCommentsViewController.comments setContentOffset:CGPointMake(0, navBarAdjustment)];
+    [self.iTunesCommentsViewController.comments scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+    
+    self.userInfoViewController.verticalSpaceTopToTableViewConstraint.constant = navBarAdjustment;
+    self.userInfoViewController.verticalSpaceTopToCommentsConstraint.constant = 55 + navBarAdjustment;
+    
+    //don't reload the userInfoData if it is being edited
+    if (!userInfoViewController.editingUserInfo) {
+        [self.userInfoViewController loadDataForView];
+    }
+    [self.userInfoViewController.userInfoTagTable reloadData];
+//140215 1.2 iOS 7 end
 }
 //#pragma mark UITabBarController Delegate Method
 //this works to "flip" horizontally between views, but there is a little jump on the 2nd screen, probably because the views are not the same size,  need to put the smaller one in a container view?

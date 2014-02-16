@@ -82,23 +82,20 @@ NSString *actionType;
     
     self.title = NSLocalizedString(@"Tags", nil);
     
-//131203 1.2 iOS 7 begin
+//140127 1.2 iOS 7 begin
     
     self.navigationController.navigationBar.topItem.title = @"";
     
-    //131204 1.2 iOS 7 end
+    UIButton *tempAddButton = [UIButton buttonWithType:UIButtonTypeCustom];
     
-    self.rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                           style:UIBarButtonItemStyleBordered
-                                                          target:self
-                                                          action:@selector(addNewTag)];
+    [tempAddButton addTarget:self action:@selector(addNewTag) forControlEvents:UIControlEventTouchUpInside];
+    [tempAddButton setImage:[UIImage imageNamed:@"addImage.png"] forState:UIControlStateNormal];
+    [tempAddButton setShowsTouchWhenHighlighted:NO];
+    [tempAddButton sizeToFit];
     
-    UIImage *menuBarImageDefault = [[UIImage imageNamed:@"add57.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    UIImage *menuBarImageLandscape = [[UIImage imageNamed:@"add68.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    
-    [self.rightBarButton setBackgroundImage:menuBarImageDefault forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    [self.rightBarButton setBackgroundImage:menuBarImageLandscape forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
-    
+    self.rightBarButton = [[UIBarButtonItem alloc] initWithCustomView:tempAddButton];
+//140127 1.2 iOS 7 end
+
     [self.rightBarButton setIsAccessibilityElement:YES];
     [self.rightBarButton setAccessibilityLabel: NSLocalizedString(@"Add", nil)];
     [self.rightBarButton setAccessibilityTraits: UIAccessibilityTraitButton];
@@ -133,6 +130,9 @@ NSString *actionType;
 {
     //    LogMethod();
     
+//131216 1.2 iOS 7 begin
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+//131216 1.2 iOS 7 end
     //set the navigation bar title
     self.navigationItem.titleView = [self customizeTitleView];
     

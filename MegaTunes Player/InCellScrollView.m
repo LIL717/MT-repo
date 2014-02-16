@@ -12,9 +12,6 @@
 @implementation InCellScrollView
 
 //UIEvent *touchEvent;
-//131216 1.2 iOS 7 begin
-//@synthesize scrollViewImageView;
-//131216 1.2 iOS 7 end
 
 UITouch *savedTouch;
 

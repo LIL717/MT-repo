@@ -11,7 +11,6 @@
 
 @property (nonatomic, strong) IBOutlet UILabel *nameLabel;
 //130909 1.1 add iTunesStoreButton begin
-//@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic) IBOutlet InCellScrollView *scrollView;
 @property (strong, nonatomic) IBOutlet UIButton *iTunesStoreButton;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *scrollViewToCellConstraint;

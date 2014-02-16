@@ -101,9 +101,11 @@ NSString *myAffiliateID;
     item2.image = [unselectedImage2 imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     item2.selectedImage = [selectedImage2 imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     
-//    UIImage* tabBarBackground = [UIImage imageNamed:@"transparentImage.png"];
-//    [[UITabBar appearance] setShadowImage:tabBarBackground];
-//    [[UITabBar appearance] setBackgroundImage:tabBarBackground];
+    //need this for correct placement on rotation in iOS 7
+    self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    
+    [self.infoTableView setSeparatorInset:UIEdgeInsetsZero];
+
 
 //140203 1.2 iOS 7 end
     
@@ -230,10 +232,14 @@ NSString *myAffiliateID;
         self.bpm = [[NSString alloc] initWithFormat:@"%2d BPM", [self.saveBPM intValue]];
         [self.songInfoData addObject: self.bpm];
     }
-    
-    if ([self.mediaItemForInfo valueForProperty: MPMediaItemPropertyUserGrouping]) {
-        self.userGrouping = [NSString stringWithFormat: @"%@ %@", self.userGroupingTitle, [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyUserGrouping]];
-        [self.songInfoData addObject: self.userGrouping];
+//140204 1.2 iOS 7 begin
+    NSString *usrGrping = [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyUserGrouping];
+    if (usrGrping) {
+        if (![usrGrping isEqualToString: @""]) {
+            self.userGrouping = [NSString stringWithFormat: @"%@ %@", self.userGroupingTitle, [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyUserGrouping]];
+            [self.songInfoData addObject: self.userGrouping];
+        }
+//140204 1.2 iOS 7 end
     }
     
 }
@@ -318,6 +324,9 @@ NSString *myAffiliateID;
 - (void) viewWillAppear:(BOOL)animated
 {
     //    LogMethod();
+    //131216 1.2 iOS 7 begin
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    //131216 1.2 iOS 7 end
     for (NSIndexPath *indexPath in [self.infoTableView indexPathsForVisibleRows]) {
         
         //            NSLog (@" indexPath to scroll %@", indexPath);
@@ -356,20 +365,23 @@ NSString *myAffiliateID;
 
 - (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
     
-    CGFloat commentsHeight = self.comments.frame.size.height;
+//140216 1.2 iOS 7 begin
+    BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
     
-    if (UIInterfaceOrientationIsPortrait(orientation)) {
-        NSLog (@"portrait");
-        [self.infoTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-        [self.infoTableView setContentInset:UIEdgeInsetsMake(11,0,commentsHeight,0)];
+    CGFloat navBarAdjustment = isPortrait ? 0 : 3;
+    
+    [self.infoTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+    [self.infoTableView setContentOffset:CGPointMake(0, navBarAdjustment)];
+    
+    if (isPortrait) {
+//        NSLog (@"portrait");
         self.lastPlayedDateTitle = @"Played:";
         self.userGroupingTitle = @"Grouping:";
         
         
     } else {
-        NSLog (@"landscape");
-        [self.infoTableView setContentInset:UIEdgeInsetsMake(23,0,commentsHeight,0)];
-        [self.infoTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+//        NSLog (@"landscape");
+//140216 1.2 iOS 7 end
         self.lastPlayedDateTitle = @"Last Played:";
         self.userGroupingTitle = @"iTunes Grouping:";
         

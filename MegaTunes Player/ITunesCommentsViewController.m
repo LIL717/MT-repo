@@ -41,37 +41,43 @@
 - (void) loadDataForView {
     
     //check to see if there is user data for this media item
-    if ([self.mediaItemForInfo valueForProperty: MPMediaItemPropertyComments]) {
+//140204 1.2 iOS 7 begin
+    self.comments.text = @"No iTunes Comments";
+    
+    NSString *cmmnts = [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyComments];
+    if (cmmnts) {
+        if (![cmmnts isEqualToString: @""]) {
         //display Comments and later save this value in userDataForMediaItem in Core Data
-        self.comments.text= [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyComments];
-    } else {
-        self.comments.text = @"No iTunes Comments";
+            self.comments.text= [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyComments];
+        }
     }
     
 }
 
 - (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
     
-    if (UIInterfaceOrientationIsPortrait(orientation)) {
-        NSLog (@"portrait");
-        
-        [self.comments setContentInset:UIEdgeInsetsMake(11,0,-11,0)];
-        [self.comments scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-        //        [self.view removeConstraint:self.verticalSpaceToTop28];
-        //        [self.view addConstraint:self.verticalSpaceToTop];
-        //        // Set top row spacing to superview top
-        //
-    } else {
-        NSLog (@"landscape");
-        [self.comments setContentInset:UIEdgeInsetsMake(23,0,0,0)];
-        [self.comments scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-        //        [self.view removeConstraint:self.verticalSpaceToTop];
-        //
-        //        // Set top row spacing to superview top
-        //        self.verticalSpaceToTop28 = [NSLayoutConstraint constraintWithItem:self.comments attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1.0 constant:28];
-        //        [self.view addConstraint: self.verticalSpaceToTop28];
-    }
+    BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
+    
+    CGFloat navBarAdjustment = isPortrait ? 0 : 3;
+    
+    [self.comments setContentOffset:CGPointMake(0, navBarAdjustment)];
+    
+    //this line of code does not appear to be working here, moved to viewWillAppear
+    [self.comments scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
+
 }
+- (void) viewWillAppear:(BOOL)animated
+{
+    //    LogMethod();
+    [super viewWillAppear: animated];
+    
+    //131216 1.2 iOS 7 begin
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    [self.comments scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
+
+    return;
+}
+//131216 1.2 iOS 7 end
 
 //- (UILabel *) customizeTitleView
 //{

@@ -113,7 +113,9 @@
 - (void) viewWillAppear:(BOOL)animated
 {
     //    LogMethod();
-    
+    //131216 1.2 iOS 7 begin
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    //131216 1.2 iOS 7 end
     //set the navigation bar title
     self.navigationItem.titleView = [self customizeTitleView];
     
