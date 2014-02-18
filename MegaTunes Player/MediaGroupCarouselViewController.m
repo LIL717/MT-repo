@@ -179,11 +179,6 @@ NSString *myAffiliateID;
     
     return;
 }
--(void) viewDidAppear:(BOOL)animated {
-    //    LogMethod();
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    [super viewDidAppear:(BOOL)animated];
-}
 
 - (UILabel *) customizeTitleView
 {
@@ -456,9 +451,7 @@ NSString *myAffiliateID;
         mainViewController.playNew = NO;
         mainViewController.iPodLibraryChanged = self.iPodLibraryChanged;
         
-    }
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    
+    }    
     
 }
 //- (TagData *) retrieveTagForMediaItem: (MPMediaItem *) mediaItem {

@@ -269,11 +269,6 @@
     }
 }
 
--(void) viewDidAppear:(BOOL)animated {
-    //    LogMethod();
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    [super viewDidAppear:(BOOL)animated];
-}
 - (UILabel *) customizeTitleView
 {
 //131205 1.2 iOS 7 begin
@@ -378,12 +373,7 @@
         mainViewController.managedObjectContext = self.managedObjectContext;
         mainViewController.playNew = NO;
         mainViewController.iPodLibraryChanged = self.iPodLibraryChanged;
-        //        if (iPodLibraryChanged) {
-        //            mainViewController.iPodLibraryChanged = YES;
-        //        }
     }
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    
 }
 - (IBAction)viewNowPlaying {
     
@@ -395,39 +385,46 @@
     [self.userInfoViewController.comments resignFirstResponder];
     
 }
-- (void)goBackClick
+//140217 1.2 iOS 7 begin
+//intercept back Button pressed
+- (void)willMoveToParentViewController:(UIViewController *)parent
 {
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    
-    [self.navigationController.navigationBar removeGestureRecognizer:self.swipeLeftRight];
-    
-    if (iPodLibraryChanged) {
-        [self.navigationController popToRootViewControllerAnimated:YES];
-    } else {
-        MPMusicPlaybackState playbackState = [musicPlayer playbackState];
-        NSLog (@" playbackState is %d", playbackState);
-        if (playbackState == MPMusicPlaybackStateStopped) {
-            //pop back to songviewcontroller
-            
-            UIViewController *popToVC = [[UIViewController alloc] init];
-            
-            for (UIViewController*vc in [self.navigationController viewControllers]) {
-                if ([vc isKindOfClass: [SongViewController class]]){
-                    popToVC = vc;
-                }
-                if ([vc isKindOfClass: [TaggedSongViewController class]]){
-                    popToVC = vc;
-                }
-            }
-            
-            [self.navigationController popToViewController: popToVC animated:YES];
-            [self.infoDelegate infoTabBarControllerDidCancel:self];
-        } else {
-            [self.navigationController popViewControllerAnimated:YES];
-            [self.infoDelegate infoTabBarControllerDidCancel:self];
-        }
+    if (![parent isEqual:self.parentViewController]) {
+        //don't use goBackClick because it needs to decide where to pop back to if the music player stops, back button assumes music player has not stopped so can just pop back to previous view
+        [self.navigationController.navigationBar removeGestureRecognizer:self.swipeLeftRight];
+        [self.infoDelegate infoTabBarControllerDidCancel:self];
     }
 }
+- (void)goBackClick
+{
+    MPMusicPlaybackState playbackState = [musicPlayer playbackState];
+    NSLog (@" playbackState is %d", playbackState);
+    if (playbackState == MPMusicPlaybackStateStopped) {
+        //pop back to songviewcontroller
+        
+        UIViewController *popToVC = [[UIViewController alloc] init];
+        BOOL vCFound = NO;
+        
+        for (UIViewController*vc in [self.navigationController viewControllers]) {
+            if ([vc isKindOfClass: [SongViewController class]]){
+                popToVC = vc;
+                vCFound = YES;
+            }
+            if ([vc isKindOfClass: [TaggedSongViewController class]]){
+                popToVC = vc;
+                vCFound = YES;
+            }
+        }
+        if (vCFound) {
+            [self.navigationController popToViewController: popToVC animated:YES];
+        } else {
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        }
+    } else {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+//140217 1.2 iOS 7 end
 
 - (IBAction) toggleTimeLabelsAndTitle:(id)sender {
     
@@ -532,8 +529,10 @@
     LogMethod();
 	// Implement this method to update cached collections of media items when the
 	// user performs a sync while application is running.
-    [self setIPodLibraryChanged: YES];
-    
+//140218 1.2 iOS 7 begin
+    // this method is being called even when iPod Library has not changed, so its not really useful
+//    [self setIPodLibraryChanged: YES];
+//140218 1.2 iOS 7 end
 }
 // When the playback state changes, if stopped remove nowplaying button
 - (void) handle_PlaybackStateChanged: (id) notification {

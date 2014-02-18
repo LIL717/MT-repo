@@ -296,6 +296,9 @@ BOOL firstLoad;
 //    LogMethod();
     [super viewWillAppear: animated];
 //131216 1.2 iOS 7 begin
+    if (iPodLibraryChanged) {
+//        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
     self.edgesForExtendedLayout = UIRectEdgeNone;
 //131216 1.2 iOS 7 end
     
@@ -325,11 +328,7 @@ BOOL firstLoad;
     
     return;
 }
--(void) viewDidAppear:(BOOL)animated {
-    //    LogMethod();
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    [super viewDidAppear:(BOOL)animated];
-}
+
 - (UILabel *) customizeTitleView
 {
 //131205 1.2 iOS 7 begin
@@ -648,7 +647,7 @@ BOOL firstLoad;
 - (UITableViewCell *) tableView: (UITableView *) tableView cellForRowAtIndexPath: (NSIndexPath *) indexPath {
     
     
-    //don't use CollectionItemCell for searchResultsCell won't respond to touches to scroll anyway and terrible performance on GoBackClick when autoRotated
+    //don't use CollectionItemCell for searchResultsCell won't respond to touches to scroll anyway and terrible performance on return when autoRotated
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *searchResultsCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
@@ -1030,7 +1029,6 @@ BOOL firstLoad;
         mainViewController.iPodLibraryChanged = self.iPodLibraryChanged;
         
     }
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
 }
 -(NSComparator) createComparator {
@@ -1145,27 +1143,6 @@ BOOL firstLoad;
 #pragma mark Application state management_____________
 // Standard methods for managing application state.
 
-- (void)goBackClick
-{
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-//    self.navigationItem.leftBarButtonItem.tintColor = [UIColor darkGrayColor];
-//    if (disableRotation) {
-//        [self.view addSubview:spinner]; // spinner is not visible until started
-//        [spinner startAnimating];
-//    }
-
-    if (iPodLibraryChanged) {
-        [self.navigationController popToRootViewControllerAnimated:YES];
-    } else {
-        //delay so that networkActivityIndicator can be visible
-//            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 0.01 * NSEC_PER_SEC);
-//            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                [self.navigationController popViewControllerAnimated:YES];
-
-//            });
-        
-    }
-}
 //130909 1.1 add iTunesStoreButton begin
 
 - (IBAction)linkToiTunesStore:(id)sender {

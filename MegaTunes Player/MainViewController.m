@@ -145,7 +145,9 @@
 @synthesize collectionItem;
 @synthesize swipeLeftRight;
 @synthesize stopWatchTime;
-
+//140218 1.2 iOS 7 begin
+@synthesize collectionRemainingLabel;
+//140218 1.2 iOS 7 end
 @synthesize rewindButton;
 @synthesize playPauseButton;
 @synthesize forwardButton;
@@ -198,29 +200,9 @@ BOOL delayPlaybackStateChange;
     self.nextLabel.textColor = [UIColor yellowColor];
     
 //131204 1.2 iOS 7 begin
-//    self.navigationItem.hidesBackButton = YES; // Important
-//    //initWithTitle cannot be nil, must be @""
-//	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
-//                                                                             style:UIBarButtonItemStyleBordered
-//                                                                            target:self
-//                                                                            action:@selector(goBackClick)];
-//    
-//    self.navigationItem.leftBarButtonItem.title = @"";
-//    UIImage *menuBarImage48 = [[UIImage imageNamed:@"arrow_left_48_white.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-//    UIImage *menuBarImage58 = [[UIImage imageNamed:@"arrow_left_58_white.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-//    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage48 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-//    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage58 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
-//    
-//    [self.navigationItem.leftBarButtonItem setIsAccessibilityElement:YES];
-//    [self.navigationItem.leftBarButtonItem setAccessibilityLabel: NSLocalizedString(@"Back", nil)];
-//    [self.navigationItem.leftBarButtonItem setAccessibilityTraits: UIAccessibilityTraitButton];
-//    
-//    self.navigationItem.backBarButtonItem = self.navigationItem.leftBarButtonItem;
+
     self.navigationController.navigationBar.topItem.title = @"";
 
-    
-//131204 1.2 iOS 7 end
-    //140127 1.2 iOS 7 begin
     UIButton *tempStopWatchButton = [UIButton buttonWithType:UIButtonTypeCustom];
     
     [tempStopWatchButton addTarget:self action:@selector(startStopWatch) forControlEvents:UIControlEventTouchUpInside];
@@ -229,7 +211,7 @@ BOOL delayPlaybackStateChange;
     [tempStopWatchButton sizeToFit];
     
     self.stopWatchBarButton = [[UIBarButtonItem alloc] initWithCustomView:tempStopWatchButton];
-    //140127 1.2 iOS 7 end
+//140127 1.2 iOS 7 end
 
     [self.stopWatchBarButton setIsAccessibilityElement:YES];
     [self.stopWatchBarButton setAccessibilityLabel: NSLocalizedString(@"Stopwatch", nil)];
@@ -564,7 +546,6 @@ BOOL delayPlaybackStateChange;
     [self.initialNowPlayingLabel removeFromSuperview];
     
     [super viewDidAppear:(BOOL)animated];
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
 }
 
@@ -623,8 +604,7 @@ BOOL delayPlaybackStateChange;
         //                BOOL networkAvailable = [[NSUserDefaults standardUserDefaults] boolForKey:@"networkAvailable"];
         //                if (!networkAvailable) {
         //                    queueIsKnown = NO;
-        //
-        //                    //            [self goBackClick];
+        //                    //            [self.navigationController popViewControllerAnimated:YES];
         //                }
         //        }
         
@@ -938,8 +918,9 @@ BOOL delayPlaybackStateChange;
     if (songDuration == 0 && self.iPodLibraryChanged) {
         [musicPlayer stop];
         [self.playbackTimer invalidate];
-        [self goBackClick];
-        //        [self.navigationController popToRootViewControllerAnimated:YES];
+//140218 1.2 iOS 7 begin
+        [self.navigationController popViewControllerAnimated:YES];
+//140218 1.2 iOS 7 end
         NSLog (@"BOOM");
         return;
     }
@@ -1051,11 +1032,11 @@ BOOL delayPlaybackStateChange;
         
         if (collectionRemainingSeconds > 0) {
             
-            NSString *collectionRemainingLabel = [NSString stringWithFormat:@"-%@",[formatter stringFromDate:collectionRemainingTime]];
 //140128 1.2 iOS 7 begin
+            self.collectionRemainingLabel = [NSString stringWithFormat:@"-%@",[formatter stringFromDate:collectionRemainingTime]];
             UIButton *tempDurationButton = [UIButton buttonWithType:UIButtonTypeCustom];
             
-            [tempDurationButton setTitle: collectionRemainingLabel forState:UIControlStateNormal];
+            [tempDurationButton setTitle: self.collectionRemainingLabel forState:UIControlStateNormal];
             [tempDurationButton addTarget:self action:@selector(magnify) forControlEvents:UIControlEventTouchUpInside];
             [tempDurationButton setShowsTouchWhenHighlighted:NO];
             tempDurationButton.titleLabel.font            = [UIFont systemFontOfSize: 44];
@@ -1132,8 +1113,9 @@ BOOL delayPlaybackStateChange;
 	{
         TimeMagnifierViewController *timeMagnifierViewController = [[navigationController viewControllers] objectAtIndex:0];
         timeMagnifierViewController.delegate = self;
-        UIBarButtonItem *playlistRemainingButton = [self.navigationItem.rightBarButtonItems objectAtIndex: 0];
-        timeMagnifierViewController.textToMagnify = playlistRemainingButton.title;
+//140218 1.2 iOS 7 begin
+        timeMagnifierViewController.textToMagnify = self.collectionRemainingLabel;
+//140218 1.2 iOS 7 end
         timeMagnifierViewController.timeType = segue.identifier;
         
 	}
@@ -1176,7 +1158,6 @@ BOOL delayPlaybackStateChange;
                                                       object: musicPlayer];
         
 	}
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
 }
 #pragma mark Music control________________________________
@@ -1380,21 +1361,6 @@ BOOL delayPlaybackStateChange;
     stopWatchRunning = YES;
     [self performSegueWithIdentifier: @"StartStopWatch" sender: self];
 }
-- (void)goBackClick
-{
-    //    LogMethod();
-    
-    //don't start networkActivityIndicator if stopwatch is running
-    if (!stopWatchRunning) {
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    }
-    
-    if (iPodLibraryChanged) {
-        [self.navigationController popToRootViewControllerAnimated:YES];
-    } else {
-        [self.navigationController popViewControllerAnimated:YES];
-    }
-}
 
 #pragma mark Application state changes____________________________
 
@@ -1593,15 +1559,12 @@ BOOL delayPlaybackStateChange;
                 [musicPlayer stop];
                 
                 BOOL userIsEditing = [[NSUserDefaults standardUserDefaults] boolForKey:@"userIsEditing"];
-                //if the user is editing, we don't want to pop, so call goBackClick in InfoTabBarDidCancel
+//140218 1.2 iOS 7 begin
+                //if the user is editing, we don't want to pop, so call pop controller in InfoTabBarDidCancel
                 if (!userIsEditing) {
-                    [self goBackClick];
+                    [self.navigationController popViewControllerAnimated:YES];
+//140218 1.2 iOS 7 end
                 }
-                //                if (iPodLibraryChanged) {
-                //                    [self.navigationController popToRootViewControllerAnimated:YES];
-                //                } else {
-                //                    [self.navigationController popViewControllerAnimated:YES];
-                //                }
             }
         }
     }
@@ -1809,7 +1772,9 @@ BOOL delayPlaybackStateChange;
     MPMusicPlaybackState playbackState = [musicPlayer playbackState];
     
     if (playbackState == MPMusicPlaybackStateStopped) {
-        [self goBackClick];
+//140218 1.2 iOS 7 begin
+        [self.navigationController popViewControllerAnimated:YES];
+//140218 1.2 iOS 7 end
     }
     
 }

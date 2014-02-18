@@ -540,7 +540,6 @@ NSString *myAffiliateID;
 }
 -(void) viewDidAppear:(BOOL)animated {
     //    LogMethod();
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     initialView = NO;
     
     UIDeviceOrientation deviceOrientation = [UIDevice currentDevice].orientation;
@@ -809,7 +808,6 @@ NSString *myAffiliateID;
         mainViewController.iPodLibraryChanged = self.iPodLibraryChanged;
         
     }
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 }
 - (void)hideActivityIndicator {
     

@@ -145,6 +145,9 @@ BOOL firstLoad;
     //    LogMethod();
     [super viewWillAppear: animated];
 //131216 1.2 iOS 7 begin
+    if (iPodLibraryChanged) {
+//        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
     self.edgesForExtendedLayout = UIRectEdgeNone;
 //131216 1.2 iOS 7 end
     
@@ -171,11 +174,6 @@ BOOL firstLoad;
     [self updateLayoutForNewOrientation: self.interfaceOrientation];
     
     return;
-}
--(void) viewDidAppear:(BOOL)animated {
-    //    LogMethod();
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    [super viewDidAppear:(BOOL)animated];
 }
 - (UILabel *) customizeTitleView
 {
@@ -477,7 +475,7 @@ BOOL firstLoad;
 
 - (UITableViewCell *) tableView: (UITableView *) tableView cellForRowAtIndexPath: (NSIndexPath *) indexPath {
     
-    //don't use CollectionItemCell for searchResultsCell won't respond to touches to scroll anyway and terrible performance on GoBackClick when autoRotated
+    //don't use CollectionItemCell for searchResultsCell won't respond to touches to scroll anyway and terrible performance on return when autoRotated
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *searchResultsCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
@@ -722,8 +720,6 @@ BOOL firstLoad;
         mainViewController.iPodLibraryChanged = self.iPodLibraryChanged;
         
     }
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
 }
 - (IBAction)viewNowPlaying {
     
@@ -732,18 +728,6 @@ BOOL firstLoad;
 
 #pragma mark Application state management_____________
 // Standard methods for managing application state.
-
-- (void)goBackClick
-{
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
-    //both actually go back to mediaGroupViewController
-    if (iPodLibraryChanged) {
-        [self.navigationController popToRootViewControllerAnimated:YES];
-    } else {
-        [self.navigationController popViewControllerAnimated:YES];
-    }
-}
 
 - (void) registerForMediaPlayerNotifications {
     //    LogMethod();

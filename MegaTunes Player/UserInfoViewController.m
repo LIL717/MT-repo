@@ -298,7 +298,6 @@ BOOL itemHasTag;
     cell.tagLabel.text = tagItem.tagName;
     
     if ([cell.tagLabel.text isEqualToString: @"Assign Tag"]) {
-
         cell.contentView.backgroundColor = [UIColor darkGrayColor];
     } else {
         int red = [tagItem.tagColorRed intValue];
@@ -306,11 +305,11 @@ BOOL itemHasTag;
         int blue = [tagItem.tagColorBlue intValue];
         int alpha = [tagItem.tagColorAlpha intValue];
         
-    UIColor *tagColor = [UIColor colorWithRed:(red/255.0f) green:(green/255.0f) blue:(blue/255.0f) alpha:(alpha/255.0f)];
-    [cell addSubview:cell.tagLabel];
-    cell.contentView.backgroundColor = tagColor;
-//        cell.textLabel.backgroundColor = tagColor;
+        UIColor *tagColor = [UIColor colorWithRed:(red/255.0f) green:(green/255.0f) blue:(blue/255.0f) alpha:(alpha/255.0f)];
+        cell.contentView.backgroundColor = tagColor;
     }
+    [cell addSubview:cell.tagLabel];
+
 //131203 1.2 iOS 7 end
     
     return cell;
@@ -389,8 +388,6 @@ BOOL itemHasTag;
 
         
     }
-
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
 }
 

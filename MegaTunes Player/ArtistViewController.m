@@ -273,6 +273,9 @@ BOOL firstLoad;
 //    LogMethod();
     [super viewWillAppear: animated];
 //131216 1.2 iOS 7 begin
+    if (iPodLibraryChanged) {
+//        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
     self.edgesForExtendedLayout = UIRectEdgeNone;
 //131216 1.2 iOS 7 end
     self.navigationItem.titleView = [self customizeTitleView];
@@ -297,14 +300,6 @@ BOOL firstLoad;
     [self updateLayoutForNewOrientation: self.interfaceOrientation];
 
     return;
-}
--(void) viewDidAppear:(BOOL)animated {
-    //    LogMethod();
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-//131216 1.2 iOS 7 begin
-//    viewIsAppearing = YES;
-//131216 1.2 iOS 7 end
-    [super viewDidAppear:(BOOL)animated];
 }
 - (UILabel *) customizeTitleView
 {
@@ -643,7 +638,7 @@ BOOL firstLoad;
 
 - (UITableViewCell *) tableView: (UITableView *) tableView cellForRowAtIndexPath: (NSIndexPath *) indexPath {
     
-    //don't use CollectionItemCell for searchResultsCell won't respond to touches to scroll anyway and terrible performance on GoBackClick when autoRotated
+    //don't use CollectionItemCell for searchResultsCell won't respond to touches to scroll anyway and terrible performance on return when autoRotated
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *searchResultsCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
@@ -1028,7 +1023,6 @@ BOOL firstLoad;
         mainViewController.iPodLibraryChanged = self.iPodLibraryChanged;
 
     }
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 }
 - (IBAction)viewNowPlaying {
     
@@ -1038,17 +1032,6 @@ BOOL firstLoad;
 #pragma mark Application state management_____________
 // Standard methods for managing application state.
 
-- (void)goBackClick
-{
-    //both actually go back to mediaGroupViewController
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
-    if (iPodLibraryChanged) {
-        [self.navigationController popToRootViewControllerAnimated:YES];
-    } else {
-        [self.navigationController popViewControllerAnimated:YES];
-    }
-}
 //// this subclassed to prevent scrollView from intrepretting half a tap as a tap (turning cell blue but not actually selecting until next selection
 //- (void)singleTapGestureCaptured:(UITapGestureRecognizer *)gesture
 //{

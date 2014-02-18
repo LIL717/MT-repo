@@ -467,6 +467,9 @@ BOOL excludeICloudItems;
 {
     //    LogMethod();
 //131216 1.2 iOS 7 begin
+    if (iPodLibraryChanged) {
+//        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
     self.edgesForExtendedLayout = UIRectEdgeNone;
 //131216 1.2 iOS 7 end
     self.swipeLeftRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(toggleTagButtonAndTitle:)];
@@ -528,11 +531,7 @@ BOOL excludeICloudItems;
         self.title = NSLocalizedString(self.songViewTitle, nil);
     }
 }
--(void) viewDidAppear:(BOOL)animated {
-    //    LogMethod();
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    [super viewDidAppear:(BOOL)animated];
-}
+
 - (UILabel *) customizeTitleView
 {
 //131205 1.2 iOS 7 begin
@@ -873,7 +872,7 @@ BOOL excludeICloudItems;
 {
     //    LogMethod();
     
-    //don't use SongCell for searchResultsCell won't respond to touches to scroll anyway and terrible performance on GoBackClick when autoRotated
+    //don't use SongCell for searchResultsCell won't respond to touches to scroll anyway and terrible performance on return when autoRotated
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *searchResultsCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
@@ -1364,7 +1363,6 @@ BOOL excludeICloudItems;
         mainViewController.iPodLibraryChanged = self.iPodLibraryChanged;
         
     }
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
 }
 - (IBAction)viewNowPlaying {
@@ -1393,17 +1391,7 @@ BOOL excludeICloudItems;
     
     [self.songTableView reloadData];
 }
-- (IBAction)goBackClick
-{
-    //remove the swipe gesture from the nav bar  (doesn't work to wait until dealloc)
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    
-    if (iPodLibraryChanged) {
-        [self.navigationController popToRootViewControllerAnimated:YES];
-    } else {
-        [self.navigationController popViewControllerAnimated:YES];
-    }
-}
+
 - (IBAction)infoButtonTapped:(id)sender event:(id)event {
     NSSet *touches = [event allTouches];
     UITouch *touch = [touches anyObject];

@@ -52,7 +52,10 @@ NSString *actionType;
 {
     //    LogMethod();
     [super viewDidLoad];
-    
+//140206 1.2 iOS 7 begin
+    // cause separator line to stretch to right side of view
+    [self.userTagTableView setSeparatorInset:UIEdgeInsetsZero];
+//140206 1.2 iOS 7 end
     [self listenForChanges];
     
     [self setupFetchedResultsController];
@@ -144,7 +147,6 @@ NSString *actionType;
 }
 -(void) viewDidAppear:(BOOL)animated {
     //    LogMethod();
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     tapCount = 0;
     
     if (newTagInserted) {
@@ -187,52 +189,18 @@ NSString *actionType;
 }
 - (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
     //    LogMethod();
-    //    CGFloat navBarAdjustment;
+//140216 1.2 iOS 7 begin
+    BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
     
-    if (UIInterfaceOrientationIsPortrait(orientation)) {
-        //        navBarAdjustment = 11;
-        [self.userTagTableView setContentInset:UIEdgeInsetsMake(11,0,0,0)];
-    } else {
-        //        navBarAdjustment = 23;
-        [self.userTagTableView setContentInset:UIEdgeInsetsMake(23,0,0,0)];
-        [self.userTagTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-        
-    }
-    //        [self.userTagTableView reloadData];
+    CGFloat navBarAdjustment = isPortrait ? 0 : 7;
     
-    //    //if the first View, and there is a current Tag for the media item, scroll to that tag
-    //    if (scrollToTag) {
-    //        [self.userTagTableView  scrollToRowAtIndexPath: [NSIndexPath indexPathForRow:indexOfCurrentTag inSection:0]
-    //                                      atScrollPosition:UITableViewScrollPositionTop animated:YES];
-    //        scrollToTag = NO;
-    //    } else {
+    [self.userTagTableView setContentOffset:CGPointMake(0, navBarAdjustment)];
+    [self.userTagTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+
     
-    //        BOOL firstRowVisible = NO;
-    //        //visibleRows is always 0 the first time through here for a table, populated after that
-    //        NSArray *visibleRows = [self.userTagTableView indexPathsForVisibleRows];
-    //        NSIndexPath *index = [visibleRows objectAtIndex: 0];
-    //        if (index.section == 0 && index.row == 0) {
-    //            firstRowVisible = YES;
-    //        }
-    //
-    //    }
-    
-    //    }
-    
+//140216 1.2 iOS 7 end
 }
-//- (void)updateContentOffset {
-//    //this is only necessary when screen will not be filled - this method is executed afterDelay because ContentOffset is probably not correct until after layoutSubviews happens
-//
-//    //    NSLog (@"tableView content size is %f %f",self.collectionTableView.contentSize.height, self.collectionTableView.contentSize.width);
-//
-//    BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
-//
-//    CGFloat largeHeaderAdjustment = isPortrait ? 11 : 23;
-//
-//    CGFloat tableViewHeaderHeight = self.searchView.frame.size.height;
-//
-//    [self.userTagTableView setContentOffset:CGPointMake(0, tableViewHeaderHeight - largeHeaderAdjustment)];
-//}
+
 - (void) viewWillLayoutSubviews {
     //need this to pin portrait view to bounds otherwise if start in landscape, push to next view, rotate to portrait then pop back the original view in portrait - it will be too wide and "scroll" horizontally
     self.userTagTableView.contentSize = CGSizeMake(self.userTagTableView.frame.size.width, self.userTagTableView.contentSize.height);
@@ -393,9 +361,9 @@ NSString *actionType;
     //    NSLog (@"add tag to mediaItemUserData");
     //    [mediaItemUserData listAll];
     //    [tagData listAll];
-    
-    [self goBackClick];
-    
+//140217 1.2 iOS 7 begin
+    [self.navigationController popViewControllerAnimated:YES];
+//140217 1.2 iOS 7 end
 }
 
 - (void)doubleTap:(NSIndexPath *)indexPath {
@@ -544,7 +512,6 @@ NSString *actionType;
             
         }
     }
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
 }
 - (IBAction)addNewTag {
@@ -552,15 +519,15 @@ NSString *actionType;
     actionType = @"Add";
     [self performSegueWithIdentifier: @"AddTagItem" sender: self];
 }
-- (void)goBackClick
+//140217 1.2 iOS 7 begin
+//intercept back Button pressed
+- (void)willMoveToParentViewController:(UIViewController *)parent
 {
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    
-    [self.navigationController popViewControllerAnimated:YES];
-    [self.userTagViewControllerDelegate userTagViewControllerDidCancel:self];
-    
-    
+    if (![parent isEqual:self.parentViewController]) {
+        [self.userTagViewControllerDelegate userTagViewControllerDidCancel:self];
+    }
 }
+//140217 1.2 iOS 7 end
 - (void)addTagViewControllerDidCancel:(AddTagViewController *)controller
 {
     //    if (newTagInserted) {

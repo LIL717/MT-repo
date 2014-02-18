@@ -5,7 +5,6 @@
 //  Created by Lori Hill on 6/8/13.
 //
 //
-@class MTSearchBar;
 @class UserDataForMediaItem;
 @class UserTagViewController;
 #import "FMMoveTableView.h"

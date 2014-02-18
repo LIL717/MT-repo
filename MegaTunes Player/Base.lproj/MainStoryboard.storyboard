@@ -10,7 +10,7 @@
             <objects>
                 <viewController id="mNb-57-5Xm" customClass="SongViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" rowHeight="55" sectionHeaderHeight="1" sectionFooterHeight="1" id="EmK-pd-wau">
-                        <rect key="frame" x="0.0" y="94" width="480" height="226"/>
+                        <rect key="frame" x="0.0" y="64" width="480" height="256"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
@@ -597,11 +597,11 @@
                         <viewControllerLayoutGuide type="bottom" id="mkz-LW-kLD"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="wjZ-BW-RcM">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceHorizontal="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="msy-OP-RHE">
-                                <rect key="frame" x="0.0" y="22" width="320" height="436"/>
+                                <rect key="frame" x="0.0" y="22" width="320" height="372"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </scrollView>
                         </subviews>
@@ -620,6 +620,7 @@
                         </connections>
                     </view>
                     <navigationItem key="navigationItem" id="kMA-zk-0F8"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <connections>
                         <outlet property="scrollView" destination="msy-OP-RHE" id="W3t-NT-499"/>
@@ -649,9 +650,10 @@
             <objects>
                 <viewController autoresizesArchivedViewToFullSize="NO" title="Notes" automaticallyAdjustsScrollViewInsets="NO" modalTransitionStyle="partialCurl" id="AeD-XN-WKi" customClass="ITunesCommentsViewController" sceneMemberID="viewController">
                     <textView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Lorem ipsum " id="ZTj-61-wl1">
-                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="64" width="480" height="207"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                         <color key="textColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
                         <fontDescription key="fontDescription" type="system" pointSize="44"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -676,7 +678,7 @@
                         <viewControllerLayoutGuide type="bottom" id="0DX-54-oul"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Lr6-Id-qll">
-                        <rect key="frame" x="0.0" y="94" width="480" height="226"/>
+                        <rect key="frame" x="0.0" y="94" width="480" height="177"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="55" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Shu-jn-KJO">
@@ -718,7 +720,7 @@
                                 </connections>
                             </tableView>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1nd-7c-kt3">
-                                <rect key="frame" x="0.0" y="55" width="480" height="171"/>
+                                <rect key="frame" x="0.0" y="55" width="480" height="122"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="textColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="44"/>
@@ -772,7 +774,7 @@
             <objects>
                 <viewController autoresizesArchivedViewToFullSize="NO" title="Info" automaticallyAdjustsScrollViewInsets="NO" modalTransitionStyle="partialCurl" id="0BK-h9-5Yl" customClass="AlbumInfoViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" sectionIndexMinimumDisplayRowCount="3" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="55" sectionHeaderHeight="1" sectionFooterHeight="1" id="Km2-GT-jmW">
-                        <rect key="frame" x="0.0" y="94" width="320" height="386"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="separatorColor" white="0.80000000000000004" alpha="1" colorSpace="deviceWhite"/>
                         <imageView key="tableFooterView" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="1" verticalHuggingPriority="1" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" id="xgF-dE-gGX">
@@ -896,7 +898,7 @@
             <objects>
                 <viewController autoresizesArchivedViewToFullSize="NO" automaticallyAdjustsScrollViewInsets="NO" id="DPV-A8-OP5" customClass="ArtistViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="grouped" rowHeight="55" sectionHeaderHeight="1" sectionFooterHeight="1" id="tE6-jE-hH7">
-                        <rect key="frame" x="0.0" y="64" width="480" height="256"/>
+                        <rect key="frame" x="0.0" y="94" width="480" height="226"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
@@ -1178,10 +1180,11 @@
         <!--Navigation Controller-->
         <scene sceneID="WJB-1M-hqO">
             <objects>
-                <navigationController storyboardIdentifier="MagnifierNavController" id="cAc-tr-olB" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="MagnifierNavController" navigationBarHidden="YES" id="cAc-tr-olB" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="HUk-ux-J5T"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="jDh-ET-wzc">
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="jDh-ET-wzc">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1197,12 +1200,13 @@
         <!--Navigation Controller-->
         <scene sceneID="oUG-3e-BQe">
             <objects>
-                <navigationController autoresizesArchivedViewToFullSize="NO" automaticallyAdjustsScrollViewInsets="NO" id="ItR-S9-GSa" sceneMemberID="viewController">
+                <navigationController autoresizesArchivedViewToFullSize="NO" automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="ItR-S9-GSa" sceneMemberID="viewController">
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="Hhj-9Q-DEh"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO"/>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="BT1-Fu-1zz">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="BT1-Fu-1zz">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1240,7 +1244,7 @@
             <objects>
                 <viewController id="527-b6-fAN" customClass="AlbumViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="grouped" rowHeight="55" sectionHeaderHeight="1" sectionFooterHeight="1" id="oc8-bL-YeY">
-                        <rect key="frame" x="0.0" y="94" width="480" height="226"/>
+                        <rect key="frame" x="0.0" y="64" width="480" height="256"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
@@ -1519,16 +1523,15 @@
         <!--User Tag View Controller-->
         <scene sceneID="Pu6-5e-aby">
             <objects>
-                <viewController id="VP8-wR-3Ea" customClass="UserTagViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" delaysContentTouches="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="55" sectionHeaderHeight="22" sectionFooterHeight="22" id="xT6-n5-RLI" customClass="FMMoveTableView">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                <viewController autoresizesArchivedViewToFullSize="NO" id="VP8-wR-3Ea" customClass="UserTagViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" delaysContentTouches="NO" dataMode="prototypes" style="plain" rowHeight="55" sectionHeaderHeight="22" sectionFooterHeight="22" id="xT6-n5-RLI" customClass="FMMoveTableView">
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                         <inset key="scrollIndicatorInsets" minX="1" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <color key="separatorColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" ambiguous="YES" restorationIdentifier="" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="UserTagCell" rowHeight="55" id="Nef-Fu-QMi" userLabel="UserTagCell" customClass="UserTagCell">
+                            <tableViewCell contentMode="scaleToFill" restorationIdentifier="" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="UserTagCell" rowHeight="55" id="Nef-Fu-QMi" userLabel="UserTagCell" customClass="UserTagCell">
                                 <rect key="frame" x="0.0" y="22" width="320" height="55"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Nef-Fu-QMi" id="gak-n8-lH4">
@@ -1536,32 +1539,29 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6Bx-Ei-Xow" userLabel="bkgImage">
-                                            <rect key="frame" x="0.0" y="0.0" width="480" height="55"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="54"/>
                                         </imageView>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vJz-R4-SLd">
-                                            <rect key="frame" x="6" y="0.0" width="474" height="55"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="474" id="2N7-yr-dWQ"/>
-                                            </constraints>
+                                            <rect key="frame" x="6" y="0.0" width="314" height="54"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="44"/>
                                             <color key="textColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color key="highlightedColor" red="0.070588238540000001" green="0.1176470667" blue="1" alpha="1" colorSpace="deviceRGB"/>
                                             <color key="shadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </label>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="6Bx-Ei-Xow" secondAttribute="bottom" id="Fkx-b0-41p"/>
+                                        <constraint firstAttribute="bottom" secondItem="vJz-R4-SLd" secondAttribute="bottom" id="HrS-8C-XPj"/>
+                                        <constraint firstItem="6Bx-Ei-Xow" firstAttribute="leading" secondItem="gak-n8-lH4" secondAttribute="leading" id="NX1-wo-QAF"/>
+                                        <constraint firstAttribute="trailing" secondItem="vJz-R4-SLd" secondAttribute="trailing" id="Pde-ni-fPh"/>
+                                        <constraint firstItem="6Bx-Ei-Xow" firstAttribute="top" secondItem="gak-n8-lH4" secondAttribute="top" id="cJf-J6-lNg"/>
+                                        <constraint firstAttribute="trailing" secondItem="6Bx-Ei-Xow" secondAttribute="trailing" id="kyt-8z-03b"/>
+                                        <constraint firstItem="vJz-R4-SLd" firstAttribute="top" secondItem="gak-n8-lH4" secondAttribute="top" id="pt0-eU-5Og"/>
+                                        <constraint firstItem="vJz-R4-SLd" firstAttribute="leading" secondItem="gak-n8-lH4" secondAttribute="leading" constant="6" id="weu-7E-aXR"/>
+                                    </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <gestureRecognizers/>
-                                <constraints>
-                                    <constraint firstItem="vJz-R4-SLd" firstAttribute="top" secondItem="6Bx-Ei-Xow" secondAttribute="top" id="3Wr-Yv-BCt"/>
-                                    <constraint firstItem="6Bx-Ei-Xow" firstAttribute="trailing" secondItem="vJz-R4-SLd" secondAttribute="trailing" id="Jvh-RE-rzu"/>
-                                    <constraint firstItem="6Bx-Ei-Xow" firstAttribute="leading" secondItem="Nef-Fu-QMi" secondAttribute="leading" id="LBz-WO-weS"/>
-                                    <constraint firstItem="vJz-R4-SLd" firstAttribute="bottom" secondItem="6Bx-Ei-Xow" secondAttribute="bottom" id="NT5-xg-AeW"/>
-                                    <constraint firstItem="6Bx-Ei-Xow" firstAttribute="bottom" secondItem="Nef-Fu-QMi" secondAttribute="bottom" id="gbv-x3-7NR"/>
-                                    <constraint firstItem="vJz-R4-SLd" firstAttribute="leading" secondItem="Nef-Fu-QMi" secondAttribute="leading" constant="6" id="gql-fm-mGA"/>
-                                    <constraint firstItem="6Bx-Ei-Xow" firstAttribute="trailing" secondItem="Nef-Fu-QMi" secondAttribute="trailing" id="gze-Fd-tqk"/>
-                                    <constraint firstItem="6Bx-Ei-Xow" firstAttribute="top" secondItem="Nef-Fu-QMi" secondAttribute="top" id="mEN-H2-W1U"/>
-                                </constraints>
                                 <connections>
                                     <outlet property="cellBackgroundImageView" destination="6Bx-Ei-Xow" id="daC-0i-ARc"/>
                                     <outlet property="tagLabel" destination="vJz-R4-SLd" id="vtY-yG-99F"/>
@@ -1574,6 +1574,8 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="ABN-3Y-vw6"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO"/>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <connections>
                         <outlet property="userTagTableView" destination="xT6-n5-RLI" id="2dI-4X-z48"/>
                         <segue destination="nNG-kj-OGb" kind="push" identifier="AddTagItem" id="4z5-dg-hs5"/>
@@ -1592,11 +1594,11 @@
                         <viewControllerLayoutGuide type="bottom" id="YSr-lI-l7Q"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Ygb-0H-jYe">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" clearsOnBeginEditing="YES" adjustsFontSizeToFit="NO" minimumFontSize="44" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Ajq-Rv-jHw">
-                                <rect key="frame" x="10" y="23" width="300" height="55"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" clearsOnBeginEditing="YES" adjustsFontSizeToFit="NO" minimumFontSize="44" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Ajq-Rv-jHw">
+                                <rect key="frame" x="10" y="11" width="140" height="55"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="55" id="Ifh-fR-deQ"/>
@@ -1605,8 +1607,8 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="44"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                             </textField>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="spr-9Q-UaM" userLabel="colorView">
-                                <rect key="frame" x="315" y="792" width="202" height="202"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="spr-9Q-UaM" userLabel="colorView">
+                                <rect key="frame" x="155" y="154" width="202" height="202"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="202" id="6HC-gG-MuL"/>
@@ -1623,7 +1625,6 @@
                             <constraint firstAttribute="centerX" secondItem="spr-9Q-UaM" secondAttribute="centerX" priority="500" id="WdG-WO-hwu"/>
                             <constraint firstItem="spr-9Q-UaM" firstAttribute="top" secondItem="Ygb-0H-jYe" secondAttribute="top" constant="154" id="nfh-FC-t9m"/>
                         </constraints>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
                     <navigationItem key="navigationItem" id="OTY-em-5g5"/>
                     <connections>
@@ -1705,7 +1706,6 @@
                                             <rect key="frame" x="0.0" y="0.0" width="20" height="54"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="20" id="5Un-tX-TZZ"/>
-                                                <constraint firstAttribute="height" constant="54" id="YxK-Ai-caJ"/>
                                             </constraints>
                                         </imageView>
                                         <scrollView clipsSubviews="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ggW-FG-mrw" userLabel="IBScrollView" customClass="InCellScrollView">
@@ -1824,14 +1824,14 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="hHs-2t-p2p"/>
-        <segue reference="5Lm-x9-p1k"/>
-        <segue reference="pO3-jk-z6Z"/>
-        <segue reference="Xbd-a7-Wgl"/>
-        <segue reference="kZ2-Sr-P63"/>
-        <segue reference="OaX-wz-MBb"/>
-        <segue reference="qWI-HD-eSG"/>
+        <segue reference="5Qv-VH-YKH"/>
         <segue reference="hv1-71-OGq"/>
+        <segue reference="qWI-HD-eSG"/>
+        <segue reference="iCw-Zw-zSF"/>
+        <segue reference="kZ2-Sr-P63"/>
         <segue reference="dXX-zY-4vR"/>
+        <segue reference="TSf-v1-yU3"/>
+        <segue reference="Xbd-a7-Wgl"/>
+        <segue reference="hHs-2t-p2p"/>
     </inferredMetricsTieBreakers>
 </document>

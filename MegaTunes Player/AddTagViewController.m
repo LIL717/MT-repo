@@ -41,15 +41,6 @@
 @synthesize sortOrder;
 @synthesize rightBarButton;
 
-//- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-//{
-//    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-//    if (self) {
-//        // Custom initialization
-//    }
-//    return self;
-//}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -57,22 +48,19 @@
     
     landscapeOffset = 11.0;
     
-//131203 1.2 iOS 7 begin
+//140127 1.2 iOS 7 begin
     
     self.navigationController.navigationBar.topItem.title = @"";
+        
+    UIButton *tempCheckMarkButton = [UIButton buttonWithType:UIButtonTypeCustom];
     
-    //131204 1.2 iOS 7 end
+    [tempCheckMarkButton addTarget:self action:@selector(saveTag) forControlEvents:UIControlEventTouchUpInside];
+    [tempCheckMarkButton setImage:[UIImage imageNamed:@"checkMarkImage.png"] forState:UIControlStateNormal];
+    [tempCheckMarkButton setShowsTouchWhenHighlighted:NO];
+    [tempCheckMarkButton sizeToFit];
     
-    self.rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                           style:UIBarButtonItemStyleBordered
-                                                          target:self
-                                                          action:@selector(saveTag)];
-    
-    UIImage *menuBarImageDefault = [[UIImage imageNamed:@"checkMark57.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    UIImage *menuBarImageLandscape = [[UIImage imageNamed:@"checkMark68.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    
-    [self.rightBarButton setBackgroundImage:menuBarImageDefault forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    [self.rightBarButton setBackgroundImage:menuBarImageLandscape forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
+    self.rightBarButton = [[UIBarButtonItem alloc] initWithCustomView:tempCheckMarkButton];
+//140127 1.2 iOS 7 end
     
     [self.rightBarButton setIsAccessibilityElement:YES];
     [self.rightBarButton setAccessibilityLabel: NSLocalizedString(@"Done", nil)];
@@ -102,10 +90,7 @@
         NSLog (@"self.tagName is %@", self.tagName.text);
         
 //131203 1.2 iOS 7 begin
-
-        [self.tagName setBackgroundColor:[UIColor blackColor]];
-
-        
+        [self.tagName setBackgroundColor: self.pickedColor];
 //131203 1.2 iOS 7 end
 
     }
@@ -124,11 +109,6 @@
     [super viewWillAppear: animated];
     
     return;
-}
--(void) viewDidAppear:(BOOL)animated {
-    //    LogMethod();
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    [super viewDidAppear:(BOOL)animated];
 }
 - (UILabel *) customizeTitleView
 {
@@ -252,22 +232,23 @@
     }
     
     //    [tagData listAll];
-    
-    [self goBackClick];
+//120218 1.2 iOS 7 begin
+    [self.navigationController popViewControllerAnimated:YES];
+//120218 1.2 iOS 7 ened
 }
 - (IBAction)textFieldFinished:(id)sender
 {
     [sender resignFirstResponder];
 }
-- (void)goBackClick
+//140217 1.2 iOS 7 begin
+//intercept back Button pressed
+- (void)willMoveToParentViewController:(UIViewController *)parent
 {
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    
-    [self.navigationController popViewControllerAnimated:YES];
-    [self.addTagViewControllerDelegate addTagViewControllerDidCancel:self];
-    
-    
+    if (![parent isEqual:self.parentViewController]) {
+        [self.addTagViewControllerDelegate addTagViewControllerDidCancel:self];
+    }
 }
+//140217 1.2 iOS 7 end
 // set color from picker
 - (void) pickedColor:(UIColor *)color {
     self.pickedColor = color;

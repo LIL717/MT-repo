@@ -56,8 +56,10 @@
                             forState: UIControlStateNormal];
     }
     if ([self.timeType isEqualToString: @"MagnifyPlaylistRemaining"]) {
-        [self.magnifiedText setTitle: mainViewController.navigationItem.rightBarButtonItem.title
+//140216 1.2 iOS 7 begin
+        [self.magnifiedText setTitle: mainViewController.collectionRemainingLabel
                             forState: UIControlStateNormal];
+//140216 1.2 iOS 7 end
     }
     if ([self.timeType isEqualToString: @"StartStopWatch"]) {
         [self.magnifiedText setTitle: mainViewController.stopWatchTime
@@ -76,15 +78,10 @@
                                                          repeats:YES];
     
 }
--(void) viewDidAppear:(BOOL)animated {
-    //    LogMethod();
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    [super viewDidAppear:(BOOL)animated];
-}
+
 - (IBAction)cancel:(id)sender
 {
     //    LogMethod();
-//    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
     [self.delegate timeMagnifierViewControllerDidCancel:self];
     
