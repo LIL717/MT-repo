@@ -88,6 +88,8 @@ NSString *actionType;
 //140127 1.2 iOS 7 begin
     
     self.navigationController.navigationBar.topItem.title = @"";
+    //set the navigation bar title
+    self.navigationItem.titleView = [self customizeTitleView];
     
     UIButton *tempAddButton = [UIButton buttonWithType:UIButtonTypeCustom];
     
@@ -136,8 +138,6 @@ NSString *actionType;
 //131216 1.2 iOS 7 begin
     self.edgesForExtendedLayout = UIRectEdgeNone;
 //131216 1.2 iOS 7 end
-    //set the navigation bar title
-    self.navigationItem.titleView = [self customizeTitleView];
     
     [self updateLayoutForNewOrientation: self.interfaceOrientation];
     

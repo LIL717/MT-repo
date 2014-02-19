@@ -107,6 +107,8 @@ BOOL excludeICloudItems;
 //131203 1.2 iOS 7 begin
     
     self.navigationController.navigationBar.topItem.title = @"";
+    //set the navigation bar title
+    self.navigationItem.titleView = [self customizeTitleView];
 
     UIButton *tempPlayButton = [UIButton buttonWithType:UIButtonTypeCustom];
     
@@ -463,8 +465,7 @@ BOOL excludeICloudItems;
     
     [self buildRightNavBarArray];
     
-    //set the navigation bar title
-    self.navigationItem.titleView = [self customizeTitleView];
+
     
     //    // if rows have been scrolled, they have been added to this array, so need to scroll them back to 0
     //    YAY this works!!

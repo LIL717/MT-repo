@@ -169,7 +169,7 @@ NSString *myAffiliateID;
             CGRect frame = pImageView.frame;
             //            frame.origin.x = (self.view.bounds.size.width / 2 - pImageView.frame.size.width / 2);
             //            frame.origin.y = (self.view.bounds.size.height / 2 - pImageView.frame.size.height / 2 - 11);
-            frame.origin.y = 11.0f;
+//            frame.origin.y = 11.0f;
             pImageView.frame = frame;
             
             [self.pView addSubview: pImageView];
@@ -254,6 +254,8 @@ NSString *myAffiliateID;
     
 //    [[UINavigationBar appearance] setBackIndicatorImage:[UIImage imageNamed:@"iTunesStoreIcon.png"]];
 //    [[UINavigationBar appearance] setBackIndicatorTransitionMaskImage:[UIImage imageNamed:@"iTunesStoreIcon.png"]];
+    self.title = NSLocalizedString(@"Select Music", nil);
+    self.navigationItem.titleView = [self customizeTitleView];
     UIButton *iTunesButton = [UIButton buttonWithType:UIButtonTypeCustom];
     UIImage *iTunesImage = [UIImage imageNamed:@"iTunesStoreIcon.png"];
     UIImage *iTunesImageHighlighted = [UIImage imageNamed:@"iTunesStoreIcon57.png"];
@@ -531,8 +533,6 @@ NSString *myAffiliateID;
     } else {
         self.navigationItem.rightBarButtonItem= nil;
     }
-    self.title = NSLocalizedString(@"Select Music", nil);
-    self.navigationItem.titleView = [self customizeTitleView];
     
     [self updateLayoutForNewOrientation: self.interfaceOrientation];
     
@@ -566,7 +566,6 @@ NSString *myAffiliateID;
     
 //131205 1.2 iOS 7 begin
     
-//    CGRect frame = CGRectMake(0, 0, [self.title sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 48);
     CGRect frame = CGRectMake(0, 0, [self.title sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:44]}].width, 48);
 
 //131205 1.2 iOS 7 end
@@ -590,19 +589,19 @@ NSString *myAffiliateID;
 - (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
     
     //    LogMethod();
-    if (UIInterfaceOrientationIsPortrait(orientation)) {
-//141022 1.2 iOS 7 begin
-//        [self.groupTableView setContentInset:UIEdgeInsetsMake(11,0,0,0)];
-        [self.groupTableView setContentInset:UIEdgeInsetsMake(0,0,0,0)];
-//141022 1.2 iOS 7 begin
-    } else {
-//141022 1.2 iOS 7 begin
-
-//        [self.groupTableView setContentInset:UIEdgeInsetsMake(23,0,0,0)];
-        [self.groupTableView setContentInset:UIEdgeInsetsMake(0,0,0,0)];
-//141022 1.2 iOS 7 begin
-        [self.groupTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-    }
+//    if (UIInterfaceOrientationIsPortrait(orientation)) {
+////141022 1.2 iOS 7 begin
+////        [self.groupTableView setContentInset:UIEdgeInsetsMake(11,0,0,0)];
+//        [self.groupTableView setContentInset:UIEdgeInsetsMake(0,0,0,0)];
+////141022 1.2 iOS 7 begin
+//    } else {
+////141022 1.2 iOS 7 begin
+//
+////        [self.groupTableView setContentInset:UIEdgeInsetsMake(23,0,0,0)];
+//        [self.groupTableView setContentInset:UIEdgeInsetsMake(0,0,0,0)];
+////141022 1.2 iOS 7 begin
+//        [self.groupTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+//    }
 }
 - (void) viewWillLayoutSubviews {
     //    LogMethod();

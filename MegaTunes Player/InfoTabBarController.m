@@ -60,6 +60,7 @@
 //131203 1.2 iOS 7 begin
 
     self.navigationController.navigationBar.topItem.title = @"";
+    self.navigationItem.titleView = [self customizeTitleView];
 
     UIButton *tempPlayButton = [UIButton buttonWithType:UIButtonTypeCustom];
     
@@ -241,7 +242,6 @@
     //        }
     //    }
     self.title = self.saveTitle;
-    self.navigationItem.titleView = [self customizeTitleView];
     
     if (self.userInfoViewController.showCheckMarkButton) {
         //initWithTitle cannot be nil, must be @""

@@ -118,7 +118,10 @@ NSString *myAffiliateID;
     [super viewDidLoad];
     
     self.mediaGroupViewController.delegate = self;
-    
+//140218 1.2 iOS 7 begin
+    self.title = NSLocalizedString(@"Select Music", nil);
+    self.navigationItem.titleView = [self customizeTitleView];
+//140218 1.2 iOS 7 end
     //configure carousel
     carousel.type = iCarouselTypeCoverFlow2;
     
@@ -164,8 +167,6 @@ NSString *myAffiliateID;
 //131216 1.2 iOS 7 end
     
     [self setIPodLibraryChanged: NO];
-    self.title = NSLocalizedString(@"Select Music", nil);
-    self.navigationItem.titleView = [self customizeTitleView];
     [self.navigationItem setHidesBackButton: YES animated: NO];
     
     

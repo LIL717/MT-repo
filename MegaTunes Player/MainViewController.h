@@ -94,6 +94,9 @@
 @property (strong, nonatomic) CollectionItem *collectionItem;
 @property (strong, nonatomic) UISwipeGestureRecognizer *swipeLeftRight;
 @property (strong, nonatomic) NSString *stopWatchTime;
+//140218 1.2 iOS 7 begin
+@property (strong, nonatomic) NSString *collectionRemainingLabel;
+//140218 1.2 iOS 7 end
 
 //@property (strong, nonatomic) IBOutlet NSLayoutConstraint *nextSongLabelWidthConstraint;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *leadingSpaceToSliderConstraint;

@@ -97,6 +97,8 @@ BOOL firstLoad;
     }
 //131203 1.2 iOS 7 begin
     self.navigationController.navigationBar.topItem.title = @"";
+    //set the navigation bar title
+    self.navigationItem.titleView = [self customizeTitleView];
 
     UIButton *tempPlayButton = [UIButton buttonWithType:UIButtonTypeCustom];
     
@@ -278,7 +280,6 @@ BOOL firstLoad;
     }
     self.edgesForExtendedLayout = UIRectEdgeNone;
 //131216 1.2 iOS 7 end
-    self.navigationItem.titleView = [self customizeTitleView];
   
     NSString *playingItem = [[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyTitle];
     
@@ -330,7 +331,7 @@ BOOL firstLoad;
     
     BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
 
-    CGFloat navBarAdjustment = isPortrait ? 0 : 3;
+    CGFloat navBarAdjustment = isPortrait ? 0 : 7;
 
 
 //    CGFloat navBarAdjustment;

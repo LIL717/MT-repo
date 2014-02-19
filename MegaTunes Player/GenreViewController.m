@@ -79,6 +79,7 @@ BOOL firstLoad;
 //131203 1.2 iOS 7 begin
   
     self.navigationController.navigationBar.topItem.title = @"";
+    self.navigationItem.titleView = [self customizeTitleView];
 
     UIButton *tempPlayButton = [UIButton buttonWithType:UIButtonTypeCustom];
     
@@ -150,8 +151,6 @@ BOOL firstLoad;
     }
     self.edgesForExtendedLayout = UIRectEdgeNone;
 //131216 1.2 iOS 7 end
-    
-    self.navigationItem.titleView = [self customizeTitleView];
     
     NSString *playingItem = [[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyTitle];
     
