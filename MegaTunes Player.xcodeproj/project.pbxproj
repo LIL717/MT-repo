@@ -25,7 +25,6 @@
 		703E4379184FB227001499B9 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 703E4371184FB227001499B9 /* LICENSE */; };
 		703E437A184FB227001499B9 /* README1.md in Resources */ = {isa = PBXBuildFile; fileRef = 703E4372184FB227001499B9 /* README1.md */; };
 		703E437B184FB227001499B9 /* UINavigationItem+iOS7Spacing.m in Sources */ = {isa = PBXBuildFile; fileRef = 703E4374184FB227001499B9 /* UINavigationItem+iOS7Spacing.m */; };
-		7044022017A0630500AFAA98 /* bigrepeat1blue.psd in Resources */ = {isa = PBXBuildFile; fileRef = 7044021D17A0630500AFAA98 /* bigrepeat1blue.psd */; };
 		7049301816E808E1005A66C4 /* DTCustomColoredAccessory.m in Sources */ = {isa = PBXBuildFile; fileRef = 7049301516E808E1005A66C4 /* DTCustomColoredAccessory.m */; };
 		7049301C16E80A0D005A66C4 /* ArtistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7049301B16E80A0D005A66C4 /* ArtistViewController.m */; };
 		7049302B16E82101005A66C4 /* SongInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7049302A16E82101005A66C4 /* SongInfoCell.m */; };
@@ -105,7 +104,6 @@
 		70D7C28F1794A40D00A8A5BF /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 70D7C28E1794A40D00A8A5BF /* Reachability.m */; };
 		70E8E8091759CDA10012CE74 /* MediaGroupCarouselViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70E8E8081759CD9F0012CE74 /* MediaGroupCarouselViewController.m */; };
 		70E8E80F175ABA2E0012CE74 /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 70E8E80E175ABA2E0012CE74 /* iCarousel.m */; };
-		70E8E839175C2AB80012CE74 /* page@2x in Resources */ = {isa = PBXBuildFile; fileRef = 70E8E838175C2AB60012CE74 /* page@2x */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -150,7 +148,6 @@
 		703E4372184FB227001499B9 /* README1.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README1.md; sourceTree = "<group>"; };
 		703E4373184FB227001499B9 /* UINavigationItem+iOS7Spacing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationItem+iOS7Spacing.h"; sourceTree = "<group>"; };
 		703E4374184FB227001499B9 /* UINavigationItem+iOS7Spacing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationItem+iOS7Spacing.m"; sourceTree = "<group>"; };
-		7044021D17A0630500AFAA98 /* bigrepeat1blue.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = bigrepeat1blue.psd; sourceTree = "<group>"; };
 		7049301416E808E1005A66C4 /* DTCustomColoredAccessory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTCustomColoredAccessory.h; sourceTree = "<group>"; };
 		7049301516E808E1005A66C4 /* DTCustomColoredAccessory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTCustomColoredAccessory.m; sourceTree = "<group>"; };
 		7049301B16E80A0D005A66C4 /* ArtistViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArtistViewController.m; sourceTree = "<group>"; };
@@ -347,7 +344,6 @@
 		70E8E8081759CD9F0012CE74 /* MediaGroupCarouselViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaGroupCarouselViewController.m; sourceTree = "<group>"; };
 		70E8E80D175ABA2E0012CE74 /* iCarousel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCarousel.h; sourceTree = "<group>"; };
 		70E8E80E175ABA2E0012CE74 /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
-		70E8E838175C2AB60012CE74 /* page@2x */ = {isa = PBXFileReference; lastKnownFileType = file; path = "page@2x"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -450,7 +446,6 @@
 				70ADDC0E1612245400219873 /* Model */,
 				70ADDC101612246900219873 /* Controller */,
 				70A13D9216320F6500244866 /* Unused */,
-				70ADDC11161224BD00219873 /* Resources */,
 				7060523214F88D43001A1CDB /* Supporting Files */,
 			);
 			path = "MegaTunes Player";
@@ -546,6 +541,7 @@
 		70A0491A16F6810000F70A90 /* 3rd Party */ = {
 			isa = PBXGroup;
 			children = (
+				70F57DA018B5B50E003597D1 /* Accessible */,
 				70D7C2901794A43B00A8A5BF /* Reachability */,
 				70AAA8DC177008DB00B14A46 /* FMFramework */,
 				70CF0BDB176D33C2007AB6CF /* VBColorPicker */,
@@ -719,19 +715,6 @@
 			name = Controller;
 			sourceTree = "<group>";
 		};
-		70ADDC11161224BD00219873 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				707AC0EE17D933BD009B49CA /* AccessibleButton.h */,
-				707AC0EF17D933BD009B49CA /* AccessibleButton.m */,
-				707AC0F017D933BD009B49CA /* AccessibleLabel.h */,
-				707AC0F117D933BD009B49CA /* AccessibleLabel.m */,
-				7044021D17A0630500AFAA98 /* bigrepeat1blue.psd */,
-				70E8E838175C2AB60012CE74 /* page@2x */,
-			);
-			name = Resources;
-			sourceTree = "<group>";
-		};
 		70CF0BD5176C0917007AB6CF /* KSLabel */ = {
 			isa = PBXGroup;
 			children = (
@@ -787,6 +770,18 @@
 				70E8E80E175ABA2E0012CE74 /* iCarousel.m */,
 			);
 			path = iCarousel;
+			sourceTree = "<group>";
+		};
+		70F57DA018B5B50E003597D1 /* Accessible */ = {
+			isa = PBXGroup;
+			children = (
+				707AC0EE17D933BD009B49CA /* AccessibleButton.h */,
+				707AC0EF17D933BD009B49CA /* AccessibleButton.m */,
+				707AC0F017D933BD009B49CA /* AccessibleLabel.h */,
+				707AC0F117D933BD009B49CA /* AccessibleLabel.m */,
+			);
+			name = Accessible;
+			path = "../../../../Development Sandbox/MT-repo/MT-repo/MegaTunes Player";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -890,9 +885,7 @@
 				703E4379184FB227001499B9 /* LICENSE in Resources */,
 				70A0493716F6814700F70A90 /* README.mdown in Resources */,
 				703E4378184FB227001499B9 /* ios7-fixed.png in Resources */,
-				70E8E839175C2AB80012CE74 /* page@2x in Resources */,
 				707214FA184473720018B931 /* release_notes.md in Resources */,
-				7044022017A0630500AFAA98 /* bigrepeat1blue.psd in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

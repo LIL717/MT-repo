@@ -74,18 +74,21 @@ NSString *myAffiliateID;
 //130906 1.1 add Store Button begin
     //get the affliate ID
     myAffiliateID = [[NSUserDefaults standardUserDefaults] stringForKey:@"affiliateID"];
-    self.navigationItem.backBarButtonItem = nil; // Important
-    //initWithTitle cannot be nil, must be @""
-	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                             style:UIBarButtonItemStyleBordered
-                                                                            target:self
-                                                                            action:@selector(linkToiTunesStore)];
+//140219 1.2 iOS 7 begin
+    self.title = NSLocalizedString(@"Select Music", nil);
+    self.navigationItem.titleView = [self customizeTitleView];
     
-    UIImage *menuBarImage48 = [[UIImage imageNamed:@"iTunesStoreIcon57.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    UIImage *menuBarImage58 = [[UIImage imageNamed:@"iTunesStoreIcon68.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage48 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage58 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
+    UIButton *iTunesButton = [UIButton buttonWithType:UIButtonTypeCustom];
+
+    [iTunesButton setImage: [UIImage imageNamed:@"iTunesStoreIcon.png"] forState: UIControlStateNormal];
+    [iTunesButton addTarget:self action:@selector(linkToiTunesStore) forControlEvents:UIControlEventTouchUpInside];
+    [iTunesButton sizeToFit];
+    [iTunesButton setContentEdgeInsets: UIEdgeInsetsMake(5.0, 0.0, -5.0, 0.0)];
     
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc]  initWithCustomView:iTunesButton];
+    
+    self.navigationItem.leftBarButtonItem = barButtonItem;
+//140219 1.2 iOS 7 end
 //130906 1.1 add Store Button end
 //140127 1.2 iOS 7 begin
     UIButton *tempPlayButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -94,6 +97,9 @@ NSString *myAffiliateID;
     [tempPlayButton setImage:[UIImage imageNamed:@"redWhitePlayImage.png"] forState:UIControlStateNormal];
     [tempPlayButton setShowsTouchWhenHighlighted:NO];
     [tempPlayButton sizeToFit];
+//140219 1.2 iOS 7 begin
+    [tempPlayButton setContentEdgeInsets: UIEdgeInsetsMake(5.0, 0.0, -5.0, 0.0)];
+//140219 1.2 iOS 7 end
     
     self.rightBarButton = [[UIBarButtonItem alloc] initWithCustomView:tempPlayButton];
 //140127 1.2 iOS 7 end
@@ -118,10 +124,6 @@ NSString *myAffiliateID;
     [super viewDidLoad];
     
     self.mediaGroupViewController.delegate = self;
-//140218 1.2 iOS 7 begin
-    self.title = NSLocalizedString(@"Select Music", nil);
-    self.navigationItem.titleView = [self customizeTitleView];
-//140218 1.2 iOS 7 end
     //configure carousel
     carousel.type = iCarouselTypeCoverFlow2;
     

@@ -10,7 +10,7 @@
             <objects>
                 <viewController id="mNb-57-5Xm" customClass="SongViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" rowHeight="55" sectionHeaderHeight="1" sectionFooterHeight="1" id="EmK-pd-wau">
-                        <rect key="frame" x="0.0" y="94" width="480" height="226"/>
+                        <rect key="frame" x="0.0" y="64" width="480" height="256"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
@@ -774,7 +774,7 @@
             <objects>
                 <viewController autoresizesArchivedViewToFullSize="NO" title="Info" automaticallyAdjustsScrollViewInsets="NO" modalTransitionStyle="partialCurl" id="0BK-h9-5Yl" customClass="AlbumInfoViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" sectionIndexMinimumDisplayRowCount="3" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="55" sectionHeaderHeight="1" sectionFooterHeight="1" id="Km2-GT-jmW">
-                        <rect key="frame" x="0.0" y="94" width="320" height="337"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="separatorColor" white="0.80000000000000004" alpha="1" colorSpace="deviceWhite"/>
                         <imageView key="tableFooterView" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="1" verticalHuggingPriority="1" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" id="xgF-dE-gGX">
@@ -898,7 +898,7 @@
             <objects>
                 <viewController autoresizesArchivedViewToFullSize="NO" automaticallyAdjustsScrollViewInsets="NO" id="DPV-A8-OP5" customClass="ArtistViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="grouped" rowHeight="55" sectionHeaderHeight="1" sectionFooterHeight="1" id="tE6-jE-hH7">
-                        <rect key="frame" x="0.0" y="94" width="480" height="226"/>
+                        <rect key="frame" x="0.0" y="64" width="480" height="256"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
@@ -1117,7 +1117,7 @@
         <!--MediaGroupCarouselView-->
         <scene sceneID="19s-zg-vLO">
             <objects>
-                <viewController storyboardIdentifier="MediaGroupCarouselView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="6JD-qc-vI0" userLabel="MediaGroupCarouselView" customClass="MediaGroupCarouselViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MediaGroupCarouselView" autoresizesArchivedViewToFullSize="NO" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="6JD-qc-vI0" userLabel="MediaGroupCarouselView" customClass="MediaGroupCarouselViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="I4X-TE-hw8"/>
                         <viewControllerLayoutGuide type="bottom" id="wP3-1y-3I6"/>
@@ -1126,12 +1126,8 @@
                         <rect key="frame" x="0.0" y="94" width="480" height="226"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vYR-LN-30Z">
-                                <rect key="frame" x="0.0" y="23" width="480" height="203"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            </imageView>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gbu-6N-ucw" customClass="iCarousel">
-                                <rect key="frame" x="0.0" y="23" width="480" height="203"/>
+                                <rect key="frame" x="0.0" y="0.0" width="480" height="226"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="dataSource" destination="6JD-qc-vI0" id="QSf-Yh-1LK"/>
@@ -1142,21 +1138,17 @@
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Gbu-6N-ucw" firstAttribute="bottom" secondItem="yLZ-dq-9Ej" secondAttribute="bottom" id="0Ss-JT-J1t"/>
-                            <constraint firstItem="vYR-LN-30Z" firstAttribute="leading" secondItem="yLZ-dq-9Ej" secondAttribute="leading" id="29j-VA-t2t"/>
-                            <constraint firstItem="Gbu-6N-ucw" firstAttribute="top" secondItem="yLZ-dq-9Ej" secondAttribute="top" constant="23" id="Hxi-UQ-T8J"/>
+                            <constraint firstItem="Gbu-6N-ucw" firstAttribute="top" secondItem="yLZ-dq-9Ej" secondAttribute="top" id="Hxi-UQ-T8J"/>
                             <constraint firstItem="Gbu-6N-ucw" firstAttribute="leading" secondItem="yLZ-dq-9Ej" secondAttribute="leading" id="KMf-qT-fLv"/>
                             <constraint firstItem="Gbu-6N-ucw" firstAttribute="trailing" secondItem="yLZ-dq-9Ej" secondAttribute="trailing" id="KgB-wZ-Lej"/>
-                            <constraint firstItem="vYR-LN-30Z" firstAttribute="top" secondItem="yLZ-dq-9Ej" secondAttribute="top" constant="23" id="Qs1-6M-SVr"/>
-                            <constraint firstItem="vYR-LN-30Z" firstAttribute="trailing" secondItem="yLZ-dq-9Ej" secondAttribute="trailing" id="jsd-YU-Mjs"/>
-                            <constraint firstItem="vYR-LN-30Z" firstAttribute="bottom" secondItem="yLZ-dq-9Ej" secondAttribute="bottom" id="zwY-Ae-mXp"/>
                         </constraints>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
                     <navigationItem key="navigationItem" id="BfA-rd-N1z"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO"/>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <connections>
-                        <outlet property="backgroundView" destination="vYR-LN-30Z" id="b3F-jK-ZsR"/>
                         <outlet property="carousel" destination="Gbu-6N-ucw" id="0nI-VU-K5k"/>
                         <segue destination="DLM-JZ-gUa" kind="push" identifier="ViewGenres" id="E4Y-B8-RSc"/>
                         <segue destination="DPV-A8-OP5" kind="push" identifier="ArtistCollections" id="rM7-oN-wjy"/>
@@ -1237,7 +1229,7 @@
             <objects>
                 <viewController id="527-b6-fAN" customClass="AlbumViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="grouped" rowHeight="55" sectionHeaderHeight="1" sectionFooterHeight="1" id="oc8-bL-YeY">
-                        <rect key="frame" x="0.0" y="94" width="480" height="226"/>
+                        <rect key="frame" x="0.0" y="64" width="480" height="256"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
@@ -1395,7 +1387,7 @@
             <objects>
                 <viewController id="DLM-JZ-gUa" customClass="GenreViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="grouped" rowHeight="55" sectionHeaderHeight="1" sectionFooterHeight="1" id="dU2-ae-vO5">
-                        <rect key="frame" x="0.0" y="94" width="480" height="226"/>
+                        <rect key="frame" x="0.0" y="64" width="480" height="256"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
@@ -1639,7 +1631,7 @@
             <objects>
                 <viewController id="bxD-3g-ILC" customClass="TaggedSongViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" rowHeight="55" sectionHeaderHeight="1" sectionFooterHeight="1" id="5P1-CA-UpH">
-                        <rect key="frame" x="0.0" y="94" width="480" height="226"/>
+                        <rect key="frame" x="0.0" y="64" width="480" height="256"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
@@ -1818,13 +1810,13 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="hHs-2t-p2p"/>
-        <segue reference="cs7-xB-URz"/>
-        <segue reference="hot-4h-GjM"/>
-        <segue reference="qWI-HD-eSG"/>
-        <segue reference="ZlS-b1-pog"/>
-        <segue reference="OaX-wz-MBb"/>
-        <segue reference="hv1-71-OGq"/>
-        <segue reference="5Qv-VH-YKH"/>
+        <segue reference="oc8-HG-QrB"/>
+        <segue reference="qJB-vr-AI7"/>
+        <segue reference="HSe-qu-5Rj"/>
+        <segue reference="A7H-qB-bdF"/>
+        <segue reference="E4Y-B8-RSc"/>
+        <segue reference="rM7-oN-wjy"/>
+        <segue reference="SvT-2g-rDr"/>
         <segue reference="Xbd-a7-Wgl"/>
     </inferredMetricsTieBreakers>
 </document>

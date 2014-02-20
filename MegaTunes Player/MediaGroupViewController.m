@@ -87,10 +87,11 @@ NSString *myAffiliateID;
                                                object:nil];
     
     [self.navigationController setDelegate: self];
-    
-    self.pView =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background-568h.png"]];
-    self.lView =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"backgroundLandscape-568h.png"]];
-    
+//140219 1.2 iOS 7 begin
+    //initialize the imageView that is used before the view loads to solid black
+    self.pView =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"pBackground.png"]];
+    self.lView =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"lBackground.png"]];
+//140219 1.2 iOS 7 end
 }
 // Called when a new view is shown before viewDidAppear
 
@@ -146,7 +147,9 @@ NSString *myAffiliateID;
             UIImageView *lImageView =[[UIImageView alloc] initWithImage: initialLandscapeImage];
             CGRect frame = lImageView.frame;
             frame.origin.x = (self.view.bounds.size.width / 2 - lImageView.frame.size.width / 2);
-            frame.origin.y = (self.view.bounds.size.height / 2 - lImageView.frame.size.height / 2 - 11);
+//140219 1.2 iOS 7 begin
+            frame.origin.y = (self.view.bounds.size.height / 2 - lImageView.frame.size.height / 2 + 30);
+//140219 1.2 iOS 7 end
             lImageView.frame = frame;
             
             [self.lView addSubview: lImageView];
@@ -169,7 +172,9 @@ NSString *myAffiliateID;
             CGRect frame = pImageView.frame;
             //            frame.origin.x = (self.view.bounds.size.width / 2 - pImageView.frame.size.width / 2);
             //            frame.origin.y = (self.view.bounds.size.height / 2 - pImageView.frame.size.height / 2 - 11);
-//            frame.origin.y = 11.0f;
+//140219 1.2 iOS 7 begin
+            frame.origin.y = -30.0f;
+//140219 1.2 iOS 7 end
             pImageView.frame = frame;
             
             [self.pView addSubview: pImageView];
@@ -240,30 +245,12 @@ NSString *myAffiliateID;
     
 //131204 1.2 iOS 7 begin
 
-//    self.navigationItem.backBarButtonItem = nil; // Important
-//    //initWithTitle cannot be nil, must be @""
-//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle: @""
-//                                                                    style:UIBarButtonItemStyleBordered
-//                                                                   target:self
-//                                                                   action:@selector(linkToiTunesStore)];
-
-//    UIImage *menuBarImage48 = [[UIImage imageNamed:@"iTunesStoreIcon57.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-//    UIImage *menuBarImage58 = [[UIImage imageNamed:@"iTunesStoreIcon68.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-//    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage48 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-//    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage58 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
-    
-//    [[UINavigationBar appearance] setBackIndicatorImage:[UIImage imageNamed:@"iTunesStoreIcon.png"]];
-//    [[UINavigationBar appearance] setBackIndicatorTransitionMaskImage:[UIImage imageNamed:@"iTunesStoreIcon.png"]];
-    self.title = NSLocalizedString(@"Select Music", nil);
+    self.title = NSLocalizedString(@"Select", nil);
     self.navigationItem.titleView = [self customizeTitleView];
     UIButton *iTunesButton = [UIButton buttonWithType:UIButtonTypeCustom];
     UIImage *iTunesImage = [UIImage imageNamed:@"iTunesStoreIcon.png"];
-    UIImage *iTunesImageHighlighted = [UIImage imageNamed:@"iTunesStoreIcon57.png"];
     
-    NSInteger halfImageWidth = ceilf([iTunesImage size].width/2.0f);
-    
-    [iTunesButton setBackgroundImage:[iTunesImage stretchableImageWithLeftCapWidth:halfImageWidth topCapHeight:0] forState:UIControlStateNormal];
-    [iTunesButton setBackgroundImage:[iTunesImageHighlighted stretchableImageWithLeftCapWidth:halfImageWidth topCapHeight:0] forState:UIControlStateHighlighted];
+    [iTunesButton setImage: iTunesImage forState: UIControlStateNormal];
     [iTunesButton addTarget:self action:@selector(linkToiTunesStore) forControlEvents:UIControlEventTouchUpInside];
     [iTunesButton sizeToFit];
     
@@ -540,13 +527,16 @@ NSString *myAffiliateID;
 }
 -(void) viewDidAppear:(BOOL)animated {
     //    LogMethod();
-    initialView = NO;
-    
-    UIDeviceOrientation deviceOrientation = [UIDevice currentDevice].orientation;
-    
-    if (UIDeviceOrientationIsPortrait(deviceOrientation)) {
-        self.initialPortraitImage = ([self makeImage]);
+//140219 1.2 iOS 7 begin
+    if (initialView == YES) {
+        UIDeviceOrientation deviceOrientation = [UIDevice currentDevice].orientation;
+        
+        if (UIDeviceOrientationIsPortrait(deviceOrientation)) {
+            self.initialPortraitImage = ([self makeImage]);
+        }
     }
+    initialView = NO;
+//140219 1.2 iOS 7 end
     [super viewDidAppear:(BOOL)animated];
 }
 -(UIImage*) makeImage {
@@ -571,7 +561,6 @@ NSString *myAffiliateID;
 //131205 1.2 iOS 7 end
     
     UILabel *label = [[UILabel alloc] initWithFrame:frame];
-    label.backgroundColor = [UIColor clearColor];
     label.textAlignment = NSTextAlignmentCenter;
     label.font = [UIFont systemFontOfSize:44];
     label.textColor = [UIColor yellowColor];
@@ -589,19 +578,11 @@ NSString *myAffiliateID;
 - (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
     
     //    LogMethod();
-//    if (UIInterfaceOrientationIsPortrait(orientation)) {
-////141022 1.2 iOS 7 begin
-////        [self.groupTableView setContentInset:UIEdgeInsetsMake(11,0,0,0)];
-//        [self.groupTableView setContentInset:UIEdgeInsetsMake(0,0,0,0)];
-////141022 1.2 iOS 7 begin
-//    } else {
-////141022 1.2 iOS 7 begin
-//
-////        [self.groupTableView setContentInset:UIEdgeInsetsMake(23,0,0,0)];
-//        [self.groupTableView setContentInset:UIEdgeInsetsMake(0,0,0,0)];
-////141022 1.2 iOS 7 begin
-//        [self.groupTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-//    }
+    if (UIInterfaceOrientationIsPortrait(orientation)) {
+//140219 1.2 iOS 7 begin
+        [self.groupTableView setContentInset:UIEdgeInsetsMake(-30,0,0,0)];
+    }
+//1402191.2 iOS 7 end
 }
 - (void) viewWillLayoutSubviews {
     //    LogMethod();
