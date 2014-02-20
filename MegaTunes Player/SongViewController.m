@@ -94,6 +94,11 @@ NSString *searchMediaItemProperty;
 CGFloat constraintConstant;
 //UIImage *backgroundImage;
 UIButton *infoButton;
+//140220 1.2 iOS 7 begin
+UIButton *tempPlayButton;
+UIButton *tempColorButton;
+UIButton *tempNoColorButton;
+//140220 1.2 iOS 7 end
 
 BOOL isIndexed;
 BOOL showDuration;
@@ -131,42 +136,39 @@ BOOL excludeICloudItems;
     self.navigationController.navigationBar.topItem.title = @"";
     //set the navigation bar title
     self.navigationItem.titleView = [self customizeTitleView];
-    
-    UIButton *tempPlayButton = [UIButton buttonWithType:UIButtonTypeCustom];
+
+    tempPlayButton = [UIButton buttonWithType:UIButtonTypeCustom];
     
     [tempPlayButton addTarget:self action:@selector(viewNowPlaying) forControlEvents:UIControlEventTouchUpInside];
     [tempPlayButton setImage:[UIImage imageNamed:@"redWhitePlayImage.png"] forState:UIControlStateNormal];
     [tempPlayButton setShowsTouchWhenHighlighted:NO];
     [tempPlayButton sizeToFit];
-    
-    self.playBarButton = [[UIBarButtonItem alloc] initWithCustomView:tempPlayButton];
 //140127 1.2 iOS 7 end
+    
     [self.playBarButton setIsAccessibilityElement:YES];
     [self.playBarButton setAccessibilityLabel: NSLocalizedString(@"Now Playing", nil)];
     [self.playBarButton setAccessibilityTraits: UIAccessibilityTraitButton];
     
 //140124 1.2 iOS 7 begin
-    UIButton *tempColorButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    tempColorButton = [UIButton buttonWithType:UIButtonTypeCustom];
     
     [tempColorButton addTarget:self action:@selector(showTagColors) forControlEvents:UIControlEventTouchUpInside];
     [tempColorButton setImage:[UIImage imageNamed:@"colorImage.png"] forState:UIControlStateNormal];
     [tempColorButton setShowsTouchWhenHighlighted:NO];
     [tempColorButton sizeToFit];
-    
-    self.colorTagBarButton = [[UIBarButtonItem alloc] initWithCustomView:tempColorButton];
 //140124 1.2 iOS 7 end
+    
     [self.colorTagBarButton setIsAccessibilityElement:YES];
     [self.colorTagBarButton setAccessibilityLabel: NSLocalizedString(@"Show tag colors", nil)];
     [self.colorTagBarButton setAccessibilityTraits: UIAccessibilityTraitButton];
+    
 //140124 1.2 iOS 7 begin
-    UIButton *tempNoColorButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    tempNoColorButton = [UIButton buttonWithType:UIButtonTypeCustom];
     
     [tempNoColorButton addTarget:self action:@selector(showTagColors) forControlEvents:UIControlEventTouchUpInside];
     [tempNoColorButton setImage:[UIImage imageNamed:@"noColorImage.png"] forState:UIControlStateNormal];
     [tempNoColorButton setShowsTouchWhenHighlighted:NO];
     [tempNoColorButton sizeToFit];
-    
-    self.noColorTagBarButton = [[UIBarButtonItem alloc] initWithCustomView:tempNoColorButton];
 //140124 1.2 iOS 7 end
     
     [self.noColorTagBarButton setIsAccessibilityElement:YES];
@@ -478,7 +480,7 @@ BOOL excludeICloudItems;
     [self.swipeLeftRight setDirection:(UISwipeGestureRecognizerDirectionRight | UISwipeGestureRecognizerDirectionLeft )];
     [self.navigationController.navigationBar addGestureRecognizer:self.swipeLeftRight];
     
-    [self buildRightNavBarArray];
+//    [self buildRightNavBarArray];
     
     
     //    // if rows have been scrolled, they have been added to this array, so need to scroll them back to 0
@@ -561,22 +563,35 @@ BOOL excludeICloudItems;
     
     BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
     
-    CGFloat navBarAdjustment = isPortrait ? 0 : 7;
+    CGFloat navBarAdjustment = isPortrait ? 0 : 9;
     
+    if (isPortrait) {
+
+        [tempPlayButton setContentEdgeInsets: UIEdgeInsetsMake(-1.0, 0.0, 1.0, 0.0)];
+        self.playBarButton = [[UIBarButtonItem alloc] initWithCustomView:tempPlayButton];
+        
+        [tempColorButton setContentEdgeInsets: UIEdgeInsetsMake(-1.0, 0.0, 1.0, 0.0)];
+        self.colorTagBarButton = [[UIBarButtonItem alloc] initWithCustomView:tempColorButton];
+
+        [tempNoColorButton setContentEdgeInsets: UIEdgeInsetsMake(-1.0, 0.0, 1.0, 0.0)];
+        self.noColorTagBarButton = [[UIBarButtonItem alloc] initWithCustomView:tempNoColorButton];
+        
+    } else {
+
+        [tempPlayButton setContentEdgeInsets: UIEdgeInsetsMake(3.0, 0.0, -3.0, 0.0)];
+        self.playBarButton = [[UIBarButtonItem alloc] initWithCustomView:tempPlayButton];
+
+        [tempColorButton setContentEdgeInsets: UIEdgeInsetsMake(3.0, 0.0, -3.0, 0.0)];
+        self.colorTagBarButton = [[UIBarButtonItem alloc] initWithCustomView:tempColorButton];
+        
+        [tempNoColorButton setContentEdgeInsets: UIEdgeInsetsMake(3.0, 0.0, -3.0, 0.0)];
+        self.noColorTagBarButton = [[UIBarButtonItem alloc] initWithCustomView:tempNoColorButton];
+        
+    }
     
-    //    CGFloat navBarAdjustment;
-    //
-    //    if (UIInterfaceOrientationIsPortrait(orientation)) {
-    //        navBarAdjustment = 11;
-    //        [self.collectionTableView setContentInset:UIEdgeInsetsMake(11,0,0,0)];
-    //
-    //    } else {
-    //        navBarAdjustment = 23;
-    //        [self.collectionTableView setContentInset:UIEdgeInsetsMake(23,0,0,0)];
-    //    }
+    [self buildRightNavBarArray];
+    
 //131216 1.2 iOS 7 end
-    //    //don't need to do this if the search table is showing
-    //    if (!isSearching) {
     
     BOOL firstRowVisible = NO;
     

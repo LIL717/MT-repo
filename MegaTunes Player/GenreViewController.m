@@ -203,19 +203,38 @@ BOOL firstLoad;
     
     BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
     
-    CGFloat navBarAdjustment = isPortrait ? 0 : 3;
+    CGFloat navBarAdjustment = isPortrait ? 0 : 9;
     
+    if (isPortrait) {
+        UIButton *tempPlayButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [tempPlayButton addTarget:self action:@selector(viewNowPlaying) forControlEvents:UIControlEventTouchUpInside];
+        [tempPlayButton setImage:[UIImage imageNamed:@"redWhitePlayImage.png"] forState:UIControlStateNormal];
+        [tempPlayButton setShowsTouchWhenHighlighted:NO];
+        [tempPlayButton sizeToFit];
+        [tempPlayButton setContentEdgeInsets: UIEdgeInsetsMake(-1.0, 0.0, 1.0, 0.0)];
+        
+        self.rightBarButton = [[UIBarButtonItem alloc] initWithCustomView:tempPlayButton];
+    } else {
+        UIButton *tempPlayButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [tempPlayButton addTarget:self action:@selector(viewNowPlaying) forControlEvents:UIControlEventTouchUpInside];
+        [tempPlayButton setImage:[UIImage imageNamed:@"redWhitePlayImage.png"] forState:UIControlStateNormal];
+        [tempPlayButton setShowsTouchWhenHighlighted:NO];
+        [tempPlayButton sizeToFit];
+        [tempPlayButton setContentEdgeInsets: UIEdgeInsetsMake(3.0, 0.0, -3.0, 0.0)];
+        
+        self.rightBarButton = [[UIBarButtonItem alloc] initWithCustomView:tempPlayButton];
+    }
+    NSString *playingItem = [[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyTitle];
     
-    //    CGFloat navBarAdjustment;
-    //
-    //    if (UIInterfaceOrientationIsPortrait(orientation)) {
-    //        navBarAdjustment = 11;
-    //        [self.collectionTableView setContentInset:UIEdgeInsetsMake(11,0,0,0)];
-    //
-    //    } else {
-    //        navBarAdjustment = 23;
-    //        [self.collectionTableView setContentInset:UIEdgeInsetsMake(23,0,0,0)];
-    //    }
+    if (playingItem) {
+        //initWithTitle cannot be nil, must be @""
+        self.navigationItem.rightBarButtonItem = self.rightBarButton;
+    } else {
+        self.navigationItem.rightBarButtonItem= nil;
+    }
+    
 //131216 1.2 iOS 7 end
     
     //don't need to do this if the search table is showing
