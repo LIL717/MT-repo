@@ -23,7 +23,7 @@
 @property (strong, nonatomic) IBOutlet UITableView *userInfoTagTable;
 @property (strong, nonatomic) IBOutlet UITextView   *comments;
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *keyboardHeight;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceCommentsToBottomConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceTopToCommentsConstraint;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceTopToTableViewConstraint;
 

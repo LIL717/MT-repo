@@ -326,11 +326,12 @@
     self.userInfoViewController.verticalSpaceTopToTableViewConstraint.constant = navBarAdjustment;
     self.userInfoViewController.verticalSpaceTopToCommentsConstraint.constant = 55 + navBarAdjustment;
     
+    [self.userInfoViewController.userInfoTagTable reloadData];
     //don't reload the userInfoData if it is being edited
     if (!userInfoViewController.editingUserInfo) {
         [self.userInfoViewController loadDataForView];
     }
-    [self.userInfoViewController.userInfoTagTable reloadData];
+
 //140215 1.2 iOS 7 end
 }
 //#pragma mark UITabBarController Delegate Method

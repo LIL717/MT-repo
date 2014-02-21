@@ -35,7 +35,7 @@
 @synthesize comments;
 
 @synthesize verticalSpaceTopToTableViewConstraint;
-@synthesize keyboardHeight;
+@synthesize verticalSpaceCommentsToBottomConstraint;
 @synthesize verticalSpaceTopToCommentsConstraint;
 
 @synthesize placeholderLabel;
@@ -62,6 +62,9 @@ BOOL itemHasTag;
 //140206 1.2 iOS 7 begin
     // cause separator line to stretch to right side of view
     [self.userInfoTagTable setSeparatorInset:UIEdgeInsetsZero];
+    
+    //need this for correct placement and touch access in landscape on rotation in iOS 7
+    self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 //140206 1.2 iOS 7 end
     [self loadDataForView];
     
@@ -111,7 +114,7 @@ BOOL itemHasTag;
 
         [self.placeholderLabel setHidden:YES];
     } else {
-        self.comments.text = @"";
+        self.comments.text = @" ";
         [self.placeholderLabel setHidden:NO];
         self.placeholderLabel.text = NSLocalizedString(@"Add Notes", nil);
     }
@@ -177,6 +180,10 @@ BOOL itemHasTag;
 //131203 1.2 iOS 7 begin
     
     textView.backgroundColor = [UIColor blackColor];
+    //an apparent bug in iOS 7 allows the cursor to drop below the bottom of the textView so a hacky fix adds a space after the cursor which needs to be removed before the text is saved
+    if ([textView.text characterAtIndex:textView.text.length-1] == ' ') {
+        textView.text = [textView.text substringToIndex: textView.text.length-1];
+    }
     
 //131203 1.2 iOS 7 end
     //update or add object to Core Data
@@ -203,7 +210,28 @@ BOOL itemHasTag;
 
 
 }
-
+//140220 1.2 iOS 7 begin
+- (void)textViewDidChangeSelection:(UITextView *)textView
+{
+    //an apparent bug in iOS 7 allows the cursor to drop below the bottom of the textView this is a hacky fix
+    //make sure that there's always a trailing space in the text field. Then, if the user tries to change the selection such that the space is revealed, change the selection. By always keeping a space ahead of the cursor, the field scrolls itself as it's supposed to.
+    if ([textView.text characterAtIndex:textView.text.length-1] != ' ') {
+        textView.text = [textView.text stringByAppendingString:@" "];
+    }
+    
+    NSRange range0 = textView.selectedRange;
+    NSRange range = range0;
+    if (range0.location == textView.text.length) {
+        range = NSMakeRange(range0.location - 1, range0.length);
+    } else if (range0.length > 0 &&
+               range0.location + range0.length == textView.text.length) {
+        range = NSMakeRange(range0.location, range0.length - 1);
+    }
+    if (!NSEqualRanges(range, range0)) {
+        textView.selectedRange = range;
+    }
+}
+//140220 1.2 iOS 7 end
 // Called when the UIKeyboardDidShowNotification is sent.
 - (void)keyboardWasShown:(NSNotification*)aNotification
 {
@@ -212,26 +240,18 @@ BOOL itemHasTag;
     NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     
     CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-    //hmmm this is width 162 and height 480 for landscape
-
+    //hmmm this is width 162 and height 480 for landscape so the following 2 lines are a hack to swap width for height
+    
     BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
     CGFloat kbHeight = isPortrait ? kbSize.height : kbSize.width;
 
     //since this view contains a tabBar, which is not visible when the keyboard is present, need to subtract the height of the tabBar from the keyboard height to get the right constraint since original constraint is to top of tabBar
     
-    kbHeight -= self.tabBarController.tabBar.backgroundImage.size.height;
-    
-    NSLog(@"Updating constraints.");
-    // Because the "space" is actually the difference between the bottom lines of the 2 views,
-    // we need to set a negative constant value here.
-    self.keyboardHeight.constant = -kbHeight;
+    kbHeight -= self.tabBarController.tabBar.frame.size.height;
+
+    self.verticalSpaceCommentsToBottomConstraint.constant = kbHeight;
     
     //pull the field up to the top (over the tagItem field while editing)
-    
-    //if there is no tagData need to remove the button temporarily
-    if (!self.userDataForMediaItem.tagData) {
-    }
-//    self.verticalSpaceTopToCommentsConstraint.constant -= (self.userTagButton.frame.size.height);
     self.verticalSpaceTopToCommentsConstraint.constant -= (self.userInfoTagTable.frame.size.height);
 
     [self.view setNeedsUpdateConstraints];
@@ -249,9 +269,8 @@ BOOL itemHasTag;
     NSDictionary *info = [aNotification userInfo];
     NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     
-    self.keyboardHeight.constant = 0;
-    
-//    self.verticalSpaceTopToCommentsConstraint.constant += self.userTagButton.frame.size.height;
+    self.verticalSpaceCommentsToBottomConstraint.constant = 0;
+
     self.verticalSpaceTopToCommentsConstraint.constant += self.userInfoTagTable.frame.size.height;
 
     [self.view setNeedsUpdateConstraints];

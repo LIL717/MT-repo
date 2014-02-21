@@ -672,31 +672,31 @@
         <!--User Info View Controller-->
         <scene sceneID="GYf-54-OnM">
             <objects>
-                <viewController id="ATv-n6-VX6" userLabel="User Info View Controller" customClass="UserInfoViewController" sceneMemberID="viewController">
+                <viewController autoresizesArchivedViewToFullSize="NO" automaticallyAdjustsScrollViewInsets="NO" id="ATv-n6-VX6" userLabel="User Info View Controller" customClass="UserInfoViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="DRv-Ot-HsM"/>
                         <viewControllerLayoutGuide type="bottom" id="0DX-54-oul"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Lr6-Id-qll">
-                        <rect key="frame" x="0.0" y="94" width="480" height="177"/>
+                        <rect key="frame" x="0.0" y="94" width="320" height="337"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="55" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Shu-jn-KJO">
-                                <rect key="frame" x="0.0" y="0.0" width="480" height="55"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="55"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="55" id="LoX-h5-xIT"/>
                                 </constraints>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="UserTagCell" rowHeight="55" id="0on-er-Pok" customClass="UserTagCell">
-                                        <rect key="frame" x="0.0" y="22" width="480" height="55"/>
+                                        <rect key="frame" x="0.0" y="22" width="320" height="55"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0on-er-Pok" id="ObU-zN-KjV">
-                                            <rect key="frame" x="0.0" y="0.0" width="480" height="54"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="54"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rwe-7W-ve6" customClass="KSLabel">
-                                                    <rect key="frame" x="0.0" y="0.0" width="480" height="54"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="320" height="54"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="44"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                 </label>
@@ -719,15 +719,15 @@
                                     <outlet property="delegate" destination="ATv-n6-VX6" id="Sf9-ey-9Yw"/>
                                 </connections>
                             </tableView>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1nd-7c-kt3">
-                                <rect key="frame" x="0.0" y="55" width="480" height="122"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1nd-7c-kt3" userLabel="Comments">
+                                <rect key="frame" x="0.0" y="55" width="320" height="282"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="textColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="44"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PPO-El-H3S">
-                                <rect key="frame" x="10" y="55" width="470" height="55"/>
+                                <rect key="frame" x="10" y="55" width="310" height="55"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="55" id="P2X-MN-xSQ"/>
@@ -750,16 +750,16 @@
                             <constraint firstAttribute="trailing" secondItem="1nd-7c-kt3" secondAttribute="trailing" id="sF9-dk-SSR"/>
                             <constraint firstItem="Shu-jn-KJO" firstAttribute="leading" secondItem="Lr6-Id-qll" secondAttribute="leading" id="x6o-qp-CCl"/>
                         </constraints>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <tabBarItem key="tabBarItem" title="" id="jFY-iC-Zg9" userLabel="Tab Bar Item"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO"/>
-                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <connections>
                         <outlet property="comments" destination="1nd-7c-kt3" id="ugX-XU-nwC"/>
                         <outlet property="placeholderLabel" destination="PPO-El-H3S" id="3Tl-pI-064"/>
                         <outlet property="userInfoTagTable" destination="Shu-jn-KJO" id="6tx-ec-Ybr"/>
+                        <outlet property="verticalSpaceCommentsToBottomConstraint" destination="8x2-9q-jw2" id="F0h-0F-Pi5"/>
                         <outlet property="verticalSpaceTopToCommentsConstraint" destination="OYZ-nI-uRG" id="8cE-v6-SiZ"/>
                         <outlet property="verticalSpaceTopToTableViewConstraint" destination="QYb-OW-oyf" id="zPs-p5-G1D"/>
                         <segue destination="VP8-wR-3Ea" kind="push" identifier="SelectTag" id="4ol-8m-ygW"/>
@@ -767,7 +767,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="n5c-6K-4g2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1074" y="922"/>
+            <point key="canvasLocation" x="1182" y="676"/>
         </scene>
         <!--Album Info View Controller - Info-->
         <scene sceneID="ZXh-nv-74T">
