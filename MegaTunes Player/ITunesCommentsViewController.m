@@ -30,12 +30,17 @@
 {
     LogMethod();
     [super viewDidLoad];
+//140221 1.2 iOS 7 begin
+    //need this for correct placement and touch access in landscape on rotation in iOS 7
+    self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+//140221 1.2 iOS 7 end
     
     musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
     
     [self loadDataForView];
     
-    [self updateLayoutForNewOrientation: self.interfaceOrientation];
+    //wasn't doing anything :(
+//    [self updateLayoutForNewOrientation: self.interfaceOrientation];
     
 }
 - (void) loadDataForView {
@@ -51,20 +56,6 @@
             self.comments.text= [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyComments];
         }
     }
-    
-}
-
-- (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
-    
-    BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
-    
-    CGFloat navBarAdjustment = isPortrait ? 0 : 3;
-    
-    [self.comments setContentOffset:CGPointMake(0, navBarAdjustment)];
-    
-    //this line of code does not appear to be working here, moved to viewWillAppear
-    [self.comments scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
-
 }
 - (void) viewWillAppear:(BOOL)animated
 {

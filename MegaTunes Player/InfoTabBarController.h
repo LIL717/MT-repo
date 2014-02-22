@@ -47,7 +47,9 @@
 @property (nonatomic, retain)   UIBarButtonItem         *remainingTimeButton;
 @property (nonatomic, retain)   NSString                *saveTitle;
 @property (readwrite)           BOOL                    mainViewIsSender;
-
+//140221 1.2 iOS 7 begin
+@property (nonatomic, retain)   UIButton                *tempPlayButton;
+//140221 1.2 iOS 7 end
 @property (strong, nonatomic) UISwipeGestureRecognizer *swipeLeftRight;
 
 

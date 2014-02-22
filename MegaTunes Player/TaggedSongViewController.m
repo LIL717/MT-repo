@@ -62,6 +62,11 @@
 @synthesize taggedSongArray;
 @synthesize sortedTaggedArray;
 @synthesize taggedSectionIndexData;
+//140220 1.2 iOS 7 begin
+@synthesize tempPlayButton;
+@synthesize tempColorButton;
+@synthesize tempNoColorButton;
+//140220 1.2 iOS 7 end
 
 
 
@@ -76,11 +81,7 @@ NSString *searchMediaItemProperty;
 CGFloat constraintConstant;
 //UIImage *backgroundImage;
 UIButton *infoButton;
-//140220 1.2 iOS 7 begin
-UIButton *tempPlayButton;
-UIButton *tempColorButton;
-UIButton *tempNoColorButton;
-//140220 1.2 iOS 7 end
+
 
 BOOL isIndexed;
 BOOL showDuration;
@@ -115,35 +116,35 @@ BOOL excludeICloudItems;
     //set the navigation bar title
     self.navigationItem.titleView = [self customizeTitleView];
 
-    tempPlayButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.tempPlayButton = [UIButton buttonWithType:UIButtonTypeCustom];
     
-    [tempPlayButton addTarget:self action:@selector(viewNowPlaying) forControlEvents:UIControlEventTouchUpInside];
-    [tempPlayButton setImage:[UIImage imageNamed:@"redWhitePlayImage.png"] forState:UIControlStateNormal];
-    [tempPlayButton setShowsTouchWhenHighlighted:NO];
-    [tempPlayButton sizeToFit];
+    [self.tempPlayButton addTarget:self action:@selector(viewNowPlaying) forControlEvents:UIControlEventTouchUpInside];
+    [self.tempPlayButton setImage:[UIImage imageNamed:@"redWhitePlayImage.png"] forState:UIControlStateNormal];
+    [self.tempPlayButton setShowsTouchWhenHighlighted:NO];
+    [self.tempPlayButton sizeToFit];
 //140127 1.2 iOS 7 end
     [self.playBarButton setIsAccessibilityElement:YES];
     [self.playBarButton setAccessibilityLabel: NSLocalizedString(@"Now Playing", nil)];
     [self.playBarButton setAccessibilityTraits: UIAccessibilityTraitButton];
 //140124 1.2 iOS 7 begin
-    tempColorButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.tempColorButton = [UIButton buttonWithType:UIButtonTypeCustom];
     
-    [tempColorButton addTarget:self action:@selector(showTagColors) forControlEvents:UIControlEventTouchUpInside];
-    [tempColorButton setImage:[UIImage imageNamed:@"colorImage.png"] forState:UIControlStateNormal];
-    [tempColorButton setShowsTouchWhenHighlighted:NO];
-    [tempColorButton sizeToFit];
+    [self.tempColorButton addTarget:self action:@selector(showTagColors) forControlEvents:UIControlEventTouchUpInside];
+    [self.tempColorButton setImage:[UIImage imageNamed:@"colorImage.png"] forState:UIControlStateNormal];
+    [self.tempColorButton setShowsTouchWhenHighlighted:NO];
+    [self.tempColorButton sizeToFit];
     
 //140124 1.2 iOS 7 end
     [self.colorTagBarButton setIsAccessibilityElement:YES];
     [self.colorTagBarButton setAccessibilityLabel: NSLocalizedString(@"Show tag colors", nil)];
     [self.colorTagBarButton setAccessibilityTraits: UIAccessibilityTraitButton];
 //140124 1.2 iOS 7 begin
-    tempNoColorButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.tempNoColorButton = [UIButton buttonWithType:UIButtonTypeCustom];
     
-    [tempNoColorButton addTarget:self action:@selector(showTagColors) forControlEvents:UIControlEventTouchUpInside];
-    [tempNoColorButton setImage:[UIImage imageNamed:@"noColorImage.png"] forState:UIControlStateNormal];
-    [tempNoColorButton setShowsTouchWhenHighlighted:NO];
-    [tempNoColorButton sizeToFit];
+    [self.tempNoColorButton addTarget:self action:@selector(showTagColors) forControlEvents:UIControlEventTouchUpInside];
+    [self.tempNoColorButton setImage:[UIImage imageNamed:@"noColorImage.png"] forState:UIControlStateNormal];
+    [self.tempNoColorButton setShowsTouchWhenHighlighted:NO];
+    [self.tempNoColorButton sizeToFit];
     
 //140124 1.2 iOS 7 end
     [self.noColorTagBarButton setIsAccessibilityElement:YES];
@@ -545,25 +546,25 @@ BOOL excludeICloudItems;
     
     if (isPortrait) {
         
-        [tempPlayButton setContentEdgeInsets: UIEdgeInsetsMake(-1.0, 0.0, 1.0, 0.0)];
-        self.playBarButton = [[UIBarButtonItem alloc] initWithCustomView:tempPlayButton];
+        [self.tempPlayButton setContentEdgeInsets: UIEdgeInsetsMake(-1.0, 0.0, 1.0, 0.0)];
+        self.playBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.tempPlayButton];
         
-        [tempColorButton setContentEdgeInsets: UIEdgeInsetsMake(-1.0, 0.0, 1.0, 0.0)];
-        self.colorTagBarButton = [[UIBarButtonItem alloc] initWithCustomView:tempColorButton];
+        [self.tempColorButton setContentEdgeInsets: UIEdgeInsetsMake(-1.0, 0.0, 1.0, 0.0)];
+        self.colorTagBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.tempColorButton];
         
-        [tempNoColorButton setContentEdgeInsets: UIEdgeInsetsMake(-1.0, 0.0, 1.0, 0.0)];
-        self.noColorTagBarButton = [[UIBarButtonItem alloc] initWithCustomView:tempNoColorButton];
+        [self.tempNoColorButton setContentEdgeInsets: UIEdgeInsetsMake(-1.0, 0.0, 1.0, 0.0)];
+        self.noColorTagBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.tempNoColorButton];
         
     } else {
         
-        [tempPlayButton setContentEdgeInsets: UIEdgeInsetsMake(3.0, 0.0, -3.0, 0.0)];
-        self.playBarButton = [[UIBarButtonItem alloc] initWithCustomView:tempPlayButton];
+        [self.tempPlayButton setContentEdgeInsets: UIEdgeInsetsMake(3.0, 0.0, -3.0, 0.0)];
+        self.playBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.tempPlayButton];
         
-        [tempColorButton setContentEdgeInsets: UIEdgeInsetsMake(3.0, 0.0, -3.0, 0.0)];
-        self.colorTagBarButton = [[UIBarButtonItem alloc] initWithCustomView:tempColorButton];
+        [self.tempColorButton setContentEdgeInsets: UIEdgeInsetsMake(3.0, 0.0, -3.0, 0.0)];
+        self.colorTagBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.tempColorButton];
         
-        [tempNoColorButton setContentEdgeInsets: UIEdgeInsetsMake(3.0, 0.0, -3.0, 0.0)];
-        self.noColorTagBarButton = [[UIBarButtonItem alloc] initWithCustomView:tempNoColorButton];
+        [self.tempNoColorButton setContentEdgeInsets: UIEdgeInsetsMake(3.0, 0.0, -3.0, 0.0)];
+        self.noColorTagBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.tempNoColorButton];
         
     }
     

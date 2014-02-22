@@ -54,7 +54,11 @@
 @property (nonatomic, strong)   NSMutableArray *taggedSongArray;
 @property (nonatomic, strong)   NSArray *sortedTaggedArray;
 @property (nonatomic, strong)   TaggedSectionIndexData *taggedSectionIndexData;
-
+//140220 1.2 iOS 7 begin
+@property (nonatomic, strong)   UIButton *tempPlayButton;
+@property (nonatomic, strong)   UIButton *tempColorButton;
+@property (nonatomic, strong)   UIButton *tempNoColorButton;
+//140220 1.2 iOS 7 end
 
 
 

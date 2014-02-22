@@ -195,7 +195,7 @@ NSString *myAffiliateID;
     }
     //130911 1.1 add iTunesStoreButton end
     
-    [self updateLayoutForNewOrientation: self.interfaceOrientation];
+//    [self updateLayoutForNewOrientation: self.interfaceOrientation];
 
     
 }
@@ -368,7 +368,7 @@ NSString *myAffiliateID;
 //140216 1.2 iOS 7 begin
     BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
     
-    CGFloat navBarAdjustment = isPortrait ? 0 : 3;
+    CGFloat navBarAdjustment = isPortrait ? 0 : -9;
     
     [self.infoTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
     [self.infoTableView setContentOffset:CGPointMake(0, navBarAdjustment)];

@@ -47,6 +47,9 @@
 @synthesize remainingTimeButton;
 @synthesize saveTitle;
 @synthesize mainViewIsSender;
+//140221 1.2 iOS 7 begin
+@synthesize tempPlayButton;
+//140221 1.2 iOS 7 end
 
 #pragma mark - Initial Display methods
 
@@ -62,14 +65,13 @@
     self.navigationController.navigationBar.topItem.title = @"";
     self.navigationItem.titleView = [self customizeTitleView];
 
-    UIButton *tempPlayButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.tempPlayButton = [UIButton buttonWithType:UIButtonTypeCustom];
     
-    [tempPlayButton addTarget:self action:@selector(viewNowPlaying) forControlEvents:UIControlEventTouchUpInside];
-    [tempPlayButton setImage:[UIImage imageNamed:@"redWhitePlayImage.png"] forState:UIControlStateNormal];
-    [tempPlayButton setShowsTouchWhenHighlighted:NO];
-    [tempPlayButton sizeToFit];
+    [self.tempPlayButton addTarget:self action:@selector(viewNowPlaying) forControlEvents:UIControlEventTouchUpInside];
+    [self.tempPlayButton setImage:[UIImage imageNamed:@"redWhitePlayImage.png"] forState:UIControlStateNormal];
+    [self.tempPlayButton setShowsTouchWhenHighlighted:NO];
+    [self.tempPlayButton sizeToFit];
     
-    self.playBarButton = [[UIBarButtonItem alloc] initWithCustomView:tempPlayButton];
 //140127 1.2 iOS 7 end
     
     [self.playBarButton setIsAccessibilityElement:YES];
@@ -194,7 +196,6 @@
     }
     //    self.navigationItem.titleView = [self customizeTitleView];
     
-    [self buildRightNavBarArray];
     
     [self updateLayoutForNewOrientation: self.interfaceOrientation];
     
@@ -298,30 +299,35 @@
 //140215 1.2 iOS 7 begin
     BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
     
-    CGFloat navBarAdjustment = isPortrait ? 0 : 3;
+    CGFloat navBarAdjustment = isPortrait ? 0 : 9;
 
-
-    if (UIInterfaceOrientationIsPortrait(orientation)) {
+    if (isPortrait) {
         //        NSLog (@"portrait");
-
+        
+        [self.tempPlayButton setContentEdgeInsets: UIEdgeInsetsMake(-1.0, 0.0, 1.0, 0.0)];
+        self.playBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.tempPlayButton];
+        
         self.albumInfoViewController.lastPlayedDateTitle = @"Played:";
         self.albumInfoViewController.userGroupingTitle = @"Grouping:";
-        
+
     } else {
         //        NSLog (@"landscape");
-
+        
+        [self.tempPlayButton setContentEdgeInsets: UIEdgeInsetsMake(3.0, 0.0, -3.0, 0.0)];
+        self.playBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.tempPlayButton];
+        
         self.albumInfoViewController.lastPlayedDateTitle = @"Last Played:";
         self.albumInfoViewController.userGroupingTitle = @"iTunes Grouping:";
 
     }
-    
     [self.albumInfoViewController.infoTableView setContentOffset:CGPointMake(0, navBarAdjustment)];
     [self.albumInfoViewController.infoTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
     [self.albumInfoViewController loadTableData];
     [self.albumInfoViewController.infoTableView reloadData];
     
-    [self.iTunesCommentsViewController.comments setContentOffset:CGPointMake(0, navBarAdjustment)];
-    [self.iTunesCommentsViewController.comments scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+    //these weren't doing anything 
+//    [self.iTunesCommentsViewController.comments setContentOffset:CGPointMake(0, navBarAdjustment)];
+//    [self.iTunesCommentsViewController.comments scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
     
     self.userInfoViewController.verticalSpaceTopToTableViewConstraint.constant = navBarAdjustment;
     self.userInfoViewController.verticalSpaceTopToCommentsConstraint.constant = 55 + navBarAdjustment;
@@ -331,6 +337,8 @@
     if (!userInfoViewController.editingUserInfo) {
         [self.userInfoViewController loadDataForView];
     }
+
+    [self buildRightNavBarArray];
 
 //140215 1.2 iOS 7 end
 }

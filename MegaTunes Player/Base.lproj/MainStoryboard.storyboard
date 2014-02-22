@@ -810,7 +810,7 @@
                                             </constraints>
                                         </scrollView>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aTc-je-6JP">
-                                            <rect key="frame" x="270" y="2" width="50" height="50"/>
+                                            <rect key="frame" x="270" y="4" width="50" height="48"/>
                                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="50" id="Cs5-wI-Wt3"/>
@@ -823,8 +823,8 @@
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
+                                        <constraint firstItem="aTc-je-6JP" firstAttribute="top" secondItem="ffk-NA-wfO" secondAttribute="top" constant="4" id="3LF-uo-DNv"/>
                                         <constraint firstItem="4BY-yf-XEu" firstAttribute="leading" secondItem="ffk-NA-wfO" secondAttribute="leading" id="6Q0-Ng-lIX"/>
-                                        <constraint firstItem="aTc-je-6JP" firstAttribute="top" secondItem="ffk-NA-wfO" secondAttribute="top" constant="2" id="96i-ml-R60"/>
                                         <constraint firstAttribute="trailing" secondItem="4BY-yf-XEu" secondAttribute="trailing" constant="54" id="G2l-qe-Ddx"/>
                                         <constraint firstAttribute="bottom" secondItem="4BY-yf-XEu" secondAttribute="bottom" id="GdF-Vh-SfG"/>
                                         <constraint firstAttribute="bottom" secondItem="aTc-je-6JP" secondAttribute="bottom" constant="2" id="SnE-QH-I1z"/>
