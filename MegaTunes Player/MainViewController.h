@@ -17,8 +17,8 @@
 
 //#define AUDIO_TYPE_PREF_KEY @"audio_technology_preference"
 
-#import <AVFoundation/AVFoundation.h>
-#import <AudioToolbox/AudioToolbox.h>
+@import AVFoundation;
+@import AudioToolbox;
 
 #import "AutoScrollLabel.h"
 

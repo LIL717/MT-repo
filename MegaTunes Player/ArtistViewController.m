@@ -16,6 +16,7 @@
 #import "MainViewController.h"
 #import "InCellScrollView.h"
 #import "AlbumViewController.h"
+#import "MTSearchBar.h"
 
 
 @interface ArtistViewController ()
@@ -29,6 +30,7 @@
 @synthesize allAlbumsView;
 @synthesize allAlbumsButton;
 @synthesize searchBar;
+@synthesize searchDisplayController;
 @synthesize collection;
 @synthesize collectionType;
 @synthesize collectionQueryType;
@@ -99,7 +101,10 @@ BOOL firstLoad;
     self.navigationController.navigationBar.topItem.title = @"";
     //set the navigation bar title
     self.navigationItem.titleView = [self customizeTitleView];
-
+    
+    //need this for correct placement and touch access in landscape on rotation in iOS 7
+    self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    
 //140127 1.2 iOS 7 end
     
     [self.rightBarButton setIsAccessibilityElement:YES];
@@ -110,14 +115,41 @@ BOOL firstLoad;
     
     [self registerForMediaPlayerNotifications];
     self.cellScrolled = NO;
-
+    
+    self.allAlbumsView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 110)];
+    self.searchBar = [[UISearchBar alloc] initWithFrame: CGRectMake(0, 0, self.view.bounds.size.width - 15, 55)];
+//    self.searchBar.barTintColor = [UIColor darkGrayColor];
+    [self.searchBar setSearchFieldBackgroundImage:[UIImage imageNamed: @"searchBarBackground"] forState: UIControlStateNormal];
+    
+//    - (void)setImage:(UIImage *)iconImage forSearchBarIcon:(UISearchBarIcon)icon state:(UIControlState)state NS_AVAILABLE_IOS(5_0)
+    self.searchBar.backgroundImage = [UIImage imageNamed:@"searchBarBackground"];
+//    self.searchBar = [[MTSearchBar alloc] init];
+//    self.searchBar.frame = CGRectMake(0, 0, self.view.bounds.size.width - 15, 55);
+    [self.searchBar setTranslatesAutoresizingMaskIntoConstraints: YES];
+    self.searchBar.delegate = self;
+    
+    self.searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
+    self.searchDisplayController.searchResultsDelegate = self;
+    self.searchDisplayController.searchResultsDataSource = self;
+    self.searchDisplayController.delegate = self;
+    
+    self.allAlbumsButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    CGRect frame = CGRectMake(0.0, 55.0, self.view.bounds.size.width, 55);
+    self.allAlbumsButton.frame = frame;
     self.allAlbumsButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     self.allAlbumsButton.contentEdgeInsets = UIEdgeInsetsMake(0, 4, 0, 0);
     [self.allAlbumsButton setTitleColor:  [UIColor whiteColor] forState: UIControlStateNormal];
     [self.allAlbumsButton setTitleColor:  [UIColor blueColor] forState: UIControlStateHighlighted];
     [self.allAlbumsButton setTitle: NSLocalizedString(@"All Albums", nil) forState:UIControlStateNormal];
-
+        [self.allAlbumsButton.titleLabel setFont: [UIFont systemFontOfSize: 44]];
+    //remember to add a segue to viewController for this action
+    [self.allAlbumsButton addTarget:self action:@selector(allAlbumsButtonTapped) forControlEvents:UIControlEventTouchUpInside];
     
+    [self.allAlbumsView addSubview: self.allAlbumsButton];
+    [self.allAlbumsView addSubview: self.searchBar];
+
+    self.collectionTableView.tableHeaderView = self.allAlbumsView;
+
     self.collectionTableView.sectionIndexMinimumDisplayRowCount = 20;
 //131203 1.2 iOS 7 begin
     
@@ -267,6 +299,7 @@ BOOL firstLoad;
 //    LogMethod();
     [super viewWillAppear: animated];
 //131216 1.2 iOS 7 begin
+    //this moved here when goBackClick removed
     if (iPodLibraryChanged) {
 //        [self.navigationController popToRootViewControllerAnimated:YES];
     }
@@ -365,6 +398,7 @@ BOOL firstLoad;
         //visibleRows is always 0 the first time through here for a table, populated after that
         if (firstLoad) {
             firstLoad = NO;
+            [self.allAlbumsView addSubview: self.searchBar];
             firstRowVisible = YES;
         } else {
             NSArray *visibleRows = [self.collectionTableView indexPathsForVisibleRows];
@@ -393,6 +427,7 @@ BOOL firstLoad;
             if (firstRowVisible) {
     //        [self.collectionTableView scrollRectToVisible:CGRectMake(0, adjustedHeaderHeight, 1, 1) animated:NO];
             [self.collectionTableView setContentOffset:CGPointMake(0, adjustedHeaderHeight)];
+
 //140113 1.2 iOS 7 begin
 
 
@@ -447,7 +482,12 @@ BOOL firstLoad;
 - (void)searchDisplayControllerDidBeginSearch:(UISearchDisplayController *)controller {
     LogMethod();
     self.isSearching = YES;
-//    [[NSNotificationCenter defaultCenter] postNotificationName: @"Searching" object:nil];
+    CGRect newFrame = self.searchBar.frame;
+    newFrame.origin.x = 0;
+    newFrame.origin.y = 0;
+    newFrame.size.height = 55;
+    newFrame.size.width = self.view.bounds.size.width;
+    self.searchBar.frame = newFrame;
 
 }
 - (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller {
@@ -455,24 +495,28 @@ BOOL firstLoad;
     //this needs to be here rather than DidEndSearch to avoid flashing wrong data first
 
 //    [self.collectionTableView reloadData];
+    [self.searchBar removeFromSuperview];
 }
 
 - (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller {
     LogMethod();
     self.isSearching = NO;
     //reload the original tableView otherwise section headers are not visible :(  this seems to be an Apple bug
-    
-    CGFloat largeHeaderAdjustment;
+
+    self.collectionTableView.tableHeaderView = self.allAlbumsView;
+    self.searchBar.frame = CGRectMake(0, 0, self.view.bounds.size.width - 15, 55);
+    [self.allAlbumsView addSubview:self.searchBar];
+
     
     BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
     
-    if (isPortrait) {
-        largeHeaderAdjustment = 11;
-    } else {
-        largeHeaderAdjustment = 23;
-    }
+    CGFloat navBarAdjustment = isPortrait ? 0 : 9;
 
-    [self.collectionTableView scrollRectToVisible:CGRectMake(largeHeaderAdjustment, 0, 1, 1) animated:YES];
+    // hide the search bar and All Albums cell
+    CGFloat tableViewHeaderHeight = self.allAlbumsView.frame.size.height;
+    CGFloat adjustedHeaderHeight = tableViewHeaderHeight - navBarAdjustment;
+
+    [self.collectionTableView setContentOffset:CGPointMake(0, adjustedHeaderHeight)];
     [self.collectionTableView reloadData];
 }
 - (void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope
@@ -1072,6 +1116,10 @@ BOOL firstLoad;
     
     NSLog (@"iTunesLink is %@", self.iTunesLinkUrl);
     
+}
+- (IBAction)allAlbumsButtonTapped {
+    
+    [self performSegueWithIdentifier: @"ViewAllAlbums" sender: self];
 }
 //130909 1.1 add iTunesStoreButton end
 

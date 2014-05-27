@@ -29,7 +29,6 @@
 @synthesize fetchedResultsController = fetchedResultsController_;
 @synthesize managedObjectContext = managedObjectContext_;
 
-//@synthesize iPodLibraryChanged;         //A flag indicating whether the library has been changed due to a sync
 @synthesize userDataForMediaItem;
 @synthesize userTagViewControllerDelegate;
 @synthesize rightBarButton;
@@ -485,7 +484,6 @@ NSString *actionType;
             addTagViewController.hasColor = NO;
             
             NSLog (@"lastObjectIndex = %d", addTagViewController.lastObjectIndex);
-            //        addTagViewController.iPodLibraryChanged = self.iPodLibraryChanged;
             
         }
         if ([actionType isEqualToString: @"Edit"]) {
@@ -507,9 +505,7 @@ NSString *actionType;
             NSLog (@"tagColor is %f %f %f %f", red, green, blue, alpha);
             
             addTagViewController.title = NSLocalizedString(@"Edit Tag", nil);
-            
-            //        addTagViewController.iPodLibraryChanged = self.iPodLibraryChanged;
-            
+                        
         }
     }
     

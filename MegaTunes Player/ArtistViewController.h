@@ -8,7 +8,8 @@
 @class CollectionItem;
 @class MTSearchBar;
 
-@interface ArtistViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MPMediaPickerControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate> {
+@interface ArtistViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MPMediaPickerControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate>
+ {
 
     NSManagedObjectContext *managedObjectContext_;
 }
@@ -17,7 +18,10 @@
 @property (strong, nonatomic)   IBOutlet UIView *allAlbumsView;
 @property (strong, nonatomic)   IBOutlet UIButton *allAlbumsButton;
 //140114 1.2 iOS 7 begin
+//@property (strong, nonatomic)   IBOutlet MTSearchBar *searchBar;
 @property (strong, nonatomic)   IBOutlet UISearchBar *searchBar;
+
+@property (strong, nonatomic)   UISearchDisplayController *searchDisplayController;
 //140114 1.2 iOS 7 end
 //130912 1.1 add iTunesStoreButton begin
 @property (strong, nonatomic)   IBOutlet UIButton *moreGenreButton;

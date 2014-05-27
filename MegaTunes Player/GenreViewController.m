@@ -146,6 +146,7 @@ BOOL firstLoad;
     //    LogMethod();
     [super viewWillAppear: animated];
 //131216 1.2 iOS 7 begin
+    //this moved here when goBackClick removed
     if (iPodLibraryChanged) {
 //        [self.navigationController popToRootViewControllerAnimated:YES];
     }

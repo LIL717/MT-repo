@@ -297,6 +297,7 @@ BOOL firstLoad;
 //    LogMethod();
     [super viewWillAppear: animated];
 //131216 1.2 iOS 7 begin
+    //this moved here when goBackClick removed
     if (iPodLibraryChanged) {
 //        [self.navigationController popToRootViewControllerAnimated:YES];
     }
@@ -469,6 +470,12 @@ BOOL firstLoad;
 - (void)searchDisplayControllerDidBeginSearch:(UISearchDisplayController *)controller {
     LogMethod();
     self.isSearching = YES;
+    CGRect newFrame = searchBar.frame;
+    newFrame.origin.x = 0;
+    newFrame.origin.y = 0;
+    newFrame.size.height = 55;
+    newFrame.size.width = self.collectionTableView.frame.size.width;
+    searchBar.frame = newFrame;
     //    [[NSNotificationCenter defaultCenter] postNotificationName: @"Searching" object:nil];
     
 }

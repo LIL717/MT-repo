@@ -22,7 +22,7 @@
 @synthesize textToMagnify;
 @synthesize magnifiedLabel;
 @synthesize textType;
-@synthesize iPodLibraryChanged;         //A flag indicating whether the library has been changed due to a sync
+//@synthesize iPodLibraryChanged;         //A flag indicating whether the library has been changed due to a sync
 
 
 @synthesize delegate;

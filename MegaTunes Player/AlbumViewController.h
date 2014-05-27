@@ -20,7 +20,7 @@
 @property (strong, nonatomic)   IBOutlet UITableView *collectionTableView;
 @property (strong, nonatomic)   IBOutlet UIView *allSongsView;
 @property (strong, nonatomic)   IBOutlet UIButton *allSongsButton;
-@property (strong, nonatomic)   IBOutlet MTSearchBar *searchBar;
+@property (strong, nonatomic)   IBOutlet UISearchBar *searchBar;
 //130912 1.1 add iTunesStoreButton begin
 @property (weak, nonatomic) IBOutlet UIButton *moreByArtistButton;
 //130912 1.1 add iTunesStoreButton end

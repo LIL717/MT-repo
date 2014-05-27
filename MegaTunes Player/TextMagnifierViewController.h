@@ -27,7 +27,7 @@
 @property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic) IBOutlet UILabel *magnifiedLabel;
 @property (nonatomic, retain) NSString *textType;
-@property (readwrite)           BOOL   iPodLibraryChanged;
+//@property (readwrite)           BOOL   iPodLibraryChanged;
 
 
 - (IBAction)tapDetected:(UITapGestureRecognizer *)sender;

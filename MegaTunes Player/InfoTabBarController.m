@@ -540,7 +540,7 @@
 	// user performs a sync while application is running.
 //140218 1.2 iOS 7 begin
     // this method is being called even when iPod Library has not changed, so its not really useful
-//    [self setIPodLibraryChanged: YES];
+    [self setIPodLibraryChanged: YES];
 //140218 1.2 iOS 7 end
 }
 // When the playback state changes, if stopped remove nowplaying button

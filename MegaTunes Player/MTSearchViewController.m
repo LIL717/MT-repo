@@ -16,6 +16,9 @@
 
 @synthesize searchBar;
 
+//- (id) initWithSearchBar:(UISearchBar *)searchBar contentsController:(UIViewController *)viewController {
+//    [super initWithSearchBar:<#searchBar#> contentsController:<#viewController#>];
+//}
 //Our custom search view needs to know when to show / hide the cancel button
 //- (void) searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller {
 //    LogMethod();

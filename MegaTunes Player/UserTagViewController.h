@@ -31,8 +31,6 @@
 @property (nonatomic, weak) id <UserTagViewControllerDelegate> userTagViewControllerDelegate;
 @property (nonatomic, strong)   UserDataForMediaItem *userDataForMediaItem;
 
-//@property (readwrite)           BOOL iPodLibraryChanged;
-
 - (void)addTagViewControllerDidCancel:(AddTagViewController *)controller;
 
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="1j9-19-lml">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="1j9-19-lml">
     <dependencies>
         <deployment defaultVersion="1792" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <scenes>
         <!--Song View Controller-->
@@ -903,52 +903,8 @@
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                        <view key="tableHeaderView" contentMode="scaleToFill" id="Wo4-4x-FC2" userLabel="AllAlbumsView">
-                            <rect key="frame" x="0.0" y="0.0" width="480" height="110"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <searchBar contentMode="redraw" barStyle="black" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Aba-KR-t1y">
-                                    <rect key="frame" x="0.0" y="0.0" width="480" height="55"/>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <textInputTraits key="textInputTraits" autocorrectionType="no"/>
-                                    <connections>
-                                        <outlet property="delegate" destination="DPV-A8-OP5" id="REk-I2-bHo"/>
-                                    </connections>
-                                </searchBar>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y1n-zD-H2J">
-                                    <rect key="frame" x="0.0" y="55" width="480" height="55"/>
-                                    <accessibility key="accessibilityConfiguration" label="Shuffle"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="55" id="a9T-t5-jvt"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" type="system" pointSize="44"/>
-                                    <state key="normal">
-                                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                    <state key="highlighted">
-                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                    <connections>
-                                        <segue destination="527-b6-fAN" kind="push" identifier="ViewAllAlbums" id="CZe-dj-i8N"/>
-                                    </connections>
-                                </button>
-                            </subviews>
-                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            <constraints>
-                                <constraint firstItem="Y1n-zD-H2J" firstAttribute="leading" secondItem="Wo4-4x-FC2" secondAttribute="leading" id="2l1-7O-nTl"/>
-                                <constraint firstItem="Aba-KR-t1y" firstAttribute="leading" secondItem="Y1n-zD-H2J" secondAttribute="leading" id="MGY-kB-CLe"/>
-                                <constraint firstItem="Aba-KR-t1y" firstAttribute="bottom" secondItem="Y1n-zD-H2J" secondAttribute="top" id="QgN-3F-U1w"/>
-                                <constraint firstItem="Aba-KR-t1y" firstAttribute="trailing" secondItem="Y1n-zD-H2J" secondAttribute="trailing" id="U9w-YP-9p7"/>
-                                <constraint firstAttribute="trailing" secondItem="Y1n-zD-H2J" secondAttribute="trailing" id="gZO-Sv-7GL"/>
-                                <constraint firstItem="Aba-KR-t1y" firstAttribute="leading" secondItem="Wo4-4x-FC2" secondAttribute="leading" id="iPh-JP-OKW"/>
-                                <constraint firstItem="Y1n-zD-H2J" firstAttribute="top" secondItem="Wo4-4x-FC2" secondAttribute="top" constant="55" id="si4-wc-lTS"/>
-                                <constraint firstItem="Aba-KR-t1y" firstAttribute="top" secondItem="Wo4-4x-FC2" secondAttribute="top" id="yWV-CT-5dd"/>
-                            </constraints>
-                        </view>
                         <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="FaT-wF-w56">
-                            <rect key="frame" x="0.0" y="221" width="480" height="55"/>
+                            <rect key="frame" x="0.0" y="111" width="480" height="55"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="44"/>
                             <state key="normal" title=" iTunes Store" image="iTunesStoreIcon">
@@ -958,14 +914,14 @@
                         </button>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="none" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="CollectionItemCell" rowHeight="55" id="DFq-ZQ-3yg" userLabel="cell" customClass="CollectionItemCell">
-                                <rect key="frame" x="0.0" y="165" width="480" height="55"/>
+                                <rect key="frame" x="0.0" y="55" width="480" height="55"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="DFq-ZQ-3yg" id="Ohx-RA-Hhp">
                                     <rect key="frame" x="0.0" y="0.0" width="447" height="54"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <scrollView clipsSubviews="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BEu-UQ-vTB" userLabel="IBScrollView" customClass="InCellScrollView">
-                                            <rect key="frame" x="0.0" y="0.0" width="312" height="54"/>
+                                        <scrollView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BEu-UQ-vTB" userLabel="IBScrollView" customClass="InCellScrollView">
+                                            <rect key="frame" x="0.0" y="0.0" width="152" height="54"/>
                                             <subviews>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="clip" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ka0-Cb-Mfz">
                                                     <rect key="frame" x="0.0" y="0.0" width="0.0" height="54"/>
@@ -986,8 +942,8 @@
                                                 <constraint firstAttribute="trailing" secondItem="Ka0-Cb-Mfz" secondAttribute="trailing" id="jnY-PO-F2V"/>
                                             </constraints>
                                         </scrollView>
-                                        <label opaque="NO" clipsSubviews="YES" contentMode="left" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="22" translatesAutoresizingMaskIntoConstraints="NO" id="jfz-Q5-l6V" userLabel="duration">
-                                            <rect key="frame" x="317" y="0.0" width="130" height="54"/>
+                                        <label opaque="NO" clipsSubviews="YES" contentMode="left" misplaced="YES" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="22" translatesAutoresizingMaskIntoConstraints="NO" id="jfz-Q5-l6V" userLabel="duration">
+                                            <rect key="frame" x="157" y="0.0" width="130" height="54"/>
                                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="130" id="GnY-nU-ioo"/>
@@ -1024,29 +980,16 @@
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <navigationItem key="navigationItem" id="293-P3-9Qx"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO"/>
-                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <connections>
-                        <outlet property="allAlbumsButton" destination="Y1n-zD-H2J" id="hPA-8s-STs"/>
-                        <outlet property="allAlbumsView" destination="Wo4-4x-FC2" id="IIJ-HY-Dw1"/>
                         <outlet property="collectionTableView" destination="tE6-jE-hH7" id="ZjL-1M-vDP"/>
                         <outlet property="moreGenreButton" destination="FaT-wF-w56" id="qkD-kU-Q2K"/>
-                        <outlet property="searchBar" destination="Aba-KR-t1y" id="D2v-gE-pUR"/>
-                        <outlet property="searchDisplayController" destination="FfK-hu-gAG" id="vGL-ge-8cm"/>
                         <segue destination="SKu-HW-GrJ" kind="push" identifier="ViewNowPlaying" id="nbU-Bw-UO3"/>
                         <segue destination="mNb-57-5Xm" kind="push" identifier="ViewSongs" id="kZ2-Sr-P63"/>
                         <segue destination="527-b6-fAN" kind="push" identifier="AlbumCollections" id="dXX-zY-4vR"/>
+                        <segue destination="527-b6-fAN" kind="push" identifier="ViewAllAlbums" id="bAp-dp-B4a"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ecr-9R-ha5" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <searchDisplayController id="FfK-hu-gAG">
-                    <connections>
-                        <outlet property="delegate" destination="DPV-A8-OP5" id="g7k-Z2-01Q"/>
-                        <outlet property="searchBar" destination="Aba-KR-t1y" id="gtN-00-Qoj"/>
-                        <outlet property="searchContentsController" destination="DPV-A8-OP5" id="Hks-Ml-ei5"/>
-                        <outlet property="searchResultsDataSource" destination="DPV-A8-OP5" id="Gyk-bX-ZeP"/>
-                        <outlet property="searchResultsDelegate" destination="DPV-A8-OP5" id="6IT-rF-Uer"/>
-                    </connections>
-                </searchDisplayController>
             </objects>
             <point key="canvasLocation" x="-294" y="-1345"/>
         </scene>
@@ -1202,7 +1145,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WQr-Xh-O7m" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1795" y="-1514"/>
+            <point key="canvasLocation" x="3643" y="-1970"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="5Ig-8I-gzH">
@@ -1238,7 +1181,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="480" height="110"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <searchBar contentMode="redraw" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="8ig-hc-H4r" customClass="MTSearchBar">
+                                <searchBar contentMode="redraw" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="8ig-hc-H4r">
                                     <rect key="frame" x="0.0" y="0.0" width="480" height="51"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
@@ -1568,7 +1511,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qAP-cm-waG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1815" y="946"/>
+            <point key="canvasLocation" x="1615" y="676"/>
         </scene>
         <!--Add Tag View Controller-->
         <scene sceneID="ALl-dP-tRe">
@@ -1624,7 +1567,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qN7-Bw-zNA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2547" y="954"/>
+            <point key="canvasLocation" x="2027" y="676"/>
         </scene>
         <!--Tagged Song View Controller-->
         <scene sceneID="vkg-Se-OPh">
@@ -1810,13 +1753,13 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="hHs-2t-p2p"/>
-        <segue reference="oc8-HG-QrB"/>
-        <segue reference="qJB-vr-AI7"/>
+        <segue reference="TSf-v1-yU3"/>
         <segue reference="HSe-qu-5Rj"/>
-        <segue reference="A7H-qB-bdF"/>
-        <segue reference="E4Y-B8-RSc"/>
         <segue reference="rM7-oN-wjy"/>
-        <segue reference="SvT-2g-rDr"/>
-        <segue reference="Xbd-a7-Wgl"/>
+        <segue reference="qJB-vr-AI7"/>
+        <segue reference="E4Y-B8-RSc"/>
+        <segue reference="A7H-qB-bdF"/>
+        <segue reference="5Qv-VH-YKH"/>
+        <segue reference="jae-3W-C2f"/>
     </inferredMetricsTieBreakers>
 </document>
