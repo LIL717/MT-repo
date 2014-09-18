@@ -7,7 +7,6 @@
 //
 
 #import "AppDelegate.h"
-//#import "ColorSwitcher.h"
 #import "MediaGroupViewController.h"
 #import "MainViewcontroller.h"
 //#import "CustomNavigationBar.h"
@@ -26,7 +25,6 @@
 @synthesize window = _window;
 //@synthesize navigationController;
 
-//@synthesize colorSwitcher;
 @synthesize managedObjectModel = managedObjectModel_;
 @synthesize managedObjectContext = managedObjectContext_;
 @synthesize fetchedResultsController = fetchedResultsController_;
@@ -269,10 +267,6 @@ static const NSUInteger kNavigationBarHeight = 60;
     
     //    [navigationController.navigationBar setTitleVerticalPositionAdjustment: 4 forBarMetrics: UIBarMetricsLandscapePhone];
     
-    
-    //    self.colorSwitcher = [[ColorSwitcher alloc] initWithScheme:@"maroon"];
-    //    self.colorSwitcher = [[ColorSwitcher alloc] initWithScheme:@"black"];
-    
     [self customizeGlobalTheme];
     
     //    UIUserInterfaceIdiom idiom = [[UIDevice currentDevice] userInterfaceIdiom];
@@ -309,12 +303,10 @@ static const NSUInteger kNavigationBarHeight = 60;
 - (void)customizeGlobalTheme {
     
     
-    //    UIImage *navBarDefaultImage = [colorSwitcher processImageWithName:@"megaMenu-bar.png"];
     UIImage *navBarDefaultImage = [UIImage imageNamed:@"megaMenu-bar.png"];
     
     [[UINavigationBar appearance] setBackgroundImage:navBarDefaultImage forBarMetrics:UIBarMetricsDefault];
     
-    //    UIImage *navBarLandscapeImage = [colorSwitcher processImageWithName:@"megaMenu-bar-landscape.png"];
     UIImage *navBarLandscapeImage = [UIImage imageNamed:@"megaMenu-bar-landscape.png"];
     
     [[UINavigationBar appearance] setBackgroundImage:navBarLandscapeImage forBarMetrics:UIBarMetricsLandscapePhone];
@@ -335,7 +327,6 @@ static const NSUInteger kNavigationBarHeight = 60;
     //    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, menuBarImage58.size.height*2) forBarMetrics:UIBarMetricsLandscapePhone];
     
     
-    //    UIImage* tabBarBackground = [colorSwitcher processImageWithName:@"tabbar.png"];
     UIImage* tabBarBackground = [UIImage imageNamed:@"tabbar.png"];
     
     //need to set the title because accessibility uses the title, set text to clear so it doesn't display

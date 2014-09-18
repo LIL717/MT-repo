@@ -20,7 +20,7 @@
 @import AVFoundation;
 @import AudioToolbox;
 
-#import "AutoScrollLabel.h"
+#import "CBAutoScrollLabel.h"
 
 
 @interface MainViewController : UIViewController <MPMediaPickerControllerDelegate, AVAudioPlayerDelegate, TimeMagnifierViewControllerDelegate, TextMagnifierViewControllerDelegate, InfoTabBarControllerDelegate> {
@@ -74,7 +74,7 @@
 
 
 @property (strong, nonatomic) IBOutlet UILabel *initialNowPlayingLabel;
-@property (strong, nonatomic) IBOutlet AutoScrollLabel	*nowPlayingLabel;
+@property (strong, nonatomic) IBOutlet CBAutoScrollLabel	*nowPlayingLabel;
 @property (strong, nonatomic) IBOutlet UILabel *elapsedTimeLabel;
 @property (strong, nonatomic) IBOutlet OBSlider *progressSlider;
 @property (strong, nonatomic) IBOutlet UILabel *remainingTimeLabel;
