@@ -1,5 +1,5 @@
 //
-//  UserTaggItem.h
+//  TagItem.h
 //  MegaTunes Player
 //
 //  Created by Lori Hill on 6/10/13.
