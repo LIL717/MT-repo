@@ -157,8 +157,8 @@ static const NSUInteger kNavigationBarHeight = 60;
 //#ifdef TESTING
 //    [TestFlight setDeviceIdentifier:[[UIDevice currentDevice] uniqueIdentifier]];
 //#endif
-    [TestFlight takeOff:@"3ec22a1e-ddac-483c-8152-21c537a9fb42"];
-    
+//    [TestFlight takeOff:@"3ec22a1e-ddac-483c-8152-21c537a9fb42"];
+
     //*** end of TestFlight code
 //130906 1.1 add Store Button begin
     NSUserDefaults * standardUserDefaults = [NSUserDefaults standardUserDefaults];
