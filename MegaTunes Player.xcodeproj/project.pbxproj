@@ -31,7 +31,6 @@
 		7060523614F88D43001A1CDB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7060523414F88D43001A1CDB /* InfoPlist.strings */; };
 		7060523814F88D43001A1CDB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7060523714F88D43001A1CDB /* main.m */; };
 		7060523F14F88D43001A1CDB /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7060523D14F88D43001A1CDB /* MainStoryboard.storyboard */; };
-		7060524A14F88D44001A1CDB /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7060524914F88D44001A1CDB /* SenTestingKit.framework */; };
 		7060524B14F88D44001A1CDB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7060522B14F88D43001A1CDB /* UIKit.framework */; };
 		7060524C14F88D44001A1CDB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7060522D14F88D43001A1CDB /* Foundation.framework */; };
 		7060525414F88D44001A1CDB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7060525214F88D44001A1CDB /* InfoPlist.strings */; };
@@ -78,7 +77,6 @@
 		70D4E08919CB972E00BA2A02 /* UIImage+iPhone5.m in Sources */ = {isa = PBXBuildFile; fileRef = 70D4E08819CB972E00BA2A02 /* UIImage+iPhone5.m */; };
 		70D4E08C19CB978F00BA2A02 /* UINavigationItem+iOS7Spacing.m in Sources */ = {isa = PBXBuildFile; fileRef = 70D4E08B19CB978F00BA2A02 /* UINavigationItem+iOS7Spacing.m */; };
 		70D4E08F19CB985F00BA2A02 /* UINavigationController+MaskAll.m in Sources */ = {isa = PBXBuildFile; fileRef = 70D4E08E19CB985F00BA2A02 /* UINavigationController+MaskAll.m */; };
-		70D4E09019CB9D6000BA2A02 /* MegaTunes Player-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7060523314F88D43001A1CDB /* MegaTunes Player-Info.plist */; };
 		70D4E09319CB9E3C00BA2A02 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 70D4E09519CB9E3C00BA2A02 /* Localizable.strings */; };
 		70D4E0B719CBAA9200BA2A02 /* AutoScrollLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 70D4E0B619CBAA9200BA2A02 /* AutoScrollLabel.m */; };
 		70E8E8091759CDA10012CE74 /* MediaGroupCarouselViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70E8E8081759CD9F0012CE74 /* MediaGroupCarouselViewController.m */; };
@@ -141,7 +139,6 @@
 		7060523714F88D43001A1CDB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		7060523914F88D43001A1CDB /* MegaTunes Player-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MegaTunes Player-Prefix.pch"; sourceTree = "<group>"; };
 		7060524814F88D44001A1CDB /* MegaTunes PlayerTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "MegaTunes PlayerTests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		7060524914F88D44001A1CDB /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		7060525114F88D44001A1CDB /* MegaTunes PlayerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MegaTunes PlayerTests-Info.plist"; sourceTree = "<group>"; };
 		7060525314F88D44001A1CDB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		7060525514F88D44001A1CDB /* MegaTunes_PlayerTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MegaTunes_PlayerTests.h; sourceTree = "<group>"; };
@@ -319,7 +316,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7060524A14F88D44001A1CDB /* SenTestingKit.framework in Frameworks */,
 				7060524B14F88D44001A1CDB /* UIKit.framework in Frameworks */,
 				7060524C14F88D44001A1CDB /* Foundation.framework in Frameworks */,
 			);
@@ -368,7 +364,6 @@
 				7060522B14F88D43001A1CDB /* UIKit.framework */,
 				7060522D14F88D43001A1CDB /* Foundation.framework */,
 				7060522F14F88D43001A1CDB /* CoreGraphics.framework */,
-				7060524914F88D44001A1CDB /* SenTestingKit.framework */,
 				4CD97654E7CF4563905BCBC1 /* libPods.a */,
 			);
 			name = Frameworks;
@@ -679,7 +674,7 @@
 			name = "MegaTunes PlayerTests";
 			productName = "MegaTunes PlayerTests";
 			productReference = 7060524814F88D44001A1CDB /* MegaTunes PlayerTests.octest */;
-			productType = "com.apple.product-type.bundle.ocunit-test";
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -689,6 +684,16 @@
 			attributes = {
 				LastTestingUpgradeCheck = 0600;
 				LastUpgradeCheck = 0600;
+				TargetAttributes = {
+					7060522614F88D43001A1CDB = {
+						DevelopmentTeam = 98FUBN4YVB;
+						SystemCapabilities = {
+							com.apple.iCloud = {
+								enabled = 0;
+							};
+						};
+					};
+				};
 			};
 			buildConfigurationList = 7060522114F88D43001A1CDB /* Build configuration list for PBXProject "MegaTunes Player" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -731,7 +736,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				70D4E09019CB9D6000BA2A02 /* MegaTunes Player-Info.plist in Resources */,
 				7060523614F88D43001A1CDB /* InfoPlist.strings in Resources */,
 				7060523F14F88D43001A1CDB /* MainStoryboard.storyboard in Resources */,
 				70D4E06A19CB926300BA2A02 /* Images.xcassets in Resources */,
@@ -1050,9 +1054,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = MegaTunes.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/LoriHill/Documents/Development/Development\\ Sandbox/MT-repo/MT-repo/Pods",
+					"/Users/LoriHill/Documents/Development/Development\\ Sandbox/MegaTunes\\ Player/Pods",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MegaTunes Player/MegaTunes Player-Prefix.pch";
@@ -1063,6 +1070,7 @@
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				OTHER_LDFLAGS = "-lstdc++";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
@@ -1076,10 +1084,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_ENTITLEMENTS = MegaTunes.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/LoriHill/Documents/Development/Development\\ Sandbox/MT-repo/MT-repo/Pods",
+					"/Users/LoriHill/Documents/Development/Development\\ Sandbox/MegaTunes\\ Player/Pods",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MegaTunes Player/MegaTunes Player-Prefix.pch";
@@ -1103,14 +1113,13 @@
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/MegaTunes Player.app/MegaTunes Player";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+					"$(inherited)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MegaTunes Player/MegaTunes Player-Prefix.pch";
 				INFOPLIST_FILE = "MegaTunes PlayerTests/MegaTunes PlayerTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
 			};
 			name = Debug;
 		};
@@ -1120,14 +1129,13 @@
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/MegaTunes Player.app/MegaTunes Player";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+					"$(inherited)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MegaTunes Player/MegaTunes Player-Prefix.pch";
 				INFOPLIST_FILE = "MegaTunes PlayerTests/MegaTunes PlayerTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
 			};
 			name = Release;
 		};

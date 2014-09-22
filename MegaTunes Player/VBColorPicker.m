@@ -44,8 +44,8 @@
 		// Declare the number of bytes per row. Each pixel in the bitmap in this
 		// example is represented by 4 bytes; 8 bits each of red, green, blue, and
 		// alpha.
-	bitmapBytesPerRow   = (pixelsWide * 4);
-	bitmapByteCount     = (bitmapBytesPerRow * pixelsHigh);
+	bitmapBytesPerRow   =  (int) (pixelsWide * 4);
+	bitmapByteCount     = (int) (bitmapBytesPerRow * pixelsHigh);
 
 		// Use the generic RGB color space.
 	colorSpace = CGColorSpaceCreateDeviceRGB();
@@ -70,13 +70,16 @@
 		// per component. Regardless of what the source image format is
 		// (CMYK, Grayscale, and so on) it will be converted over to the format
 		// specified here by CGBitmapContextCreate.
-	context = CGBitmapContextCreate (bitmapData,
+	CGBitmapInfo bitmapInfo = (CGBitmapInfo) kCGImageAlphaPremultipliedFirst;
+
+	context = CGBitmapContextCreate (NULL,
+
 									 pixelsWide,
 									 pixelsHigh,
 									 8,      // bits per component
 									 bitmapBytesPerRow,
 									 colorSpace,
-									 kCGImageAlphaPremultipliedFirst);
+									 bitmapInfo);
 	if (context == NULL)
 		{
 		free (bitmapData);

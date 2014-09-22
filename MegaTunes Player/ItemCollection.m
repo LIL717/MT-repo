@@ -99,12 +99,11 @@
 //select all objects in the ItemCollection
     NSFetchRequest * allItems = [[NSFetchRequest alloc] init];
     [allItems setEntity:[NSEntityDescription entityForName:@"ItemCollection" inManagedObjectContext:self.managedObjectContext]];
-    [allItems setIncludesPropertyValues:NO]; //only fetch the managedObjectID
-    
+//    [allItems setIncludesPropertyValues:NO]; //only fetch the managedObjectID
+
     NSError * error = nil;
     NSArray * items = [self.managedObjectContext executeFetchRequest:allItems error:&error];
     
-    //error handling goes here
     for (NSManagedObject * item in items) {
         [self.managedObjectContext deleteObject:item];
     }

@@ -294,7 +294,7 @@ BOOL excludeICloudItems;
     TagData *tagData = [TagData alloc];
     tagData.managedObjectContext = self.managedObjectContext;
     
-    int arrayCount;
+    long arrayCount;
     arrayCount = [[tagData fetchTagList] count];
     self.taggedSongSections = [NSMutableArray arrayWithCapacity: arrayCount];
     NSMutableArray * titles = [NSMutableArray arrayWithCapacity: arrayCount];
@@ -344,7 +344,7 @@ BOOL excludeICloudItems;
                 self.taggedSectionIndexData.sectionRange = NSMakeRange(currentLocation, sectionItemCount);
                 self.taggedSectionIndexData.sectionIndexTitleIndex = sectionCount - 1;  //this will be an actual index
                 [self.taggedSongSections addObject: self.taggedSectionIndexData];
-                NSLog (@"Added object title=%@, range=%d %d, index=%d", self.taggedSectionIndexData.sectionIndexTitle, self.taggedSectionIndexData.sectionRange.location, self.taggedSectionIndexData.sectionRange.length, self.taggedSectionIndexData.sectionIndexTitleIndex);
+                NSLog (@"Added object title=%@, range=%lu %lu, index=%lu", self.taggedSectionIndexData.sectionIndexTitle, self.taggedSectionIndexData.sectionRange.location, self.taggedSectionIndexData.sectionRange.length, (unsigned long)self.taggedSectionIndexData.sectionIndexTitleIndex);
             }
             sectionNameToSave = sectionName;
             currentLocation = currentLocation + sectionItemCount;
@@ -367,7 +367,7 @@ BOOL excludeICloudItems;
         self.taggedSectionIndexData.sectionRange = NSMakeRange(currentLocation, sectionItemCount);
         self.taggedSectionIndexData.sectionIndexTitleIndex = sectionCount - 1;
         [self.taggedSongSections addObject: self.taggedSectionIndexData];
-        NSLog (@"Added last object title=%@, range=%d %d, index=%d", self.taggedSectionIndexData.sectionIndexTitle, self.taggedSectionIndexData.sectionRange.location, self.taggedSectionIndexData.sectionRange.length, self.taggedSectionIndexData.sectionIndexTitleIndex);
+        NSLog (@"Added last object title=%@, range=%lu %lu, index=%lu", self.taggedSectionIndexData.sectionIndexTitle, self.taggedSectionIndexData.sectionRange.location, self.taggedSectionIndexData.sectionRange.length, (unsigned long)self.taggedSectionIndexData.sectionIndexTitleIndex);
     }
     self.taggedSongSectionTitles = [titles copy];
     
@@ -402,7 +402,7 @@ BOOL excludeICloudItems;
         
         //calculate the duration of the the playlist
         
-        long playbackDuration = [[song valueForProperty: MPMediaItemPropertyPlaybackDuration] longValue];
+        int playbackDuration = (int)[[song valueForProperty: MPMediaItemPropertyPlaybackDuration] longValue];
         
         int playlistMinutes = (playbackDuration / 60);     // Whole minutes
         int playlistSeconds = (playbackDuration % 60);                        // seconds
@@ -1030,9 +1030,9 @@ BOOL excludeICloudItems;
             } else {
                 long playbackDuration = [[song valueForProperty: MPMediaItemPropertyPlaybackDuration] longValue];
                 
-                int playbackHours = (playbackDuration / 3600);                         // returns number of whole hours fitted in totalSecs
-                int playbackMinutes = ((playbackDuration / 60) - playbackHours*60);     // Whole minutes
-                int playbackSeconds = (playbackDuration % 60);                        // seconds
+                int playbackHours = (int)(playbackDuration / 3600);                         // returns number of whole hours fitted in totalSecs
+                int playbackMinutes = (int)((playbackDuration / 60) - playbackHours*60);     // Whole minutes
+                int playbackSeconds = (int)(playbackDuration % 60);                        // seconds
                 cell.durationLabel.text = [NSString stringWithFormat:@"%2d:%02d", playbackMinutes, playbackSeconds];
             }
             
@@ -1420,7 +1420,7 @@ BOOL excludeICloudItems;
     }
     NSMutableArray *shuffleArray = collectionArray;
     
-    int max = [shuffleArray count];
+    int max = (int)[shuffleArray count];
     int randNum = arc4random() % max;
     selectedSong = [shuffleArray objectAtIndex: randNum];
     

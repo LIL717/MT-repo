@@ -1,5 +1,5 @@
 //
-//  CollectionViewController.m
+//  ArtistViewController.m
 //  MegaTunes Player
 //
 //  Created by Lori Hill on 10/1/12.
@@ -118,13 +118,15 @@ BOOL firstLoad;
     
     self.allAlbumsView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 110)];
     self.searchBar = [[UISearchBar alloc] initWithFrame: CGRectMake(0, 0, self.view.bounds.size.width - 15, 55)];
-//    self.searchBar.barTintColor = [UIColor darkGrayColor];
+    self.searchBar.barTintColor = [UIColor clearColor];
     [self.searchBar setSearchFieldBackgroundImage:[UIImage imageNamed: @"searchBarBackground"] forState: UIControlStateNormal];
     
 //    - (void)setImage:(UIImage *)iconImage forSearchBarIcon:(UISearchBarIcon)icon state:(UIControlState)state NS_AVAILABLE_IOS(5_0)
     self.searchBar.backgroundImage = [UIImage imageNamed:@"searchBarBackground"];
 //    self.searchBar = [[MTSearchBar alloc] init];
 //    self.searchBar.frame = CGRectMake(0, 0, self.view.bounds.size.width - 15, 55);
+	[[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setTextColor:[UIColor blueColor]];
+
     [self.searchBar setTranslatesAutoresizingMaskIntoConstraints: YES];
     self.searchBar.delegate = self;
     
@@ -229,7 +231,7 @@ BOOL firstLoad;
         NSNumber *playlistDurationNumber = [self calculatePlaylistDuration: currentQueue];
         long playlistDuration = [playlistDurationNumber longValue];
         
-        int playlistMinutes = (playlistDuration / 60);     // Whole minutes
+        int playlistMinutes = (int)(playlistDuration / 60);     // Whole minutes
         int playlistSeconds = (playlistDuration % 60);                        // seconds
         NSString *itemDuration = [NSString stringWithFormat:@"%2d:%02d", playlistMinutes, playlistSeconds];
         [collectionDurations addObject: itemDuration];
@@ -778,7 +780,7 @@ BOOL firstLoad;
                 NSNumber *playlistDurationNumber = [self calculatePlaylistDuration: currentQueue];
                 long playlistDuration = [playlistDurationNumber longValue];
                 
-                int playlistMinutes = (playlistDuration / 60);     // Whole minutes
+                int playlistMinutes = (int)(playlistDuration / 60);     // Whole minutes
                 int playlistSeconds = (playlistDuration % 60);                        // seconds
                 cell.durationLabel.text = [NSString stringWithFormat:@"%2d:%02d", playlistMinutes, playlistSeconds];
             }

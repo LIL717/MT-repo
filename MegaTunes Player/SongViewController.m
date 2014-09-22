@@ -395,7 +395,7 @@ BOOL excludeICloudItems;
         
         long playbackDuration = [[song valueForProperty: MPMediaItemPropertyPlaybackDuration] longValue];
         
-        int playlistMinutes = (playbackDuration / 60);     // Whole minutes
+        int playlistMinutes = (int)(playbackDuration / 60);     // Whole minutes
         int playlistSeconds = (playbackDuration % 60);                        // seconds
         NSString *itemDuration = [NSString stringWithFormat:@"%2d:%02d", playlistMinutes, playlistSeconds];
         [songDurations addObject: itemDuration];
@@ -771,7 +771,7 @@ BOOL excludeICloudItems;
 {
     //    LogMethod();
     
-    NSLog (@"SectionIndexTitle is %@ at index %d", title, index);
+    NSLog (@"SectionIndexTitle is %@ at index %ld", title, index);
     //since search was added to the array, need to return index - 1 to get to correct title, for search, set content Offset to top of table :)
     if ([title isEqualToString: @"{search}"]) {
         [tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
@@ -1016,8 +1016,8 @@ BOOL excludeICloudItems;
             } else {
                 long playbackDuration = [[song valueForProperty: MPMediaItemPropertyPlaybackDuration] longValue];
                 
-                int playbackHours = (playbackDuration / 3600);                         // returns number of whole hours fitted in totalSecs
-                int playbackMinutes = ((playbackDuration / 60) - playbackHours*60);     // Whole minutes
+                int playbackHours =  (int) (playbackDuration / 3600);                         // returns number of whole hours fitted in totalSecs
+                int playbackMinutes =  (int) ((playbackDuration / 60) - playbackHours*60);     // Whole minutes
                 int playbackSeconds = (playbackDuration % 60);                        // seconds
                 cell.durationLabel.text = [NSString stringWithFormat:@"%2d:%02d", playbackMinutes, playbackSeconds];
             }
@@ -1445,7 +1445,7 @@ BOOL excludeICloudItems;
     //    int max = [self.collectionItem.collectionArray count] -1;
     //    int randNum = rand() % (max - min) + min; //create the random number.
     
-    int max = [self.collectionItem.collectionArray count];
+    int max =  (int)[self.collectionItem.collectionArray count];
     int randNum = arc4random() % max;
     
     selectedSong = [self.collectionItem.collectionArray objectAtIndex: randNum];
