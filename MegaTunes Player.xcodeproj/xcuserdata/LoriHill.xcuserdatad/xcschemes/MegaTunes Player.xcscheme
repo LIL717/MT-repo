@@ -33,7 +33,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "7060524714F88D44001A1CDB"
-               BuildableName = "MegaTunes PlayerTests.octest"
+               BuildableName = "MegaTunes PlayerTests.xctest"
                BlueprintName = "MegaTunes PlayerTests"
                ReferencedContainer = "container:MegaTunes Player.xcodeproj">
             </BuildableReference>
