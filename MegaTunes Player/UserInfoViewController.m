@@ -51,8 +51,8 @@
 //    LogMethod();
     [super viewDidLoad];
     
-    [TestFlight passCheckpoint:@"UserInfoViewController"];
-    
+//    [TestFlight passCheckpoint:@"UserInfoViewController"];
+
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
     [self.userInfoTagTable setBackgroundColor: [UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
     

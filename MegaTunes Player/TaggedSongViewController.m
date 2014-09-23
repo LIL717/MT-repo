@@ -319,7 +319,7 @@ BOOL excludeICloudItems;
     tagData.managedObjectContext = self.managedObjectContext;
     
     int arrayCount;
-    arrayCount = [[tagData fetchTagList] count];
+    arrayCount = (int)[[tagData fetchTagList] count];
     self.taggedSongSections = [NSMutableArray arrayWithCapacity: arrayCount];
     NSMutableArray * titles = [NSMutableArray arrayWithCapacity: arrayCount];
     
@@ -368,7 +368,7 @@ BOOL excludeICloudItems;
                 self.taggedSectionIndexData.sectionRange = NSMakeRange(currentLocation, sectionItemCount);
                 self.taggedSectionIndexData.sectionIndexTitleIndex = sectionCount - 1;  //this will be an actual index
                 [self.taggedSongSections addObject: self.taggedSectionIndexData];
-                NSLog (@"Added object title=%@, range=%d %d, index=%d", self.taggedSectionIndexData.sectionIndexTitle, self.taggedSectionIndexData.sectionRange.location, self.taggedSectionIndexData.sectionRange.length, self.taggedSectionIndexData.sectionIndexTitleIndex);
+                NSLog (@"Added object title=%@, range=%lu %lu, index=%lu", self.taggedSectionIndexData.sectionIndexTitle, (unsigned long)self.taggedSectionIndexData.sectionRange.location, (unsigned long)self.taggedSectionIndexData.sectionRange.length, (unsigned long)self.taggedSectionIndexData.sectionIndexTitleIndex);
             }
             sectionNameToSave = sectionName;
             currentLocation = currentLocation + sectionItemCount;
@@ -391,7 +391,7 @@ BOOL excludeICloudItems;
         self.taggedSectionIndexData.sectionRange = NSMakeRange(currentLocation, sectionItemCount);
         self.taggedSectionIndexData.sectionIndexTitleIndex = sectionCount - 1;
         [self.taggedSongSections addObject: self.taggedSectionIndexData];
-        NSLog (@"Added last object title=%@, range=%d %d, index=%d", self.taggedSectionIndexData.sectionIndexTitle, self.taggedSectionIndexData.sectionRange.location, self.taggedSectionIndexData.sectionRange.length, self.taggedSectionIndexData.sectionIndexTitleIndex);
+        NSLog (@"Added last object title=%@, range=%lu %lu, index=%lu", self.taggedSectionIndexData.sectionIndexTitle, (unsigned long)self.taggedSectionIndexData.sectionRange.location, (unsigned long)self.taggedSectionIndexData.sectionRange.length, (unsigned long)self.taggedSectionIndexData.sectionIndexTitleIndex);
     }
     self.taggedSongSectionTitles = [titles copy];
     
@@ -428,7 +428,7 @@ BOOL excludeICloudItems;
         
         long playbackDuration = [[song valueForProperty: MPMediaItemPropertyPlaybackDuration] longValue];
         
-        int playlistMinutes = (playbackDuration / 60);     // Whole minutes
+        int playlistMinutes = (int)(playbackDuration / 60);     // Whole minutes
         int playlistSeconds = (playbackDuration % 60);                        // seconds
         NSString *itemDuration = [NSString stringWithFormat:@"%2d:%02d", playlistMinutes, playlistSeconds];
         [songDurations addObject: itemDuration];
@@ -600,7 +600,7 @@ BOOL excludeICloudItems;
     //if the table won't fill the screen need to wait for delay in order for tableView header to hide properly - so ugly
     int arrayCount;
     
-    arrayCount = [self.taggedSongArray count];
+    arrayCount = (int)[self.taggedSongArray count];
     
     if (arrayCount <= possibleRows) {
         [self performSelector:@selector(updateContentOffset) withObject:nil afterDelay:0.0];
@@ -1023,8 +1023,8 @@ BOOL excludeICloudItems;
             } else {
                 long playbackDuration = [[song valueForProperty: MPMediaItemPropertyPlaybackDuration] longValue];
                 
-                int playbackHours = (playbackDuration / 3600);                         // returns number of whole hours fitted in totalSecs
-                int playbackMinutes = ((playbackDuration / 60) - playbackHours*60);     // Whole minutes
+                int playbackHours = (int)(playbackDuration / 3600);                         // returns number of whole hours fitted in totalSecs
+                int playbackMinutes = (int)((playbackDuration / 60) - playbackHours*60);     // Whole minutes
                 int playbackSeconds = (playbackDuration % 60);                        // seconds
                 cell.durationLabel.text = [NSString stringWithFormat:@"%2d:%02d", playbackMinutes, playbackSeconds];
             }
@@ -1404,7 +1404,7 @@ BOOL excludeICloudItems;
     }
     NSMutableArray *shuffleArray = collectionArray;
     
-    int max = [shuffleArray count];
+    int max = (int)[shuffleArray count];
     int randNum = arc4random() % max;
     selectedSong = [shuffleArray objectAtIndex: randNum];
     

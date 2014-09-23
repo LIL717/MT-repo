@@ -500,6 +500,9 @@ NSString *actionType;
         case NSFetchedResultsChangeUpdate:
             [self.userTagTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
             break;
+
+		case NSFetchedResultsChangeMove:
+			break;
     }
 }
 

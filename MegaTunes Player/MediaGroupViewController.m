@@ -318,7 +318,7 @@ NSString *myAffiliateID;
         MPMediaQuery *mySongQuery = [MPMediaQuery songsQuery];
         MPMediaQuerySection *firstSection = [[mySongQuery collectionSections] objectAtIndex: 0];
         NSRange firstRange = firstSection.range;
-        int endOfRange = firstRange.length;
+        int endOfRange = (int )firstRange.length;
         int i;
         for (i = 0; i < endOfRange; i++) {
             MPMediaItem *song = [[mySongQuery items] objectAtIndex: i];

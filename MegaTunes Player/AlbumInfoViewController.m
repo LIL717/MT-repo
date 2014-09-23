@@ -488,7 +488,7 @@ NSString *myAffiliateID;
     
     [cell.scrollView removeConstraint:cell.centerXAlignmentConstraint];
     
-    NSLog (@"labelSize.width is %f and scrollViewWidth is %d", labelSize.width, scrollViewWidth);
+    NSLog (@"labelSize.width is %f and scrollViewWidth is %lu", labelSize.width, (unsigned long)scrollViewWidth);
     if (labelSize.width>scrollViewWidth) {
         cell.scrollView.scrollEnabled = YES;
         NSLog (@"scroll YES");

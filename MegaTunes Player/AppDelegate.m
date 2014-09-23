@@ -35,7 +35,6 @@
 
 
 
-static const NSUInteger kNavigationBarHeight = 60;
 // Add new private instance variable
 
 

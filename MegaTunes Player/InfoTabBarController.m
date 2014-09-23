@@ -435,7 +435,7 @@
         [self.navigationController popToRootViewControllerAnimated:YES];
     } else {
         MPMusicPlaybackState playbackState = [musicPlayer playbackState];
-        NSLog (@" playbackState is %d", playbackState);
+        NSLog (@" playbackState is %ld", playbackState);
         if (playbackState == MPMusicPlaybackStateStopped) {
             //pop back to songviewcontroller
             

@@ -209,7 +209,7 @@ BOOL firstLoad;
         NSNumber *playlistDurationNumber = [self calculatePlaylistDuration: currentQueue];
         long playlistDuration = [playlistDurationNumber longValue];
         
-        int playlistMinutes = (playlistDuration / 60);     // Whole minutes
+        int playlistMinutes = (int)(playlistDuration / 60);     // Whole minutes
         int playlistSeconds = (playlistDuration % 60);                        // seconds
         NSString *itemDuration = [NSString stringWithFormat:@"%2d:%02d", playlistMinutes, playlistSeconds];
         [collectionDurations addObject: itemDuration];
@@ -686,7 +686,7 @@ BOOL firstLoad;
                 NSNumber *playlistDurationNumber = [self calculatePlaylistDuration: currentQueue];
                 long playlistDuration = [playlistDurationNumber longValue];
                 
-                int playlistMinutes = (playlistDuration / 60);     // Whole minutes
+                int playlistMinutes = (int)(playlistDuration / 60);     // Whole minutes
                 int playlistSeconds = (playlistDuration % 60);                        // seconds
                 cell.durationLabel.text = [NSString stringWithFormat:@"%2d:%02d", playlistMinutes, playlistSeconds];
             }

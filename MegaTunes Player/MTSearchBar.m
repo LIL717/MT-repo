@@ -42,7 +42,7 @@ CGFloat CancelAnimationDistance = 80;
     [super awakeFromNib];
     
     // find textfield in subviews
-    for (int i = [self.subviews count] - 1; i >= 0; i--) {
+    for (int i = (int)[self.subviews count] - 1; i >= 0; i--) {
         UIView *subview = [self.subviews objectAtIndex:i];
         if ([subview.class isSubclassOfClass:[UITextField class]]) {
             searchTextField = (UITextField *)subview;

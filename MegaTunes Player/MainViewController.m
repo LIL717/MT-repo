@@ -333,7 +333,7 @@ BOOL delayPlaybackStateChange;
     //set the temp initialNowPlayingLabel so something is there when view loads, gets removed from view in viewDidAppear when autoScrollLabel is created
     self.initialNowPlayingLabel.text = [[musicPlayer nowPlayingItem] valueForProperty:  MPMediaItemPropertyTitle];
     
-    NSLog (@"Shuffle Mode is %d", musicPlayer.shuffleMode);
+    NSLog (@"Shuffle Mode is %ld", musicPlayer.shuffleMode);
     
     if (musicPlayer.shuffleMode == MPMusicShuffleModeSongs) {
         [self.shuffleButton setImage: [UIImage imageNamed: @"bigshuffleblue.png"] forState: UIControlStateNormal];
@@ -346,7 +346,7 @@ BOOL delayPlaybackStateChange;
         
         
     }
-    NSLog (@"Repeat Mode is %d", musicPlayer.repeatMode);
+    NSLog (@"Repeat Mode is %ld", musicPlayer.repeatMode);
     
     if (musicPlayer.repeatMode == MPMusicRepeatModeOne) {
         [self.repeatButton setImage: [UIImage imageNamed: @"bigrepeat1blue.png"] forState: UIControlStateNormal];
@@ -1478,7 +1478,7 @@ BOOL delayPlaybackStateChange;
 //131011 1.1 fix musicPlayer bug begin
     MPMusicPlaybackState playbackState = [musicPlayer playbackState];
     
-    NSLog (@"                                           playbackState = %d", playbackState);
+    NSLog (@"                                           playbackState = %ld", playbackState);
 
     if (!delayPlaybackStateChange) {
         delayPlaybackStateChange = YES;
@@ -1496,7 +1496,7 @@ BOOL delayPlaybackStateChange;
         
         MPMusicPlaybackState playbackState = [musicPlayer playbackState];
         
-        NSLog (@" playbackState = %d", playbackState);
+        NSLog (@" playbackState = %ld", playbackState);
         
         if (playbackState != MPMusicPlaybackStatePlaying) {
             
@@ -1549,7 +1549,7 @@ BOOL delayPlaybackStateChange;
             NSLog (@"turned volume on");
 
         }
-        NSLog (@" Final playbackState = %d", playbackState);
+        NSLog (@" Final playbackState = %ld", playbackState);
 
 //131011 1.1 fix musicPlayer bug end
 
@@ -1639,7 +1639,7 @@ BOOL delayPlaybackStateChange;
 
     
     if (musicPlayer.playbackState == MPMusicPlaybackStateInterrupted) {
-        NSLog (@"savedPlaybackState is %d", savedPlaybackState);
+        NSLog (@"savedPlaybackState is %ld", savedPlaybackState);
         if (savedPlaybackState == MPMusicPlaybackStatePlaying) {
             [playPauseButton setImage:[UIImage imageNamed:@"bigpause.png"] forState:UIControlStateNormal];
             [playPauseButton setAccessibilityLabel: NSLocalizedString(@"Play", nil)];
@@ -1658,7 +1658,7 @@ BOOL delayPlaybackStateChange;
             //            NSLog (@"**************NOT Playing");
         }
     }
-    NSLog (@"Shuffle Mode is %d", musicPlayer.shuffleMode);
+    NSLog (@"Shuffle Mode is %ld", musicPlayer.shuffleMode);
     
     if (musicPlayer.shuffleMode == MPMusicShuffleModeSongs) {
         [self.shuffleButton setImage: [UIImage imageNamed: @"bigshuffleblue.png"] forState: UIControlStateNormal];
@@ -1672,7 +1672,7 @@ BOOL delayPlaybackStateChange;
         
         
     }
-    NSLog (@"Repeat Mode is %d", musicPlayer.repeatMode);
+    NSLog (@"Repeat Mode is %ld", musicPlayer.repeatMode);
     
     if (musicPlayer.repeatMode == MPMusicRepeatModeOne) {
         [self.repeatButton setImage: [UIImage imageNamed: @"bigrepeat1blue.png"] forState: UIControlStateNormal];
