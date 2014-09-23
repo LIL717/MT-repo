@@ -1335,10 +1335,8 @@ BOOL excludeICloudItems;
         ItemCollection *itemCollection = [ItemCollection alloc];
         itemCollection.managedObjectContext = self.managedObjectContext;
         
-        //        [itemCollection addCollectionToCoreData: self.collectionItem];
-        [itemCollection addCollectionToCoreData: self.collectionItemToSave];
-        
-        
+//        [itemCollection addCollectionToCoreData: self.collectionItemToSave];
+
     }
     if ([segue.identifier isEqualToString:@"ViewNowPlaying"])
 	{

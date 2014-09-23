@@ -18,26 +18,27 @@
 @dynamic inAppPlaylist;
 @dynamic sortOrder;
 
-@synthesize fetchedResultsController = fetchedResultsController_;
-@synthesize managedObjectContext = managedObjectContext_;
+@synthesize managedObjectContext = _managedObjectContext;
 
 - (void)addCollectionToCoreData:(CollectionItem *) collectionItem {
 
     //LogMethod();
     
     [self removeCollectionFromCoreData];
-    
-    NSError * error = nil;
-    
+
+	NSManagedObjectContext *context = self.managedObjectContext;
+	NSEntityDescription *entity = [NSEntityDescription entityForName:@"ItemCollection"
+											  inManagedObjectContext:self.managedObjectContext];
+	NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:[entity name]inManagedObjectContext:context];
     // insert the collection into Core Data    
-    NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:@"ItemCollection" inManagedObjectContext:self.managedObjectContext];
+//    NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:@"ItemCollection" inManagedObjectContext:self.managedObjectContext];
     [newManagedObject setValue: collectionItem.name forKey:@"name"];
     [newManagedObject setValue: collectionItem.duration forKey: @"duration"];
     [newManagedObject setValue: collectionItem.lastPlayedDate forKey: @"lastPlayedDate"];
     [newManagedObject setValue: collectionItem.collection forKey: @"collection"];
     [newManagedObject setValue: [NSNumber numberWithBool:collectionItem.inAppPlaylist ] forKey: @"inAppPlaylist"];
     [newManagedObject setValue: collectionItem.sortOrder forKey:@"sortOrder"];
-    
+
 //    NSArray *collectionArray = [collectionItem.collection items];
 //
 //    for (MPMediaItem *song in collectionArray) {
@@ -46,11 +47,23 @@
 //    }
 //    
 //    NSLog(@" newManagedObject is %@", newManagedObject);
-    
-    if (![self.managedObjectContext save:&error]) {
-        NSLog(@"%s: Problem saving: %@", __PRETTY_FUNCTION__, error);
-    }
-    
+//	[self.managedObjectContext save:&error];
+// Save the context.
+	NSError *error = nil;
+	if (![context save:&error]) {
+			// Replace this implementation with code to handle the error appropriately.
+			// abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+		abort();
+	}
+//	NSError * error = nil;
+//
+//    if (![self.managedObjectContext save:&error]) {
+//		NSLog(@"Error: %@", [error localizedDescription]);
+//
+////        NSLog(@"%s: Problem saving: %@", __PRETTY_FUNCTION__, error);
+//    }
+
 }
 - (CollectionItem *) containsItem: (NSNumber *) playingSongPersistentID
 

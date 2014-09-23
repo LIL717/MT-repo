@@ -22,94 +22,75 @@
 
 @implementation AppDelegate
 
-
-@synthesize window = _window;
-//@synthesize navigationController;
-
-//@synthesize colorSwitcher;
-@synthesize managedObjectModel = managedObjectModel_;
-@synthesize managedObjectContext = managedObjectContext_;
-@synthesize fetchedResultsController = fetchedResultsController_;
-@synthesize persistentStoreCoordinator = persistentStoreCoordinator_;
-
-
-
-
-// Add new private instance variable
-
-
-//+ (AppDelegate *)instance {
-//    return [[UIApplication sharedApplication] delegate];
-//}
+//@synthesize window = _window;
 
 #pragma mark - Core Data stack
 
-/**
- Returns the managed object context for the application.
- If the context doesn't already exist, it is created and bound to the persistent store coordinator for the application.
- */
-- (NSManagedObjectContext *)managedObjectContext
-{
-    if (managedObjectContext_ != nil)
-    {
-        return managedObjectContext_;
-    }
-    
-    NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
-    if (coordinator != nil)
-    {
-        managedObjectContext_ = [[NSManagedObjectContext alloc] init];
-        [managedObjectContext_ setPersistentStoreCoordinator:coordinator];
-    }
-    return managedObjectContext_;
-}
+@synthesize managedObjectContext = _managedObjectContext;
+@synthesize managedObjectModel = _managedObjectModel;
+@synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 
+- (NSManagedObjectContext *)managedObjectContext {
+		// Returns the managed object context for the application (which is already bound to the persistent store coordinator for the application.)
+	if (_managedObjectContext != nil) {
+		return _managedObjectContext;
+	}
+
+	NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
+	if (!coordinator) {
+		return nil;
+	}
+	_managedObjectContext = [[NSManagedObjectContext alloc] init];
+	[_managedObjectContext setPersistentStoreCoordinator:coordinator];
+	return _managedObjectContext;
+}
 /**
  Returns the managed object model for the application.
  If the model doesn't already exist, it is created from the application's model.
  */
 - (NSManagedObjectModel *)managedObjectModel
 {
-    if (managedObjectModel_ != nil)
+    if (_managedObjectModel != nil)
     {
-        return managedObjectModel_;
+        return _managedObjectModel;
     }
-    //    NSString *modelPath = [[NSBundle mainBundle] pathForResource:@"CroatiaFest" ofType:@"momd"];
-    //    NSURL *modelURL = [NSURL fileURLWithPath:modelPath];
     
     NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"MegaTunes Player" withExtension:@"momd"];
-    managedObjectModel_ = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
-    return managedObjectModel_;
+    _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+    return _managedObjectModel;
 }
 
-/**
- Returns the persistent store coordinator for the application.
- If the coordinator doesn't already exist, it is created and the application's store added to it.
- */
-- (NSPersistentStoreCoordinator *)persistentStoreCoordinator
-{
-    if (persistentStoreCoordinator_ != nil)
-    {
-        return persistentStoreCoordinator_;
-    }
-    
-    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"MegaTunes Player.sqlite"];
-    
-    NSError *error = nil;
-    persistentStoreCoordinator_ = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-    if (![persistentStoreCoordinator_ addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error])
-    {
-        UIAlertView* alertView =
-        [[UIAlertView alloc] initWithTitle:@"Data Management Error with Persistent Store Coordinator"
-                                   message:@"Press the Home button to quit this application."
-                                  delegate:self
-                         cancelButtonTitle:@"OK"
-                         otherButtonTitles: nil];
-        [alertView show];
-        
-    }
-    
-    return persistentStoreCoordinator_;
+///**
+// Returns the persistent store coordinator for the application.
+// If the coordinator doesn't already exist, it is created and the application's store added to it.
+// */
+
+- (NSPersistentStoreCoordinator *)persistentStoreCoordinator {
+		// The persistent store coordinator for the application. This implementation creates and return a coordinator, having added the store for the application to it.
+	if (_persistentStoreCoordinator != nil) {
+		return _persistentStoreCoordinator;
+	}
+
+		// Create the coordinator and store
+
+	_persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
+	NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"MegaTunes Player.sqlite"];
+	NSError *error = nil;
+	NSString *failureReason = @"There was an error creating or loading the application's saved data.";
+	if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
+			// Report any error we got.
+		NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+		dict[NSLocalizedDescriptionKey] = @"Failed to initialize the application's saved data";
+		dict[NSLocalizedFailureReasonErrorKey] = failureReason;
+		dict[NSUnderlyingErrorKey] = error;
+		error = [NSError errorWithDomain:@"YOUR_ERROR_DOMAIN" code:9999 userInfo:dict];
+			// Replace this with code to handle the error appropriately.
+			// abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+		abort();
+	}
+
+	return _persistentStoreCoordinator;
 }
 #pragma mark - Application's Documents directory
 
@@ -120,7 +101,20 @@
 {
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
 }
+#pragma mark - Core Data Saving support
 
+- (void)saveContext {
+	NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
+	if (managedObjectContext != nil) {
+		NSError *error = nil;
+		if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {
+				// Replace this implementation with code to handle the error appropriately.
+				// abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+			NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+			abort();
+		}
+	}
+}
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     /*
@@ -152,7 +146,7 @@
     
     //*** beginning of TestFlight code
     // comment out #define TESTING 1 before production!!!!
-#define TESTING 1
+//#define TESTING 1
 //#ifdef TESTING
 //    [TestFlight setDeviceIdentifier:[[UIDevice currentDevice] uniqueIdentifier]];
 //#endif
@@ -164,37 +158,37 @@
     [standardUserDefaults setObject: @"at=10l9mp" forKey:@"affiliateID"];
 //130906 1.1 add Store Button end
 
-    //Load a couple defaults to userTag Core Data if there aren't any objects in TagData
-    
-    TagData *tagData = [TagData alloc];
-    tagData.managedObjectContext = self.managedObjectContext;
-    
-    
-    if ([[tagData fetchTagList] count] == 0) {
-        
-        TagItem *userTagItem = [TagItem alloc];
-        
-        userTagItem.tagName = @"warmup";
-        
-        userTagItem.tagColorRed = [NSNumber numberWithInt: 26];
-        userTagItem.tagColorGreen = [NSNumber numberWithInt: 121];
-        userTagItem.tagColorBlue = [NSNumber numberWithInt: 23];
-        userTagItem.tagColorAlpha = [NSNumber numberWithInt: 255];
-        userTagItem.sortOrder = [NSNumber numberWithInt: 0];
-        
-        [tagData addTagItemToCoreData: userTagItem];
-        
-        userTagItem.tagName = @"cooldown";
-        
-        userTagItem.tagColorRed = [NSNumber numberWithInt: 0];
-        userTagItem.tagColorGreen = [NSNumber numberWithInt: 0];
-        userTagItem.tagColorBlue = [NSNumber numberWithInt: 118];
-        userTagItem.tagColorAlpha = [NSNumber numberWithInt: 255];
-        userTagItem.sortOrder = [NSNumber numberWithInt: 1];
-        
-        [tagData addTagItemToCoreData: userTagItem];
-        
-    }
+//    //Load a couple defaults to userTag Core Data if there aren't any objects in TagData
+//    
+//    TagData *tagData = [TagData alloc];
+//    tagData.managedObjectContext = self.managedObjectContext;
+//	[tagData listAll];
+//
+//    if ([[tagData fetchTagList] count] == 0) {
+//        
+//        TagItem *userTagItem = [TagItem alloc];
+//        
+//        userTagItem.tagName = @"warmup";
+//        
+//        userTagItem.tagColorRed = [NSNumber numberWithInt: 26];
+//        userTagItem.tagColorGreen = [NSNumber numberWithInt: 121];
+//        userTagItem.tagColorBlue = [NSNumber numberWithInt: 23];
+//        userTagItem.tagColorAlpha = [NSNumber numberWithInt: 255];
+//        userTagItem.sortOrder = [NSNumber numberWithInt: 0];
+//        
+//        [tagData addTagItemToCoreData: userTagItem];
+//        
+//        userTagItem.tagName = @"cooldown";
+//        
+//        userTagItem.tagColorRed = [NSNumber numberWithInt: 0];
+//        userTagItem.tagColorGreen = [NSNumber numberWithInt: 0];
+//        userTagItem.tagColorBlue = [NSNumber numberWithInt: 118];
+//        userTagItem.tagColorAlpha = [NSNumber numberWithInt: 255];
+//        userTagItem.sortOrder = [NSNumber numberWithInt: 1];
+//        
+//        [tagData addTagItemToCoreData: userTagItem];
+//        
+//    }
     //    NSLog (@"preload tags");
     //    [tagData listAll];
     
@@ -243,44 +237,9 @@
     
     //prevent app from timing out due to idelness
     [UIApplication sharedApplication].idleTimerDisabled = YES;
-
-    
-    //    [self.window setRootViewController:navigationController];
-    
-    //    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    //    // Override point for customization after application launch.
-    //
-    ////    UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
-    //    MediaGroupViewController *mediaGroupViewController = [[MediaGroupViewController alloc] initWithCoder:self];
-    ////    controller.managedObjectContext = self.managedObjectContext;
-    ////    return YES;
-    //
-    //    self.navigationController = [[UINavigationController alloc] initWithRootViewController:mediaGroupViewController];
-    //    self.window.rootViewController = navigationController;
-    //    [self.window makeKeyAndVisible];
-    //
-    ////    [self.window setRootViewController:navigationController];
-    //
-    //    UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
-    //
-    //    MediaGroupViewController *mediaGroupViewController = (MediaGroupViewController *)self.window.rootViewController;
-    //    mediaGroupViewController.managedObjectContext = self.managedObjectContext;
-    
-    //    [navigationController.navigationBar setTitleVerticalPositionAdjustment: 4 forBarMetrics: UIBarMetricsLandscapePhone];
-    
-    
-    //    self.colorSwitcher = [[ColorSwitcher alloc] initWithScheme:@"maroon"];
-    //    self.colorSwitcher = [[ColorSwitcher alloc] initWithScheme:@"black"];
     
     [self customizeGlobalTheme];
-    
-    //    UIUserInterfaceIdiom idiom = [[UIDevice currentDevice] userInterfaceIdiom];
-    //
-    //    if (idiom == UIUserInterfaceIdiomPad) {
-    //        [self iPadInit];
-    //    }
-    
-    
+
     return YES;
 }
 // // Add to end of "Helpers" section
@@ -320,21 +279,6 @@
     
     [[UINavigationBar appearance] setTitleVerticalPositionAdjustment: 4 forBarMetrics: UIBarMetricsLandscapePhone];
     
-    
-    //    UIImage *menuBarImage48 = [[UIImage imageNamed:@"arrow_left_48_white.png"] imageWithAlignmentRectInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    //    UIImage *menuBarImage58 = [[UIImage imageNamed:@"arrow_left_58_white.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    //    //    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage48 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    //    //    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage58 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
-    //
-    //    [[UIBarButtonItem appearance] setBackButtonBackgroundImage: menuBarImage48  forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    //    [[UIBarButtonItem appearance] setBackButtonBackgroundImage: menuBarImage48  forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
-    //    [[UIBarButtonItem appearance] setBackButtonBackgroundImage: menuBarImage58  forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
-    //        [[UIBarButtonItem appearance] setBackButtonBackgroundImage: menuBarImage58  forState:UIControlStateHighlighted barMetrics:UIBarMetricsLandscapePhone];
-    //    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(menuBarImage48.size.width*2, menuBarImage48.size.height*2) forBarMetrics:UIBarMetricsDefault];
-    //    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, menuBarImage58.size.height*2) forBarMetrics:UIBarMetricsLandscapePhone];
-    
-    
-    //    UIImage* tabBarBackground = [colorSwitcher processImageWithName:@"tabbar.png"];
     UIImage* tabBarBackground = [UIImage imageNamed:@"tabbar.png"];
     
     //need to set the title because accessibility uses the title, set text to clear so it doesn't display

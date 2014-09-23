@@ -1475,28 +1475,13 @@ BOOL delayPlaybackStateChange;
     //
     //    NSLog (@"size of nextSongLabel is %f, %f", self.nextSongLabel.frame.size.width, self.nextSongLabel.frame.size.height);
     //    NSLog (@"size of nextSongScrollView is %f, %f", self.nextSongScrollView.frame.size.width, self.nextSongScrollView.frame.size.height);
-//131011 1.1 fix musicPlayer bug begin
-    MPMusicPlaybackState playbackState = [musicPlayer playbackState];
     
-    NSLog (@"                                           playbackState = %ld", playbackState);
-
-    if (!delayPlaybackStateChange) {
-        delayPlaybackStateChange = YES;
-        [self performSelector:@selector(delayedHandlePlaybackChange) withObject:nil afterDelay:1.0];
-    }
-}
-- (void) delayedHandlePlaybackChange {
-    LogMethod();
-
-    delayPlaybackStateChange = NO;
-    
-//131011 1.1 fix musicPlayer bug begin
     //play is paused during scrubbing to prevent skipping to new song, so do not change the UI
     if (!userIsScrubbing) {
-        
+    
         MPMusicPlaybackState playbackState = [musicPlayer playbackState];
         
-        NSLog (@" playbackState = %ld", playbackState);
+//        NSLog (@" playbackState = %d", playbackState);
         
         if (playbackState != MPMusicPlaybackStatePlaying) {
             
@@ -1504,60 +1489,21 @@ BOOL delayPlaybackStateChange;
             [playPauseButton setAccessibilityLabel: NSLocalizedString(@"Play", nil)];
             
             savedPlaybackState = playbackState;
-            
+
         } else if (playbackState == MPMusicPlaybackStatePlaying) {
             
             [playPauseButton setImage: [UIImage imageNamed:@"bigpause.png"] forState:UIControlStateNormal];
             [playPauseButton setAccessibilityLabel: NSLocalizedString(@"Pause", nil)];
             
             savedPlaybackState = playbackState;
-            
-            
-        }
-        //131011 1.1 fix musicPlayer playbackState bug begin
-        if ([self isPlaybackStateBugActive]) {
-            saveVolume = [musicPlayer volume];
-            [musicPlayer setVolume: 0.0];
-            NSLog (@"turned volume off");
-        }
-        //131011 1.1 fix musicPlayer playbackState bug end
-
-//131011 1.1 fix musicPlayer bug begin
-
-        if (isPlaying) {
-            [playPauseButton setImage: [UIImage imageNamed:@"bigpause.png"] forState:UIControlStateNormal];
-            [playPauseButton setAccessibilityLabel: NSLocalizedString(@"Pause", nil)];
-            
-            savedPlaybackState = playbackState;
-            isPlaying = NO;
-            [musicPlayer pause];
-            [musicPlayer play];
-            [musicPlayer setVolume: saveVolume];
-            NSLog (@"turned volume on");
 
 
         }
-        if (isPausedOrStopped) {
-            [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
-            [playPauseButton setAccessibilityLabel: NSLocalizedString(@"Play", nil)];
-
-            savedPlaybackState = playbackState;
-            isPausedOrStopped = NO;
-            [musicPlayer play];
-            [musicPlayer pause];
-            [musicPlayer setVolume: saveVolume];
-            NSLog (@"turned volume on");
-
-        }
-        NSLog (@" Final playbackState = %ld", playbackState);
-
-//131011 1.1 fix musicPlayer bug end
-
         if (playbackState == MPMusicPlaybackStateStopped) {
-            
-            //            [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
-            //            savedPlaybackState = playbackState;
-            
+                    
+//            [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
+//            savedPlaybackState = playbackState;
+
             
             if (!playNew) {
                 // Even though stopped, invoking 'stop' ensures that the music player will play
@@ -1569,11 +1515,11 @@ BOOL delayPlaybackStateChange;
                 if (!userIsEditing) {
                     [self goBackClick];
                 }
-                //                if (iPodLibraryChanged) {
-                //                    [self.navigationController popToRootViewControllerAnimated:YES];
-                //                } else {
-                //                    [self.navigationController popViewControllerAnimated:YES];
-                //                }
+//                if (iPodLibraryChanged) {
+//                    [self.navigationController popToRootViewControllerAnimated:YES];
+//                } else {
+//                    [self.navigationController popViewControllerAnimated:YES];
+//                }
             }
         }
     }
@@ -1586,58 +1532,9 @@ BOOL delayPlaybackStateChange;
     [self setIPodLibraryChanged: YES];
     
 }
-//131011 1.1 fix musicPlayer playbackState bug begin
-//-(BOOL) isPlaybackStateBugActive {
-
--(BOOL) isPlaybackStateBugActive {
-    MPMusicPlaybackState playbackState = self.musicPlayer.playbackState;
-    isPausedOrStopped = NO;
-    isPlaying = NO;
-    if (playbackState == MPMusicPlaybackStatePlaying) {
-        AudioSessionInitialize (NULL, NULL, NULL, NULL);
-        UInt32 sessionCategory = kAudioSessionCategory_AmbientSound;
-        AudioSessionSetProperty (kAudioSessionProperty_AudioCategory, sizeof (sessionCategory), &sessionCategory);
-        AudioSessionSetActive (true);
-        
-        UInt32 audioIsPlaying;
-        UInt32 size = sizeof(audioIsPlaying);
-        AudioSessionGetProperty(kAudioSessionProperty_OtherAudioIsPlaying, &size, &audioIsPlaying);
-        
-        if (!audioIsPlaying){
-            NSLog(@"                                           PlaybackState bug is active");
-            isPausedOrStopped = YES;
-//            [playPauseButton setImage:[UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
-//            [playPauseButton setAccessibilityLabel: NSLocalizedString(@"Pause", nil)];
-            return YES;
-        }
-    }
-    if (playbackState == MPMusicPlaybackStatePaused || playbackState == MPMusicPlaybackStateStopped) {
-        AudioSessionInitialize (NULL, NULL, NULL, NULL);
-        UInt32 sessionCategory = kAudioSessionCategory_AmbientSound;
-        AudioSessionSetProperty (kAudioSessionProperty_AudioCategory, sizeof (sessionCategory), &sessionCategory);
-        AudioSessionSetActive (true);
-        
-        UInt32 audioIsPlaying;
-        UInt32 size = sizeof(audioIsPlaying);
-        AudioSessionGetProperty(kAudioSessionProperty_OtherAudioIsPlaying, &size, &audioIsPlaying);
-        
-        if (audioIsPlaying){
-            NSLog(@"PlaybackState bug is active");
-            isPlaying = YES;
-
-//            [playPauseButton setImage:[UIImage imageNamed:@"bigpause.png"] forState:UIControlStateNormal];
-//            [playPauseButton setAccessibilityLabel: NSLocalizedString(@"Play", nil)];
-            return YES;
-        }
-    }
-    return NO;
-}
-//131011 1.1 fix musicPlayer playbackState bug end
 
 - (void) handle_ApplicationDidBecomeActive: (id) notification
 {
-
-    
     if (musicPlayer.playbackState == MPMusicPlaybackStateInterrupted) {
         NSLog (@"savedPlaybackState is %ld", savedPlaybackState);
         if (savedPlaybackState == MPMusicPlaybackStatePlaying) {
@@ -1695,7 +1592,7 @@ BOOL delayPlaybackStateChange;
     [musicPlayer play];
     [musicPlayer pause];
     [musicPlayer setVolume: saveVolume];
-    
+
 }
 #pragma mark Application playback control_________________
 

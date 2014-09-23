@@ -21,7 +21,7 @@
 @dynamic mediaItemUserData;
 
 @synthesize fetchedResultsController = fetchedResultsController_;
-@synthesize managedObjectContext = managedObjectContext_;
+@synthesize managedObjectContext = _managedObjectContext;
 
 @synthesize fetchedObjects;
 
@@ -76,8 +76,7 @@
     
     //LogMethod();
         
-    NSError * error = nil;
-    
+
     // insert the tagData into Core Data
     NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:@"TagData" inManagedObjectContext:self.managedObjectContext];
     [newManagedObject setValue: tagItem.tagName forKey:@"tagName"];
@@ -87,7 +86,7 @@
     [newManagedObject setValue: tagItem.tagColorAlpha forKey:@"tagColorAlpha"];
     [newManagedObject setValue: tagItem.sortOrder forKey:@"sortOrder"];
 
-    
+	NSError * error = nil;
     if (![self.managedObjectContext save:&error]) {
         NSLog(@"%s: Problem saving: %@", __PRETTY_FUNCTION__, error);
     }

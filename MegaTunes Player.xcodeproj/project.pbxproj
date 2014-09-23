@@ -102,7 +102,6 @@
 		7060523614F88D43001A1CDB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7060523414F88D43001A1CDB /* InfoPlist.strings */; };
 		7060523814F88D43001A1CDB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7060523714F88D43001A1CDB /* main.m */; };
 		7060523F14F88D43001A1CDB /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7060523D14F88D43001A1CDB /* MainStoryboard.storyboard */; };
-		7060524A14F88D44001A1CDB /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7060524914F88D44001A1CDB /* SenTestingKit.framework */; };
 		7060524B14F88D44001A1CDB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7060522B14F88D43001A1CDB /* UIKit.framework */; };
 		7060524C14F88D44001A1CDB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7060522D14F88D43001A1CDB /* Foundation.framework */; };
 		7060525414F88D44001A1CDB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7060525214F88D44001A1CDB /* InfoPlist.strings */; };
@@ -359,7 +358,6 @@
 		7060523714F88D43001A1CDB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		7060523914F88D43001A1CDB /* MegaTunes Player-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MegaTunes Player-Prefix.pch"; sourceTree = "<group>"; };
 		7060524814F88D44001A1CDB /* MegaTunes PlayerTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "MegaTunes PlayerTests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		7060524914F88D44001A1CDB /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		7060525114F88D44001A1CDB /* MegaTunes PlayerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MegaTunes PlayerTests-Info.plist"; sourceTree = "<group>"; };
 		7060525314F88D44001A1CDB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		7060525514F88D44001A1CDB /* MegaTunes_PlayerTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MegaTunes_PlayerTests.h; sourceTree = "<group>"; };
@@ -576,7 +574,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7060524A14F88D44001A1CDB /* SenTestingKit.framework in Frameworks */,
 				7060524B14F88D44001A1CDB /* UIKit.framework in Frameworks */,
 				7060524C14F88D44001A1CDB /* Foundation.framework in Frameworks */,
 			);
@@ -622,7 +619,6 @@
 				7060522B14F88D43001A1CDB /* UIKit.framework */,
 				7060522D14F88D43001A1CDB /* Foundation.framework */,
 				7060522F14F88D43001A1CDB /* CoreGraphics.framework */,
-				7060524914F88D44001A1CDB /* SenTestingKit.framework */,
 				1A4CD47D14E842D59EE838F8 /* libPods.a */,
 			);
 			name = Frameworks;
@@ -1063,7 +1059,7 @@
 			name = "MegaTunes PlayerTests";
 			productName = "MegaTunes PlayerTests";
 			productReference = 7060524814F88D44001A1CDB /* MegaTunes PlayerTests.octest */;
-			productType = "com.apple.product-type.bundle.ocunit-test";
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -1071,6 +1067,7 @@
 		7060521E14F88D43001A1CDB /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastTestingUpgradeCheck = 0600;
 				LastUpgradeCheck = 0600;
 				TargetAttributes = {
 					7060522614F88D43001A1CDB = {
@@ -1614,14 +1611,13 @@
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/MegaTunes Player.app/MegaTunes Player";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+					"$(inherited)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MegaTunes Player/MegaTunes Player-Prefix.pch";
 				INFOPLIST_FILE = "MegaTunes PlayerTests/MegaTunes PlayerTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
 			};
 			name = Debug;
 		};
@@ -1631,14 +1627,13 @@
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/MegaTunes Player.app/MegaTunes Player";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+					"$(inherited)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MegaTunes Player/MegaTunes Player-Prefix.pch";
 				INFOPLIST_FILE = "MegaTunes PlayerTests/MegaTunes PlayerTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
 			};
 			name = Release;
 		};

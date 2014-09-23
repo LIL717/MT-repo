@@ -10,10 +10,12 @@
 @class TagItem;
 @class MediaItemUserData;
 
-@interface TagData : NSManagedObject <NSFetchedResultsControllerDelegate> {
-    
-    NSManagedObjectContext *managedObjectContext_;
-}
+//@interface TagData : NSManagedObject <NSFetchedResultsControllerDelegate> {
+//    
+//    NSManagedObjectContext *managedObjectContext_;
+//}
+@interface TagData : NSManagedObject <NSFetchedResultsControllerDelegate>
+
 @property (nonatomic, retain) NSString *tagName;
 @property (nonatomic, retain) NSNumber *tagColorRed;
 @property (nonatomic, retain) NSNumber *tagColorGreen;
