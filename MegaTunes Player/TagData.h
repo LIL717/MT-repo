@@ -10,11 +10,7 @@
 @class TagItem;
 @class MediaItemUserData;
 
-//@interface TagData : NSManagedObject <NSFetchedResultsControllerDelegate> {
-//    
-//    NSManagedObjectContext *managedObjectContext_;
-//}
-@interface TagData : NSManagedObject <NSFetchedResultsControllerDelegate>
+@interface TagData : NSManagedObject
 
 @property (nonatomic, retain) NSString *tagName;
 @property (nonatomic, retain) NSNumber *tagColorRed;
@@ -24,10 +20,7 @@
 @property (nonatomic, retain) NSNumber *sortOrder;
 @property (nonatomic, retain) MediaItemUserData *mediaItemUserData;
 
-
-@property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
-@property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
-@property (nonatomic, retain) NSArray *fetchedObjects;
+@property (nonatomic, strong) NSArray *fetchedObjects;
 
 
 - (NSArray *) fetchTagList;
@@ -37,6 +30,5 @@
 
 - (void) listAll;
 - (TagItem *) containsItem: (NSNumber *) sortOrder;
-//- (void)removeUGItemFromCoreData;
 
 @end

@@ -399,7 +399,6 @@ NSString *myAffiliateID;
     long taggedDuration = 0;
     
     MediaItemUserData *mediaItemUserData = [MediaItemUserData alloc];
-    mediaItemUserData.managedObjectContext = self.managedObjectContext;
     
     NSArray *taggedMediaItems = [mediaItemUserData containsTag];
     

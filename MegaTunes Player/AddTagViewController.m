@@ -230,7 +230,6 @@
     }
     
     TagData *tagData = [TagData alloc];
-    tagData.managedObjectContext = self.managedObjectContext;
     
     if ([actionType isEqualToString: @"Add"]) {
         NSLog (@"Add tag to TagData");

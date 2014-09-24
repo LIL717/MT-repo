@@ -207,8 +207,7 @@ BOOL excludeICloudItems;
     long taggedDuration = 0;
     
     MediaItemUserData *mediaItemUserData = [MediaItemUserData alloc];
-    mediaItemUserData.managedObjectContext = self.managedObjectContext;
-    
+
     NSArray *taggedMediaItems = [mediaItemUserData containsTag];
     
     for (MediaItemUserData *taggedMediaItem in taggedMediaItems) {
@@ -316,7 +315,6 @@ BOOL excludeICloudItems;
     BOOL found;
     
     TagData *tagData = [TagData alloc];
-    tagData.managedObjectContext = self.managedObjectContext;
     
     int arrayCount;
     arrayCount = (int)[[tagData fetchTagList] count];
@@ -705,8 +703,7 @@ BOOL excludeICloudItems;
     
     //check to see if there is user data for this media item
     MediaItemUserData *mediaItemUserData = [MediaItemUserData alloc];
-    mediaItemUserData.managedObjectContext = self.managedObjectContext;
-    
+
     UserDataForMediaItem *userDataForMediaItem = [mediaItemUserData containsItem: [mediaItem valueForProperty: MPMediaItemPropertyPersistentID]];
     return userDataForMediaItem.tagData;
     
@@ -1109,7 +1106,6 @@ BOOL excludeICloudItems;
     
     //check to see if there is user data for this media item
     MediaItemUserData *mediaItemUserData = [MediaItemUserData alloc];
-    mediaItemUserData.managedObjectContext = self.managedObjectContext;
     
     UserDataForMediaItem *userDataForMediaItem = [mediaItemUserData containsItem: [mediaItem valueForProperty: MPMediaItemPropertyPersistentID]];
     TagData *tagData = userDataForMediaItem.tagData;
@@ -1312,7 +1308,6 @@ BOOL excludeICloudItems;
         
         //save collection in Core Data
         ItemCollection *itemCollection = [ItemCollection alloc];
-        itemCollection.managedObjectContext = self.managedObjectContext;
         
         [itemCollection addCollectionToCoreData: self.collectionItemToSave];
         

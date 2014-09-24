@@ -8,6 +8,7 @@
 
 #import "ItemCollection.h"
 #import "CollectionItem.h"
+#import "AppDelegate.h"
 
 @implementation ItemCollection
 
@@ -18,20 +19,20 @@
 @dynamic inAppPlaylist;
 @dynamic sortOrder;
 
-@synthesize managedObjectContext = _managedObjectContext;
-
 - (void)addCollectionToCoreData:(CollectionItem *) collectionItem {
 
     //LogMethod();
     
     [self removeCollectionFromCoreData];
 
-	NSManagedObjectContext *context = self.managedObjectContext;
-	NSEntityDescription *entity = [NSEntityDescription entityForName:@"ItemCollection"
-											  inManagedObjectContext:self.managedObjectContext];
-	NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:[entity name]inManagedObjectContext:context];
-    // insert the collection into Core Data    
-//    NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:@"ItemCollection" inManagedObjectContext:self.managedObjectContext];
+	AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+	NSManagedObjectContext *context = appDelegate.managedObjectContext;
+
+//	NSEntityDescription *entity = [NSEntityDescription entityForName:@"ItemCollection"
+//											  inManagedObjectContext:context];
+//	NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:[entity name]inManagedObjectContext:context];
+    // insert the collection into Core Data
+    NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:@"ItemCollection" inManagedObjectContext:context];
     [newManagedObject setValue: collectionItem.name forKey:@"name"];
     [newManagedObject setValue: collectionItem.duration forKey: @"duration"];
     [newManagedObject setValue: collectionItem.lastPlayedDate forKey: @"lastPlayedDate"];
@@ -47,36 +48,29 @@
 //    }
 //    
 //    NSLog(@" newManagedObject is %@", newManagedObject);
-//	[self.managedObjectContext save:&error];
+
 // Save the context.
 	NSError *error = nil;
 	if (![context save:&error]) {
-			// Replace this implementation with code to handle the error appropriately.
-			// abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        NSLog(@"%s: Problem saving: %@", __PRETTY_FUNCTION__, error);
 		abort();
 	}
-//	NSError * error = nil;
-//
-//    if (![self.managedObjectContext save:&error]) {
-//		NSLog(@"Error: %@", [error localizedDescription]);
-//
-////        NSLog(@"%s: Problem saving: %@", __PRETTY_FUNCTION__, error);
-//    }
 
 }
 - (CollectionItem *) containsItem: (NSNumber *) playingSongPersistentID
-
 {
+	AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+	NSManagedObjectContext *context = appDelegate.managedObjectContext;
+
     BOOL itemFound;
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"ItemCollection"
-                                              inManagedObjectContext:self.managedObjectContext];
+                                              inManagedObjectContext:context];
     [fetchRequest setEntity:entity];
         
     NSError *error = nil;
-    NSArray *fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
     
     if (fetchedObjects == nil) {
         // Handle the error
@@ -108,21 +102,22 @@
 
 - (void)removeCollectionFromCoreData {
 //    LogMethod();
-    
+	AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+	NSManagedObjectContext *context = appDelegate.managedObjectContext;
 //select all objects in the ItemCollection
     NSFetchRequest * allItems = [[NSFetchRequest alloc] init];
-    [allItems setEntity:[NSEntityDescription entityForName:@"ItemCollection" inManagedObjectContext:self.managedObjectContext]];
+    [allItems setEntity:[NSEntityDescription entityForName:@"ItemCollection" inManagedObjectContext:context]];
     [allItems setIncludesPropertyValues:NO]; //only fetch the managedObjectID
     
     NSError * error = nil;
-    NSArray * items = [self.managedObjectContext executeFetchRequest:allItems error:&error];
+    NSArray * items = [context executeFetchRequest:allItems error:&error];
     
     //error handling goes here
     for (NSManagedObject * item in items) {
-        [self.managedObjectContext deleteObject:item];
+        [context deleteObject:item];
     }
     NSError *saveError = nil;
-    [self.managedObjectContext save:&saveError];
+    [context save:&saveError];
 }
 
 @end

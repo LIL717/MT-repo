@@ -77,8 +77,7 @@
     
     //check to see if there is user data for this media item
     MediaItemUserData *mediaItemUserData = [MediaItemUserData alloc];
-    mediaItemUserData.managedObjectContext = self.managedObjectContext;
-    
+
 //    [mediaItemUserData listAll];
     
     self.userDataForMediaItem = [mediaItemUserData containsItem: [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyPersistentID]];
@@ -246,8 +245,7 @@
     
     //update or add object to Core Data
     MediaItemUserData *mediaItemUserData = [MediaItemUserData alloc];
-    mediaItemUserData.managedObjectContext = self.managedObjectContext;
-    
+
     self.userDataForMediaItem = [[UserDataForMediaItem alloc] init];
     self.userDataForMediaItem.title = [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyTitle];
     self.userDataForMediaItem.persistentID = [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyPersistentID];
@@ -407,19 +405,12 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     
     MediaItemUserData *mediaItemUserData = [MediaItemUserData alloc];
-    mediaItemUserData.managedObjectContext = self.managedObjectContext;
     
     self.userDataForMediaItem.tagData = nil;
     [mediaItemUserData updateTagForItem: self.userDataForMediaItem];
     
     self.userInfoTagArray = [NSArray arrayWithObjects: nil];
     [self loadDataForView];
-    
-//    NSLog (@"Deleted tag from mediaItemUserData");
-//    [mediaItemUserData listAll];
-//    TagData *tagData = [TagData alloc];
-//    tagData.managedObjectContext = self.managedObjectContext;
-//    [tagData listAll];
     
 }
 //- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {

@@ -458,7 +458,6 @@ NSString *myAffiliateID;
 //
 //    //check to see if there is user data for this media item
 //    MediaItemUserData *mediaItemUserData = [MediaItemUserData alloc];
-//    mediaItemUserData.managedObjectContext = self.managedObjectContext;
 //
 //    UserDataForMediaItem *userDataForMediaItem = [mediaItemUserData containsItem: [mediaItem valueForProperty: MPMediaItemPropertyPersistentID]];
 //    return userDataForMediaItem.tagData;
