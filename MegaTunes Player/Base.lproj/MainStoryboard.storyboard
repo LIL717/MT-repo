@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="4510" systemVersion="12F37" targetRuntime="iOS.CocoaTouch" variant="6xAndEarlier" propertyAccessControl="none" useAutolayout="YES" initialViewController="1j9-19-lml">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12F37" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="1j9-19-lml">
     <dependencies>
-        <deployment defaultVersion="1536" identifier="iOS"/>
+        <deployment defaultVersion="1552" identifier="iOS"/>
         <development version="4600" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
     </dependencies>
     <scenes>
         <!--Song View Controller-->
@@ -22,7 +22,6 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <searchBar contentMode="redraw" barStyle="blackTranslucent" translatesAutoresizingMaskIntoConstraints="NO" id="l1i-Kb-yaE" customClass="MTSearchBar">
-                                    <rect key="frame" x="0.0" y="0.0" width="480" height="55"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="55" type="user" id="5Iq-b4-kea"/>
                                     </constraints>
@@ -32,7 +31,6 @@
                                     </connections>
                                 </searchBar>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="852-3o-ZMl">
-                                    <rect key="frame" x="0.0" y="55" width="480" height="55"/>
                                     <accessibility key="accessibilityConfiguration" label="Shuffle">
                                         <accessibilityTraits key="traits" none="YES"/>
                                         <bool key="isElement" value="NO"/>
@@ -76,33 +74,27 @@
                         </button>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" restorationIdentifier="SongCell" selectionStyle="gray" hidesAccessoryWhenEditing="NO" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="SongCell" rowHeight="55" id="85O-dY-K1B" userLabel="cell" customClass="SongCell">
-                                <rect key="frame" x="0.0" y="146" width="480" height="56"/>
+                                <rect key="frame" x="0.0" y="146" width="480" height="57"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="10" y="1" width="460" height="54"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="list-backwseparator.png" translatesAutoresizingMaskIntoConstraints="NO" id="WYD-vK-82S" userLabel="bkgImage">
-                                            <rect key="frame" x="-10" y="-2" width="480" height="57"/>
-                                        </imageView>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="list-backwseparator.png" translatesAutoresizingMaskIntoConstraints="NO" id="WYD-vK-82S" userLabel="bkgImage"/>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mez-ql-7qc" userLabel="nowPlayingIndicator">
-                                            <rect key="frame" x="-10" y="-2" width="20" height="57"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="20" type="user" id="Prd-JW-G9C"/>
                                                 <constraint firstAttribute="height" constant="57" id="Wtr-HT-FFz"/>
                                             </constraints>
                                         </imageView>
                                         <scrollView clipsSubviews="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FE1-Zd-Sld" userLabel="IBScrollView" customClass="InCellScrollView">
-                                            <rect key="frame" x="8" y="-2" width="294" height="53"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="list-background.png" translatesAutoresizingMaskIntoConstraints="NO" id="9nn-t5-5Y1">
-                                                    <rect key="frame" x="0.0" y="0.0" width="294" height="53"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="53" type="user" id="lps-BO-Sj7"/>
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="clip" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UyP-L2-mJg">
-                                                    <rect key="frame" x="0.0" y="0.0" width="294" height="53"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="53" type="user" id="9j9-1A-hMR"/>
                                                     </constraints>
@@ -128,7 +120,6 @@
                                             </connections>
                                         </scrollView>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="00:00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Tb-CH-179" userLabel="durationLabel">
-                                            <rect key="frame" x="315" y="-2" width="111" height="57"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="111" type="user" id="yQ7-yM-bDg"/>
                                             </constraints>
@@ -203,11 +194,10 @@
             <objects>
                 <viewController title="Now Playing" wantsFullScreenLayout="YES" id="SKu-HW-GrJ" customClass="MainViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="1ht-Bf-15S">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hvR-vh-6Bp" customClass="AutoScrollLabel">
-                                <rect key="frame" x="0.0" y="23" width="280" height="52"/>
                                 <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="52" type="user" id="eT1-lA-BNM"/>
@@ -217,7 +207,6 @@
                                 </connections>
                             </scrollView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" textAlignment="center" lineBreakMode="clip" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AEk-F1-SJe" userLabel="initialViewLabel">
-                                <rect key="frame" x="0.0" y="23" width="280" height="52"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <accessibility key="accessibilityConfiguration" hint="" label="">
                                     <accessibilityTraits key="traits" none="YES" staticText="YES" notEnabled="YES"/>
@@ -228,14 +217,13 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" contentMode="left" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jp7-Ow-fVH">
-                                <rect key="frame" x="10" y="137" width="126" height="52"/>
                                 <accessibility key="accessibilityConfiguration" hint="Tap to magnify." label="Elapsed time">
                                     <accessibilityTraits key="traits" none="YES" staticText="YES" updatesFrequently="YES"/>
                                     <bool key="isElement" value="YES"/>
                                 </accessibility>
                                 <gestureRecognizers/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="52" id="02w-z4-YmJ"/>
+                                    <constraint firstAttribute="height" constant="52" id="AVE-pM-WJA"/>
                                     <constraint firstAttribute="width" constant="126" type="user" id="yWZ-35-AQY"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="44"/>
@@ -246,7 +234,6 @@
                                 </connections>
                             </label>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1000" translatesAutoresizingMaskIntoConstraints="NO" id="vBs-Pg-YLN" customClass="OBSlider">
-                                <rect key="frame" x="18" y="100" width="284" height="24"/>
                                 <accessibility key="accessibilityConfiguration" label="Progress Bar">
                                     <bool key="isElement" value="YES"/>
                                 </accessibility>
@@ -262,7 +249,6 @@
                                 </connections>
                             </slider>
                             <label opaque="NO" clipsSubviews="YES" contentMode="left" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r00-yo-I0n">
-                                <rect key="frame" x="183" y="137" width="128" height="52"/>
                                 <accessibility key="accessibilityConfiguration" hint="Tap to magnify." label="Remaining time">
                                     <accessibilityTraits key="traits" none="YES" staticText="YES" updatesFrequently="YES"/>
                                     <bool key="isElement" value="YES"/>
@@ -280,7 +266,6 @@
                                 </connections>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="926" text="" lineBreakMode="clip" minimumFontSize="10" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pNh-na-wBJ" userLabel="Next:">
-                                <rect key="frame" x="3" y="430" width="108" height="46"/>
                                 <accessibility key="accessibilityConfiguration" label="Next track">
                                     <bool key="isElement" value="YES"/>
                                 </accessibility>
@@ -293,10 +278,8 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <scrollView clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UXV-Pt-1xE">
-                                <rect key="frame" x="108" y="428" width="212" height="52"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="clip" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="819-GM-MVw">
-                                        <rect key="frame" x="0.0" y="0.0" width="212" height="52"/>
                                         <accessibility key="accessibilityConfiguration" hint="Tap to magnify."/>
                                         <fontDescription key="fontDescription" type="system" pointSize="44"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -305,25 +288,24 @@
                                 </subviews>
                                 <gestureRecognizers/>
                                 <constraints>
-                                    <constraint firstItem="819-GM-MVw" firstAttribute="bottom" secondItem="UXV-Pt-1xE" secondAttribute="bottom" type="default" id="NF7-vt-eRA"/>
-                                    <constraint firstItem="819-GM-MVw" firstAttribute="centerY" secondItem="UXV-Pt-1xE" secondAttribute="centerY" type="default" id="Ntu-5m-ns2"/>
+                                    <constraint firstItem="819-GM-MVw" firstAttribute="top" secondItem="UXV-Pt-1xE" secondAttribute="top" type="default" id="0vC-Da-iB1"/>
+                                    <constraint firstItem="819-GM-MVw" firstAttribute="bottom" secondItem="UXV-Pt-1xE" secondAttribute="bottom" type="default" id="L3R-cG-Zuw"/>
                                     <constraint firstItem="819-GM-MVw" firstAttribute="trailing" secondItem="UXV-Pt-1xE" secondAttribute="trailing" type="default" id="NzN-2b-6kM"/>
                                     <constraint firstItem="819-GM-MVw" firstAttribute="centerX" secondItem="UXV-Pt-1xE" secondAttribute="centerX" type="user" id="OHM-41-vw8"/>
+                                    <constraint firstItem="819-GM-MVw" firstAttribute="centerY" secondItem="UXV-Pt-1xE" secondAttribute="centerY" type="default" id="VVD-X6-Faq"/>
                                     <constraint firstItem="819-GM-MVw" firstAttribute="leading" secondItem="UXV-Pt-1xE" secondAttribute="leading" type="user" id="dlO-Vf-8Dc"/>
-                                    <constraint firstItem="819-GM-MVw" firstAttribute="top" secondItem="UXV-Pt-1xE" secondAttribute="top" type="user" id="xVy-8o-RqR"/>
                                 </constraints>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="wBw-7o-CYO" appends="YES" id="bbK-bO-9PB"/>
                                 </connections>
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EYp-S6-Fep" customClass="AccessibleButton">
-                                <rect key="frame" x="11" y="215" width="92" height="176"/>
                                 <accessibility key="accessibilityConfiguration" label="Previous track">
                                     <bool key="isElement" value="YES"/>
                                 </accessibility>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="92" type="user" id="1c3-9k-rzx"/>
-                                    <constraint firstAttribute="height" constant="176" id="TJ6-Hp-h2L"/>
+                                    <constraint firstAttribute="height" constant="62" type="user" id="yCs-Gp-uvO"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" image="bigrewind.png" backgroundImage="black-button.png">
@@ -338,10 +320,12 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U4I-PN-hea" customClass="AccessibleButton">
-                                <rect key="frame" x="114" y="215" width="92" height="176"/>
                                 <accessibility key="accessibilityConfiguration" hint="" label="">
                                     <bool key="isElement" value="YES"/>
                                 </accessibility>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="62" type="user" id="Sbt-LP-BMB"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" image="bigplay.png" backgroundImage="black-button.png">
                                     <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -355,7 +339,6 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xek-mb-ENQ" customClass="AccessibleButton">
-                                <rect key="frame" x="218" y="215" width="92" height="176"/>
                                 <accessibility key="accessibilityConfiguration" label="Next track">
                                     <bool key="isElement" value="YES"/>
                                 </accessibility>
@@ -372,13 +355,13 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wwo-eb-cjv">
-                                <rect key="frame" x="11" y="416" width="92" height="64"/>
                                 <accessibility key="accessibilityConfiguration" label="">
                                     <accessibilityTraits key="traits" none="YES" button="YES"/>
                                     <bool key="isElement" value="YES"/>
                                 </accessibility>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="lessThanOrEqual" constant="65" type="user" id="ecx-Jb-leO"/>
+                                    <constraint firstAttribute="height" constant="62" type="user" id="wMa-Cu-Ntc"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" image="bigrepeat.png" backgroundImage="black-button.png">
@@ -393,7 +376,6 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YF1-6P-sPE" customClass="AccessibleButton">
-                                <rect key="frame" x="218" y="415" width="92" height="62"/>
                                 <accessibility key="accessibilityConfiguration" label="Shuffle">
                                     <accessibilityTraits key="traits" none="YES" button="YES"/>
                                     <bool key="isElement" value="YES"/>
@@ -411,7 +393,6 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jQh-tN-5vH" customClass="MPVolumeView">
-                                <rect key="frame" x="20" y="379" width="280" height="40"/>
                                 <accessibility key="accessibilityConfiguration" label="">
                                     <bool key="isElement" value="NO"/>
                                 </accessibility>
@@ -420,7 +401,6 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uyn-go-sp7">
-                                <rect key="frame" x="278" y="22" width="42" height="55"/>
                                 <accessibility key="accessibilityConfiguration" hint="View iTunes info and user notes." label="Info">
                                     <bool key="isElement" value="YES"/>
                                 </accessibility>
@@ -443,50 +423,53 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="UXV-Pt-1xE" firstAttribute="bottom" secondItem="1ht-Bf-15S" secondAttribute="bottom" type="default" id="1a7-P4-qFW"/>
-                            <constraint firstAttribute="bottom" secondItem="pNh-na-wBJ" secondAttribute="bottom" constant="4" id="2gF-bB-esb"/>
-                            <constraint firstAttribute="trailing" secondItem="UXV-Pt-1xE" secondAttribute="trailing" type="user" id="4GZ-27-zlp"/>
+                            <constraint firstItem="r00-yo-I0n" firstAttribute="top" secondItem="vBs-Pg-YLN" secondAttribute="bottom" constant="8" type="user" id="1UV-e5-F7v"/>
                             <constraint firstItem="EYp-S6-Fep" firstAttribute="width" secondItem="wwo-eb-cjv" secondAttribute="width" type="user" id="7Gt-nY-xz2"/>
                             <constraint firstItem="pNh-na-wBJ" firstAttribute="leading" secondItem="1ht-Bf-15S" secondAttribute="leading" constant="3" type="user" id="7vj-hT-W1o"/>
-                            <constraint firstItem="U4I-PN-hea" firstAttribute="top" secondItem="EYp-S6-Fep" secondAttribute="top" type="user" id="934-iR-LGP"/>
+                            <constraint firstItem="jp7-Ow-fVH" firstAttribute="top" secondItem="vBs-Pg-YLN" secondAttribute="bottom" constant="8" type="user" id="8LE-Kx-iS3"/>
+                            <constraint firstItem="hvR-vh-6Bp" firstAttribute="leading" secondItem="1ht-Bf-15S" secondAttribute="leading" type="default" id="90T-EH-bHM"/>
+                            <constraint firstItem="U4I-PN-hea" firstAttribute="bottom" secondItem="Xek-mb-ENQ" secondAttribute="bottom" type="default" id="AGq-Zl-Vyg"/>
+                            <constraint firstItem="vBs-Pg-YLN" firstAttribute="top" secondItem="uyn-go-sp7" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="B3b-sj-fJ7"/>
                             <constraint firstAttribute="trailing" secondItem="vBs-Pg-YLN" secondAttribute="trailing" constant="20" symbolic="YES" type="user" id="BW5-tL-gmS"/>
+                            <constraint firstAttribute="bottom" secondItem="pNh-na-wBJ" secondAttribute="bottom" constant="4" type="user" id="C5y-rx-YhF"/>
                             <constraint firstItem="jQh-tN-5vH" firstAttribute="leading" secondItem="1ht-Bf-15S" secondAttribute="leading" constant="20" symbolic="YES" type="user" id="CP9-v2-Nfe"/>
-                            <constraint firstItem="EYp-S6-Fep" firstAttribute="top" secondItem="1ht-Bf-15S" secondAttribute="top" constant="215" id="CRW-LX-voL"/>
-                            <constraint firstItem="UXV-Pt-1xE" firstAttribute="leading" secondItem="1ht-Bf-15S" secondAttribute="leading" constant="108" type="user" id="Dsy-hW-NfP"/>
                             <constraint firstAttribute="centerX" secondItem="U4I-PN-hea" secondAttribute="centerX" type="user" id="EAz-n6-niJ"/>
                             <constraint firstItem="hvR-vh-6Bp" firstAttribute="bottom" secondItem="AEk-F1-SJe" secondAttribute="bottom" type="user" id="Feo-qz-FdD"/>
+                            <constraint firstItem="wwo-eb-cjv" firstAttribute="top" secondItem="EYp-S6-Fep" secondAttribute="bottom" constant="10" type="user" id="Fjt-Rx-bCJ"/>
                             <constraint firstItem="wwo-eb-cjv" firstAttribute="leading" secondItem="EYp-S6-Fep" secondAttribute="leading" type="user" id="FqK-az-kxZ"/>
                             <constraint firstItem="hvR-vh-6Bp" firstAttribute="leading" secondItem="AEk-F1-SJe" secondAttribute="leading" type="user" id="Fqk-pi-N1B"/>
-                            <constraint firstItem="r00-yo-I0n" firstAttribute="baseline" secondItem="jp7-Ow-fVH" secondAttribute="baseline" type="default" id="LDJ-yd-4v6"/>
-                            <constraint firstAttribute="bottom" secondItem="YF1-6P-sPE" secondAttribute="bottom" constant="3" id="Lyh-S1-6yY"/>
+                            <constraint firstAttribute="bottom" secondItem="UXV-Pt-1xE" secondAttribute="bottom" constant="1" type="user" id="GGi-So-jWx"/>
+                            <constraint firstItem="r00-yo-I0n" firstAttribute="baseline" secondItem="jp7-Ow-fVH" secondAttribute="baseline" type="user" id="LDJ-yd-4v6"/>
+                            <constraint firstItem="UXV-Pt-1xE" firstAttribute="trailing" secondItem="1ht-Bf-15S" secondAttribute="trailing" type="default" id="Nn0-9R-Zo2"/>
+                            <constraint firstItem="hvR-vh-6Bp" firstAttribute="top" secondItem="1ht-Bf-15S" secondAttribute="top" constant="20" symbolic="YES" type="default" id="NwT-bl-Ibg"/>
+                            <constraint firstItem="wwo-eb-cjv" firstAttribute="top" secondItem="EYp-S6-Fep" secondAttribute="bottom" constant="10" type="user" id="PQO-7M-bj7"/>
                             <constraint firstItem="EYp-S6-Fep" firstAttribute="leading" secondItem="1ht-Bf-15S" secondAttribute="leading" constant="11" type="user" id="Qi8-Uh-bpY"/>
-                            <constraint firstItem="vBs-Pg-YLN" firstAttribute="top" secondItem="1ht-Bf-15S" secondAttribute="top" constant="100" id="QvN-F6-quR"/>
+                            <constraint firstItem="UXV-Pt-1xE" firstAttribute="leading" secondItem="1ht-Bf-15S" secondAttribute="leading" constant="108" id="QtE-LH-iN9"/>
                             <constraint firstAttribute="trailing" secondItem="uyn-go-sp7" secondAttribute="trailing" type="user" id="VH7-h6-HTD"/>
-                            <constraint firstItem="UXV-Pt-1xE" firstAttribute="top" secondItem="1ht-Bf-15S" secondAttribute="top" constant="428" id="WwJ-z8-EjV"/>
+                            <constraint firstItem="U4I-PN-hea" firstAttribute="top" secondItem="1ht-Bf-15S" secondAttribute="top" constant="185" type="user" id="WX7-20-H70"/>
+                            <constraint firstItem="UXV-Pt-1xE" firstAttribute="centerY" secondItem="pNh-na-wBJ" secondAttribute="centerY" type="user" id="XWw-xC-Sng"/>
+                            <constraint firstItem="jQh-tN-5vH" firstAttribute="top" secondItem="wwo-eb-cjv" secondAttribute="bottom" constant="22" type="user" id="YWp-gW-4Jg"/>
                             <constraint firstItem="Xek-mb-ENQ" firstAttribute="width" secondItem="YF1-6P-sPE" secondAttribute="width" type="user" id="Z50-L7-ayN"/>
-                            <constraint firstAttribute="trailing" secondItem="AEk-F1-SJe" secondAttribute="trailing" constant="40" type="user" id="aGx-It-inA"/>
+                            <constraint firstItem="Xek-mb-ENQ" firstAttribute="baseline" secondItem="EYp-S6-Fep" secondAttribute="baseline" type="user" id="aXE-eB-7g4"/>
                             <constraint firstItem="jp7-Ow-fVH" firstAttribute="top" relation="lessThanOrEqual" secondItem="1ht-Bf-15S" secondAttribute="top" priority="500" constant="70" type="user" id="biW-dF-s2M"/>
+                            <constraint firstAttribute="bottom" secondItem="U4I-PN-hea" secondAttribute="bottom" constant="213" type="user" id="blW-Da-cJl"/>
                             <constraint firstItem="U4I-PN-hea" firstAttribute="width" secondItem="EYp-S6-Fep" secondAttribute="width" type="user" id="c6c-nJ-dcp"/>
                             <constraint firstItem="YF1-6P-sPE" firstAttribute="leading" secondItem="Xek-mb-ENQ" secondAttribute="leading" type="default" id="c7F-Ou-Ys4"/>
-                            <constraint firstItem="uyn-go-sp7" firstAttribute="top" secondItem="1ht-Bf-15S" secondAttribute="top" constant="22" id="cUb-0Z-04x"/>
-                            <constraint firstItem="jp7-Ow-fVH" firstAttribute="top" secondItem="1ht-Bf-15S" secondAttribute="top" constant="137" id="dBP-wn-V6W"/>
                             <constraint firstItem="hvR-vh-6Bp" firstAttribute="top" secondItem="AEk-F1-SJe" secondAttribute="top" type="user" id="dX5-01-Ej3"/>
-                            <constraint firstItem="jQh-tN-5vH" firstAttribute="top" secondItem="1ht-Bf-15S" secondAttribute="top" constant="379" id="eRu-oT-gpg"/>
+                            <constraint firstItem="EYp-S6-Fep" firstAttribute="top" secondItem="U4I-PN-hea" secondAttribute="top" type="user" id="ecR-fA-kBu"/>
+                            <constraint firstItem="EYp-S6-Fep" firstAttribute="top" secondItem="Xek-mb-ENQ" secondAttribute="top" type="user" id="gO7-xD-xEL"/>
                             <constraint firstItem="vBs-Pg-YLN" firstAttribute="leading" secondItem="1ht-Bf-15S" secondAttribute="leading" constant="20" symbolic="YES" type="user" id="glp-ve-JGO"/>
-                            <constraint firstItem="AEk-F1-SJe" firstAttribute="centerY" secondItem="uyn-go-sp7" secondAttribute="centerY" type="default" id="grP-B6-3Qj"/>
                             <constraint firstAttribute="trailing" secondItem="r00-yo-I0n" secondAttribute="trailing" constant="9" type="user" id="guC-xg-p6J"/>
-                            <constraint firstItem="U4I-PN-hea" firstAttribute="width" secondItem="Xek-mb-ENQ" secondAttribute="width" type="user" id="hBV-aj-tg5"/>
-                            <constraint firstItem="r00-yo-I0n" firstAttribute="top" secondItem="jp7-Ow-fVH" secondAttribute="top" type="user" id="hci-fv-lQ9"/>
-                            <constraint firstItem="EYp-S6-Fep" firstAttribute="centerY" secondItem="Xek-mb-ENQ" secondAttribute="centerY" type="user" id="i3I-Yo-VAO"/>
-                            <constraint firstItem="U4I-PN-hea" firstAttribute="bottom" secondItem="EYp-S6-Fep" secondAttribute="bottom" type="default" id="jc0-Ig-t9P"/>
+                            <constraint firstItem="U4I-PN-hea" firstAttribute="baseline" secondItem="EYp-S6-Fep" secondAttribute="baseline" type="user" id="jl1-5J-8SQ"/>
                             <constraint firstItem="jp7-Ow-fVH" firstAttribute="leading" secondItem="1ht-Bf-15S" secondAttribute="leading" constant="10" type="user" id="ki7-ku-aXi"/>
                             <constraint firstItem="EYp-S6-Fep" firstAttribute="width" secondItem="Xek-mb-ENQ" secondAttribute="width" type="user" id="lmi-J6-t6I"/>
-                            <constraint firstItem="vBs-Pg-YLN" firstAttribute="trailing" secondItem="jQh-tN-5vH" secondAttribute="trailing" type="default" id="mqR-Rv-spX"/>
-                            <constraint firstItem="UXV-Pt-1xE" firstAttribute="bottom" secondItem="wwo-eb-cjv" secondAttribute="bottom" type="default" id="qlt-wL-RfA"/>
-                            <constraint firstItem="Xek-mb-ENQ" firstAttribute="top" secondItem="U4I-PN-hea" secondAttribute="top" type="user" id="s88-jW-wvS"/>
+                            <constraint firstItem="AEk-F1-SJe" firstAttribute="trailing" secondItem="hvR-vh-6Bp" secondAttribute="trailing" type="user" id="nMI-HC-u3f"/>
+                            <constraint firstItem="uyn-go-sp7" firstAttribute="top" secondItem="1ht-Bf-15S" secondAttribute="top" constant="20" symbolic="YES" type="default" id="pWC-ac-eYL"/>
+                            <constraint firstAttribute="trailing" secondItem="jQh-tN-5vH" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="rsD-rx-8hJ"/>
+                            <constraint firstItem="U4I-PN-hea" firstAttribute="baseline" secondItem="Xek-mb-ENQ" secondAttribute="baseline" type="user" id="tZC-PC-7A0"/>
+                            <constraint firstItem="wwo-eb-cjv" firstAttribute="top" secondItem="YF1-6P-sPE" secondAttribute="top" type="user" id="uRn-oZ-muf"/>
                             <constraint firstAttribute="trailing" secondItem="Xek-mb-ENQ" secondAttribute="trailing" constant="10" type="user" id="xja-DQ-pUS"/>
                             <constraint firstItem="hvR-vh-6Bp" firstAttribute="trailing" secondItem="1ht-Bf-15S" secondAttribute="trailing" constant="-40" type="user" id="ypq-yz-qeW"/>
-                            <constraint firstItem="AEk-F1-SJe" firstAttribute="leading" secondItem="1ht-Bf-15S" secondAttribute="leading" type="default" id="zuD-i7-Mkr"/>
                             <constraint firstAttribute="centerX" secondItem="vBs-Pg-YLN" secondAttribute="centerX" type="user" id="zvS-op-ef9"/>
                         </constraints>
                     </view>
@@ -505,13 +488,18 @@
                         <outlet property="nextSongScrollView" destination="UXV-Pt-1xE" id="B9h-AU-WyF"/>
                         <outlet property="nowPlayingInfoButton" destination="uyn-go-sp7" id="Vaa-CZ-no2"/>
                         <outlet property="nowPlayingLabel" destination="hvR-vh-6Bp" id="xdE-lz-O9B"/>
+                        <outlet property="playButtonToBottomSpace" destination="blW-Da-cJl" id="yrV-yX-SuQ"/>
                         <outlet property="playPauseButton" destination="U4I-PN-hea" id="IKd-YN-7LN"/>
                         <outlet property="progressSlider" destination="vBs-Pg-YLN" id="r3f-gC-8qq"/>
                         <outlet property="remainingTimeLabel" destination="r00-yo-I0n" id="unW-43-0PV"/>
                         <outlet property="repeatButton" destination="wwo-eb-cjv" id="SM2-5Y-kU4"/>
                         <outlet property="rewindButton" destination="EYp-S6-Fep" id="Evi-ip-XTu"/>
                         <outlet property="shuffleButton" destination="YF1-6P-sPE" id="81D-xE-uol"/>
+                        <outlet property="topSpaceToPlayButton" destination="WX7-20-H70" id="yHs-dh-Tut"/>
                         <outlet property="trailingSpaceFromSliderConstraint" destination="BW5-tL-gmS" id="dYf-2E-As2"/>
+                        <outlet property="verticalSpaceBetweenRewindAndReplay" destination="Fjt-Rx-bCJ" id="qIv-KA-gt3"/>
+                        <outlet property="verticalSpaceBetweenSliderAndElapsedTime" destination="8LE-Kx-iS3" id="pov-WZ-Lcj"/>
+                        <outlet property="verticalSpaceBetweenSliderAndRemainingTime" destination="1UV-e5-F7v" id="rAW-Oa-Wxx"/>
                         <outlet property="volumeView" destination="jQh-tN-5vH" id="Bo8-aw-ABE"/>
                         <segue destination="cAc-tr-olB" kind="modal" identifier="MagnifyNextSong" modalTransitionStyle="crossDissolve" id="uzR-Fh-xG0"/>
                         <segue destination="cAc-tr-olB" kind="modal" identifier="MagnifyNowPlaying" modalTransitionStyle="crossDissolve" id="hHs-2t-p2p"/>
@@ -554,7 +542,6 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <button opaque="NO" multipleTouchEnabled="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="clip" translatesAutoresizingMaskIntoConstraints="NO" id="28X-IN-pRp">
-                                <rect key="frame" x="0.0" y="0.0" width="480" height="256"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="256" id="ZNN-RD-bfU"/>
                                 </constraints>
@@ -601,7 +588,6 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceHorizontal="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="msy-OP-RHE">
-                                <rect key="frame" x="0.0" y="22" width="320" height="372"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </scrollView>
                         </subviews>
@@ -677,7 +663,6 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="55" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Shu-jn-KJO">
-                                <rect key="frame" x="0.0" y="11" width="480" height="55"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="55" id="LoX-h5-xIT"/>
@@ -690,11 +675,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="480" height="54"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4TD-TS-Zvc">
-                                                    <rect key="frame" x="0.0" y="0.0" width="480" height="55"/>
-                                                </imageView>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4TD-TS-Zvc"/>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rwe-7W-ve6" customClass="KSLabel">
-                                                    <rect key="frame" x="0.0" y="0.0" width="480" height="55"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="44"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -724,14 +706,12 @@
                                 </connections>
                             </tableView>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1nd-7c-kt3">
-                                <rect key="frame" x="0.0" y="67" width="480" height="140"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="textColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="44"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ib9-ir-2yk">
-                                <rect key="frame" x="6" y="67" width="474" height="54"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="54" type="user" id="KvA-Qz-EWw"/>
@@ -797,14 +777,11 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <scrollView contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4BY-yf-XEu" customClass="InCellScrollView">
-                                            <rect key="frame" x="0.0" y="0.0" width="266" height="55"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="scaleToFill" image="list-background.png" translatesAutoresizingMaskIntoConstraints="NO" id="Ge9-LO-oIi">
-                                                    <rect key="frame" x="0.0" y="0.0" width="320" height="53"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 </imageView>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HeX-3y-Fhb">
-                                                    <rect key="frame" x="0.0" y="0.0" width="266" height="53"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="53" id="hoU-Sz-Z8R"/>
@@ -826,14 +803,13 @@
                                             </constraints>
                                         </scrollView>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aTc-je-6JP">
-                                            <rect key="frame" x="270" y="3" width="50" height="50"/>
                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="49" type="user" id="Bl4-Oa-JC8"/>
                                                 <constraint firstAttribute="width" constant="50" type="user" id="Cs5-wI-Wt3"/>
+                                                <constraint firstAttribute="height" constant="50" id="iaw-hS-MUi"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                            <state key="normal" image="iTunesStoreIcon.png">
+                                            <state key="normal" image="iTunesStoreIcon.png" backgroundImage="list-background.png">
                                                 <color key="titleColor" red="0.19607843137254902" green="0.30980392156862746" blue="0.52156862745098043" alpha="1" colorSpace="calibratedRGB"/>
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
@@ -925,8 +901,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="480" height="110"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <searchBar contentMode="redraw" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="Aba-KR-t1y" customClass="MTSearchBar">
-                                    <rect key="frame" x="0.0" y="0.0" width="480" height="55"/>
+                                <searchBar contentMode="redraw" barStyle="blackOpaque" translatesAutoresizingMaskIntoConstraints="NO" id="Aba-KR-t1y" customClass="MTSearchBar">
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="55" type="user" id="3zi-qs-kko"/>
@@ -937,7 +912,6 @@
                                     </connections>
                                 </searchBar>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y1n-zD-H2J">
-                                    <rect key="frame" x="0.0" y="55" width="480" height="55"/>
                                     <accessibility key="accessibilityConfiguration" label="Shuffle"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="55" type="user" id="a9T-t5-jvt"/>
@@ -975,23 +949,17 @@
                         </button>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="CollectionItemCell" rowHeight="55" id="DFq-ZQ-3yg" userLabel="cell" customClass="CollectionItemCell">
-                                <rect key="frame" x="0.0" y="146" width="480" height="56"/>
+                                <rect key="frame" x="0.0" y="146" width="480" height="57"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="10" y="1" width="440" height="54"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="list-backwseparator.png" translatesAutoresizingMaskIntoConstraints="NO" id="VCT-gA-fzU" userLabel="bkgImage">
-                                            <rect key="frame" x="-10" y="-1" width="480" height="56"/>
-                                        </imageView>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="list-backwseparator.png" translatesAutoresizingMaskIntoConstraints="NO" id="VCT-gA-fzU" userLabel="bkgImage"/>
                                         <scrollView clipsSubviews="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BEu-UQ-vTB" userLabel="IBScrollView" customClass="InCellScrollView">
-                                            <rect key="frame" x="0.0" y="0.0" width="302" height="54"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="list-background.png" translatesAutoresizingMaskIntoConstraints="NO" id="An2-Fa-iiH">
-                                                    <rect key="frame" x="0.0" y="0.0" width="302" height="53"/>
-                                                </imageView>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="list-background.png" translatesAutoresizingMaskIntoConstraints="NO" id="An2-Fa-iiH"/>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="clip" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ka0-Cb-Mfz" userLabel="cTitleLabel">
-                                                    <rect key="frame" x="0.0" y="0.0" width="302" height="53"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="53" type="user" id="2C1-ev-ZSS"/>
                                                     </constraints>
@@ -1015,7 +983,6 @@
                                             </constraints>
                                         </scrollView>
                                         <label opaque="NO" clipsSubviews="YES" contentMode="left" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="22" translatesAutoresizingMaskIntoConstraints="NO" id="jfz-Q5-l6V" userLabel="duration">
-                                            <rect key="frame" x="310" y="0.0" width="130" height="54"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="54" type="user" id="CEW-Gc-1Pz"/>
                                                 <constraint firstAttribute="width" constant="130" type="user" id="j4g-3A-jQa"/>
@@ -1098,11 +1065,8 @@
                                     <rect key="frame" x="0.0" y="0.0" width="300" height="54"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="list-background.png" translatesAutoresizingMaskIntoConstraints="NO" id="zTF-wi-cy7">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="55"/>
-                                        </imageView>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="list-background.png" translatesAutoresizingMaskIntoConstraints="NO" id="zTF-wi-cy7"/>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Group" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2J8-OK-QS9">
-                                            <rect key="frame" x="6" y="0.0" width="314" height="55"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="44"/>
                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                             <color key="highlightedColor" red="0.070588238540000001" green="0.1176470667" blue="1" alpha="1" colorSpace="deviceRGB"/>
@@ -1154,11 +1118,8 @@
                         <rect key="frame" x="0.0" y="20" width="480" height="300"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView contentMode="scaleToFill" image="background.png" translatesAutoresizingMaskIntoConstraints="NO" id="vYR-LN-30Z">
-                                <rect key="frame" x="0.0" y="23" width="480" height="277"/>
-                            </imageView>
+                            <imageView contentMode="scaleToFill" image="background.png" translatesAutoresizingMaskIntoConstraints="NO" id="vYR-LN-30Z"/>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gbu-6N-ucw" customClass="iCarousel">
-                                <rect key="frame" x="0.0" y="23" width="480" height="277"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="dataSource" destination="6JD-qc-vI0" id="QSf-Yh-1LK"/>
@@ -1267,8 +1228,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="480" height="110"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <searchBar contentMode="redraw" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="8ig-hc-H4r" customClass="MTSearchBar">
-                                    <rect key="frame" x="0.0" y="0.0" width="480" height="55"/>
+                                <searchBar contentMode="redraw" barStyle="blackOpaque" translatesAutoresizingMaskIntoConstraints="NO" id="8ig-hc-H4r" customClass="MTSearchBar">
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="55" type="user" id="I2P-2o-bXB"/>
@@ -1279,7 +1239,6 @@
                                     </connections>
                                 </searchBar>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mBz-0Z-aws">
-                                    <rect key="frame" x="0.0" y="55" width="480" height="55"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="55" type="user" id="414-48-1oX"/>
                                     </constraints>
@@ -1305,28 +1264,35 @@
                                 <constraint firstItem="mBz-0Z-aws" firstAttribute="leading" secondItem="r0d-qR-34G" secondAttribute="leading" type="default" id="wQf-28-kTt"/>
                             </constraints>
                         </view>
+                        <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="3zA-82-3oD">
+                            <rect key="frame" x="0.0" y="203" width="480" height="55"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="44"/>
+                            <state key="normal" title=" iTunes Store" image="iTunesStoreIcon.png" backgroundImage="black-button.png">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <state key="highlighted">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="CollectionItemCell" rowHeight="55" id="WIN-8k-Cc9" userLabel="cell" customClass="CollectionItemCell">
-                                <rect key="frame" x="0.0" y="146" width="480" height="56"/>
+                                <rect key="frame" x="0.0" y="146" width="480" height="57"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="10" y="1" width="440" height="54"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="list-backwseparator.png" translatesAutoresizingMaskIntoConstraints="NO" id="DQO-If-dVP" userLabel="bkgImage">
-                                            <rect key="frame" x="-10" y="-1" width="480" height="56"/>
-                                        </imageView>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="list-backwseparator.png" translatesAutoresizingMaskIntoConstraints="NO" id="DQO-If-dVP" userLabel="bkgImage"/>
                                         <scrollView clipsSubviews="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9aX-f3-0ln" userLabel="IBScrollView" customClass="InCellScrollView">
-                                            <rect key="frame" x="0.0" y="0.0" width="302" height="54"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="list-background.png" translatesAutoresizingMaskIntoConstraints="NO" id="P6x-zt-QXa">
-                                                    <rect key="frame" x="0.0" y="0.0" width="302" height="53"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="53" type="user" id="EgQ-rd-zAc"/>
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Album Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FPI-Oo-UfO" userLabel="cTitleLabel">
-                                                    <rect key="frame" x="0.0" y="0.0" width="302" height="53"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="53" type="user" id="9xX-ZN-a0A"/>
                                                     </constraints>
@@ -1350,7 +1316,6 @@
                                             </constraints>
                                         </scrollView>
                                         <label opaque="NO" clipsSubviews="YES" contentMode="left" text="000:00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="22" translatesAutoresizingMaskIntoConstraints="NO" id="P6Y-cL-7cG" userLabel="duration">
-                                            <rect key="frame" x="310" y="0.0" width="130" height="54"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="130" type="user" id="0eU-hn-3rg"/>
                                                 <constraint firstAttribute="height" constant="54" type="user" id="k4q-15-eVG"/>
@@ -1394,6 +1359,7 @@
                         <outlet property="allSongsButton" destination="mBz-0Z-aws" id="inC-uQ-WeV"/>
                         <outlet property="allSongsView" destination="r0d-qR-34G" id="8gK-Rk-8zL"/>
                         <outlet property="collectionTableView" destination="oc8-bL-YeY" id="skv-hY-J8U"/>
+                        <outlet property="moreByArtistButton" destination="3zA-82-3oD" id="UlW-DB-02m"/>
                         <outlet property="searchBar" destination="8ig-hc-H4r" id="6j3-Wg-B2Q"/>
                         <outlet property="searchDisplayController" destination="jgK-0M-8hC" id="f4i-R0-8QS"/>
                         <segue destination="SKu-HW-GrJ" kind="push" identifier="ViewNowPlaying" id="M8w-G2-QEj"/>
@@ -1427,8 +1393,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="480" height="55"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <searchBar contentMode="redraw" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="izT-v5-iqH" customClass="MTSearchBar">
-                                    <rect key="frame" x="0.0" y="0.0" width="480" height="55"/>
+                                <searchBar contentMode="redraw" barStyle="blackOpaque" translatesAutoresizingMaskIntoConstraints="NO" id="izT-v5-iqH" customClass="MTSearchBar">
                                     <constraints>
                                         <constraint firstAttribute="height" constant="55" type="user" id="rOj-Xx-o4h"/>
                                     </constraints>
@@ -1446,26 +1411,21 @@
                         </view>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="CollectionItemCell" rowHeight="55" id="Kxz-v9-piZ" userLabel="cell" customClass="CollectionItemCell">
-                                <rect key="frame" x="0.0" y="91" width="480" height="56"/>
+                                <rect key="frame" x="0.0" y="91" width="480" height="57"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="10" y="1" width="440" height="54"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="list-backwseparator.png" translatesAutoresizingMaskIntoConstraints="NO" id="K9Q-gg-orF" userLabel="bkgImage">
-                                            <rect key="frame" x="-10" y="-1" width="480" height="56"/>
-                                        </imageView>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="list-backwseparator.png" translatesAutoresizingMaskIntoConstraints="NO" id="K9Q-gg-orF" userLabel="bkgImage"/>
                                         <scrollView clipsSubviews="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qev-Vn-512" userLabel="scrollView" customClass="InCellScrollView">
-                                            <rect key="frame" x="-10" y="0.0" width="312" height="54"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="list-background.png" translatesAutoresizingMaskIntoConstraints="NO" id="tUd-Jb-RQt">
-                                                    <rect key="frame" x="0.0" y="0.0" width="312" height="53"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="53" type="user" id="WvE-zP-pc2"/>
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Genre Title" lineBreakMode="clip" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ier-SO-V2D" userLabel="cTitleLabel">
-                                                    <rect key="frame" x="0.0" y="0.0" width="312" height="53"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="53" type="user" id="cbX-aX-ILI"/>
                                                     </constraints>
@@ -1489,7 +1449,6 @@
                                             </constraints>
                                         </scrollView>
                                         <label opaque="NO" clipsSubviews="YES" contentMode="left" text="000:00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="22" translatesAutoresizingMaskIntoConstraints="NO" id="BuX-5J-yrU" userLabel="duration">
-                                            <rect key="frame" x="310" y="0.0" width="130" height="54"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="54" type="user" id="3Qz-el-KoP"/>
                                                 <constraint firstAttribute="width" constant="130" type="user" id="Y0g-jN-fnh"/>
@@ -1571,13 +1530,10 @@
                                     <rect key="frame" x="0.0" y="0.0" width="480" height="54"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="list-background.png" translatesAutoresizingMaskIntoConstraints="NO" id="6Bx-Ei-Xow" userLabel="bkgImage">
-                                            <rect key="frame" x="0.0" y="0.0" width="480" height="55"/>
-                                        </imageView>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="list-background.png" translatesAutoresizingMaskIntoConstraints="NO" id="6Bx-Ei-Xow" userLabel="bkgImage"/>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vJz-R4-SLd">
-                                            <rect key="frame" x="6" y="0.0" width="474" height="55"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="474" id="2N7-yr-dWQ"/>
+                                                <constraint firstAttribute="width" constant="474" type="user" id="2N7-yr-dWQ"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="44"/>
                                             <color key="textColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1593,6 +1549,7 @@
                                     <constraint firstItem="vJz-R4-SLd" firstAttribute="top" secondItem="6Bx-Ei-Xow" secondAttribute="top" type="default" id="9bv-06-Wl6"/>
                                     <constraint firstItem="vJz-R4-SLd" firstAttribute="bottom" secondItem="6Bx-Ei-Xow" secondAttribute="bottom" type="default" id="EoN-WG-LzO"/>
                                     <constraint firstItem="6Bx-Ei-Xow" firstAttribute="leading" secondItem="Nef-Fu-QMi" secondAttribute="leading" type="default" id="FZo-MH-Cjg"/>
+                                    <constraint firstItem="6Bx-Ei-Xow" firstAttribute="trailing" secondItem="Nef-Fu-QMi" secondAttribute="trailing" type="user" id="JLd-0Z-1wK"/>
                                     <constraint firstItem="6Bx-Ei-Xow" firstAttribute="trailing" secondItem="vJz-R4-SLd" secondAttribute="trailing" type="user" id="TKH-EU-ZKU"/>
                                     <constraint firstItem="vJz-R4-SLd" firstAttribute="leading" secondItem="Nef-Fu-QMi" secondAttribute="leading" constant="6" type="user" id="Wpi-Gy-pNW"/>
                                     <constraint firstItem="6Bx-Ei-Xow" firstAttribute="top" secondItem="Nef-Fu-QMi" secondAttribute="top" type="default" id="XAN-dZ-Jud"/>
@@ -1627,17 +1584,14 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" clearsOnBeginEditing="YES" adjustsFontSizeToFit="NO" minimumFontSize="44" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Ajq-Rv-jHw">
-                                <rect key="frame" x="10" y="53" width="260" height="55"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="55" type="user" id="Ifh-fR-deQ"/>
-                                    <constraint firstAttribute="width" constant="260" id="Wjc-oS-Ztr"/>
                                 </constraints>
                                 <color key="textColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="44"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                             </textField>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="spr-9Q-UaM" userLabel="colorView">
-                                <rect key="frame" x="139" y="154" width="202" height="202"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="202" type="user" id="6HC-gG-MuL"/>
@@ -1647,18 +1601,24 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="Ajq-Rv-jHw" firstAttribute="leading" secondItem="Ygb-0H-jYe" secondAttribute="leading" constant="10" type="user" id="0bi-KX-NiX"/>
-                            <constraint firstItem="Ajq-Rv-jHw" firstAttribute="top" secondItem="Ygb-0H-jYe" secondAttribute="top" constant="53" id="Ay3-2h-0aX"/>
-                            <constraint firstItem="spr-9Q-UaM" firstAttribute="leading" secondItem="Ajq-Rv-jHw" secondAttribute="trailing" constant="-131" type="user" id="cOm-vZ-yQB"/>
-                            <constraint firstItem="spr-9Q-UaM" firstAttribute="top" secondItem="Ygb-0H-jYe" secondAttribute="top" constant="154" id="nfh-FC-t9m"/>
+                            <constraint firstItem="spr-9Q-UaM" firstAttribute="leading" secondItem="Ajq-Rv-jHw" secondAttribute="trailing" constant="5" type="user" id="59a-L6-0JG"/>
+                            <constraint firstAttribute="trailing" secondItem="Ajq-Rv-jHw" secondAttribute="trailing" constant="170" type="user" id="5XK-b3-eAj"/>
+                            <constraint firstItem="Ajq-Rv-jHw" firstAttribute="top" secondItem="Ygb-0H-jYe" secondAttribute="top" constant="11" type="user" id="Ay3-2h-0aX"/>
+                            <constraint firstItem="Ajq-Rv-jHw" firstAttribute="leading" secondItem="Ygb-0H-jYe" secondAttribute="leading" constant="10" type="user" id="MnV-Og-6du"/>
+                            <constraint firstAttribute="centerX" secondItem="spr-9Q-UaM" secondAttribute="centerX" priority="500" type="user" id="WdG-WO-hwu"/>
+                            <constraint firstItem="spr-9Q-UaM" firstAttribute="top" secondItem="Ygb-0H-jYe" secondAttribute="top" constant="154" type="user" id="nfh-FC-t9m"/>
                         </constraints>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
                     <navigationItem key="navigationItem" id="OTY-em-5g5"/>
                     <connections>
+                        <outlet property="centerXColorViewConstraint" destination="WdG-WO-hwu" id="OjI-ph-nUB"/>
                         <outlet property="colorView" destination="spr-9Q-UaM" id="Tcm-do-fmb"/>
-                        <outlet property="horizontalSpaceTagToColorViewConstraint" destination="cOm-vZ-yQB" id="HEg-YG-5yg"/>
+                        <outlet property="horizontalSpaceTagToColorViewConstraint" destination="59a-L6-0JG" id="gvK-6S-fOI"/>
+                        <outlet property="horizontalSpaceTagToSuperviewConstraint" destination="5XK-b3-eAj" id="IxB-hL-TgN"/>
                         <outlet property="tagName" destination="Ajq-Rv-jHw" id="HZs-Ky-o0M"/>
+                        <outlet property="verticalSpaceTopToColorViewConstraint" destination="nfh-FC-t9m" id="PIz-G5-qMH"/>
+                        <outlet property="verticalSpaceTopToTagConstraint" destination="Ay3-2h-0aX" id="tRg-iI-sWh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qN7-Bw-zNA" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1681,7 +1641,6 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <searchBar contentMode="redraw" barStyle="blackTranslucent" translatesAutoresizingMaskIntoConstraints="NO" id="ops-gV-lfC" customClass="MTSearchBar">
-                                    <rect key="frame" x="0.0" y="0.0" width="480" height="55"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="55" type="user" id="3AQ-VF-DYf"/>
                                     </constraints>
@@ -1691,7 +1650,6 @@
                                     </connections>
                                 </searchBar>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z9U-EQ-CyA">
-                                    <rect key="frame" x="0.0" y="55" width="480" height="55"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="55" type="user" id="etS-G9-kwi"/>
                                     </constraints>
@@ -1725,26 +1683,20 @@
                                     <rect key="frame" x="10" y="1" width="460" height="54"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="list-backwseparator.png" translatesAutoresizingMaskIntoConstraints="NO" id="aYU-yg-hDV" userLabel="bkgImage">
-                                            <rect key="frame" x="-10" y="-1" width="480" height="56"/>
-                                        </imageView>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="list-backwseparator.png" translatesAutoresizingMaskIntoConstraints="NO" id="aYU-yg-hDV" userLabel="bkgImage"/>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ef9-y7-oDk" userLabel="nowPlayingIndicator">
-                                            <rect key="frame" x="-10" y="-1" width="20" height="56"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="20" type="user" id="5Un-tX-TZZ"/>
                                             </constraints>
                                         </imageView>
                                         <scrollView clipsSubviews="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ggW-FG-mrw" userLabel="IBScrollView" customClass="InCellScrollView">
-                                            <rect key="frame" x="8" y="-1" width="294" height="53"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="list-background.png" translatesAutoresizingMaskIntoConstraints="NO" id="OTl-8C-PdW">
-                                                    <rect key="frame" x="0.0" y="0.0" width="294" height="53"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="53" type="user" id="wOI-oT-fLo"/>
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="clip" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sRw-O2-XTx">
-                                                    <rect key="frame" x="0.0" y="0.0" width="294" height="53"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="53" type="user" id="QR1-kg-hDW"/>
                                                     </constraints>
@@ -1770,7 +1722,6 @@
                                             </connections>
                                         </scrollView>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="00:00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ufv-VV-8Cs" userLabel="durationLabel">
-                                            <rect key="frame" x="315" y="-1" width="111" height="56"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="111" type="user" id="jxs-Yf-Yhc"/>
                                             </constraints>
@@ -1861,26 +1812,285 @@
         <image name="bigrewind.png" width="64" height="60"/>
         <image name="bigshuffle.png" width="62" height="62"/>
         <image name="black-button.png" width="301" height="58"/>
-        <image name="iTunesStoreIcon.png" width="50" height="50"/>
+        <image name="iTunesStoreIcon.png" width="45" height="45"/>
         <image name="infoLightButtonImage.png" width="42" height="55"/>
         <image name="infoSelectedButtonImage.png" width="42" height="55"/>
         <image name="list-background.png" width="320" height="77"/>
         <image name="list-backwseparator.png" width="229" height="55"/>
     </resources>
+    <classes>
+        <class className="AccessibleButton" superclassName="UIButton">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/AccessibleButton.h"/>
+        </class>
+        <class className="AddTagViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/AddTagViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="centerXColorViewConstraint" candidateClass="NSLayoutConstraint"/>
+                <relationship kind="outlet" name="colorView" candidateClass="UIView"/>
+                <relationship kind="outlet" name="horizontalSpaceTagToColorViewConstraint" candidateClass="NSLayoutConstraint"/>
+                <relationship kind="outlet" name="horizontalSpaceTagToSuperviewConstraint" candidateClass="NSLayoutConstraint"/>
+                <relationship kind="outlet" name="rightBarButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="tagName" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="verticalSpaceTopToColorViewConstraint" candidateClass="NSLayoutConstraint"/>
+                <relationship kind="outlet" name="verticalSpaceTopToTagConstraint" candidateClass="NSLayoutConstraint"/>
+            </relationships>
+        </class>
+        <class className="AlbumInfoViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/AlbumInfoViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="albumImageView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="bpm" candidateClass="NSString"/>
+                <relationship kind="outlet" name="infoTableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="lastPlayedDate" candidateClass="NSString"/>
+                <relationship kind="outlet" name="userGrouping" candidateClass="NSString"/>
+            </relationships>
+        </class>
+        <class className="AlbumViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/AlbumViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="allSongsButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="allSongsView" candidateClass="UIView"/>
+                <relationship kind="outlet" name="collectionTableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="moreByArtistButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="searchBar" candidateClass="MTSearchBar"/>
+            </relationships>
+        </class>
+        <class className="ArtistViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ArtistViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="allAlbumsButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="allAlbumsView" candidateClass="UIView"/>
+                <relationship kind="outlet" name="collectionTableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="moreGenreButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="searchBar" candidateClass="MTSearchBar"/>
+            </relationships>
+        </class>
+        <class className="AutoScrollLabel" superclassName="UIScrollView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/AutoScrollLabel.h"/>
+        </class>
+        <class className="CollectionItemCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/CollectionItemCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="centerXInScrollView" candidateClass="NSLayoutConstraint"/>
+                <relationship kind="outlet" name="durationLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="scrollView" candidateClass="InCellScrollView"/>
+                <relationship kind="outlet" name="scrollViewToCellConstraint" candidateClass="NSLayoutConstraint"/>
+            </relationships>
+        </class>
+        <class className="FMMoveTableView" superclassName="UITableView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/FMMoveTableView.h"/>
+        </class>
+        <class className="GenreViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GenreViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="collectionTableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="searchBar" candidateClass="MTSearchBar"/>
+                <relationship kind="outlet" name="tableHeaderView" candidateClass="UIView"/>
+            </relationships>
+        </class>
+        <class className="ITunesCommentsViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ITunesCommentsViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="comments" candidateClass="UITextView"/>
+            </relationships>
+        </class>
+        <class className="InCellScrollView" superclassName="UIScrollView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/InCellScrollView.h"/>
+            <relationships>
+                <relationship kind="outlet" name="scrollViewImageView" candidateClass="UIImageView"/>
+            </relationships>
+        </class>
+        <class className="InfoTabBarController" superclassName="UITabBarController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/InfoTabBarController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="rightBarButton" candidateClass="UIBarButtonItem"/>
+            </relationships>
+        </class>
+        <class className="KSLabel" superclassName="UILabel">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/KSLabel.h"/>
+        </class>
+        <class className="MPVolumeView" superclassName="UIView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MPVolumeView.h"/>
+        </class>
+        <class className="MTSearchBar" superclassName="UISearchBar">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MTSearchBar.h"/>
+        </class>
+        <class className="MainViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MainViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="handleScrub:"/>
+                <relationship kind="action" name="handleScrubberTouchDown:"/>
+                <relationship kind="action" name="handleScrubberTouchUp:"/>
+                <relationship kind="action" name="magnifyElapsedTime:"/>
+                <relationship kind="action" name="magnifyRemainingTime:"/>
+                <relationship kind="action" name="nextSongTapDetected:" candidateClass="UITapGestureRecognizer"/>
+                <relationship kind="action" name="nowPlayingTapDetected:" candidateClass="UITapGestureRecognizer"/>
+                <relationship kind="action" name="playPause:"/>
+                <relationship kind="action" name="repeatModeChanged:"/>
+                <relationship kind="action" name="shuffleModeChanged:"/>
+                <relationship kind="action" name="skipBack:"/>
+                <relationship kind="action" name="skipForward:"/>
+                <relationship kind="outlet" name="centerXInScrollView" candidateClass="NSLayoutConstraint"/>
+                <relationship kind="outlet" name="elapsedTimeLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="forwardButton" candidateClass="AccessibleButton"/>
+                <relationship kind="outlet" name="initialNowPlayingLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="leadingSpaceToSliderConstraint" candidateClass="NSLayoutConstraint"/>
+                <relationship kind="outlet" name="nextLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="nextSongLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="nextSongScrollView" candidateClass="UIScrollView"/>
+                <relationship kind="outlet" name="nowPlayingInfoButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="nowPlayingLabel" candidateClass="AutoScrollLabel"/>
+                <relationship kind="outlet" name="playButtonToBottomSpace" candidateClass="NSLayoutConstraint"/>
+                <relationship kind="outlet" name="playPauseButton" candidateClass="AccessibleButton"/>
+                <relationship kind="outlet" name="progressSlider" candidateClass="OBSlider"/>
+                <relationship kind="outlet" name="remainingTimeLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="repeatButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="rewindButton" candidateClass="AccessibleButton"/>
+                <relationship kind="outlet" name="shuffleButton" candidateClass="AccessibleButton"/>
+                <relationship kind="outlet" name="topSpaceToPlayButton" candidateClass="NSLayoutConstraint"/>
+                <relationship kind="outlet" name="trailingSpaceFromSliderConstraint" candidateClass="NSLayoutConstraint"/>
+                <relationship kind="outlet" name="verticalSpaceBetweenRewindAndReplay" candidateClass="NSLayoutConstraint"/>
+                <relationship kind="outlet" name="verticalSpaceBetweenSliderAndElapsedTime" candidateClass="NSLayoutConstraint"/>
+                <relationship kind="outlet" name="verticalSpaceBetweenSliderAndRemainingTime" candidateClass="NSLayoutConstraint"/>
+                <relationship kind="outlet" name="volumeView" candidateClass="MPVolumeView"/>
+            </relationships>
+        </class>
+        <class className="MediaGroupCarouselViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MediaGroupCarouselViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="backgroundView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="carousel" candidateClass="iCarousel"/>
+            </relationships>
+        </class>
+        <class className="MediaGroupCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MediaGroupCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="MediaGroupViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MediaGroupViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="groupTableView" candidateClass="UITableView"/>
+            </relationships>
+        </class>
+        <class className="NSLayoutConstraint" superclassName="NSObject">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
+        </class>
+        <class className="OBSlider" superclassName="UISlider">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/OBSlider.h"/>
+        </class>
+        <class className="SongCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SongCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="cellBackgroundImageView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="centerXAlignmentConstraint" candidateClass="NSLayoutConstraint"/>
+                <relationship kind="outlet" name="centerYAlignmentConstraint" candidateClass="NSLayoutConstraint"/>
+                <relationship kind="outlet" name="durationLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="durationToCellConstraint" candidateClass="NSLayoutConstraint"/>
+                <relationship kind="outlet" name="infoBackground" candidateClass="UIView"/>
+                <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="playingIndicator" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="scrollView" candidateClass="InCellScrollView"/>
+                <relationship kind="outlet" name="scrollViewToCellConstraint" candidateClass="NSLayoutConstraint"/>
+            </relationships>
+        </class>
+        <class className="SongInfoCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SongInfoCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="centerXAlignmentConstraint" candidateClass="NSLayoutConstraint"/>
+                <relationship kind="outlet" name="iTunesStoreButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="scrollView" candidateClass="InCellScrollView"/>
+                <relationship kind="outlet" name="scrollViewToCellConstraint" candidateClass="NSLayoutConstraint"/>
+            </relationships>
+        </class>
+        <class className="SongViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SongViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="playWithShuffle:"/>
+                <relationship kind="outlet" name="completeAlbumButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="searchBar" candidateClass="MTSearchBar"/>
+                <relationship kind="outlet" name="shuffleButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="shuffleView" candidateClass="UIView"/>
+                <relationship kind="outlet" name="songTableView" candidateClass="UITableView"/>
+            </relationships>
+        </class>
+        <class className="TaggedSongViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/TaggedSongViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="playWithShuffle:"/>
+                <relationship kind="outlet" name="searchBar" candidateClass="MTSearchBar"/>
+                <relationship kind="outlet" name="shuffleButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="shuffleView" candidateClass="UIView"/>
+                <relationship kind="outlet" name="songTableView" candidateClass="UITableView"/>
+            </relationships>
+        </class>
+        <class className="TextMagnifierViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/TextMagnifierViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="swipeDownDetected:" candidateClass="UISwipeGestureRecognizer"/>
+                <relationship kind="action" name="swipeUpDetected:" candidateClass="UISwipeGestureRecognizer"/>
+                <relationship kind="action" name="tapDetected:" candidateClass="UITapGestureRecognizer"/>
+                <relationship kind="outlet" name="magnifiedLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
+            </relationships>
+        </class>
+        <class className="TimeMagnifierViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/TimeMagnifierViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="cancel:"/>
+                <relationship kind="outlet" name="magnifiedText" candidateClass="UIButton"/>
+            </relationships>
+        </class>
+        <class className="UserInfoViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/UserInfoViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="comments" candidateClass="UITextView"/>
+                <relationship kind="outlet" name="keyboardHeight" candidateClass="NSLayoutConstraint"/>
+                <relationship kind="outlet" name="placeholderLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="userInfoTagTable" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="verticalSpaceTopToCommentsConstraint" candidateClass="NSLayoutConstraint"/>
+                <relationship kind="outlet" name="verticalSpaceTopToTableViewConstraint" candidateClass="NSLayoutConstraint"/>
+            </relationships>
+        </class>
+        <class className="UserTagCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/UserTagCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="cellBackgroundImageView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="tagLabel" candidateClass="KSLabel"/>
+            </relationships>
+        </class>
+        <class className="UserTagViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/UserTagViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="rightBarButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="userTagTableView" candidateClass="FMMoveTableView"/>
+            </relationships>
+        </class>
+        <class className="iCarousel" superclassName="UIView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/iCarousel.h"/>
+            <relationships>
+                <relationship kind="outlet" name="dataSource"/>
+                <relationship kind="outlet" name="delegate"/>
+            </relationships>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="hv1-71-OGq"/>
-        <segue reference="qWI-HD-eSG"/>
-        <segue reference="OaX-wz-MBb"/>
-        <segue reference="kZ2-Sr-P63"/>
-        <segue reference="dXX-zY-4vR"/>
-        <segue reference="nbU-Bw-UO3"/>
+        <segue reference="Xbd-a7-Wgl"/>
+        <segue reference="5iv-P2-Afc"/>
         <segue reference="pO3-jk-z6Z"/>
         <segue reference="hHs-2t-p2p"/>
-        <segue reference="Xbd-a7-Wgl"/>
+        <segue reference="kZ2-Sr-P63"/>
+        <segue reference="OaX-wz-MBb"/>
+        <segue reference="hv1-71-OGq"/>
+        <segue reference="qWI-HD-eSG"/>
+        <segue reference="dXX-zY-4vR"/>
     </inferredMetricsTieBreakers>
 </document>

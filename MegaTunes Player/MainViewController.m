@@ -174,6 +174,12 @@ long collectionRemainingSeconds;
 long songRemainingSeconds;
 NSTimeInterval stopWatchStartTime;
 BOOL stopWatchRunning;
+//131011 1.1 fix musicPlayer bug begin
+BOOL isPlaying;
+BOOL isPausedOrStopped;
+BOOL delayPlaybackStateChange;
+//131011 1.1 fix musicPlayer bug end
+
 
 
 
@@ -185,7 +191,7 @@ BOOL stopWatchRunning;
     //    LogMethod();
     [super viewDidLoad];
     
-    [TestFlight passCheckpoint:@"MainViewController"];
+//    [TestFlight passCheckpoint:@"MainViewController"];
     
     UIImage *backgroundImage = [UIImage imageNamed: @"infoSelectedButtonImage.png"];
     [self.nowPlayingInfoButton setImage: backgroundImage forState:UIControlStateHighlighted];
@@ -462,6 +468,25 @@ BOOL stopWatchRunning;
         //        self.title = @"";
         //        self.navigationItem.titleView = [self customizeTitleView];
     }
+//131001 make player compatible with iTunes Radio begin
+
+    //if iTunes radio is playing the mainViewController will open, but need to hide info button and unused buttons
+    long songDuration = [[self.musicPlayer.nowPlayingItem valueForProperty:MPMediaItemPropertyPlaybackDuration] floatValue];
+    
+    if (!songDuration) {
+        self.nowPlayingInfoButton.hidden = YES;
+        self.progressSlider.hidden = YES;
+        self.remainingTimeLabel.hidden = YES;
+        self.rewindButton.hidden = YES;
+        self.repeatButton.hidden = YES;
+        self.shuffleButton.hidden = YES;
+        self.nextSongScrollView.hidden = YES;
+        self.nextSongLabel.hidden = YES;
+        self.nextLabel.hidden = YES;
+        
+    }
+//131001 make player compatible with iTunes Radio end
+
     
 }
 - (UILabel *) customizeTitleView
@@ -480,7 +505,7 @@ BOOL stopWatchRunning;
     return label;
 }
 - (void)viewWillAppear:(BOOL)animated {
-    //    LogMethod();
+    LogMethod();
     [super viewWillAppear: animated];
     
     self.swipeLeftRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(togglePlaylistRemainingAndTitle:)];
@@ -505,7 +530,7 @@ BOOL stopWatchRunning;
 }
 
 -(void) viewDidAppear:(BOOL)animated {
-    //    LogMethod();
+    LogMethod();
     
     if (playNew) {
         [self setPlayNew: NO];
@@ -596,6 +621,23 @@ BOOL stopWatchRunning;
     
     
     self.savedNowPlaying = [musicPlayer nowPlayingItem];
+//131001 make player compatible with iTunes Radio begin
+    //if iTunes radio is playing the mainViewController will open, but need to hide info button
+    long songDuration = [[self.musicPlayer.nowPlayingItem valueForProperty:MPMediaItemPropertyPlaybackDuration] floatValue];
+    
+    if (!songDuration) {
+        self.nowPlayingInfoButton.hidden = YES;
+        self.progressSlider.hidden = YES;
+        self.remainingTimeLabel.hidden = YES;
+        self.rewindButton.hidden = YES;
+        self.repeatButton.hidden = YES;
+        self.shuffleButton.hidden = YES;
+        self.nextSongScrollView.hidden = YES;
+        self.nextSongLabel.hidden = YES;
+        self.nextLabel.hidden = YES;
+    }
+//131001 make player compatible with iTunes Radio end
+
     
 }
 - (void) refreshNowPlayingLabel:  (id) notification {
@@ -655,6 +697,13 @@ BOOL stopWatchRunning;
     //    NSLog (@"nowPlayingLabel.text is %@", self.nowPlayingLabel.text);
     UIFont *newFont = [UIFont systemFontOfSize:44];
     [self.nowPlayingLabel setFont: newFont];
+//131001 make player compatible with iTunes Radio begin
+
+    if (!self.nowPlayingLabel.text && musicPlayer.playbackState != MPMusicPlaybackStateStopped) {
+        self.nowPlayingLabel.text = @"  iTunes Radio";
+    }
+//131001 make player compatible with iTunes Radio end
+
 }
 - (void) prepareNextSongLabel {
     //    LogMethod();
@@ -874,7 +923,15 @@ BOOL stopWatchRunning;
     self.elapsedTimeLabel.text = [formatter stringFromDate:elapsedTime];
     
     NSDate *songRemainingTime = [formatter dateFromString:songRemaining];
-    self.remainingTimeLabel.text = [NSString stringWithFormat:@"-%@",[formatter stringFromDate:songRemainingTime]];
+//131001 make player compatible with iTunes Radio begin
+
+    if (songDuration) {
+        self.remainingTimeLabel.text = [NSString stringWithFormat:@"-%@",[formatter stringFromDate:songRemainingTime]];
+    } else {
+        self.remainingTimeLabel.text = @"";
+    }
+//131001 make player compatible with iTunes Radio end
+
     self.remainingTimeLabel.textColor = [UIColor whiteColor];
     
     if (!self.userIsScrubbing) {
@@ -1160,7 +1217,7 @@ BOOL stopWatchRunning;
 }
 
 - (IBAction)playPause:(id)sender {
-    //   LogMethod();
+   LogMethod();
 	MPMusicPlaybackState playbackState = [musicPlayer playbackState];
     
     //	if (playbackState == MPMusicPlaybackStateStopped || playbackState == MPMusicPlaybackStatePaused) {
@@ -1413,18 +1470,33 @@ BOOL stopWatchRunning;
 
 // When the playback state changes, set the play/pause button appropriately.
 - (void) handle_PlaybackStateChanged: (id) notification {
-    //    LogMethod();
+//    LogMethod();
     //    //temporary nslogs for debugging
     //
     //    NSLog (@"size of nextSongLabel is %f, %f", self.nextSongLabel.frame.size.width, self.nextSongLabel.frame.size.height);
     //    NSLog (@"size of nextSongScrollView is %f, %f", self.nextSongScrollView.frame.size.width, self.nextSongScrollView.frame.size.height);
+//131011 1.1 fix musicPlayer bug begin
+    MPMusicPlaybackState playbackState = [musicPlayer playbackState];
     
+    NSLog (@"                                           playbackState = %d", playbackState);
+
+    if (!delayPlaybackStateChange) {
+        delayPlaybackStateChange = YES;
+        [self performSelector:@selector(delayedHandlePlaybackChange) withObject:nil afterDelay:1.0];
+    }
+}
+- (void) delayedHandlePlaybackChange {
+    LogMethod();
+
+    delayPlaybackStateChange = NO;
+    
+//131011 1.1 fix musicPlayer bug begin
     //play is paused during scrubbing to prevent skipping to new song, so do not change the UI
     if (!userIsScrubbing) {
         
         MPMusicPlaybackState playbackState = [musicPlayer playbackState];
         
-        //        NSLog (@" playbackState = %d", playbackState);
+        NSLog (@" playbackState = %d", playbackState);
         
         if (playbackState != MPMusicPlaybackStatePlaying) {
             
@@ -1438,11 +1510,49 @@ BOOL stopWatchRunning;
             [playPauseButton setImage: [UIImage imageNamed:@"bigpause.png"] forState:UIControlStateNormal];
             [playPauseButton setAccessibilityLabel: NSLocalizedString(@"Pause", nil)];
             
-            
             savedPlaybackState = playbackState;
             
             
         }
+        //131011 1.1 fix musicPlayer playbackState bug begin
+        if ([self isPlaybackStateBugActive]) {
+            saveVolume = [musicPlayer volume];
+            [musicPlayer setVolume: 0.0];
+            NSLog (@"turned volume off");
+        }
+        //131011 1.1 fix musicPlayer playbackState bug end
+
+//131011 1.1 fix musicPlayer bug begin
+
+        if (isPlaying) {
+            [playPauseButton setImage: [UIImage imageNamed:@"bigpause.png"] forState:UIControlStateNormal];
+            [playPauseButton setAccessibilityLabel: NSLocalizedString(@"Pause", nil)];
+            
+            savedPlaybackState = playbackState;
+            isPlaying = NO;
+            [musicPlayer pause];
+            [musicPlayer play];
+            [musicPlayer setVolume: saveVolume];
+            NSLog (@"turned volume on");
+
+
+        }
+        if (isPausedOrStopped) {
+            [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
+            [playPauseButton setAccessibilityLabel: NSLocalizedString(@"Play", nil)];
+
+            savedPlaybackState = playbackState;
+            isPausedOrStopped = NO;
+            [musicPlayer play];
+            [musicPlayer pause];
+            [musicPlayer setVolume: saveVolume];
+            NSLog (@"turned volume on");
+
+        }
+        NSLog (@" Final playbackState = %d", playbackState);
+
+//131011 1.1 fix musicPlayer bug end
+
         if (playbackState == MPMusicPlaybackStateStopped) {
             
             //            [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
@@ -1476,9 +1586,58 @@ BOOL stopWatchRunning;
     [self setIPodLibraryChanged: YES];
     
 }
+//131011 1.1 fix musicPlayer playbackState bug begin
+//-(BOOL) isPlaybackStateBugActive {
+
+-(BOOL) isPlaybackStateBugActive {
+    MPMusicPlaybackState playbackState = self.musicPlayer.playbackState;
+    isPausedOrStopped = NO;
+    isPlaying = NO;
+    if (playbackState == MPMusicPlaybackStatePlaying) {
+        AudioSessionInitialize (NULL, NULL, NULL, NULL);
+        UInt32 sessionCategory = kAudioSessionCategory_AmbientSound;
+        AudioSessionSetProperty (kAudioSessionProperty_AudioCategory, sizeof (sessionCategory), &sessionCategory);
+        AudioSessionSetActive (true);
+        
+        UInt32 audioIsPlaying;
+        UInt32 size = sizeof(audioIsPlaying);
+        AudioSessionGetProperty(kAudioSessionProperty_OtherAudioIsPlaying, &size, &audioIsPlaying);
+        
+        if (!audioIsPlaying){
+            NSLog(@"                                           PlaybackState bug is active");
+            isPausedOrStopped = YES;
+//            [playPauseButton setImage:[UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
+//            [playPauseButton setAccessibilityLabel: NSLocalizedString(@"Pause", nil)];
+            return YES;
+        }
+    }
+    if (playbackState == MPMusicPlaybackStatePaused || playbackState == MPMusicPlaybackStateStopped) {
+        AudioSessionInitialize (NULL, NULL, NULL, NULL);
+        UInt32 sessionCategory = kAudioSessionCategory_AmbientSound;
+        AudioSessionSetProperty (kAudioSessionProperty_AudioCategory, sizeof (sessionCategory), &sessionCategory);
+        AudioSessionSetActive (true);
+        
+        UInt32 audioIsPlaying;
+        UInt32 size = sizeof(audioIsPlaying);
+        AudioSessionGetProperty(kAudioSessionProperty_OtherAudioIsPlaying, &size, &audioIsPlaying);
+        
+        if (audioIsPlaying){
+            NSLog(@"PlaybackState bug is active");
+            isPlaying = YES;
+
+//            [playPauseButton setImage:[UIImage imageNamed:@"bigpause.png"] forState:UIControlStateNormal];
+//            [playPauseButton setAccessibilityLabel: NSLocalizedString(@"Play", nil)];
+            return YES;
+        }
+    }
+    return NO;
+}
+//131011 1.1 fix musicPlayer playbackState bug end
 
 - (void) handle_ApplicationDidBecomeActive: (id) notification
 {
+
+    
     if (musicPlayer.playbackState == MPMusicPlaybackStateInterrupted) {
         NSLog (@"savedPlaybackState is %d", savedPlaybackState);
         if (savedPlaybackState == MPMusicPlaybackStatePlaying) {
