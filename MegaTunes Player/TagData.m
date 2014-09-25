@@ -9,6 +9,8 @@
 #import "TagData.h"
 #import "TagItem.h"
 #import "MediaItemUserData.h"
+#import "AppDelegate.h"
+
 
 @implementation TagData
 
@@ -20,20 +22,20 @@
 @dynamic sortOrder;
 @dynamic mediaItemUserData;
 
-@synthesize fetchedResultsController = fetchedResultsController_;
-@synthesize managedObjectContext = _managedObjectContext;
-
 @synthesize fetchedObjects;
 
 -(NSArray *) fetchTagList
 {
+	AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+	NSManagedObjectContext *context = appDelegate.managedObjectContext;
+
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"TagData"
-                                              inManagedObjectContext:self.managedObjectContext];
+                                              inManagedObjectContext:context];
     [fetchRequest setEntity:entity];
 
     NSError *error = nil;
-    NSArray *allFetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    NSArray *allFetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
 
     if (allFetchedObjects == nil) {
         // Handle the error
@@ -43,10 +45,13 @@
     return allFetchedObjects;
 }
 - (TagItem *) containsItem: (NSNumber *) sortOrder {
-    
+
+	AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+	NSManagedObjectContext *context = appDelegate.managedObjectContext;
+
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"TagData"
-                                              inManagedObjectContext:self.managedObjectContext];
+                                              inManagedObjectContext:context];
     [fetchRequest setEntity:entity];
     NSError *error = nil;
     
@@ -56,7 +61,7 @@
     
     //    NSLog(@"entity retrieved is %@", entity);
     
-    self.fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    self.fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
     
     if (self.fetchedObjects == nil) {
         // Handle the error
@@ -76,9 +81,11 @@
     
     //LogMethod();
         
+	AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+	NSManagedObjectContext *context = appDelegate.managedObjectContext;
 
     // insert the tagData into Core Data
-    NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:@"TagData" inManagedObjectContext:self.managedObjectContext];
+    NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:@"TagData" inManagedObjectContext:context];
     [newManagedObject setValue: tagItem.tagName forKey:@"tagName"];
     [newManagedObject setValue: tagItem.tagColorRed forKey:@"tagColorRed"];
     [newManagedObject setValue: tagItem.tagColorGreen forKey:@"tagColorGreen"];
@@ -87,14 +94,17 @@
     [newManagedObject setValue: tagItem.sortOrder forKey:@"sortOrder"];
 
 	NSError * error = nil;
-    if (![self.managedObjectContext save:&error]) {
+    if (![context save:&error]) {
         NSLog(@"%s: Problem saving: %@", __PRETTY_FUNCTION__, error);
     }
     [[NSNotificationCenter defaultCenter] postNotificationName: @"TagDataChanged" object:nil];
 
 }
 - (void) updateTagItemInCoreData: (TagItem *) tagItem {
-    
+
+	AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+	NSManagedObjectContext *context = appDelegate.managedObjectContext;
+
     NSError * error = nil;
     
     if ([self containsItem: tagItem.sortOrder]) {
@@ -106,7 +116,7 @@
         [[self.fetchedObjects objectAtIndex:0] setValue: tagItem.tagColorAlpha forKey:@"tagColorAlpha"];
 //        [[self.fetchedObjects objectAtIndex:0] setValue: tagItem.sortOrder forKey:@"sortOrder"];
     }
-    if (![self.managedObjectContext save:&error]) {
+    if (![context save:&error]) {
         NSLog(@"%s: Problem saving: %@", __PRETTY_FUNCTION__, error);
     }
     [[NSNotificationCenter defaultCenter] postNotificationName: @"TagDataChanged" object:nil];
@@ -114,12 +124,15 @@
 
 }
 - (void) deleteTagDataFromCoreData: (TagData *) tagData {
-    
+
+	AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+	NSManagedObjectContext *context = appDelegate.managedObjectContext;
+
     NSError * error = nil;
     
-    [self.managedObjectContext deleteObject: tagData];
+    [context deleteObject: tagData];
         
-    if (![self.managedObjectContext save:&error]) {
+    if (![context save:&error]) {
         NSLog(@"%s: Problem saving: %@", __PRETTY_FUNCTION__, error);
     }
     [[NSNotificationCenter defaultCenter] postNotificationName: @"TagDataChanged" object:nil];
@@ -129,14 +142,16 @@
 
 - (void) listAll {
     // Test listing all tagItems from the store
-    
+	AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+	NSManagedObjectContext *context = appDelegate.managedObjectContext;
+	
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"TagData"
-                                              inManagedObjectContext:self.managedObjectContext];
+                                              inManagedObjectContext:context];
     [fetchRequest setEntity:entity];
     
     NSError *error = nil;
-    NSArray *allFetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    NSArray *allFetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
     
     if (allFetchedObjects == nil) {
         // Handle the error

@@ -273,8 +273,7 @@ BOOL delayPlaybackStateChange;
         //    NSLog (@" currentItem is %@", [currentItem valueForProperty: MPMediaItemPropertyTitle]);
         //check the queue stored in Core Data to see if the nowPlaying song is in that queue
         ItemCollection *itemCollection = [ItemCollection alloc];
-        itemCollection.managedObjectContext = self.managedObjectContext;
-        
+
         //    self.collectionItem = [itemCollection containsItem: [currentItem valueForProperty: MPMediaItemPropertyTitle]];
         self.collectionItem = [itemCollection containsItem: [currentItem valueForProperty:  MPMediaItemPropertyPersistentID]];
         
@@ -654,7 +653,6 @@ BOOL delayPlaybackStateChange;
     ////    NSLog (@" currentItem is %@", [currentItem valueForProperty: MPMediaItemPropertyTitle]);
     //    //check the queue stored in Core Data to see if the nowPlaying song is in that queue
     //    ItemCollection *itemCollection = [ItemCollection alloc];
-    //    itemCollection.managedObjectContext = self.managedObjectContext;
     //
     ////    self.collectionItem = [itemCollection containsItem: [currentItem valueForProperty: MPMediaItemPropertyTitle]];
     //    self.collectionItem = [itemCollection containsItem: [currentItem valueForProperty:  MPMediaItemPropertyPersistentID]];

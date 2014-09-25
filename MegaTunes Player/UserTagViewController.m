@@ -389,11 +389,8 @@ NSString *actionType;
     
     NSLog (@"Single Tap");
     MediaItemUserData *mediaItemUserData = [MediaItemUserData alloc];
-    mediaItemUserData.managedObjectContext = self.managedObjectContext;
-    
+
     TagData *tagData = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    tagData.managedObjectContext = self.managedObjectContext;
-    
     
     //update or add object to Core Data
     
@@ -417,7 +414,6 @@ NSString *actionType;
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     TagData *tagData = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    tagData.managedObjectContext = self.managedObjectContext;
     
     [tagData deleteTagDataFromCoreData: tagData];
     
@@ -425,7 +421,6 @@ NSString *actionType;
     //    [tagData listAll];
     //
     //    MediaItemUserData *mediaItemUserData = [MediaItemUserData alloc];
-    //    mediaItemUserData.managedObjectContext = self. managedObjectContext;
     //    [mediaItemUserData listAll];
     
 }
