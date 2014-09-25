@@ -1,9 +1,9 @@
 //
 //  VBColorPicker.h
-//  MegaTunes Player
+//  VBColorPicker
 //
-//  Created by Lori Hill on 9/18/14.
-//
+//  Created by Volodymyr Boichentsov on 10/28/11.
+//  Copyright (c) 2011 www.injoit.com. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

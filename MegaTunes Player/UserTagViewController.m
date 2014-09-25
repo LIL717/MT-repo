@@ -29,6 +29,7 @@
 @synthesize fetchedResultsController = fetchedResultsController_;
 @synthesize managedObjectContext = managedObjectContext_;
 
+//@synthesize iPodLibraryChanged;         //A flag indicating whether the library has been changed due to a sync
 @synthesize userDataForMediaItem;
 @synthesize userTagViewControllerDelegate;
 @synthesize rightBarButton;
@@ -51,10 +52,7 @@ NSString *actionType;
 {
     //    LogMethod();
     [super viewDidLoad];
-//140206 1.2 iOS 7 begin
-    // cause separator line to stretch to right side of view
-    [self.userTagTableView setSeparatorInset:UIEdgeInsetsZero];
-//140206 1.2 iOS 7 end
+    
     [self listenForChanges];
     
     [self setupFetchedResultsController];
@@ -84,22 +82,37 @@ NSString *actionType;
     
     self.title = NSLocalizedString(@"Tags", nil);
     
-//140127 1.2 iOS 7 begin
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
     
-    self.navigationController.navigationBar.topItem.title = @"";
-    //set the navigation bar title
-    self.navigationItem.titleView = [self customizeTitleView];
+    //make the back arrow for left bar button item
     
-    UIButton *tempAddButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.navigationItem.hidesBackButton = YES; // Important
+    //initWithTitle cannot be nil, must be @""
+	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                             style:UIBarButtonItemStyleBordered
+                                                                            target:self
+                                                                            action:@selector(goBackClick)];
     
-    [tempAddButton addTarget:self action:@selector(addNewTag) forControlEvents:UIControlEventTouchUpInside];
-    [tempAddButton setImage:[UIImage imageNamed:@"addImage.png"] forState:UIControlStateNormal];
-    [tempAddButton setShowsTouchWhenHighlighted:NO];
-    [tempAddButton sizeToFit];
+    UIImage *menuBarImage48 = [[UIImage imageNamed:@"arrow_left_48_white.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    UIImage *menuBarImage58 = [[UIImage imageNamed:@"arrow_left_58_white.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage48 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [self.navigationItem.leftBarButtonItem setBackgroundImage:menuBarImage58 forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
     
-    self.rightBarButton = [[UIBarButtonItem alloc] initWithCustomView:tempAddButton];
-//140127 1.2 iOS 7 end
-
+    [self.navigationItem.leftBarButtonItem setIsAccessibilityElement:YES];
+    [self.navigationItem.leftBarButtonItem setAccessibilityLabel: NSLocalizedString(@"Back", nil)];
+    [self.navigationItem.leftBarButtonItem setAccessibilityTraits: UIAccessibilityTraitButton];
+    
+    self.rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                           style:UIBarButtonItemStyleBordered
+                                                          target:self
+                                                          action:@selector(addNewTag)];
+    
+    UIImage *menuBarImageDefault = [[UIImage imageNamed:@"add57.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    UIImage *menuBarImageLandscape = [[UIImage imageNamed:@"add68.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    
+    [self.rightBarButton setBackgroundImage:menuBarImageDefault forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [self.rightBarButton setBackgroundImage:menuBarImageLandscape forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
+    
     [self.rightBarButton setIsAccessibilityElement:YES];
     [self.rightBarButton setAccessibilityLabel: NSLocalizedString(@"Add", nil)];
     [self.rightBarButton setAccessibilityTraits: UIAccessibilityTraitButton];
@@ -134,9 +147,8 @@ NSString *actionType;
 {
     //    LogMethod();
     
-//131216 1.2 iOS 7 begin
-    self.edgesForExtendedLayout = UIRectEdgeNone;
-//131216 1.2 iOS 7 end
+    //set the navigation bar title
+    self.navigationItem.titleView = [self customizeTitleView];
     
     [self updateLayoutForNewOrientation: self.interfaceOrientation];
     
@@ -146,6 +158,7 @@ NSString *actionType;
 }
 -(void) viewDidAppear:(BOOL)animated {
     //    LogMethod();
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     tapCount = 0;
     
     if (newTagInserted) {
@@ -165,12 +178,7 @@ NSString *actionType;
 }
 - (UILabel *) customizeTitleView
 {
-//131205 1.2 iOS 7 begin
-    
-    //    CGRect frame = CGRectMake(0, 0, [self.title sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 48);
-    CGRect frame = CGRectMake(0, 0, [self.title sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:44]}].width, 48);
-    
-//131205 1.2 iOS 7 end
+    CGRect frame = CGRectMake(0, 0, [self.title sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 48);
     UILabel *label = [[UILabel alloc] initWithFrame:frame];
     label.backgroundColor = [UIColor clearColor];
     label.textAlignment = NSTextAlignmentCenter;
@@ -188,18 +196,52 @@ NSString *actionType;
 }
 - (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
     //    LogMethod();
-//140216 1.2 iOS 7 begin
-    BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
+    //    CGFloat navBarAdjustment;
     
-    CGFloat navBarAdjustment = isPortrait ? 0 : 7;
+    if (UIInterfaceOrientationIsPortrait(orientation)) {
+        //        navBarAdjustment = 11;
+        [self.userTagTableView setContentInset:UIEdgeInsetsMake(11,0,0,0)];
+    } else {
+        //        navBarAdjustment = 23;
+        [self.userTagTableView setContentInset:UIEdgeInsetsMake(23,0,0,0)];
+        [self.userTagTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+        
+    }
+    //        [self.userTagTableView reloadData];
     
-    [self.userTagTableView setContentOffset:CGPointMake(0, navBarAdjustment)];
-    [self.userTagTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-
+    //    //if the first View, and there is a current Tag for the media item, scroll to that tag
+    //    if (scrollToTag) {
+    //        [self.userTagTableView  scrollToRowAtIndexPath: [NSIndexPath indexPathForRow:indexOfCurrentTag inSection:0]
+    //                                      atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    //        scrollToTag = NO;
+    //    } else {
     
-//140216 1.2 iOS 7 end
+    //        BOOL firstRowVisible = NO;
+    //        //visibleRows is always 0 the first time through here for a table, populated after that
+    //        NSArray *visibleRows = [self.userTagTableView indexPathsForVisibleRows];
+    //        NSIndexPath *index = [visibleRows objectAtIndex: 0];
+    //        if (index.section == 0 && index.row == 0) {
+    //            firstRowVisible = YES;
+    //        }
+    //
+    //    }
+    
+    //    }
+    
 }
-
+//- (void)updateContentOffset {
+//    //this is only necessary when screen will not be filled - this method is executed afterDelay because ContentOffset is probably not correct until after layoutSubviews happens
+//
+//    //    NSLog (@"tableView content size is %f %f",self.collectionTableView.contentSize.height, self.collectionTableView.contentSize.width);
+//
+//    BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
+//
+//    CGFloat largeHeaderAdjustment = isPortrait ? 11 : 23;
+//
+//    CGFloat tableViewHeaderHeight = self.searchView.frame.size.height;
+//
+//    [self.userTagTableView setContentOffset:CGPointMake(0, tableViewHeaderHeight - largeHeaderAdjustment)];
+//}
 - (void) viewWillLayoutSubviews {
     //need this to pin portrait view to bounds otherwise if start in landscape, push to next view, rotate to portrait then pop back the original view in portrait - it will be too wide and "scroll" horizontally
     self.userTagTableView.contentSize = CGSizeMake(self.userTagTableView.frame.size.width, self.userTagTableView.contentSize.height);
@@ -296,11 +338,12 @@ NSString *actionType;
         int alpha = [tagData.tagColorAlpha intValue];
         
         UIColor *tagColor = [UIColor colorWithRed:(red/255.0f) green:(green/255.0f) blue:(blue/255.0f) alpha:(alpha/255.0f)];
-
-//131203 1.2 iOS 7 begin
-        cell.backgroundColor = tagColor;
-//131203 1.2 iOS 7 end
-
+        
+        UIImage *cellBackgroundImage = [UIImage imageNamed: @"list-background.png"];
+        UIImage *coloredImage = [cellBackgroundImage imageWithTint: tagColor];
+        
+        [cell.cellBackgroundImageView  setImage: coloredImage];
+        
     }
     
     return cell;
@@ -360,9 +403,9 @@ NSString *actionType;
     //    NSLog (@"add tag to mediaItemUserData");
     //    [mediaItemUserData listAll];
     //    [tagData listAll];
-//140217 1.2 iOS 7 begin
-    [self.navigationController popViewControllerAnimated:YES];
-//140217 1.2 iOS 7 end
+    
+    [self goBackClick];
+    
 }
 
 - (void)doubleTap:(NSIndexPath *)indexPath {
@@ -457,6 +500,7 @@ NSString *actionType;
         case NSFetchedResultsChangeUpdate:
             [self.userTagTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
             break;
+
 		case NSFetchedResultsChangeMove:
 			break;
     }
@@ -486,6 +530,7 @@ NSString *actionType;
             addTagViewController.hasColor = NO;
             
             NSLog (@"lastObjectIndex = %d", addTagViewController.lastObjectIndex);
+            //        addTagViewController.iPodLibraryChanged = self.iPodLibraryChanged;
             
         }
         if ([actionType isEqualToString: @"Edit"]) {
@@ -507,9 +552,12 @@ NSString *actionType;
             NSLog (@"tagColor is %f %f %f %f", red, green, blue, alpha);
             
             addTagViewController.title = NSLocalizedString(@"Edit Tag", nil);
-                        
+            
+            //        addTagViewController.iPodLibraryChanged = self.iPodLibraryChanged;
+            
         }
     }
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
 }
 - (IBAction)addNewTag {
@@ -517,15 +565,15 @@ NSString *actionType;
     actionType = @"Add";
     [self performSegueWithIdentifier: @"AddTagItem" sender: self];
 }
-//140217 1.2 iOS 7 begin
-//intercept back Button pressed
-- (void)willMoveToParentViewController:(UIViewController *)parent
+- (void)goBackClick
 {
-    if (![parent isEqual:self.parentViewController]) {
-        [self.userTagViewControllerDelegate userTagViewControllerDidCancel:self];
-    }
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    
+    [self.navigationController popViewControllerAnimated:YES];
+    [self.userTagViewControllerDelegate userTagViewControllerDidCancel:self];
+    
+    
 }
-//140217 1.2 iOS 7 end
 - (void)addTagViewControllerDidCancel:(AddTagViewController *)controller
 {
     //    if (newTagInserted) {

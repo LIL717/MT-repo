@@ -7,10 +7,7 @@
 //
 @class CollectionItem;
 
-@interface ItemCollection : NSManagedObject <NSFetchedResultsControllerDelegate> {
-   
-    NSManagedObjectContext *managedObjectContext_;
-}
+@interface ItemCollection : NSManagedObject
 @property (nonatomic, retain) NSString *name;
 @property (nonatomic, retain) NSNumber *duration;
 @property (nonatomic, retain) NSDate *lastPlayedDate;
@@ -18,9 +15,7 @@
 @property (nonatomic)         BOOL inAppPlaylist;
 @property (nonatomic, retain) NSNumber *sortOrder;
 
-
-@property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
-@property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
+@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 
 - (void)addCollectionToCoreData:(CollectionItem *) collectionItem;
 - (CollectionItem *) containsItem: (NSNumber *) playingSongPersistentID;

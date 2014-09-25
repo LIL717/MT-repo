@@ -1,9 +1,9 @@
 //
 //  VBColorPicker.m
-//  MegaTunes Player
+//  VBColorPicker
 //
-//  Created by Lori Hill on 9/18/14.
-//
+//  Created by Volodymyr Boichentsov on 10/28/11.
+//  Copyright (c) 2011 www.injoit.com. All rights reserved.
 //
 
 #import <QuartzCore/QuartzCore.h>
@@ -16,240 +16,315 @@
 
 @synthesize hideAfterSelection=_hideAfterSelection;
 
+CGContextRef    context;
+
 - (id)initWithFrame:(CGRect)frame
 {
-	self = [super initWithFrame:frame];
-	if (self) {
-			// Initialization code
-		[self setImage:[UIImage imageNamed:@"colorWheel"]];
-		[self setUserInteractionEnabled:YES];
-		[self setHidden:YES];
-		self.hideAfterSelection = YES;
-	}
-	return self;
+    self = [super initWithFrame:frame];
+    if (self) {
+        // Initialization code
+        [self setImage:[UIImage imageNamed:@"colorWheel"]];
+//        [self setImage:[UIImage imageNamed:@"darkColorWheel"]];
+        [self setUserInteractionEnabled:YES];
+        [self setHidden:YES];
+        self.hideAfterSelection = YES;
+    }
+    return self;
 }
 
 - (CGContextRef) createARGBBitmapContextFromImage:(CGImageRef) inImage {
-
-	CGContextRef    context = NULL;
+	
+//	CGContextRef    context = nil;
+    context = nil;
 	CGColorSpaceRef colorSpace;
-	void *          bitmapData;
-	int             bitmapByteCount;
-	int             bitmapBytesPerRow;
+//	void *          bitmapData;
+//	int             bitmapByteCount;
+  int				bitmapBytesPerRow;
 
-		// Get image width, height. We'll use the entire image.
+	// Get image width, height. We'll use the entire image.
 	size_t pixelsWide = CGImageGetWidth(inImage);
 	size_t pixelsHigh = CGImageGetHeight(inImage);
-
-		// Declare the number of bytes per row. Each pixel in the bitmap in this
-		// example is represented by 4 bytes; 8 bits each of red, green, blue, and
-		// alpha.
-	bitmapBytesPerRow   =  (int) (pixelsWide * 4);
-	bitmapByteCount     = (int) (bitmapBytesPerRow * pixelsHigh);
-
-		// Use the generic RGB color space.
+	
+	// Declare the number of bytes per row. Each pixel in the bitmap in this
+	// example is represented by 4 bytes; 8 bits each of red, green, blue, and
+	// alpha.
+	bitmapBytesPerRow   = (int) (pixelsWide * 4);
+//	bitmapByteCount     = (bitmapBytesPerRow * pixelsHigh);
+	
+	// Use the generic RGB color space.
 	colorSpace = CGColorSpaceCreateDeviceRGB();
-
-	if (colorSpace == NULL)
-		{
+    
+	if (colorSpace == nil)
+	{
 		fprintf(stderr, "Error allocating color space\n");
-		return NULL;
-		}
+        context = nil;
+		return context;
+	}
+	
+	// Allocate memory for image data. This is the destination in memory
+	// where any drawing to the bitmap context will be rendered.
+//	bitmapData = malloc( bitmapByteCount );
+//	if (bitmapData == NULL)
+//	{
+//		fprintf (stderr, "Memory not allocated!");
+//		CGColorSpaceRelease( colorSpace );
+//        context = nil;
+//		return context;	}
+	
+	// Create the bitmap context. We want pre-multiplied ARGB, 8-bits 
+	// per component. Regardless of what the source image format is 
+	// (CMYK, Grayscale, and so on) it will be converted over to the format
+	// specified here by CGBitmapContextCreate.
 
-		// Allocate memory for image data. This is the destination in memory
-		// where any drawing to the bitmap context will be rendered.
-	bitmapData = malloc( bitmapByteCount );
-	if (bitmapData == NULL)
-		{
-		fprintf (stderr, "Memory not allocated!");
-		CGColorSpaceRelease( colorSpace );
-		return NULL;
-		}
+//	context = CGBitmapContextCreate (bitmapData,
+    
+//131212 1.2 iOS 7 begin
+    CGBitmapInfo bitmapInfo = (CGBitmapInfo) kCGImageAlphaPremultipliedFirst;
 
-		// Create the bitmap context. We want pre-multiplied ARGB, 8-bits
-		// per component. Regardless of what the source image format is
-		// (CMYK, Grayscale, and so on) it will be converted over to the format
-		// specified here by CGBitmapContextCreate.
-	CGBitmapInfo bitmapInfo = (CGBitmapInfo) kCGImageAlphaPremultipliedFirst;
-
-	context = CGBitmapContextCreate (NULL,
-
+//    context = CGBitmapContextCreate (NULL,
+//
+//									 pixelsWide,
+//									 pixelsHigh,
+//									 8,      // bits per component
+//									 bitmapBytesPerRow,
+//									 colorSpace,
+//									 kCGImageAlphaPremultipliedFirst);
+    context = CGBitmapContextCreate (NULL,
+                                     
 									 pixelsWide,
 									 pixelsHigh,
 									 8,      // bits per component
 									 bitmapBytesPerRow,
 									 colorSpace,
 									 bitmapInfo);
-	if (context == NULL)
-		{
-		free (bitmapData);
+//131212 1.2 iOS 7 end
+    
+	if (context == nil)
+	{
+//		free (bitmapData);
 		fprintf (stderr, "Context not created!");
-		}
-
-		// Make sure and release colorspace before returning
-	CGColorSpaceRelease( colorSpace );
-
+	}
+	
+	// Make sure and release colorspace before returning
+    CGColorSpaceRelease(colorSpace);
+    
+	
 	return context;
 }
 
 
 - (UIColor*) getPixelColorAtLocation:(CGPoint)point {
 	UIColor* color = nil;
-
-
+    
+    
 	CGImageRef inImage = [[self image] CGImage];
-		// Create off screen bitmap context to draw the image into. Format ARGB is 4 bytes for each pixel: Alpa, Red, Green, Blue
+	// Create off screen bitmap context to draw the image into. Format ARGB is 4 bytes for each pixel: Alpa, Red, Green, Blue
 	CGContextRef cgctx = [self createARGBBitmapContextFromImage:inImage];
 	if (cgctx == NULL) { return nil; /* error */ }
-
-	size_t w = CGImageGetWidth(inImage);
+	
+    size_t w = CGImageGetWidth(inImage);
 	size_t h = CGImageGetHeight(inImage);
-	CGRect rect = {{0,0},{w,h}};
-
-		// Draw the image to the bitmap context. Once we draw, the memory
-		// allocated for the context for rendering will then contain the
-		// raw image data in the specified color space.
+	CGRect rect = {{0,0},{w,h}}; 
+	
+	// Draw the image to the bitmap context. Once we draw, the memory 
+	// allocated for the context for rendering will then contain the 
+	// raw image data in the specified color space.
 	CGContextDrawImage(cgctx, rect, inImage);
-
-		// Now we can get a pointer to the image data associated with the bitmap
-		// context.
+	
+	// Now we can get a pointer to the image data associated with the bitmap
+	// context.
 	unsigned char* data = CGBitmapContextGetData (cgctx);
 	if (data != NULL && data != 0) {
-			//offset locates the pixel in the data from x,y.
-			//4 for 4 bytes of data per pixel, w is width of one row of data.
+		//offset locates the pixel in the data from x,y. 
+		//4 for 4 bytes of data per pixel, w is width of one row of data.
 		int offset = 4*((w*round(point.y))+round(point.x));
-		int alpha =  data[offset];
-		int red = data[offset+1];
-		int green = data[offset+2];
-		int blue = data[offset+3];
+		int alpha =  data[offset]; 
+		int red = data[offset+1]; 
+		int green = data[offset+2]; 
+		int blue = data[offset+3]; 
 		NSLog(@"offset: %i colors: RGB A %i %i %i  %i",offset,red,green,blue,alpha);
 		color = [UIColor colorWithRed:(red/255.0f) green:(green/255.0f) blue:(blue/255.0f) alpha:(alpha/255.0f)];
 	}
-
-		// When finished, release the context
+	
+	// When finished, release the context
 	CGContextRelease(cgctx);
-		// Free image data memory for the context
-	if (data) { free(data); }
 
+    //don't need this because of ARC
+//	// Free image data memory for the context
+//	if (data) { free(data); }
+	
 	return color;
 }
+// this was in original VBColorPicker, modified with code that follows so that color will change as tap drags
+
+//- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+//    
+//    
+//    if (self.hidden == YES || self.alpha == 0) {
+//		//color wheel is hidden, so don't handle  this as a color wheel event.
+//		[[self nextResponder] touchesBegan:touches withEvent:event];
+//		return;
+//	}
+//}
+//- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+//    if (self.hidden == YES || self.alpha == 0) {
+//		//color wheel is hidden, so don't handle  this as a color wheel event.
+//		[[self nextResponder] touchesMoved:touches withEvent:event];
+//		return;
+//	}
+//}
 
 
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+//- (void) touchesEnded:(NSSet*)touches withEvent:(UIEvent*)event {
+//	if (self.hidden == YES || self.alpha == 0) {
+//		//color wheel is hidden, so don't handle  this as a color wheel event.
+//		[[self nextResponder] touchesEnded:touches withEvent:event];
+//		return;
+//	}
+//	
+//	UITouch* touch = [touches anyObject];
+//	CGPoint point = [touch locationInView:self]; //where image was tapped
+//    
+//    CGRect r = self.frame;
+//    r.origin = CGPointZero;
+//    
+//    if (CGRectContainsPoint(r, point)) {
+//        UIColor *color = [self getPixelColorAtLocation:point]; 
+//        const CGFloat *components = CGColorGetComponents(color.CGColor);
+//        if (components[3] != 0) {
+//            _lastSelectedColor = color;   
+//        }
+//    }
+//    
+//    if ([_delegate respondsToSelector:@selector(pickedColor:)]) {
+//        [_delegate performSelector:@selector(pickedColor:) withObject:_lastSelectedColor];
+//    }
+//    
+////    if (_hideAfterSelection) {
+////        [self hidePicker];
+////    }
+//}
 
+//Touch parts : (this is based on the dragging from ColorPicker (HUE)
 
-	if (self.hidden == YES || self.alpha == 0) {
-			//color wheel is hidden, so don't handle  this as a color wheel event.
-		[[self nextResponder] touchesBegan:touches withEvent:event];
-		return;
-	}
+-(void) dispatchTouchEvent:(CGPoint)position
+{
+
+	CGPoint point = position; //where image was tapped
+    
+    CGRect r = self.frame;
+    r.origin = CGPointZero;
+    
+    if (CGRectContainsPoint(r, point)) {
+        UIColor *color = [self getPixelColorAtLocation:point];
+        const CGFloat *components = CGColorGetComponents(color.CGColor);
+        if (components[3] != 0) {
+            _lastSelectedColor = color;
+        }
+    }
+    
+    if ([_delegate respondsToSelector:@selector(pickedColor:)]) {
+        [_delegate performSelector:@selector(pickedColor:) withObject:_lastSelectedColor];
+    }
+    
+    //    if (_hideAfterSelection) {
+    //        [self hidePicker];
+    //    }
+	
 }
-- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-	if (self.hidden == YES || self.alpha == 0) {
-			//color wheel is hidden, so don't handle  this as a color wheel event.
-		[[self nextResponder] touchesMoved:touches withEvent:event];
-		return;
-	}
+
+
+// Handles the start of a touch
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    if (self.hidden == YES || self.alpha == 0) {
+    } else {
+        for (UITouch *touch in touches) {
+            [self dispatchTouchEvent:[touch locationInView:self]];
+        }
+    }
 }
 
-
-- (void) touchesEnded:(NSSet*)touches withEvent:(UIEvent*)event {
-	if (self.hidden == YES || self.alpha == 0) {
-			//color wheel is hidden, so don't handle  this as a color wheel event.
-		[[self nextResponder] touchesEnded:touches withEvent:event];
-		return;
-	}
-
-	UITouch* touch = [touches anyObject];
-	CGPoint point = [touch locationInView:self]; //where image was tapped
-
-	CGRect r = self.frame;
-	r.origin = CGPointZero;
-
-	if (CGRectContainsPoint(r, point)) {
-		UIColor *color = [self getPixelColorAtLocation:point];
-		const CGFloat *components = CGColorGetComponents(color.CGColor);
-		if (components[3] != 0) {
-			_lastSelectedColor = color;
-		}
-	}
-
-	if ([_delegate respondsToSelector:@selector(pickedColor:)]) {
-		[_delegate performSelector:@selector(pickedColor:) withObject:_lastSelectedColor];
-	}
-
-	if (_hideAfterSelection) {
-		[self hidePicker];
-	}
+// Handles the continuation of a touch.
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    if (self.hidden == YES || self.alpha == 0) {
+    } else {
+        for (UITouch *touch in touches){
+            [self dispatchTouchEvent:[touch locationInView:self]];
+        }
+    }
+	
 }
 
+//end of modification to allow dragging
 
 - (void) animateColorWheelToShow:(BOOL)show duration:(float)duration {
-
-	if ([self.layer.animationKeys count] > 0) {
-		return;
-	}
-
-	int x;
-	float angle;
+	
+    if ([self.layer.animationKeys count] > 0) {
+        return;
+    }
+    
+//    int x;
+//	float angle;
 	float scale;
-
-	if (show) {
-		x = 0;
-		angle = 0;
+    
+	if (show) { 
+//		x = 0;
+//		angle = 0;
 		scale = 1;
 		[self setNeedsDisplay];
 		self.hidden = NO;
 	} else {
-		x = -320;
-		angle = -3.12;
+//        x = -320;
+//		angle = -3.12;
 		scale = 0.001;
 	}
-
-	CATransform3D transform = CATransform3DMakeTranslation(0,0,0);
-	transform = CATransform3DScale(transform, scale, scale, 1);
-
-	[UIView animateWithDuration:duration
-						  delay:0
-						options:UIViewAnimationOptionAllowUserInteraction
-					 animations:^{
-						 self.transform = CATransform3DGetAffineTransform(transform);
-						 self.layer.transform = transform;
-					 }
-					 completion:^(BOOL finished) {
-						 if (show == NO) {
-							 [self setHidden:YES];
-						 }
-					 }];
+    
+    CATransform3D transform = CATransform3DMakeTranslation(0,0,0);
+    transform = CATransform3DScale(transform, scale, scale, 1);
+    
+    [UIView animateWithDuration:duration 
+                          delay:0 
+                        options:UIViewAnimationOptionAllowUserInteraction 
+                     animations:^{
+                         self.transform = CATransform3DGetAffineTransform(transform);
+                         self.layer.transform = transform;
+                     } 
+                     completion:^(BOOL finished) {
+                         if (show == NO) {
+                             [self setHidden:YES];
+                         }
+                     }];
 }
 
 - (void) showPicker {
-	[self showPickerWithDuration:0.3f];
+    [self showPickerWithDuration:0.3f];
 }
 
 - (void) hidePicker {
-	[self hidePickerWithDuration:0.3f];
+    [self hidePickerWithDuration:0.3f];
 }
 
 
 - (void) showPickerWithDuration:(float)duration  {
-	[self animateColorWheelToShow:YES duration:duration];
+    [self animateColorWheelToShow:YES duration:duration];
 }
 
 - (void) hidePickerWithDuration:(float)duration {
-	[self animateColorWheelToShow:NO duration:duration];
+    [self animateColorWheelToShow:NO duration:duration];
 }
 
 
 
 
 /*
- // Only override drawRect: if you perform custom drawing.
- // An empty implementation adversely affects performance during animation.
- - (void)drawRect:(CGRect)rect
- {
- // Drawing code
- }
- */
+// Only override drawRect: if you perform custom drawing.
+// An empty implementation adversely affects performance during animation.
+- (void)drawRect:(CGRect)rect
+{
+    // Drawing code
+}
+*/
 
 @end

@@ -1,16 +1,16 @@
-	//
-	//  AutoScrollLabel.h
-	//  AutoScrollLabel
-	//
-	//  Created by Brian Stormont on 10/21/09.
-	//  Updated/Modernized by Christopher Bess on 2/5/12
-	//
-	//  Copyright 2009 Stormy Productions. All rights reserved.
-	//
-	//  Originally from: http://blog.stormyprods.com/2009/10/simple-scrolling-uilabel-for-iphone.html
-	//
-	//  Permission is granted to use this code free of charge for any project.
-	//
+//
+//  AutoScrollLabel.h
+//  AutoScrollLabel
+//
+//  Created by Brian Stormont on 10/21/09.
+//  Updated/Modernized by Christopher Bess on 2/5/12
+//
+//  Copyright 2009 Stormy Productions. All rights reserved.
+//
+//  Originally from: http://blog.stormyprods.com/2009/10/simple-scrolling-uilabel-for-iphone.html
+//
+//  Permission is granted to use this code free of charge for any project.
+//
 
 
 typedef enum  {
@@ -33,7 +33,7 @@ typedef enum  {
  */
 @property (nonatomic, readonly) BOOL scrolling;
 
-	// UILabel properties
+// UILabel properties
 @property (nonatomic, copy) NSString *text;
 @property (nonatomic, strong) UIColor *textColor;
 @property (nonatomic, strong) UIFont *font;
