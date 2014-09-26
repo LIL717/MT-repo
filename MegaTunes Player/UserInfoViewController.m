@@ -230,14 +230,14 @@
         [self.placeholderLabel setHidden:YES];
     }
 }
-//- (BOOL) textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
-//    if([text isEqualToString:@"\n"]){
-//        [textView resignFirstResponder];
-//        return NO;
-//    }else{
-//        return YES;
-//    }
-//}
+	//- (BOOL) textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+	//    if([text isEqualToString:@"\n"]){
+	//        [textView resignFirstResponder];
+	//        return NO;
+	//    }else{
+	//        return YES;
+	//    }
+	//}
 - (void) textViewDidEndEditing: (UITextView *) textView {
     LogMethod();
 

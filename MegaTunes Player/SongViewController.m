@@ -1159,7 +1159,6 @@ BOOL excludeICloudItems;
     
     //check to see if there is user data for this media item
     MediaItemUserData *mediaItemUserData = [MediaItemUserData alloc];
-    mediaItemUserData.managedObjectContext = self.managedObjectContext;
     
     UserDataForMediaItem *userDataForMediaItem = [mediaItemUserData containsItem: [mediaItem valueForProperty: MPMediaItemPropertyPersistentID]];
     TagData *tagData = userDataForMediaItem.tagData;
@@ -1364,8 +1363,7 @@ BOOL excludeICloudItems;
         
         //save collection in Core Data
         ItemCollection *itemCollection = [ItemCollection alloc];
-        itemCollection.managedObjectContext = self.managedObjectContext;
-        
+
         //        [itemCollection addCollectionToCoreData: self.collectionItem];
         [itemCollection addCollectionToCoreData: self.collectionItemToSave];
         
