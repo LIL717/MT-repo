@@ -26,6 +26,7 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *keyboardHeight;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceTopToCommentsConstraint;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceTopToTableViewConstraint;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceCommentsToBottomConstraint;
 
 @property (strong, nonatomic) IBOutlet UILabel *placeholderLabel;
 @property (readwrite)         BOOL             editingUserInfo;

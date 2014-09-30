@@ -19,7 +19,6 @@
 #import "UserDataForMediaItem.h"
 #import "MediaItemUserData.h"
 #import "TagData.h"
-#import "KSLabel.h"
 #import "TaggedSectionIndexData.h"
 #import "Reachability.h"
 
@@ -155,7 +154,9 @@ BOOL excludeICloudItems;
     
     [self registerForMediaPlayerNotifications];
     self.cellScrolled = NO;
-    
+	
+	[self.searchBar setTranslatesAutoresizingMaskIntoConstraints: YES];
+
     // load the taggedSongArray if it has not been previously loaded
     if (!self.taggedSongArray) {
         [self createTaggedSongArray];
@@ -643,24 +644,30 @@ BOOL excludeICloudItems;
     //this needs to be here rather than DidEndSearch to avoid flashing wrong data first
     
     //    [self.collectionTableView reloadData];
+	[self.searchBar removeFromSuperview];
+
 }
 
 - (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller {
     //    LogMethod();
     self.isSearching = NO;
     //reload the original tableView otherwise section headers are not visible :(  this seems to be an Apple bug
-    
-    CGFloat largeHeaderAdjustment;
-    
-    BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
-    
-    if (isPortrait) {
-        largeHeaderAdjustment = 11;
-    } else {
-        largeHeaderAdjustment = 23;
-    }
-    
-    [self.songTableView scrollRectToVisible:CGRectMake(largeHeaderAdjustment, 0, 1, 1) animated:YES];
+	self.songTableView.tableHeaderView = self.shuffleView;
+		//    self.searchBar.frame = CGRectMake(0, 0, self.view.bounds.size.width - 15, 55);
+	[self.shuffleView addSubview:self.searchBar];
+//    CGFloat largeHeaderAdjustment;
+//    
+//    BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
+//    
+//    if (isPortrait) {
+//        largeHeaderAdjustment = 11;
+//    } else {
+//        largeHeaderAdjustment = 23;
+//    }
+//    
+//    [self.songTableView scrollRectToVisible:CGRectMake(largeHeaderAdjustment, 0, 1, 1) animated:YES];
+	[self.songTableView setContentOffset:CGPointMake(0, self.shuffleView.frame.size.height)];
+
     [self.songTableView reloadData];
 }
 - (void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope
@@ -974,9 +981,9 @@ BOOL excludeICloudItems;
         song = [dict objectForKey: @"Song"];
         
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-        
+
         cell.nameLabel.text = [song valueForProperty:  MPMediaItemPropertyTitle];
-        
+
         UIColor *tagColor;
         tagColor = [UIColor blackColor];
         
@@ -1005,7 +1012,6 @@ BOOL excludeICloudItems;
         UIView *separatorLine = [[UILabel alloc] initWithFrame:frame];
         separatorLine.backgroundColor = [UIColor whiteColor];
 //140122 1.2 iOS 7 begin
-//        [cell.cellBackgroundImageView addSubview: separatorLine];
         [cell.backgroundView addSubview: separatorLine];
 //140122 1.2 iOS 7 end
 

@@ -189,8 +189,8 @@ BOOL excludeICloudItems;
     //    scrolledCellIndexArray = [[NSMutableArray alloc] initWithCapacity: 20];
     self.cellScrolled = NO;
     
-    
-    
+	[self.searchBar setTranslatesAutoresizingMaskIntoConstraints: YES];
+
     //list can be alphabetic - if All Songs was chosen or in track order, only index alphabetic with more than 20 rows
     
     self.songTableView.sectionIndexMinimumDisplayRowCount = 20;
@@ -666,24 +666,30 @@ BOOL excludeICloudItems;
     //this needs to be here rather than DidEndSearch to avoid flashing wrong data first
     
     //    [self.collectionTableView reloadData];
+	[self.searchBar removeFromSuperview];
+
 }
 
 - (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller {
     //    LogMethod();
     self.isSearching = NO;
     //reload the original tableView otherwise section headers are not visible :(  this seems to be an Apple bug
-    
-    CGFloat largeHeaderAdjustment;
-    
-    BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
-    
-    if (isPortrait) {
-        largeHeaderAdjustment = 11;
-    } else {
-        largeHeaderAdjustment = 23;
-    }
-    
-    [self.songTableView scrollRectToVisible:CGRectMake(largeHeaderAdjustment, 0, 1, 1) animated:YES];
+	self.songTableView.tableHeaderView = self.shuffleView;
+		//    self.searchBar.frame = CGRectMake(0, 0, self.view.bounds.size.width - 15, 55);
+	[self.shuffleView addSubview:self.searchBar];
+//    CGFloat largeHeaderAdjustment;
+//    
+//    BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
+//    
+//    if (isPortrait) {
+//        largeHeaderAdjustment = 11;
+//    } else {
+//        largeHeaderAdjustment = 23;
+//    }
+//	[self.songTableView scrollRectToVisible:CGRectMake(largeHeaderAdjustment, 0, 1, 1) animated:YES];
+
+	[self.songTableView setContentOffset:CGPointMake(0, self.shuffleView.frame.size.height)];
+
     [self.songTableView reloadData];
 }
 - (void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope

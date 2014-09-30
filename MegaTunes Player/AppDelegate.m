@@ -176,6 +176,13 @@
 								forState:UIControlStateNormal];
 	[[UISlider appearance] setThumbImage:thumbImage
 								forState:UIControlStateHighlighted];
+
+	[[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setTextColor:[UIColor blackColor]];
+	[[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setFont:[UIFont systemFontOfSize:33.0]];
+	NSAttributedString *str = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Search", nil) attributes:@{ NSForegroundColorAttributeName : [UIColor darkGrayColor] }];
+	[[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setAttributedPlaceholder: str];
+	[[UISearchBar appearance] setBarTintColor: [UIColor whiteColor]];
+	[[UISearchBar appearance] setTintColor: [UIColor blackColor]];
 }
 	//// Returns whether or not to use the iPod music player instead of the application music player.
 	//- (BOOL) useiPodPlayer {

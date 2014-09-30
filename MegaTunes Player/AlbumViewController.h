@@ -7,7 +7,6 @@
 //
 
 @class CollectionItem;
-@class MTSearchBar;
 @class AppDelegate;
 
 

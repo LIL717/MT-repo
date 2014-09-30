@@ -8,7 +8,6 @@
 
 @class CollectionItem;
 @class TaggedSectionIndexData;
-@class MTSearchBar;
 
 #import "InfoTabBarController.h"
 
@@ -23,7 +22,7 @@
 
 @property (strong, nonatomic)   IBOutlet UIView *shuffleView;
 @property (strong, nonatomic)   IBOutlet UIButton *shuffleButton;
-@property (strong, nonatomic)   IBOutlet MTSearchBar *searchBar;
+@property (strong, nonatomic)   IBOutlet UISearchBar *searchBar;
 
 @property (nonatomic, retain)   NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong)   CollectionItem *collectionItem;

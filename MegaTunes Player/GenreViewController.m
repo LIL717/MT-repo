@@ -98,7 +98,9 @@ BOOL firstLoad;
     
     [self registerForMediaPlayerNotifications];
     self.cellScrolled = NO;
-    
+
+	[self.searchBar setTranslatesAutoresizingMaskIntoConstraints: YES];
+
     self.collectionTableView.sectionIndexMinimumDisplayRowCount = 20;
 //131203 1.2 iOS 7 begin
     
@@ -316,6 +318,8 @@ BOOL firstLoad;
     //this needs to be here rather than DidEndSearch to avoid flashing wrong data first
     
     //    [self.collectionTableView reloadData];
+	[self.searchBar removeFromSuperview];
+
 }
 
 - (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller {
@@ -323,17 +327,18 @@ BOOL firstLoad;
     self.isSearching = NO;
     //reload the original tableView otherwise section headers are not visible :(  this seems to be an Apple bug
     
-    CGFloat largeHeaderAdjustment;
-    
-    BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
-    
-    if (isPortrait) {
-        largeHeaderAdjustment = 11;
-    } else {
-        largeHeaderAdjustment = 23;
-    }
-    
-    [self.collectionTableView scrollRectToVisible:CGRectMake(largeHeaderAdjustment, 0, 1, 1) animated:YES];
+//    CGFloat largeHeaderAdjustment;
+//    
+//    BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
+//    
+//    if (isPortrait) {
+//        largeHeaderAdjustment = 11;
+//    } else {
+//        largeHeaderAdjustment = 23;
+//    }
+//    
+//    [self.collectionTableView scrollRectToVisible:CGRectMake(largeHeaderAdjustment, 0, 1, 1) animated:YES];
+	[self.collectionTableView setContentOffset:CGPointMake(0, self.searchBar.frame.size.height)];
     [self.collectionTableView reloadData];
 }
 - (void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope

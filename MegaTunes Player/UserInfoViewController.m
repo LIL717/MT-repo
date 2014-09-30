@@ -11,7 +11,9 @@
 #import "UserDataForMediaItem.h"
 #import "UIImage+AdditionalFunctionalities.h"
 #import "UserTagViewController.h"
-//#import "TagItem.h"
+//140216 1.2 iOS 7 begin
+#import "TagItem.h"
+//140216 1.2 iOS 7 end
 #import "TagData.h"
 #import "KSLabel.h"
 #import "UserTagCell.h"
@@ -33,16 +35,18 @@
 @synthesize comments;
 
 @synthesize verticalSpaceTopToTableViewConstraint;
-@synthesize keyboardHeight;
+@synthesize verticalSpaceCommentsToBottomConstraint;
 @synthesize verticalSpaceTopToCommentsConstraint;
 
 @synthesize placeholderLabel;
 @synthesize editingUserInfo;
 
-@synthesize landscapeOffset;
 @synthesize userInfoTagArray;
-@synthesize tagButton;
 @synthesize showCheckMarkButton;
+
+//140216 1.2 iOS 7 begin
+BOOL itemHasTag;
+//140216 1.2 iOS 7 end
 
 #pragma mark - Initial Display methods
 
@@ -52,14 +56,16 @@
     [super viewDidLoad];
     
 //    [TestFlight passCheckpoint:@"UserInfoViewController"];
-
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
-    [self.userInfoTagTable setBackgroundColor: [UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
     
     musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
     
-    landscapeOffset = 12.0;
+//140206 1.2 iOS 7 begin
+    // cause separator line to stretch to right side of view
+    [self.userInfoTagTable setSeparatorInset:UIEdgeInsetsZero];
     
+    //need this for correct placement and touch access in landscape on rotation in iOS 7
+    self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+//140206 1.2 iOS 7 end
     [self loadDataForView];
     
     [self setEditingUserInfo: NO];
@@ -82,92 +88,22 @@
     
     self.userDataForMediaItem = [mediaItemUserData containsItem: [self.mediaItemForInfo valueForProperty: MPMediaItemPropertyPersistentID]];
     TagData *tagData = self.userDataForMediaItem.tagData;
-    
-    [self.tagButton removeFromSuperview];
-    
+//140216 1.2 iOS 7 begin
+    TagItem *tagItem = [TagItem alloc];
     if (tagData) {
-        self.userInfoTagArray = [NSArray arrayWithObjects: tagData, nil];
+        itemHasTag = YES;
+        tagItem.tagName = tagData.tagName;
+        tagItem.tagColorRed = tagData.tagColorRed;
+        tagItem.tagColorBlue = tagData.tagColorBlue;
+        tagItem.tagColorGreen = tagData.tagColorGreen;
+        tagItem.tagColorAlpha = tagData.tagColorAlpha;
+//        self.userInfoTagArray = [NSArray arrayWithObjects: tagItem, nil];
     } else {
-        self.userInfoTagArray = [NSArray arrayWithObjects: nil];
-        
-        self.tagButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [self.tagButton addTarget:self
-                   action:@selector(selectNewTag)
-         forControlEvents:UIControlEventTouchDown];
-        [self.tagButton setTitle:NSLocalizedString(@"Assign Tag", nil) forState:UIControlStateNormal];
-        BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
-
-        CGFloat tagButtonY = 11.0;
-
-        if (isPortrait) {
-            tagButtonY = 11.0;
-        } else {
-            tagButtonY = 23.0;
-        }
-        
-        self.tagButton.frame = CGRectMake(0.0, tagButtonY, self.view.bounds.size.width, 54.0);
-
-
-        UIImage *labelBackgroundImage = [UIImage imageNamed: @"list-background.png"];
-        UIImage *coloredImage = [labelBackgroundImage imageWithTint: [UIColor darkGrayColor]];
-        [self.tagButton setBackgroundImage: coloredImage forState: UIControlStateNormal];
-        [self.tagButton setTitleColor: [UIColor whiteColor] forState: UIControlStateNormal];
-        self.tagButton.titleLabel.font = [UIFont systemFontOfSize:44];
-//        self.tagButton.titleLabel.textAlignment = NSTextAlignmentLeft;
-        self.tagButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-        //adjust the content left inset otherwise the text will touch the left border:
-        self.tagButton.contentEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
-                
-        UIView *superview = self.view;
-        
-        [self.tagButton setTranslatesAutoresizingMaskIntoConstraints:NO];
-        
-        [superview addSubview:self.tagButton];
-        
-        NSLayoutConstraint *myConstraint = [NSLayoutConstraint
-                                            constraintWithItem:self.tagButton
-                                            attribute:NSLayoutAttributeTrailing
-                                            relatedBy:NSLayoutRelationEqual
-                                            toItem:superview
-                                            attribute:NSLayoutAttributeTrailing
-                                            multiplier:1.0
-                                            constant:0];
-        
-        [superview addConstraint:myConstraint];
-        
-        myConstraint = [NSLayoutConstraint
-                        constraintWithItem:self.tagButton
-                        attribute:NSLayoutAttributeLeading
-                        relatedBy:NSLayoutRelationEqual
-                        toItem:superview
-                        attribute:NSLayoutAttributeLeading
-                        multiplier:1.0
-                        constant:0];
-        
-        [superview addConstraint:myConstraint];
-        
-        myConstraint = [NSLayoutConstraint
-                        constraintWithItem:self.tagButton
-                        attribute:NSLayoutAttributeTop
-                        relatedBy:NSLayoutRelationEqual
-                        toItem:superview
-                        attribute:NSLayoutAttributeTop
-                        multiplier:1.0
-                        constant:tagButtonY];
-        
-        [superview addConstraint:myConstraint];
-        
-        myConstraint = [NSLayoutConstraint
-                        constraintWithItem:self.tagButton
-                        attribute:NSLayoutAttributeHeight
-                        relatedBy:NSLayoutRelationEqual
-                        toItem:nil
-                        attribute:NSLayoutAttributeNotAnAttribute
-                        multiplier:1.0
-                        constant:54];
-        
-        [superview addConstraint:myConstraint];
+        itemHasTag = NO;
+        tagItem.tagName = @"Assign Tag";
     }
+    self.userInfoTagArray = [NSArray arrayWithObjects: tagItem, nil];
+//140216 1.2 iOS 7 begin
 
     self.comments.delegate = self;
     
@@ -192,17 +128,13 @@
 }
 - (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
     //executes this method on initial load and the one in InfoTabBarController after that, so they need to stay in synch with each other and with the constaint set in interface builder
-    if (UIInterfaceOrientationIsPortrait(orientation)) {
-//        NSLog (@"portrait");
-
-        self.verticalSpaceTopToTableViewConstraint.constant = 11;
-        self.verticalSpaceTopToCommentsConstraint.constant = 66;
-        
-    } else {
-//        NSLog (@"landscape");
-        self.verticalSpaceTopToTableViewConstraint.constant = 23;
-        self.verticalSpaceTopToCommentsConstraint.constant = 78;
-    }
+//140216 1.2 iOS 7 begin
+    BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
+    
+    CGFloat navBarAdjustment = isPortrait ? 0 : 9;
+    self.verticalSpaceTopToTableViewConstraint.constant = navBarAdjustment;
+    self.verticalSpaceTopToCommentsConstraint.constant = 55 + navBarAdjustment;
+//131216 1.2 iOS 7 end
     [self loadDataForView];
     [self.userInfoTagTable reloadData];
 
@@ -223,26 +155,36 @@
     
     [self registerForKeyboardNotifications];
 
-    UIImage *coloredBackgroundImage = [[UIImage imageNamed: @"background.png"] imageWithTint:[UIColor darkGrayColor]];
-    [textView setBackgroundColor:[UIColor colorWithPatternImage: coloredBackgroundImage]];
+//131203 1.2 iOS 7 begin
     
+    textView.backgroundColor = [UIColor darkGrayColor];
+    
+//131203 1.2 iOS 7 end
+
     if([textView isEqual:self.comments]){
         [self.placeholderLabel setHidden:YES];
     }
 }
-	//- (BOOL) textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
-	//    if([text isEqualToString:@"\n"]){
-	//        [textView resignFirstResponder];
-	//        return NO;
-	//    }else{
-	//        return YES;
-	//    }
-	//}
+//- (BOOL) textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+//    if([text isEqualToString:@"\n"]){
+//        [textView resignFirstResponder];
+//        return NO;
+//    }else{
+//        return YES;
+//    }
+//}
 - (void) textViewDidEndEditing: (UITextView *) textView {
     LogMethod();
 
-    [textView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed: @"background.png"]]];
+//131203 1.2 iOS 7 begin
     
+    textView.backgroundColor = [UIColor blackColor];
+    //an apparent bug in iOS 7 allows the cursor to drop below the bottom of the textView so a hacky fix adds a space after the cursor which needs to be removed before the text is saved
+    if ([textView.text characterAtIndex:textView.text.length-1] == ' ') {
+        textView.text = [textView.text substringToIndex: textView.text.length-1];
+    }
+    
+//131203 1.2 iOS 7 end
     //update or add object to Core Data
     MediaItemUserData *mediaItemUserData = [MediaItemUserData alloc];
 
@@ -266,7 +208,28 @@
 
 
 }
-
+//140220 1.2 iOS 7 begin
+- (void)textViewDidChangeSelection:(UITextView *)textView
+{
+    //an apparent bug in iOS 7 allows the cursor to drop below the bottom of the textView this is a hacky fix
+    //make sure that there's always a trailing space in the text field. Then, if the user tries to change the selection such that the space is revealed, change the selection. By always keeping a space ahead of the cursor, the field scrolls itself as it's supposed to.
+    if ([textView.text characterAtIndex:textView.text.length-1] != ' ') {
+        textView.text = [textView.text stringByAppendingString:@" "];
+    }
+    
+    NSRange range0 = textView.selectedRange;
+    NSRange range = range0;
+    if (range0.location == textView.text.length) {
+        range = NSMakeRange(range0.location - 1, range0.length);
+    } else if (range0.length > 0 &&
+               range0.location + range0.length == textView.text.length) {
+        range = NSMakeRange(range0.location, range0.length - 1);
+    }
+    if (!NSEqualRanges(range, range0)) {
+        textView.selectedRange = range;
+    }
+}
+//140220 1.2 iOS 7 end
 // Called when the UIKeyboardDidShowNotification is sent.
 - (void)keyboardWasShown:(NSNotification*)aNotification
 {
@@ -275,27 +238,18 @@
     NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     
     CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-    //hmmm this is width 162 and height 480 for landscape
-
+    //hmmm this is width 162 and height 480 for landscape so the following 2 lines are a hack to swap width for height
+    
     BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
     CGFloat kbHeight = isPortrait ? kbSize.height : kbSize.width;
 
     //since this view contains a tabBar, which is not visible when the keyboard is present, need to subtract the height of the tabBar from the keyboard height to get the right constraint since original constraint is to top of tabBar
     
-    kbHeight -= self.tabBarController.tabBar.backgroundImage.size.height;
-    
-    NSLog(@"Updating constraints.");
-    // Because the "space" is actually the difference between the bottom lines of the 2 views,
-    // we need to set a negative constant value here.
-    self.keyboardHeight.constant = -kbHeight;
+    kbHeight -= self.tabBarController.tabBar.frame.size.height;
+
+    self.verticalSpaceCommentsToBottomConstraint.constant = kbHeight;
     
     //pull the field up to the top (over the tagItem field while editing)
-    
-    //if there is no tagData need to remove the button temporarily
-    if (!self.userDataForMediaItem.tagData) {
-        [self.tagButton removeFromSuperview];
-    }
-//    self.verticalSpaceTopToCommentsConstraint.constant -= (self.userTagButton.frame.size.height);
     self.verticalSpaceTopToCommentsConstraint.constant -= (self.userInfoTagTable.frame.size.height);
 
     [self.view setNeedsUpdateConstraints];
@@ -313,9 +267,8 @@
     NSDictionary *info = [aNotification userInfo];
     NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     
-    self.keyboardHeight.constant = 0;
-    
-//    self.verticalSpaceTopToCommentsConstraint.constant += self.userTagButton.frame.size.height;
+    self.verticalSpaceCommentsToBottomConstraint.constant = 0;
+
     self.verticalSpaceTopToCommentsConstraint.constant += self.userInfoTagTable.frame.size.height;
 
     [self.view setNeedsUpdateConstraints];
@@ -343,9 +296,6 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     //    LogMethod();
-    //don't use UserTagCell for searchResultsCell won't respond to touches to scroll anyway and terrible performance on GoBackClick when autoRotated
-    //    static NSString *CellIdentifier = @"Cell";
-    //    UITableViewCell *searchResultsCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
 	UserTagCell *cell = (UserTagCell *)[tableView dequeueReusableCellWithIdentifier:@"UserTagCell"];
     
@@ -358,39 +308,31 @@
     [cell.tagLabel setOutlineColor:[UIColor blackColor]];
     
     [cell.tagLabel setDrawGradient:NO];
-    //        CGFloat colors [] = {
-    //            255.0f/255.0f, 255.0f/255.0f, 255.0f/255.0f, 1.0,
-    //            0.0f/255.0f, 0.0f/255.0f, 0.0f/255.0f, 1.0
-    //        };
-    //        [cell.tagLabel setGradientColors:colors];
     
     cell.tagLabel.font = [UIFont systemFontOfSize:44];
-
-    TagData *tagData = [self.userInfoTagArray objectAtIndex:indexPath.row];
-        cell.tagLabel.text = tagData.tagName;
-        
-        int red = [tagData.tagColorRed intValue];
-        int green = [tagData.tagColorGreen intValue];
-        int blue = [tagData.tagColorBlue intValue];
-        int alpha = [tagData.tagColorAlpha intValue];
-        
-    UIColor *tagColor = [UIColor colorWithRed:(red/255.0f) green:(green/255.0f) blue:(blue/255.0f) alpha:(alpha/255.0f)];
-//    }
-    [cell addSubview:cell.tagLabel];
-    UIImage *cellBackgroundImage = [UIImage imageNamed: @"list-background.png"];
-    UIImage *coloredImage = [cellBackgroundImage imageWithTint: tagColor];
+//131203 1.2 iOS 7 begin
+    TagItem *tagItem = [self.userInfoTagArray objectAtIndex:indexPath.row];
+    cell.tagLabel.text = tagItem.tagName;
     
-    [cell.cellBackgroundImageView  setImage: coloredImage];
-    //        cell.tagLabel.backgroundColor = tagColor;
+    if ([cell.tagLabel.text isEqualToString: @"Assign Tag"]) {
+        cell.contentView.backgroundColor = [UIColor darkGrayColor];
+    } else {
+        int red = [tagItem.tagColorRed intValue];
+        int green = [tagItem.tagColorGreen intValue];
+        int blue = [tagItem.tagColorBlue intValue];
+        int alpha = [tagItem.tagColorAlpha intValue];
+        
+        UIColor *tagColor = [UIColor colorWithRed:(red/255.0f) green:(green/255.0f) blue:(blue/255.0f) alpha:(alpha/255.0f)];
+        cell.contentView.backgroundColor = tagColor;
+    }
+    [cell addSubview:cell.tagLabel];
+
+//131203 1.2 iOS 7 end
     
     return cell;
     //    }
 }
 
-- (void)setEditing:(BOOL)editing animated:(BOOL)animated {
-    [super setEditing:editing animated:animated];
-    [self.userInfoTagTable setEditing:editing animated:YES];
-}
 #pragma mark - Table view delegate
 
 //	 To conform to the Human Interface Guidelines, selections should not be persistent --
@@ -410,61 +352,30 @@
     [mediaItemUserData updateTagForItem: self.userDataForMediaItem];
     
     self.userInfoTagArray = [NSArray arrayWithObjects: nil];
+//140216 1.2 iOS 7 begin
+    itemHasTag = NO;
     [self loadDataForView];
+    [tableView reloadData];
+    [tableView setEditing:NO animated:NO];
+//140216 1.2 iOS 7 end
+    
+//    NSLog (@"Deleted tag from mediaItemUserData");
+//    [mediaItemUserData listAll];
+//    TagData *tagData = [TagData alloc];
+//    tagData.managedObjectContext = self.managedObjectContext;
+//    [tagData listAll];
     
 }
-//- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-//    TagData *tagData = [self.fetchedResultsController objectAtIndexPath:indexPath];
-//    [self.managedObjectContext deleteObject:tagData];
-//    
-//    NSError *error = nil;
-//    if (![self.managedObjectContext save:&error]) {
-//        NSLog(@"Couldn't delete entry: %@", error);
-//        [[[UIAlertView alloc] initWithTitle:@"ERROR"
-//                                    message:@"Couldn't delete entry"
-//                                   delegate:nil
-//                          cancelButtonTitle:@"OK"
-//                          otherButtonTitles:nil] show];
-//    }
-//    [[NSNotificationCenter defaultCenter] postNotificationName: @"TagDataChanged" object:nil];
-//    
-//}
 
 -(UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return UITableViewCellEditingStyleDelete;
+//140216 1.2 iOS 7 bein
+    if (itemHasTag) {
+        return UITableViewCellEditingStyleDelete;
+    } else {
+        return UITableViewCellEditingStyleNone;
+    }
+//140216 1.2 iOS 7 end
 }
-
-
-
-//- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
-//    [self.userTagTableView beginUpdates];
-//}
-//
-//- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
-//    switch (type) {
-//        case NSFetchedResultsChangeInsert:
-//            [self.userTagTableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-//            //set a flag so that table can be scrolled after the updates happen other wise crashes with out of bounds index
-//            newTagInserted = YES;
-//            //            savedIndexPath = newIndexPath;
-//            //            [self.userTagTableView scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
-//            break;
-//            
-//        case NSFetchedResultsChangeDelete:
-//            [self.userTagTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-//            break;
-//            
-//        case NSFetchedResultsChangeUpdate:
-//            [self.userTagTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-//            break;
-//    }
-//}
-//
-//- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
-//    [self.userTagTableView endUpdates];
-//    
-//}
-
 
 #pragma mark Prepare for Seque
 
@@ -493,8 +404,6 @@
 
         
     }
-
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
 }
 

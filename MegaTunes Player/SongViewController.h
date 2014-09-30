@@ -6,8 +6,6 @@
 //
 //
 @class CollectionItem;
-@class MTSearchBar;
-
 
 #import "InfoTabBarController.h"
 #import "MediaGroupViewController.h"
@@ -25,7 +23,7 @@
 
 @property (strong, nonatomic)   IBOutlet UIView *shuffleView;
 @property (strong, nonatomic)   IBOutlet UIButton *shuffleButton;
-@property (strong, nonatomic)   IBOutlet MTSearchBar *searchBar;
+@property (strong, nonatomic)   IBOutlet UISearchBar *searchBar;
 //130912 1.1 add iTunesStoreButton begin
 @property (strong, nonatomic)   IBOutlet UIButton *completeAlbumButton;
 @property (strong, nonatomic)   NSString *collectionType;

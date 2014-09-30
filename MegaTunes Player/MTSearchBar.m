@@ -4,12 +4,6 @@
 //
 //  Created by Lori Hill on 4/28/13.
 //
-//  Created by orta therox on 18/04/2012.
-//  Released under The MIT License
-//  http://www.opensource.org/licenses/mit-license.php
-//
-//  Created by orta therox on 18/04/2012.
-//  Copyright (c) 2012 http://art.sy. All rights reserved.
 //
 #import "MTSearchBar.h"
 #import "UIImage+AdditionalFunctionalities.h"
@@ -40,7 +34,16 @@ CGFloat CancelAnimationDistance = 80;
 //        LogMethod();
 
     [super awakeFromNib];
-    
+	self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, 55.0);
+
+	NSAttributedString *attrText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"", nil) attributes:@{ NSForegroundColorAttributeName : [UIColor yellowColor], NSFontAttributeName : [UIFont systemFontOfSize:33.0]}];
+	[[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setAttributedText: attrText];
+		//	[self.searchBar setSearchTextPositionAdjustment: UIOffsetMake (0.0, -10.0)];
+	NSAttributedString *attrPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Search", nil) attributes:@{ NSForegroundColorAttributeName : [UIColor redColor], NSFontAttributeName : [UIFont systemFontOfSize:33.0] }];
+	[[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setAttributedPlaceholder: attrPlaceholder];
+
+	[self setBarTintColor: [UIColor darkGrayColor]];
+		//	[self..searchBar setTintColor: [UIColor clearColor]];
     // find textfield in subviews
     for (int i = (int)[self.subviews count] - 1; i >= 0; i--) {
         UIView *subview = [self.subviews objectAtIndex:i];
@@ -55,6 +58,7 @@ CGFloat CancelAnimationDistance = 80;
     
     //set font size to 44
     searchTextField.font = [UIFont systemFontOfSize:44];
+	searchTextField.tintColor = [UIColor whiteColor];
 
 //    [self stylizeSearchTextField];
 //    [self createButton];
@@ -65,7 +69,8 @@ CGFloat CancelAnimationDistance = 80;
 - (void)setFrame:(CGRect)frame {
 //        LogMethod();
 
-    frame.size.height = ViewHeight + (ViewMargin * 2) + 4;    [super setFrame:frame];
+    frame.size.height = ViewHeight + (ViewMargin * 2) + 4;
+	[super setFrame:frame];
 }
 
 - (void)layoutSubviews {

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="1j9-19-lml">
     <dependencies>
-        <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Song View Controller-->
@@ -10,18 +10,17 @@
             <objects>
                 <viewController id="mNb-57-5Xm" customClass="SongViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" rowHeight="55" sectionHeaderHeight="1" sectionFooterHeight="1" id="EmK-pd-wau">
-                        <rect key="frame" x="0.0" y="64" width="480" height="256"/>
+                        <rect key="frame" x="0.0" y="94" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                         <inset key="scrollIndicatorInsets" minX="1" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <view key="tableHeaderView" contentMode="scaleToFill" id="YP5-7A-NUT" userLabel="ShuffleView">
-                            <rect key="frame" x="0.0" y="0.0" width="480" height="110"/>
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="110"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <searchBar contentMode="redraw" barStyle="blackTranslucent" translatesAutoresizingMaskIntoConstraints="NO" id="l1i-Kb-yaE" customClass="MTSearchBar">
-                                    <rect key="frame" x="0.0" y="0.0" width="480" height="55"/>
+                                <searchBar contentMode="redraw" barStyle="blackTranslucent" translatesAutoresizingMaskIntoConstraints="NO" id="l1i-Kb-yaE">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="55"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="55" id="5Iq-b4-kea"/>
                                     </constraints>
@@ -31,7 +30,7 @@
                                     </connections>
                                 </searchBar>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="852-3o-ZMl">
-                                    <rect key="frame" x="0.0" y="55" width="480" height="55"/>
+                                    <rect key="frame" x="0.0" y="55" width="320" height="55"/>
                                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     <accessibility key="accessibilityConfiguration" label="Shuffle">
                                         <accessibilityTraits key="traits" none="YES"/>
@@ -64,7 +63,7 @@
                             </constraints>
                         </view>
                         <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="jWM-VD-TZ4">
-                            <rect key="frame" x="0.0" y="221" width="480" height="55"/>
+                            <rect key="frame" x="0.0" y="216" width="320" height="55"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="44"/>
                             <state key="normal" title=" iTunes Store" image="iTunesStoreIcon">
@@ -87,10 +86,10 @@
                                             </constraints>
                                         </imageView>
                                         <scrollView clipsSubviews="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FE1-Zd-Sld" userLabel="IBScrollView" customClass="InCellScrollView">
-                                            <rect key="frame" x="18" y="0.0" width="294" height="54"/>
+                                            <rect key="frame" x="18" y="0.0" width="134" height="54"/>
                                             <subviews>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="clip" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UyP-L2-mJg">
-                                                    <rect key="frame" x="0.0" y="0.0" width="294" height="54"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="134" height="54"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="44"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                                     <color key="highlightedColor" red="0.070588238540000001" green="0.1176470667" blue="1" alpha="1" colorSpace="deviceRGB"/>
@@ -106,7 +105,7 @@
                                             </constraints>
                                         </scrollView>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="00:00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Tb-CH-179" userLabel="durationLabel">
-                                            <rect key="frame" x="364" y="0.0" width="111" height="54"/>
+                                            <rect key="frame" x="204" y="0.0" width="111" height="54"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="111" id="yQ7-yM-bDg"/>
                                             </constraints>
@@ -150,7 +149,6 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="n9y-KG-rl2"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO"/>
-                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <connections>
                         <outlet property="completeAlbumButton" destination="jWM-VD-TZ4" id="ItX-8I-0y3"/>
                         <outlet property="searchBar" destination="l1i-Kb-yaE" id="CLv-Jd-LFD"/>
@@ -174,9 +172,9 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="291" y="-360"/>
+            <point key="canvasLocation" x="437" y="-509"/>
         </scene>
-        <!--Main View Controller - Now Playing-->
+        <!--Now Playing-->
         <scene sceneID="PLo-C0-SNg">
             <objects>
                 <viewController title="Now Playing" wantsFullScreenLayout="YES" id="SKu-HW-GrJ" customClass="MainViewController" sceneMemberID="viewController">
@@ -185,10 +183,10 @@
                         <viewControllerLayoutGuide type="bottom" id="odI-eg-HCw"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="1ht-Bf-15S">
-                        <rect key="frame" x="0.0" y="94" width="320" height="386"/>
+                        <rect key="frame" x="0.0" y="94" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hvR-vh-6Bp" customClass="AutoScrollLabel">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hvR-vh-6Bp" customClass="AutoScrollLabel">
                                 <rect key="frame" x="0.0" y="20" width="278" height="52"/>
                                 <gestureRecognizers/>
                                 <constraints>
@@ -210,7 +208,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" contentMode="left" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jp7-Ow-fVH" userLabel="elapsedLabel">
-                                <rect key="frame" x="4" y="107" width="126" height="52"/>
+                                <rect key="frame" x="4" y="110" width="126" height="52"/>
                                 <accessibility key="accessibilityConfiguration" hint="Tap to magnify." label="Elapsed time">
                                     <accessibilityTraits key="traits" none="YES" staticText="YES" updatesFrequently="YES"/>
                                     <bool key="isElement" value="YES"/>
@@ -228,7 +226,7 @@
                                 </connections>
                             </label>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1000" translatesAutoresizingMaskIntoConstraints="NO" id="vBs-Pg-YLN" customClass="OBSlider">
-                                <rect key="frame" x="18" y="79" width="283" height="24"/>
+                                <rect key="frame" x="18" y="82" width="283" height="24"/>
                                 <accessibility key="accessibilityConfiguration" label="Progress Bar">
                                     <bool key="isElement" value="YES"/>
                                 </accessibility>
@@ -243,7 +241,7 @@
                                 </connections>
                             </slider>
                             <label opaque="NO" clipsSubviews="YES" contentMode="left" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r00-yo-I0n" userLabel="remainingLabel">
-                                <rect key="frame" x="188" y="107" width="128" height="52"/>
+                                <rect key="frame" x="188" y="110" width="128" height="52"/>
                                 <accessibility key="accessibilityConfiguration" hint="Tap to magnify." label="Remaining time">
                                     <accessibilityTraits key="traits" none="YES" staticText="YES" updatesFrequently="YES"/>
                                     <bool key="isElement" value="YES"/>
@@ -261,7 +259,7 @@
                                 </connections>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="926" text="" lineBreakMode="clip" minimumFontSize="10" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pNh-na-wBJ" userLabel="Next:">
-                                <rect key="frame" x="3" y="336" width="108" height="46"/>
+                                <rect key="frame" x="3" y="366" width="108" height="46"/>
                                 <accessibility key="accessibilityConfiguration" label="Next track">
                                     <bool key="isElement" value="YES"/>
                                 </accessibility>
@@ -274,7 +272,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <scrollView clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UXV-Pt-1xE">
-                                <rect key="frame" x="112" y="333" width="208" height="52"/>
+                                <rect key="frame" x="112" y="363" width="208" height="52"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="clip" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="819-GM-MVw">
                                         <rect key="frame" x="0.0" y="0.0" width="209" height="52"/>
@@ -298,7 +296,7 @@
                                 </connections>
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EYp-S6-Fep" customClass="AccessibleButton">
-                                <rect key="frame" x="11" y="185" width="92" height="62"/>
+                                <rect key="frame" x="11" y="215" width="92" height="62"/>
                                 <accessibility key="accessibilityConfiguration" label="Previous track">
                                     <bool key="isElement" value="YES"/>
                                 </accessibility>
@@ -319,7 +317,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U4I-PN-hea" customClass="AccessibleButton">
-                                <rect key="frame" x="114" y="185" width="92" height="62"/>
+                                <rect key="frame" x="114" y="215" width="92" height="62"/>
                                 <accessibility key="accessibilityConfiguration" hint="" label="">
                                     <bool key="isElement" value="YES"/>
                                 </accessibility>
@@ -339,7 +337,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xek-mb-ENQ" customClass="AccessibleButton">
-                                <rect key="frame" x="218" y="185" width="92" height="62"/>
+                                <rect key="frame" x="218" y="215" width="92" height="62"/>
                                 <accessibility key="accessibilityConfiguration" label="Next track">
                                     <bool key="isElement" value="YES"/>
                                 </accessibility>
@@ -356,7 +354,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wwo-eb-cjv">
-                                <rect key="frame" x="11" y="251" width="92" height="62"/>
+                                <rect key="frame" x="11" y="281" width="92" height="62"/>
                                 <accessibility key="accessibilityConfiguration" label="">
                                     <accessibilityTraits key="traits" none="YES" button="YES"/>
                                     <bool key="isElement" value="YES"/>
@@ -378,7 +376,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YF1-6P-sPE" customClass="AccessibleButton">
-                                <rect key="frame" x="218" y="251" width="92" height="62"/>
+                                <rect key="frame" x="218" y="281" width="92" height="62"/>
                                 <accessibility key="accessibilityConfiguration" label="Shuffle">
                                     <accessibilityTraits key="traits" none="YES" button="YES"/>
                                     <bool key="isElement" value="YES"/>
@@ -396,7 +394,7 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jQh-tN-5vH" customClass="MPVolumeView">
-                                <rect key="frame" x="20" y="329" width="280" height="40"/>
+                                <rect key="frame" x="20" y="359" width="280" height="40"/>
                                 <accessibility key="accessibilityConfiguration" label="">
                                     <bool key="isElement" value="NO"/>
                                 </accessibility>
@@ -434,7 +432,6 @@
                             <constraint firstItem="jp7-Ow-fVH" firstAttribute="top" secondItem="vBs-Pg-YLN" secondAttribute="bottom" constant="5" id="8LE-Kx-iS3"/>
                             <constraint firstItem="hvR-vh-6Bp" firstAttribute="leading" secondItem="1ht-Bf-15S" secondAttribute="leading" id="90T-EH-bHM"/>
                             <constraint firstItem="U4I-PN-hea" firstAttribute="bottom" secondItem="Xek-mb-ENQ" secondAttribute="bottom" id="AGq-Zl-Vyg"/>
-                            <constraint firstItem="vBs-Pg-YLN" firstAttribute="top" secondItem="uyn-go-sp7" secondAttribute="bottom" constant="4" id="B3b-sj-fJ7"/>
                             <constraint firstAttribute="bottom" secondItem="pNh-na-wBJ" secondAttribute="bottom" constant="4" id="C5y-rx-YhF"/>
                             <constraint firstItem="jQh-tN-5vH" firstAttribute="leading" secondItem="1ht-Bf-15S" secondAttribute="leading" constant="20" symbolic="YES" id="CP9-v2-Nfe"/>
                             <constraint firstAttribute="centerX" secondItem="U4I-PN-hea" secondAttribute="centerX" id="EAz-n6-niJ"/>
@@ -443,6 +440,7 @@
                             <constraint firstItem="wwo-eb-cjv" firstAttribute="leading" secondItem="EYp-S6-Fep" secondAttribute="leading" id="FqK-az-kxZ"/>
                             <constraint firstItem="hvR-vh-6Bp" firstAttribute="leading" secondItem="AEk-F1-SJe" secondAttribute="leading" id="Fqk-pi-N1B"/>
                             <constraint firstAttribute="bottom" secondItem="UXV-Pt-1xE" secondAttribute="bottom" constant="1" id="GGi-So-jWx"/>
+                            <constraint firstItem="vBs-Pg-YLN" firstAttribute="top" secondItem="hvR-vh-6Bp" secondAttribute="bottom" constant="10" id="Iuv-UN-BEl"/>
                             <constraint firstAttribute="trailing" secondItem="vBs-Pg-YLN" secondAttribute="trailing" constant="21" id="Jld-bM-wPW"/>
                             <constraint firstItem="r00-yo-I0n" firstAttribute="baseline" secondItem="jp7-Ow-fVH" secondAttribute="baseline" id="LDJ-yd-4v6"/>
                             <constraint firstItem="UXV-Pt-1xE" firstAttribute="trailing" secondItem="1ht-Bf-15S" secondAttribute="trailing" id="Nn0-9R-Zo2"/>
@@ -575,7 +573,6 @@
                             <constraint firstAttribute="centerY" secondItem="28X-IN-pRp" secondAttribute="centerY" id="N6R-gD-qtI"/>
                             <constraint firstItem="28X-IN-pRp" firstAttribute="leading" secondItem="VlT-IA-8D6" secondAttribute="leading" id="ZfL-7n-TMd"/>
                         </constraints>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
                     <navigationItem key="navigationItem" id="44y-cp-anW"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO"/>
@@ -645,15 +642,14 @@
             </objects>
             <point key="canvasLocation" x="2295" y="-1030"/>
         </scene>
-        <!--Tunes Comments View Controller - Notes-->
+        <!--Notes-->
         <scene sceneID="K23-hI-hYS">
             <objects>
                 <viewController autoresizesArchivedViewToFullSize="NO" title="Notes" automaticallyAdjustsScrollViewInsets="NO" modalTransitionStyle="partialCurl" id="AeD-XN-WKi" customClass="ITunesCommentsViewController" sceneMemberID="viewController">
                     <textView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Lorem ipsum " id="ZTj-61-wl1">
-                        <rect key="frame" x="0.0" y="64" width="480" height="207"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                         <color key="textColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
                         <fontDescription key="fontDescription" type="system" pointSize="44"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -728,7 +724,6 @@
                             </textView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PPO-El-H3S">
                                 <rect key="frame" x="10" y="55" width="310" height="55"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="55" id="P2X-MN-xSQ"/>
                                 </constraints>
@@ -739,7 +734,6 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="1nd-7c-kt3" secondAttribute="bottom" id="8x2-9q-jw2"/>
                             <constraint firstItem="1nd-7c-kt3" firstAttribute="top" secondItem="Lr6-Id-qll" secondAttribute="top" constant="55" id="OYZ-nI-uRG"/>
                             <constraint firstItem="Shu-jn-KJO" firstAttribute="top" secondItem="Lr6-Id-qll" secondAttribute="top" id="QYb-OW-oyf"/>
                             <constraint firstItem="PPO-El-H3S" firstAttribute="leading" secondItem="Lr6-Id-qll" secondAttribute="leading" constant="10" id="UP8-zf-2lm"/>
@@ -748,6 +742,7 @@
                             <constraint firstItem="1nd-7c-kt3" firstAttribute="leading" secondItem="Lr6-Id-qll" secondAttribute="leading" id="oV9-ML-EJ2"/>
                             <constraint firstItem="1nd-7c-kt3" firstAttribute="top" secondItem="PPO-El-H3S" secondAttribute="top" id="pgV-xA-XOz"/>
                             <constraint firstAttribute="trailing" secondItem="1nd-7c-kt3" secondAttribute="trailing" id="sF9-dk-SSR"/>
+                            <constraint firstItem="1nd-7c-kt3" firstAttribute="bottom" secondItem="Lr6-Id-qll" secondAttribute="bottomMargin" id="v0t-wa-5wm"/>
                             <constraint firstItem="Shu-jn-KJO" firstAttribute="leading" secondItem="Lr6-Id-qll" secondAttribute="leading" id="x6o-qp-CCl"/>
                         </constraints>
                     </view>
@@ -759,7 +754,7 @@
                         <outlet property="comments" destination="1nd-7c-kt3" id="ugX-XU-nwC"/>
                         <outlet property="placeholderLabel" destination="PPO-El-H3S" id="3Tl-pI-064"/>
                         <outlet property="userInfoTagTable" destination="Shu-jn-KJO" id="6tx-ec-Ybr"/>
-                        <outlet property="verticalSpaceCommentsToBottomConstraint" destination="8x2-9q-jw2" id="F0h-0F-Pi5"/>
+                        <outlet property="verticalSpaceCommentsToBottomConstraint" destination="v0t-wa-5wm" id="n2h-16-uYm"/>
                         <outlet property="verticalSpaceTopToCommentsConstraint" destination="OYZ-nI-uRG" id="8cE-v6-SiZ"/>
                         <outlet property="verticalSpaceTopToTableViewConstraint" destination="QYb-OW-oyf" id="zPs-p5-G1D"/>
                         <segue destination="VP8-wR-3Ea" kind="push" identifier="SelectTag" id="4ol-8m-ygW"/>
@@ -769,12 +764,12 @@
             </objects>
             <point key="canvasLocation" x="1182" y="676"/>
         </scene>
-        <!--Album Info View Controller - Info-->
+        <!--Info-->
         <scene sceneID="ZXh-nv-74T">
             <objects>
                 <viewController autoresizesArchivedViewToFullSize="NO" title="Info" automaticallyAdjustsScrollViewInsets="NO" modalTransitionStyle="partialCurl" id="0BK-h9-5Yl" customClass="AlbumInfoViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" sectionIndexMinimumDisplayRowCount="3" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="55" sectionHeaderHeight="1" sectionFooterHeight="1" id="Km2-GT-jmW">
-                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
+                        <rect key="frame" x="0.0" y="94" width="320" height="367"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="separatorColor" white="0.80000000000000004" alpha="1" colorSpace="deviceWhite"/>
                         <imageView key="tableFooterView" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="1" verticalHuggingPriority="1" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" id="xgF-dE-gGX">
@@ -793,8 +788,7 @@
                                         <scrollView contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4BY-yf-XEu" customClass="InCellScrollView">
                                             <rect key="frame" x="0.0" y="0.0" width="266" height="54"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HeX-3y-Fhb">
-                                                    <rect key="frame" x="0.0" y="0.0" width="266" height="0.0"/>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" misplaced="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HeX-3y-Fhb">
                                                     <fontDescription key="fontDescription" type="system" pointSize="44"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <color key="highlightedColor" red="0.070588238540000001" green="0.1176470667" blue="1" alpha="1" colorSpace="deviceRGB"/>
@@ -898,57 +892,12 @@
             <objects>
                 <viewController autoresizesArchivedViewToFullSize="NO" automaticallyAdjustsScrollViewInsets="NO" id="DPV-A8-OP5" customClass="ArtistViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="grouped" rowHeight="55" sectionHeaderHeight="1" sectionFooterHeight="1" id="tE6-jE-hH7">
-                        <rect key="frame" x="0.0" y="64" width="480" height="256"/>
+                        <rect key="frame" x="0.0" y="94" width="320" height="386"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                        <view key="tableHeaderView" contentMode="scaleToFill" id="Wo4-4x-FC2" userLabel="AllAlbumsView">
-                            <rect key="frame" x="0.0" y="0.0" width="480" height="110"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <searchBar contentMode="redraw" barStyle="black" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Aba-KR-t1y">
-                                    <rect key="frame" x="0.0" y="0.0" width="480" height="55"/>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <textInputTraits key="textInputTraits" autocorrectionType="no"/>
-                                    <connections>
-                                        <outlet property="delegate" destination="DPV-A8-OP5" id="REk-I2-bHo"/>
-                                    </connections>
-                                </searchBar>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y1n-zD-H2J">
-                                    <rect key="frame" x="0.0" y="55" width="480" height="55"/>
-                                    <accessibility key="accessibilityConfiguration" label="Shuffle"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="55" id="a9T-t5-jvt"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" type="system" pointSize="44"/>
-                                    <state key="normal">
-                                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                    <state key="highlighted">
-                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                    <connections>
-                                        <segue destination="527-b6-fAN" kind="push" identifier="ViewAllAlbums" id="CZe-dj-i8N"/>
-                                    </connections>
-                                </button>
-                            </subviews>
-                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            <constraints>
-                                <constraint firstItem="Y1n-zD-H2J" firstAttribute="leading" secondItem="Wo4-4x-FC2" secondAttribute="leading" id="2l1-7O-nTl"/>
-                                <constraint firstItem="Aba-KR-t1y" firstAttribute="leading" secondItem="Y1n-zD-H2J" secondAttribute="leading" id="MGY-kB-CLe"/>
-                                <constraint firstItem="Aba-KR-t1y" firstAttribute="bottom" secondItem="Y1n-zD-H2J" secondAttribute="top" id="QgN-3F-U1w"/>
-                                <constraint firstItem="Aba-KR-t1y" firstAttribute="trailing" secondItem="Y1n-zD-H2J" secondAttribute="trailing" id="U9w-YP-9p7"/>
-                                <constraint firstAttribute="trailing" secondItem="Y1n-zD-H2J" secondAttribute="trailing" id="gZO-Sv-7GL"/>
-                                <constraint firstItem="Aba-KR-t1y" firstAttribute="leading" secondItem="Wo4-4x-FC2" secondAttribute="leading" id="iPh-JP-OKW"/>
-                                <constraint firstItem="Y1n-zD-H2J" firstAttribute="top" secondItem="Wo4-4x-FC2" secondAttribute="top" constant="55" id="si4-wc-lTS"/>
-                                <constraint firstItem="Aba-KR-t1y" firstAttribute="top" secondItem="Wo4-4x-FC2" secondAttribute="top" id="yWV-CT-5dd"/>
-                            </constraints>
-                        </view>
                         <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="FaT-wF-w56">
-                            <rect key="frame" x="0.0" y="221" width="480" height="55"/>
+                            <rect key="frame" x="0.0" y="216" width="320" height="55"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="44"/>
                             <state key="normal" title=" iTunes Store" image="iTunesStoreIcon">
@@ -965,10 +914,9 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <scrollView clipsSubviews="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BEu-UQ-vTB" userLabel="IBScrollView" customClass="InCellScrollView">
-                                            <rect key="frame" x="0.0" y="0.0" width="312" height="54"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="152" height="54"/>
                                             <subviews>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="clip" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ka0-Cb-Mfz">
-                                                    <rect key="frame" x="0.0" y="0.0" width="0.0" height="54"/>
                                                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="54" id="q89-QD-DDZ"/>
@@ -987,7 +935,7 @@
                                             </constraints>
                                         </scrollView>
                                         <label opaque="NO" clipsSubviews="YES" contentMode="left" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="22" translatesAutoresizingMaskIntoConstraints="NO" id="jfz-Q5-l6V" userLabel="duration">
-                                            <rect key="frame" x="317" y="0.0" width="130" height="54"/>
+                                            <rect key="frame" x="157" y="0.0" width="130" height="54"/>
                                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="130" id="GnY-nU-ioo"/>
@@ -1024,33 +972,20 @@
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <navigationItem key="navigationItem" id="293-P3-9Qx"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO"/>
-                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <connections>
-                        <outlet property="allAlbumsButton" destination="Y1n-zD-H2J" id="hPA-8s-STs"/>
-                        <outlet property="allAlbumsView" destination="Wo4-4x-FC2" id="IIJ-HY-Dw1"/>
                         <outlet property="collectionTableView" destination="tE6-jE-hH7" id="ZjL-1M-vDP"/>
                         <outlet property="moreGenreButton" destination="FaT-wF-w56" id="qkD-kU-Q2K"/>
-                        <outlet property="searchBar" destination="Aba-KR-t1y" id="D2v-gE-pUR"/>
-                        <outlet property="searchDisplayController" destination="FfK-hu-gAG" id="vGL-ge-8cm"/>
                         <segue destination="SKu-HW-GrJ" kind="push" identifier="ViewNowPlaying" id="nbU-Bw-UO3"/>
                         <segue destination="mNb-57-5Xm" kind="push" identifier="ViewSongs" id="kZ2-Sr-P63"/>
                         <segue destination="527-b6-fAN" kind="push" identifier="AlbumCollections" id="dXX-zY-4vR"/>
+                        <segue destination="527-b6-fAN" kind="push" identifier="ViewAllAlbums" id="ShV-xx-FDT"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ecr-9R-ha5" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <searchDisplayController id="FfK-hu-gAG">
-                    <connections>
-                        <outlet property="delegate" destination="DPV-A8-OP5" id="g7k-Z2-01Q"/>
-                        <outlet property="searchBar" destination="Aba-KR-t1y" id="gtN-00-Qoj"/>
-                        <outlet property="searchContentsController" destination="DPV-A8-OP5" id="Hks-Ml-ei5"/>
-                        <outlet property="searchResultsDataSource" destination="DPV-A8-OP5" id="Gyk-bX-ZeP"/>
-                        <outlet property="searchResultsDelegate" destination="DPV-A8-OP5" id="6IT-rF-Uer"/>
-                    </connections>
-                </searchDisplayController>
             </objects>
             <point key="canvasLocation" x="-294" y="-1345"/>
         </scene>
-        <!--Media Group View Controller - Select Music-->
+        <!--Select Music-->
         <scene sceneID="6h3-Cd-qc6">
             <objects>
                 <viewController title="Select Music" useStoryboardIdentifierAsRestorationIdentifier="YES" id="tmU-Ze-HBf" customClass="MediaGroupViewController" sceneMemberID="viewController">
@@ -1142,7 +1077,6 @@
                             <constraint firstItem="Gbu-6N-ucw" firstAttribute="leading" secondItem="yLZ-dq-9Ej" secondAttribute="leading" id="KMf-qT-fLv"/>
                             <constraint firstItem="Gbu-6N-ucw" firstAttribute="trailing" secondItem="yLZ-dq-9Ej" secondAttribute="trailing" id="KgB-wZ-Lej"/>
                         </constraints>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <navigationItem key="navigationItem" id="BfA-rd-N1z"/>
@@ -1229,17 +1163,16 @@
             <objects>
                 <viewController id="527-b6-fAN" customClass="AlbumViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="grouped" rowHeight="55" sectionHeaderHeight="1" sectionFooterHeight="1" id="oc8-bL-YeY">
-                        <rect key="frame" x="0.0" y="64" width="480" height="256"/>
+                        <rect key="frame" x="0.0" y="94" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <view key="tableHeaderView" contentMode="scaleToFill" id="r0d-qR-34G" userLabel="AllSongsView">
-                            <rect key="frame" x="0.0" y="0.0" width="480" height="110"/>
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="110"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <searchBar contentMode="redraw" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="8ig-hc-H4r" customClass="MTSearchBar">
-                                    <rect key="frame" x="0.0" y="0.0" width="480" height="51"/>
+                                <searchBar contentMode="redraw" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="8ig-hc-H4r">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="51"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="51" id="I2P-2o-bXB"/>
@@ -1250,7 +1183,7 @@
                                     </connections>
                                 </searchBar>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mBz-0Z-aws">
-                                    <rect key="frame" x="0.0" y="55" width="480" height="55"/>
+                                    <rect key="frame" x="0.0" y="55" width="320" height="55"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="55" id="414-48-1oX"/>
                                     </constraints>
@@ -1278,7 +1211,7 @@
                             </constraints>
                         </view>
                         <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="3zA-82-3oD">
-                            <rect key="frame" x="0.0" y="221" width="480" height="55"/>
+                            <rect key="frame" x="0.0" y="216" width="320" height="55"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="44"/>
                             <state key="normal" title=" iTunes Store" image="iTunesStoreIcon">
@@ -1298,10 +1231,10 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <scrollView clipsSubviews="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9aX-f3-0ln" userLabel="IBScrollView" customClass="InCellScrollView">
-                                            <rect key="frame" x="0.0" y="0.0" width="312" height="54"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="152" height="54"/>
                                             <subviews>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Album Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FPI-Oo-UfO" userLabel="cTitleLabel">
-                                                    <rect key="frame" x="0.0" y="0.0" width="312" height="53"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="152" height="53"/>
                                                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="44"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -1319,7 +1252,7 @@
                                             </constraints>
                                         </scrollView>
                                         <label opaque="NO" clipsSubviews="YES" contentMode="left" text="000:00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="22" translatesAutoresizingMaskIntoConstraints="NO" id="P6Y-cL-7cG" userLabel="duration">
-                                            <rect key="frame" x="317" y="-1" width="130" height="55"/>
+                                            <rect key="frame" x="157" y="-1" width="130" height="55"/>
                                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="130" id="fed-9h-i3W"/>
@@ -1357,7 +1290,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="BRm-bg-dgx"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO"/>
-                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <connections>
                         <outlet property="allSongsButton" destination="mBz-0Z-aws" id="inC-uQ-WeV"/>
                         <outlet property="allSongsView" destination="r0d-qR-34G" id="8gK-Rk-8zL"/>
@@ -1380,24 +1313,23 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="-29" y="-839"/>
+            <point key="canvasLocation" x="-262" y="-619"/>
         </scene>
         <!--Genre View Controller-->
         <scene sceneID="4it-gg-iyo">
             <objects>
                 <viewController id="DLM-JZ-gUa" customClass="GenreViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="grouped" rowHeight="55" sectionHeaderHeight="1" sectionFooterHeight="1" id="dU2-ae-vO5">
-                        <rect key="frame" x="0.0" y="64" width="480" height="256"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <view key="tableHeaderView" contentMode="scaleToFill" id="mex-ok-BIk" userLabel="TableHeaderView">
-                            <rect key="frame" x="0.0" y="0.0" width="480" height="55"/>
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="55"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <searchBar contentMode="redraw" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="izT-v5-iqH" customClass="MTSearchBar">
-                                    <rect key="frame" x="0.0" y="0.0" width="480" height="55"/>
+                                <searchBar contentMode="redraw" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="izT-v5-iqH">
+                                    <rect key="frame" x="0.0" y="0.0" width="300" height="55"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="55" id="rOj-Xx-o4h"/>
                                     </constraints>
@@ -1409,7 +1341,7 @@
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstItem="izT-v5-iqH" firstAttribute="trailing" secondItem="mex-ok-BIk" secondAttribute="trailing" id="27w-jm-0tp"/>
+                                <constraint firstItem="izT-v5-iqH" firstAttribute="trailing" secondItem="mex-ok-BIk" secondAttribute="trailing" constant="-20" id="27w-jm-0tp"/>
                                 <constraint firstItem="izT-v5-iqH" firstAttribute="leading" secondItem="mex-ok-BIk" secondAttribute="leading" id="6T7-po-uyy"/>
                                 <constraint firstItem="izT-v5-iqH" firstAttribute="top" secondItem="mex-ok-BIk" secondAttribute="top" id="7RD-8I-sUE"/>
                             </constraints>
@@ -1423,10 +1355,10 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <scrollView clipsSubviews="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qev-Vn-512" userLabel="scrollView" customClass="InCellScrollView">
-                                            <rect key="frame" x="0.0" y="0.0" width="312" height="54"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="152" height="54"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Genre Title" lineBreakMode="clip" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ier-SO-V2D" userLabel="cTitleLabel">
-                                                    <rect key="frame" x="0.0" y="0.0" width="312" height="54"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="152" height="54"/>
                                                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="44"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -1446,7 +1378,7 @@
                                             </constraints>
                                         </scrollView>
                                         <label opaque="NO" clipsSubviews="YES" contentMode="left" text="000:00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="22" translatesAutoresizingMaskIntoConstraints="NO" id="BuX-5J-yrU" userLabel="duration">
-                                            <rect key="frame" x="317" y="0.0" width="130" height="54"/>
+                                            <rect key="frame" x="157" y="0.0" width="130" height="54"/>
                                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="130" id="Y0g-jN-fnh"/>
@@ -1482,7 +1414,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="jYa-mg-XkN"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO"/>
-                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <connections>
                         <outlet property="collectionTableView" destination="dU2-ae-vO5" id="L2C-id-Nz4"/>
                         <outlet property="searchBar" destination="izT-v5-iqH" id="EtS-ky-EPQ"/>
@@ -1510,7 +1442,7 @@
             <objects>
                 <viewController autoresizesArchivedViewToFullSize="NO" id="VP8-wR-3Ea" customClass="UserTagViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" delaysContentTouches="NO" dataMode="prototypes" style="plain" rowHeight="55" sectionHeaderHeight="22" sectionFooterHeight="22" id="xT6-n5-RLI" customClass="FMMoveTableView">
-                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="94" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <inset key="scrollIndicatorInsets" minX="1" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -1562,7 +1494,7 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO"/>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <connections>
-                        <outlet property="userTagTableView" destination="xT6-n5-RLI" id="2dI-4X-z48"/>
+                        <outlet property="userTagTableView" destination="xT6-n5-RLI" id="diQ-vB-0N0"/>
                         <segue destination="nNG-kj-OGb" kind="push" identifier="AddTagItem" id="4z5-dg-hs5"/>
                     </connections>
                 </viewController>
@@ -1579,7 +1511,7 @@
                         <viewControllerLayoutGuide type="bottom" id="YSr-lI-l7Q"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Ygb-0H-jYe">
-                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" clearsOnBeginEditing="YES" adjustsFontSizeToFit="NO" minimumFontSize="44" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Ajq-Rv-jHw">
@@ -1631,18 +1563,17 @@
             <objects>
                 <viewController id="bxD-3g-ILC" customClass="TaggedSongViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" rowHeight="55" sectionHeaderHeight="1" sectionFooterHeight="1" id="5P1-CA-UpH">
-                        <rect key="frame" x="0.0" y="64" width="480" height="256"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                         <inset key="scrollIndicatorInsets" minX="1" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <view key="tableHeaderView" contentMode="scaleToFill" id="IRE-aM-PTx" userLabel="ShuffleView">
-                            <rect key="frame" x="0.0" y="0.0" width="480" height="110"/>
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="110"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <searchBar contentMode="redraw" barStyle="blackTranslucent" translatesAutoresizingMaskIntoConstraints="NO" id="ops-gV-lfC" customClass="MTSearchBar">
-                                    <rect key="frame" x="0.0" y="0.0" width="480" height="55"/>
+                                <searchBar contentMode="redraw" barStyle="blackTranslucent" translatesAutoresizingMaskIntoConstraints="NO" id="ops-gV-lfC">
+                                    <rect key="frame" x="0.0" y="0.0" width="340" height="55"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="55" id="3AQ-VF-DYf"/>
                                     </constraints>
@@ -1652,7 +1583,7 @@
                                     </connections>
                                 </searchBar>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z9U-EQ-CyA" userLabel="Button -">
-                                    <rect key="frame" x="0.0" y="55" width="480" height="55"/>
+                                    <rect key="frame" x="0.0" y="55" width="320" height="55"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="55" id="etS-G9-kwi"/>
                                     </constraints>
@@ -1672,7 +1603,7 @@
                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstItem="Z9U-EQ-CyA" firstAttribute="leading" secondItem="IRE-aM-PTx" secondAttribute="leading" id="Qaq-WA-P2X"/>
-                                <constraint firstItem="ops-gV-lfC" firstAttribute="trailing" secondItem="IRE-aM-PTx" secondAttribute="trailing" id="b1h-nW-BoI"/>
+                                <constraint firstItem="ops-gV-lfC" firstAttribute="trailing" secondItem="IRE-aM-PTx" secondAttribute="trailing" constant="20" id="b1h-nW-BoI"/>
                                 <constraint firstItem="ops-gV-lfC" firstAttribute="top" secondItem="IRE-aM-PTx" secondAttribute="top" id="jHt-Tk-UpP"/>
                                 <constraint firstItem="Z9U-EQ-CyA" firstAttribute="top" secondItem="IRE-aM-PTx" secondAttribute="top" constant="55" id="oWi-tG-J8w"/>
                                 <constraint firstItem="ops-gV-lfC" firstAttribute="leading" secondItem="IRE-aM-PTx" secondAttribute="leading" id="otN-p8-zlU"/>
@@ -1694,10 +1625,10 @@
                                             </constraints>
                                         </imageView>
                                         <scrollView clipsSubviews="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ggW-FG-mrw" userLabel="IBScrollView" customClass="InCellScrollView">
-                                            <rect key="frame" x="18" y="0.0" width="294" height="54"/>
+                                            <rect key="frame" x="18" y="0.0" width="134" height="54"/>
                                             <subviews>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="clip" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sRw-O2-XTx">
-                                                    <rect key="frame" x="0.0" y="0.0" width="294" height="54"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="134" height="54"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="44"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                                     <color key="highlightedColor" red="0.070588238540000001" green="0.1176470667" blue="1" alpha="1" colorSpace="deviceRGB"/>
@@ -1713,7 +1644,7 @@
                                             </constraints>
                                         </scrollView>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="00:00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ufv-VV-8Cs" userLabel="durationLabel">
-                                            <rect key="frame" x="325" y="0.0" width="111" height="54"/>
+                                            <rect key="frame" x="165" y="0.0" width="111" height="54"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="111" id="jxs-Yf-Yhc"/>
                                             </constraints>
@@ -1757,7 +1688,7 @@
                     <extendedEdge key="edgesForExtendedLayout" top="YES"/>
                     <navigationItem key="navigationItem" id="nlG-oE-ggd"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO"/>
-                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <connections>
                         <outlet property="searchBar" destination="ops-gV-lfC" id="8bg-xb-M9o"/>
                         <outlet property="searchDisplayController" destination="eR9-oU-5iG" id="ktA-tj-ZZY"/>
@@ -1809,14 +1740,14 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="pO3-jk-z6Z"/>
-        <segue reference="5Lm-x9-p1k"/>
         <segue reference="hHs-2t-p2p"/>
-        <segue reference="jae-3W-C2f"/>
-        <segue reference="HSe-qu-5Rj"/>
+        <segue reference="nbU-Bw-UO3"/>
+        <segue reference="iCw-Zw-zSF"/>
         <segue reference="E4Y-B8-RSc"/>
-        <segue reference="rM7-oN-wjy"/>
+        <segue reference="HSe-qu-5Rj"/>
         <segue reference="kZ2-Sr-P63"/>
-        <segue reference="dXX-zY-4vR"/>
+        <segue reference="ShV-xx-FDT"/>
+        <segue reference="SvT-2g-rDr"/>
+        <segue reference="jae-3W-C2f"/>
     </inferredMetricsTieBreakers>
 </document>

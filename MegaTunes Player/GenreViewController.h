@@ -7,7 +7,6 @@
 //
 
 @class CollectionItem;
-@class MTSearchBar;
 
 
 @interface GenreViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MPMediaPickerControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate> {
@@ -17,7 +16,7 @@
 
 @property (strong, nonatomic)   IBOutlet UITableView *collectionTableView;
 @property (strong, nonatomic)   IBOutlet UIView *tableHeaderView;
-@property (strong, nonatomic)   IBOutlet MTSearchBar *searchBar;
+@property (strong, nonatomic)   IBOutlet UISearchBar *searchBar;
 
 @property (nonatomic, retain)   NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong)   NSArray *collection;

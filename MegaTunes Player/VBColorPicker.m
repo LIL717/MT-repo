@@ -23,7 +23,7 @@ CGContextRef    context;
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        [self setImage:[UIImage imageNamed:@"colorWheel"]];
+        [self setImage:[UIImage imageNamed:@"darkColorWheel"]];
 //        [self setImage:[UIImage imageNamed:@"darkColorWheel"]];
         [self setUserInteractionEnabled:YES];
         [self setHidden:YES];

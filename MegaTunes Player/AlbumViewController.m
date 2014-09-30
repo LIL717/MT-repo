@@ -144,6 +144,8 @@ BOOL firstLoad;
         frame.size.height = 55;
         self.allSongsView.frame = frame;
     }
+	[self.searchBar setTranslatesAutoresizingMaskIntoConstraints: YES];
+
     //since collectionSections is not working for Playlists (submitted bug report to Apple 14409913), don't show allow indexing until Apple fixes it or make a workaround (like the sections for TaggedSongViewController)
     if ([self.collectionType isEqualToString: @"Playlists"]) {
         self.collectionTableView.sectionIndexMinimumDisplayRowCount = 999;
@@ -470,12 +472,12 @@ BOOL firstLoad;
 - (void)searchDisplayControllerDidBeginSearch:(UISearchDisplayController *)controller {
     LogMethod();
     self.isSearching = YES;
-    CGRect newFrame = searchBar.frame;
-    newFrame.origin.x = 0;
-    newFrame.origin.y = 0;
-    newFrame.size.height = 55;
-    newFrame.size.width = self.collectionTableView.frame.size.width;
-    searchBar.frame = newFrame;
+//    CGRect newFrame = searchBar.frame;
+//    newFrame.origin.x = 0;
+//    newFrame.origin.y = 0;
+//    newFrame.size.height = 55;
+//    newFrame.size.width = self.collectionTableView.frame.size.width;
+//    searchBar.frame = newFrame;
     //    [[NSNotificationCenter defaultCenter] postNotificationName: @"Searching" object:nil];
     
 }
@@ -483,24 +485,29 @@ BOOL firstLoad;
     //this needs to be here rather than DidEndSearch to avoid flashing wrong data first
     
     //    [self.collectionTableView reloadData];
+	[self.searchBar removeFromSuperview];
+
 }
 
 - (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller {
     LogMethod();
     self.isSearching = NO;
     //reload the original tableView otherwise section headers are not visible :(  this seems to be an Apple bug
-    
-    CGFloat largeHeaderAdjustment;
-    
-    BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
-    
-    if (isPortrait) {
-        largeHeaderAdjustment = 11;
-    } else {
-        largeHeaderAdjustment = 23;
-    }
-    
-    [self.collectionTableView scrollRectToVisible:CGRectMake(largeHeaderAdjustment, 0, 1, 1) animated:YES];
+	self.collectionTableView.tableHeaderView = self.allSongsView;
+		//    self.searchBar.frame = CGRectMake(0, 0, self.view.bounds.size.width - 15, 55);
+	[self.allSongsView addSubview:self.searchBar];
+//    CGFloat largeHeaderAdjustment;
+//    
+//    BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
+//    
+//    if (isPortrait) {
+//        largeHeaderAdjustment = 11;
+//    } else {
+//        largeHeaderAdjustment = 23;
+//    }
+//	[self.collectionTableView scrollRectToVisible:CGRectMake(largeHeaderAdjustment, 0, 1, 1) animated:YES];
+	[self.collectionTableView setContentOffset:CGPointMake(0, self.allSongsView.frame.size.height)];
+
     [self.collectionTableView reloadData];
 }
 - (void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope

@@ -16,27 +16,29 @@
 #import "MainViewController.h"
 #import "InCellScrollView.h"
 #import "AlbumViewController.h"
-#import "MTSearchBar.h"
+#import "MTSearchController.h"
 
+@interface ArtistViewController () <UISearchResultsUpdating>
+@property (nonatomic, strong) NSArray * artistCollectionSections;
+@property (nonatomic, strong) NSArray * artistCollectionSectionTitles;
+@property (nonatomic, strong) MTSearchController *searchController;
+@property (nonatomic, strong) NSArray *searchResults; // Filtered search results
 
-@interface ArtistViewController ()
-    @property (nonatomic, strong) NSArray * artistCollectionSections;
-    @property (nonatomic, strong) NSArray * artistCollectionSectionTitles;
 @end
+
+#pragma mark -
 
 @implementation ArtistViewController
 
 @synthesize collectionTableView;
 @synthesize allAlbumsView;
 @synthesize allAlbumsButton;
-@synthesize searchBar;
-@synthesize searchDisplayController;
+
 @synthesize collection;
 @synthesize collectionType;
 @synthesize collectionQueryType;
 @synthesize managedObjectContext = managedObjectContext_;
 @synthesize iPodLibraryChanged;         //A flag indicating whether the library has been changed due to a sync
-@synthesize isSearching;
 @synthesize isIndexed;
 @synthesize musicPlayer;
 @synthesize albumCollection;
@@ -74,6 +76,7 @@ MPMediaPropertyPredicate *selectedPredicate;
 
 BOOL showDuration;
 BOOL firstLoad;
+BOOL firstSearch;
 //131203 1.2 iOS 7 begin
 //BOOL viewIsAppearing;
 //131203 1.2 iOS 7 end
@@ -115,42 +118,45 @@ BOOL firstLoad;
     
     [self registerForMediaPlayerNotifications];
     self.cellScrolled = NO;
-    
-    self.allAlbumsView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 110)];
-    self.searchBar = [[UISearchBar alloc] initWithFrame: CGRectMake(0, 0, self.view.bounds.size.width - 15, 55)];
-    self.searchBar.barTintColor = [UIColor clearColor];
-    [self.searchBar setSearchFieldBackgroundImage:[UIImage imageNamed: @"searchBarBackground"] forState: UIControlStateNormal];
-    
-//    - (void)setImage:(UIImage *)iconImage forSearchBarIcon:(UISearchBarIcon)icon state:(UIControlState)state NS_AVAILABLE_IOS(5_0)
-    self.searchBar.backgroundImage = [UIImage imageNamed:@"searchBarBackground"];
-//    self.searchBar = [[MTSearchBar alloc] init];
-//    self.searchBar.frame = CGRectMake(0, 0, self.view.bounds.size.width - 15, 55);
-	[[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setTextColor:[UIColor blueColor]];
 
-    [self.searchBar setTranslatesAutoresizingMaskIntoConstraints: YES];
-    self.searchBar.delegate = self;
-    
-    self.searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
-    self.searchDisplayController.searchResultsDelegate = self;
-    self.searchDisplayController.searchResultsDataSource = self;
-    self.searchDisplayController.delegate = self;
-    
-    self.allAlbumsButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    CGRect frame = CGRectMake(0.0, 55.0, self.view.bounds.size.width, 55);
-    self.allAlbumsButton.frame = frame;
-    self.allAlbumsButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    self.allAlbumsButton.contentEdgeInsets = UIEdgeInsetsMake(0, 4, 0, 0);
-    [self.allAlbumsButton setTitleColor:  [UIColor whiteColor] forState: UIControlStateNormal];
-    [self.allAlbumsButton setTitleColor:  [UIColor blueColor] forState: UIControlStateHighlighted];
-    [self.allAlbumsButton setTitle: NSLocalizedString(@"All Albums", nil) forState:UIControlStateNormal];
-        [self.allAlbumsButton.titleLabel setFont: [UIFont systemFontOfSize: 44]];
-    //remember to add a segue to viewController for this action
-    [self.allAlbumsButton addTarget:self action:@selector(allAlbumsButtonTapped) forControlEvents:UIControlEventTouchUpInside];
-    
-    [self.allAlbumsView addSubview: self.allAlbumsButton];
-    [self.allAlbumsView addSubview: self.searchBar];
+//	self.allAlbumsView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 110)];
 
-    self.collectionTableView.tableHeaderView = self.allAlbumsView;
+	UITableViewController *searchResultsController = [[UITableViewController alloc] initWithStyle:UITableViewStylePlain];
+
+	searchResultsController.tableView.dataSource = self;
+	searchResultsController.tableView.delegate = self;
+
+
+	self.searchController = [[MTSearchController alloc] initWithSearchResultsController:searchResultsController];
+	self.searchController.delegate = self;
+
+	[self.searchController formatSearchBarForInitialView];
+	self.searchController.searchResultsUpdater = self;
+
+//	[self.allAlbumsView addSubview: self.searchController.searchBar];
+//
+	self.allAlbumsButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	CGRect frame = CGRectMake(0.0, 44.0, self.view.bounds.size.width, 55);
+	self.allAlbumsButton.frame = frame;
+	self.allAlbumsButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+	self.allAlbumsButton.contentEdgeInsets = UIEdgeInsetsMake(0, 4, 0, 0);
+	[self.allAlbumsButton setTitleColor:  [UIColor whiteColor] forState: UIControlStateNormal];
+	[self.allAlbumsButton setTitleColor:  [UIColor blueColor] forState: UIControlStateHighlighted];
+	[self.allAlbumsButton setTitle: NSLocalizedString(@"All Albums", nil) forState:UIControlStateNormal];
+	[self.allAlbumsButton.titleLabel setFont: [UIFont systemFontOfSize: 44]];
+		//remember to add a segue to viewController for this action
+	[self.allAlbumsButton addTarget:self action:@selector(allAlbumsButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+	[self.searchController.searchBar addSubview: self.allAlbumsButton];
+//
+//	[self.allAlbumsView addSubview: self.allAlbumsButton];
+
+	self.collectionTableView.tableHeaderView = self.searchController.searchBar;
+	firstSearch = YES;
+//	self.collectionTableView.tableHeaderView = self.allAlbumsView;
+//	[self.collectionTableView.tableHeaderView addSubview: self.searchController.searchBar];
+//	[self.collectionTableView.tableHeaderView addSubview: self.allAlbumsButton];
+
+	self.definesPresentationContext = YES;
 
     self.collectionTableView.sectionIndexMinimumDisplayRowCount = 20;
 //131203 1.2 iOS 7 begin
@@ -175,8 +181,6 @@ BOOL firstLoad;
         [titles addObject:sec.title];
     }
     self.artistCollectionSectionTitles = [titles copy];
-    
-
 
 //    self.searchDisplayController.searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
 //130912 1.1 add iTunesStoreButton begin
@@ -196,6 +200,7 @@ BOOL firstLoad;
         self.moreGenreButton.hidden = YES;
     }
 //130912 1.1 add iTunesStoreButton end
+
 
 }
 //130911 1.1 add iTunesStoreButton begin
@@ -358,7 +363,7 @@ BOOL firstLoad;
     
     BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
 
-    CGFloat navBarAdjustment = isPortrait ? 0 : 9;
+    CGFloat navBarAdjustment = isPortrait ? 0 : 0;
 
     if (isPortrait) {
         UIButton *tempPlayButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -393,14 +398,14 @@ BOOL firstLoad;
 //131216 1.2 iOS 7 end
     
     //don't need to do this if the search table is showing
-    if (!self.isSearching) {
+    if (!(self.searchController.isActive)) {
 
         BOOL firstRowVisible = NO;
         
         //visibleRows is always 0 the first time through here for a table, populated after that
         if (firstLoad) {
             firstLoad = NO;
-            [self.allAlbumsView addSubview: self.searchBar];
+//            [self.allAlbumsView addSubview: self.searchBar];
             firstRowVisible = YES;
         } else {
             NSArray *visibleRows = [self.collectionTableView indexPathsForVisibleRows];
@@ -413,7 +418,7 @@ BOOL firstLoad;
         }
         
         // hide the search bar and All Albums cell
-        CGFloat tableViewHeaderHeight = self.allAlbumsView.frame.size.height;
+        CGFloat tableViewHeaderHeight = self.searchController.searchBar.frame.size.height;
         CGFloat adjustedHeaderHeight = tableViewHeaderHeight - navBarAdjustment;
 //140113 1.2 iOS 7 begin
 //        NSInteger possibleRows = self.collectionTableView.frame.size.height / self.collectionTableView.rowHeight;
@@ -479,51 +484,29 @@ BOOL firstLoad;
 //
 //}
 //140113 1.2 iOS 7 end
+#pragma mark - Search Display Delegate methods
+
+- (void)willPresentSearchController:(MTSearchController *)searchController {
+	[searchController.searchBar setSearchFieldBackgroundPositionAdjustment: UIOffsetMake (0.0, 0.0)];
+	[searchController.searchBar setTintColor: [UIColor lightGrayColor]];
+}
+- (void)willDismissSearchController:(MTSearchController *)searchController {
+	[self.searchController formatSearchBarForInitialView];
+	CGRect frame = CGRectMake(0.0, 44.0, self.view.bounds.size.width, 55);
+	self.allAlbumsButton.frame = frame;
+	[self.searchController.searchBar addSubview: self.allAlbumsButton];
+	[self.collectionTableView setContentOffset:CGPointMake(0, 99)];
+	[self.collectionTableView reloadData];
+
+}
 #pragma mark - Search Display methods
 
-- (void)searchDisplayControllerDidBeginSearch:(UISearchDisplayController *)controller {
-    LogMethod();
-    self.isSearching = YES;
-    CGRect newFrame = self.searchBar.frame;
-    newFrame.origin.x = 0;
-    newFrame.origin.y = 0;
-    newFrame.size.height = 55;
-    newFrame.size.width = self.view.bounds.size.width;
-    self.searchBar.frame = newFrame;
-
-}
-- (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller {
-//    LogMethod();
-    //this needs to be here rather than DidEndSearch to avoid flashing wrong data first
-
-//    [self.collectionTableView reloadData];
-    [self.searchBar removeFromSuperview];
-}
-
-- (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller {
-    LogMethod();
-    self.isSearching = NO;
-    //reload the original tableView otherwise section headers are not visible :(  this seems to be an Apple bug
-
-    self.collectionTableView.tableHeaderView = self.allAlbumsView;
-    self.searchBar.frame = CGRectMake(0, 0, self.view.bounds.size.width - 15, 55);
-    [self.allAlbumsView addSubview:self.searchBar];
-
-    
-    BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
-    
-    CGFloat navBarAdjustment = isPortrait ? 0 : 9;
-
-    // hide the search bar and All Albums cell
-    CGFloat tableViewHeaderHeight = self.allAlbumsView.frame.size.height;
-    CGFloat adjustedHeaderHeight = tableViewHeaderHeight - navBarAdjustment;
-
-    [self.collectionTableView setContentOffset:CGPointMake(0, adjustedHeaderHeight)];
-    [self.collectionTableView reloadData];
-}
-- (void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope
+- (void) updateSearchResultsForSearchController:(MTSearchController *)searchController
 {
     LogMethod();
+
+	NSString *searchText = [self.searchController.searchBar text];
+
     searchMediaItemProperty = [[NSString alloc] init];
     
     artistQuery = [[MPMediaQuery alloc] init];
@@ -541,44 +524,15 @@ BOOL firstLoad;
         }
     }
     MPMediaPropertyPredicate *filterPredicate = [MPMediaPropertyPredicate predicateWithValue: searchText
-                                                                                     forProperty: searchMediaItemProperty
-                                                                                  comparisonType:MPMediaPredicateComparisonContains];
+					forProperty: searchMediaItemProperty
+					comparisonType:MPMediaPredicateComparisonContains];
 
+        [artistQuery addFilterPredicate: filterPredicate];
     
+    self.searchResults = [artistQuery collections];
 
-//    [artistQuery setGroupingType: mediaGrouping];
-    [artistQuery addFilterPredicate: filterPredicate];
-    
-//    if ([self.collectionType isEqualToString: @"Genres"]) {
-//        [myArtistQuery addFilterPredicate: [MPMediaPropertyPredicate
-//                                                predicateWithValue: self.title
-//                                                forProperty: MPMediaItemPropertyGenre]];
-//    }  //I think this is already included in the query when come from genre
-    
-    searchResults = [artistQuery collections];
-    //
-    //    NSPredicate *resultPredicate = [NSPredicate
-    //                                    predicateWithFormat:@"SELF contains[cd] %@",
-    //                                    searchText];
-    //
-    //    searchResults = [self.collection filteredArrayUsingPredicate:resultPredicate];
-}
+	[((UITableViewController *)searchController.searchResultsController).tableView reloadData];
 
--(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
-
-{
-//    LogMethod();
-    [self filterContentForSearchText:searchString
-                               scope:[[self.searchDisplayController.searchBar scopeButtonTitles]
-                                      objectAtIndex:[self.searchDisplayController.searchBar
-                                                     selectedScopeButtonIndex]]];
-    
-    return YES;
-}
--(void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
-//    LogMethod();
-    self.searchDisplayController.searchResultsTableView.rowHeight = 55;
-    
 }
 
 #pragma mark - Table view data source
@@ -586,7 +540,7 @@ BOOL firstLoad;
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    if (tableView == self.searchDisplayController.searchResultsTableView) {
+    if (tableView == ((UITableViewController *)self.searchController.searchResultsController).tableView) {
         return 1;
     } else {
         return [self.artistCollectionSections count];
@@ -605,7 +559,7 @@ BOOL firstLoad;
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
 {
 //    LogMethod();
-    if (tableView == self.searchDisplayController.searchResultsTableView) {
+    if (tableView == ((UITableViewController *)self.searchController.searchResultsController).tableView) {
 
             return nil;
     } else {
@@ -632,10 +586,10 @@ BOOL firstLoad;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    if (tableView == self.searchDisplayController.searchResultsTableView) {
+    if (tableView == ((UITableViewController *)self.searchController.searchResultsController).tableView) {
 
 //        NSLog (@" searchResults count is %d", [searchResults count]);
-        return [searchResults count];
+        return [self.searchResults count];
     } else {
         MPMediaQuerySection * sec = self.artistCollectionSections[section];
         return sec.range.length;
@@ -646,7 +600,7 @@ BOOL firstLoad;
 //    LogMethod();
         //this must be nil or the section headers of the original tableView are awkwardly visible
         // original table must be reloaded after search to get them back :(  this seems to be an Apple bug
-    if (self.isSearching) {
+	if (self.searchController.isActive) {
 
         return nil;
 
@@ -679,10 +633,7 @@ BOOL firstLoad;
 {
 //    LogMethod();
 
-    if (self.isSearching) {
-
-//    if (tableView == self.searchDisplayController.searchResultsTableView) {
-
+   if (tableView == ((UITableViewController *)self.searchController.searchResultsController).tableView) {
         return 0;
     } else {
         //if there aren't enough for indexing, dispense with the section headers
@@ -708,21 +659,25 @@ BOOL firstLoad;
 
     BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
 
-    if (tableView == self.searchDisplayController.searchResultsTableView) {
+	if (tableView == ((UITableViewController *)self.searchController.searchResultsController).tableView) {
 //140113 1.2 iOS 7 begin
         tableView.backgroundColor = [UIColor blackColor];
 //140113 1.2 iOS 7 end
-
+		tableView.rowHeight = 55;
         if ( searchResultsCell == nil ) {
             searchResultsCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
 //140113 1.2 iOS 7 begin
-//            searchResultsCell.selectionStyle = UITableViewCellSelectionStyleGray;            
+//            searchResultsCell.selectionStyle = UITableViewCellSelectionStyleGray;
 //            searchResultsCell.selectedBackgroundView = [[UIImageView alloc] initWithImage:backgroundImage];
 //140113 1.2 iOS 7 end
             searchResultsCell.textLabel.font = [UIFont systemFontOfSize:44];
             searchResultsCell.textLabel.textColor = [UIColor whiteColor];
 //140113 1.2 iOS 7 begin
             searchResultsCell.backgroundColor = [UIColor blackColor];
+			UIView *v = [[UIView alloc] init];
+			v.backgroundColor = [UIColor blackColor];
+			searchResultsCell.selectedBackgroundView = v;
+
 //140113 1.2 iOS 7 end
             searchResultsCell.textLabel.highlightedTextColor = [UIColor blueColor];
             searchResultsCell.textLabel.lineBreakMode = NSLineBreakByClipping;
@@ -827,6 +782,7 @@ BOOL firstLoad;
 
     }
 }
+
 - (NSNumber *)calculatePlaylistDuration: (MPMediaItemCollection *) currentQueue {
 //    LogMethod();
     NSArray *returnedQueue = [currentQueue items];
@@ -925,12 +881,13 @@ BOOL firstLoad;
     
     //if there is more than one album, display albums, otherwise display songs in the album in song order
 
-    if ([self.searchDisplayController isActive]) {
 
-        selectedIndexPath = [self.searchDisplayController.searchResultsTableView indexPathForSelectedRow];
+    if ((self.searchController.isActive)) {
+
+        selectedIndexPath = [((UITableViewController *)self.searchController.searchResultsController).tableView indexPathForSelectedRow];
 
 //        MPMediaItemCollection *searchCollection = [searchResults objectAtIndex: selectedIndexPath.row];
-        MPMediaItemCollection *searchCollection = [searchResults objectAtIndex: selectedIndexPath.row];
+        MPMediaItemCollection *searchCollection = [self.searchResults objectAtIndex: selectedIndexPath.row];
 
         NSString *mediaItemName = [[searchCollection representativeItem] valueForProperty: searchMediaItemProperty];
         selectedName = mediaItemName;
@@ -1119,7 +1076,7 @@ BOOL firstLoad;
     NSLog (@"iTunesLink is %@", self.iTunesLinkUrl);
     
 }
-- (IBAction)allAlbumsButtonTapped {
+- (IBAction)allAlbumsButtonTapped: (id) sender {
     
     [self performSegueWithIdentifier: @"ViewAllAlbums" sender: self];
 }
@@ -1217,4 +1174,5 @@ BOOL firstLoad;
 	
 
 }
+
 @end
