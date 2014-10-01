@@ -21,10 +21,13 @@
 #import "TagData.h"
 #import "TaggedSectionIndexData.h"
 #import "Reachability.h"
+#import "MTSearchController.h"
 
-@interface TaggedSongViewController ()
+@interface TaggedSongViewController () <UISearchResultsUpdating>
 @property (nonatomic, strong) NSMutableArray * taggedSongSections;  // an dictionary with a key of the first letter of the tagName and 1 object:  a dictionary of all the songs (mediaItems) in that section
 @property (nonatomic, strong) NSArray *taggedSongSectionTitles;  //need to keep this as its own array instead of adding as dictionary key so that search can be added to the top!
+@property (nonatomic, strong) MTSearchController *searchController;
+@property (nonatomic, strong) NSArray *searchResults; // Filtered search results
 @end
 
 @implementation TaggedSongViewController
@@ -32,7 +35,6 @@
 @synthesize songTableView;
 @synthesize shuffleView;
 @synthesize shuffleButton;
-@synthesize searchBar;
 @synthesize collectionItem;
 @synthesize collectionOfOne;
 @synthesize musicPlayer;
@@ -41,7 +43,6 @@
 @synthesize itemToPlay;
 @synthesize iPodLibraryChanged;         //A flag indicating whether the library has been changed due to a sync
 //@synthesize listIsAlphabetic;
-@synthesize isSearching;
 @synthesize songCollection;
 @synthesize playBarButton;
 @synthesize tagBarButton;
@@ -49,7 +50,6 @@
 @synthesize noColorTagBarButton;
 
 @synthesize collectionQueryType;        //used as base of query for search
-@synthesize searchResults;
 @synthesize collectionItemToSave;
 @synthesize showTagButton;
 @synthesize showTags;
@@ -150,13 +150,38 @@ BOOL excludeICloudItems;
     [self.noColorTagBarButton setAccessibilityLabel: NSLocalizedString(@"Hide tqg colors", nil)];
     [self.noColorTagBarButton setAccessibilityTraits: UIAccessibilityTraitButton];
     
-    musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
+    musicPlayer = [MPMusicPlayerController systemMusicPlayer];
     
     [self registerForMediaPlayerNotifications];
     self.cellScrolled = NO;
 	
-	[self.searchBar setTranslatesAutoresizingMaskIntoConstraints: YES];
+	UITableViewController *searchResultsController = [[UITableViewController alloc] initWithStyle:UITableViewStylePlain];
 
+	searchResultsController.tableView.dataSource = self;
+	searchResultsController.tableView.delegate = self;
+
+
+	self.searchController = [[MTSearchController alloc] initWithSearchResultsController:searchResultsController];
+	self.searchController.delegate = self;
+
+	[self.searchController formatSearchBarForInitialViewWithHeight: 99.0 andOffset: -20.0];
+	self.searchController.searchResultsUpdater = self;
+
+	self.shuffleButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	CGRect frame = CGRectMake(0.0, 44.0, self.view.bounds.size.width, 55);
+	self.shuffleButton.frame = frame;
+	self.shuffleButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+	self.shuffleButton.contentEdgeInsets = UIEdgeInsetsMake(0, 4, 0, 0);
+	[self.shuffleButton setTitleColor:  [UIColor whiteColor] forState: UIControlStateNormal];
+	[self.shuffleButton setTitleColor:  [UIColor blueColor] forState: UIControlStateHighlighted];
+	[self.shuffleButton setTitle: NSLocalizedString(@"Shuffle", nil) forState:UIControlStateNormal];
+	[self.shuffleButton.titleLabel setFont: [UIFont systemFontOfSize: 44]];
+		//remember to add a segue to viewController for this action
+	[self.shuffleButton addTarget:self action:@selector(playWithShuffle:) forControlEvents:UIControlEventTouchUpInside];
+	[self.searchController.searchBar addSubview: self.shuffleButton];
+
+	self.songTableView.tableHeaderView = self.searchController.searchBar;
+	self.definesPresentationContext = YES;
     // load the taggedSongArray if it has not been previously loaded
     if (!self.taggedSongArray) {
         [self createTaggedSongArray];
@@ -542,7 +567,7 @@ BOOL excludeICloudItems;
     
     BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
     
-    CGFloat navBarAdjustment = isPortrait ? 0 : 9;
+    CGFloat navBarAdjustment = isPortrait ? 0 : 0;
     
     if (isPortrait) {
         
@@ -590,7 +615,7 @@ BOOL excludeICloudItems;
     
     
     // hide the search bar and All Songs cell
-    CGFloat tableViewHeaderHeight = self.shuffleView.frame.size.height;
+    CGFloat tableViewHeaderHeight = self.searchController.searchBar.frame.size.height;
     CGFloat adjustedHeaderHeight = tableViewHeaderHeight - navBarAdjustment;
 //140113 1.2 iOS 7 begin
     //        NSInteger possibleRows = self.collectionTableView.frame.size.height / self.collectionTableView.rowHeight;
@@ -632,48 +657,29 @@ BOOL excludeICloudItems;
     
     [super viewWillLayoutSubviews];
 }
+#pragma mark - Search Display Delegate methods
+
+- (void)willPresentSearchController:(MTSearchController *)searchController {
+	[searchController.searchBar setSearchFieldBackgroundPositionAdjustment: UIOffsetMake (0.0, 0.0)];
+	[searchController.searchBar setTintColor: [UIColor lightGrayColor]];
+}
+- (void)willDismissSearchController:(MTSearchController *)searchController {
+	[self.searchController formatSearchBarForInitialViewWithHeight: 99.0 andOffset: -20.0];
+	CGRect frame = CGRectMake(0.0, 44.0, self.view.bounds.size.width, 55);
+	self.shuffleButton.frame = frame;
+	[self.searchController.searchBar addSubview: self.shuffleButton];
+	[self.songTableView setContentOffset:CGPointMake(0, 99)];
+	[self.songTableView reloadData];
+
+}
 #pragma mark - Search Display methods
 
-- (void)searchDisplayControllerDidBeginSearch:(UISearchDisplayController *)controller {
-    //    LogMethod();
-    self.isSearching = YES;
-    //    [[NSNotificationCenter defaultCenter] postNotificationName: @"Searching" object:nil];
-    
-}
-- (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller {
-    //this needs to be here rather than DidEndSearch to avoid flashing wrong data first
-    
-    //    [self.collectionTableView reloadData];
-	[self.searchBar removeFromSuperview];
-
-}
-
-- (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller {
-    //    LogMethod();
-    self.isSearching = NO;
-    //reload the original tableView otherwise section headers are not visible :(  this seems to be an Apple bug
-	self.songTableView.tableHeaderView = self.shuffleView;
-		//    self.searchBar.frame = CGRectMake(0, 0, self.view.bounds.size.width - 15, 55);
-	[self.shuffleView addSubview:self.searchBar];
-//    CGFloat largeHeaderAdjustment;
-//    
-//    BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
-//    
-//    if (isPortrait) {
-//        largeHeaderAdjustment = 11;
-//    } else {
-//        largeHeaderAdjustment = 23;
-//    }
-//    
-//    [self.songTableView scrollRectToVisible:CGRectMake(largeHeaderAdjustment, 0, 1, 1) animated:YES];
-	[self.songTableView setContentOffset:CGPointMake(0, self.shuffleView.frame.size.height)];
-
-    [self.songTableView reloadData];
-}
-- (void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope
+- (void) updateSearchResultsForSearchController:(MTSearchController *)searchController
 {
-    //    LogMethod();
-    
+	LogMethod();
+
+	NSString *searchText = [self.searchController.searchBar text];
+
     searchMediaItemProperty = MPMediaItemPropertyTitle;
     
     //    NSLog (@"searchMediaItemProperty is %@", searchMediaItemProperty);
@@ -697,10 +703,12 @@ BOOL excludeICloudItems;
     }
     self.searchResults = [taggedSongsSearchResults copy];
     //    } else {
-    //        searchResults = [mySongQuery items];
+    //        self.searchResults = [mySongQuery items];
     //    }
     
-    //    NSLog (@"searchResults %@", searchResults);
+    //    NSLog (@"searchResults %@", self.searchResults);
+	[((UITableViewController *)searchController.searchResultsController).tableView reloadData];
+
     
     
 }
@@ -711,23 +719,6 @@ BOOL excludeICloudItems;
 
     UserDataForMediaItem *userDataForMediaItem = [mediaItemUserData containsItem: [mediaItem valueForProperty: MPMediaItemPropertyPersistentID]];
     return userDataForMediaItem.tagData;
-    
-}
--(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
-
-{
-    //    LogMethod();
-    [self filterContentForSearchText:searchString
-                               scope:[[self.searchDisplayController.searchBar scopeButtonTitles]
-                                      objectAtIndex:[self.searchDisplayController.searchBar
-                                                     selectedScopeButtonIndex]]];
-    
-    return YES;
-}
--(void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
-    //    LogMethod();
-    self.searchDisplayController.searchResultsTableView.rowHeight = 55;
-    
 }
 
 #pragma mark - Table view data source
@@ -737,7 +728,7 @@ BOOL excludeICloudItems;
     //    LogMethod();
     
     // Return the number of sections.
-    if (tableView == self.searchDisplayController.searchResultsTableView) {
+    if (tableView == ((UITableViewController *)self.searchController.searchResultsController).tableView)  {
         return 1;
     } else {
         return [self.taggedSongSections count];
@@ -755,7 +746,7 @@ BOOL excludeICloudItems;
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
 {
     //    LogMethod();
-    if (tableView == self.searchDisplayController.searchResultsTableView) {
+    if (tableView == ((UITableViewController *)self.searchController.searchResultsController).tableView)  {
         return nil;
     } else if (isIndexed) {
         
@@ -786,10 +777,10 @@ BOOL excludeICloudItems;
     //    LogMethod();
     
     // Return the number of rows in the section.
-    if (tableView == self.searchDisplayController.searchResultsTableView) {
+    if (tableView == ((UITableViewController *)self.searchController.searchResultsController).tableView)  {
         
-        //        NSLog (@" searchResults count is %d", [searchResults count]);
-        return [searchResults count];
+        //        NSLog (@" searchResults count is %d", [self.searchResults count]);
+        return [self.searchResults count];
     } else {
         
         //        NSString *tagName = [self.taggedSongSectionTitles objectAtIndex: section];
@@ -807,7 +798,7 @@ BOOL excludeICloudItems;
     //    LogMethod();
     //this must be nil or the section headers of the original tableView are awkwardly visible
     // original table must be reloaded after search to get them back :(  this seems to be an Apple bug
-    if (self.isSearching) {
+    if (self.searchController.isActive) {
         
         return nil;
         
@@ -858,7 +849,7 @@ BOOL excludeICloudItems;
 {
     //    LogMethod();
     
-    if (self.isSearching) {
+    if (self.searchController.isActive) {
         return 0;
     } else {
         return 60;
@@ -870,7 +861,7 @@ BOOL excludeICloudItems;
     //    LogMethod();
     //this must be nil or the section headers of the original tableView are awkwardly visible
     // original table must be reloaded after search to get them back :(  this seems to be an Apple bug
-    if (self.isSearching) {
+    if (self.searchController.isActive) {
         
         return nil;
         
@@ -927,11 +918,13 @@ BOOL excludeICloudItems;
     
     BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
     
-    if (tableView == self.searchDisplayController.searchResultsTableView) {
+    if (tableView == ((UITableViewController *)self.searchController.searchResultsController).tableView)  {
         
 //140113 1.2 iOS 7 begin
             tableView.backgroundColor = [UIColor blackColor];
 //140113 1.2 iOS 7 end
+		tableView.rowHeight = 55;
+
             if ( searchResultsCell == nil ) {
                 searchResultsCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
 //140113 1.2 iOS 7 begin
@@ -941,7 +934,10 @@ BOOL excludeICloudItems;
                 searchResultsCell.textLabel.font = [UIFont systemFontOfSize:44];
                 searchResultsCell.textLabel.textColor = [UIColor whiteColor];
 //140113 1.2 iOS 7 begin
-                searchResultsCell.backgroundColor = [UIColor blackColor];
+				searchResultsCell.backgroundColor = [UIColor blackColor];
+				UIView *v = [[UIView alloc] init];
+				v.backgroundColor = [UIColor blackColor];
+				searchResultsCell.selectedBackgroundView = v;
 //140113 1.2 iOS 7 end
             searchResultsCell.textLabel.highlightedTextColor = [UIColor blueColor];
             searchResultsCell.textLabel.lineBreakMode = NSLineBreakByClipping;
@@ -952,7 +948,7 @@ BOOL excludeICloudItems;
         }
         NSString *mediaItemName;
         
-        MPMediaItem  *item = [searchResults objectAtIndex: indexPath.row];
+        MPMediaItem  *item = [self.searchResults objectAtIndex: indexPath.row];
         mediaItemName = [item valueForProperty: MPMediaItemPropertyTitle];
         
         searchResultsCell.textLabel.text = mediaItemName;
@@ -1243,14 +1239,14 @@ BOOL excludeICloudItems;
 //	 deselect the row after it has been selected.
 - (void) tableView: (UITableView *) tableView didSelectRowAtIndexPath: (NSIndexPath *) indexPath {
     //    LogMethod();
-    if ([self.searchDisplayController isActive]) {
+    if (self.searchController.isActive) {
         
-        selectedIndexPath = [self.searchDisplayController.searchResultsTableView indexPathForSelectedRow];
+        selectedIndexPath = [((UITableViewController *)self.searchController.searchResultsController).tableView indexPathForSelectedRow];
         
-        MPMediaItem *searchMediaItem = [searchResults objectAtIndex: selectedIndexPath.row];
+        MPMediaItem *searchMediaItem = [self.searchResults objectAtIndex: selectedIndexPath.row];
         
         selectedSong = searchMediaItem;
-        self.songCollection =  [MPMediaItemCollection collectionWithItems: searchResults];
+        self.songCollection =  [MPMediaItemCollection collectionWithItems: self.searchResults];
         
         CollectionItem *searchCollectionItem = [CollectionItem alloc];
         searchCollectionItem.name = [selectedSong valueForProperty: MPMediaItemPropertyTitle];
@@ -1496,7 +1492,7 @@ BOOL excludeICloudItems;
                                name: MPMediaLibraryDidChangeNotification
                              object: nil];
     
-    [[MPMediaLibrary defaultMediaLibrary] beginGeneratingLibraryChangeNotifications];
+//    [[MPMediaLibrary defaultMediaLibrary] beginGeneratingLibraryChangeNotifications];
     [musicPlayer beginGeneratingPlaybackNotifications];
     
     
@@ -1592,8 +1588,8 @@ BOOL excludeICloudItems;
             [self createDurationArray];
         });
     }
-    if (isSearching) {
-        [self.searchDisplayController.searchResultsTableView reloadData];
+    if (self.searchController.isActive) {
+		[((UITableViewController *)self.searchController.searchResultsController).tableView reloadData];
     }
 }
 
@@ -1677,7 +1673,7 @@ BOOL excludeICloudItems;
                                                     name: MPMediaLibraryDidChangeNotification
                                                   object: nil];
     
-    [[MPMediaLibrary defaultMediaLibrary] endGeneratingLibraryChangeNotifications];
+//    [[MPMediaLibrary defaultMediaLibrary] endGeneratingLibraryChangeNotifications];
     [musicPlayer endGeneratingPlaybackNotifications];
     
 }

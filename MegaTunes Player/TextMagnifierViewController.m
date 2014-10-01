@@ -35,7 +35,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
 
-    musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
+    musicPlayer = [MPMusicPlayerController systemMusicPlayer];
     
     [self registerForMediaPlayerNotifications];
     

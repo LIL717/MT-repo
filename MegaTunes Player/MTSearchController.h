@@ -10,8 +10,7 @@
 
 @interface MTSearchController : UISearchController
 
-- (void) formatSearchBarForInitialView;
-- (void) formatSearchBarForSearchingView;
+- (void) formatSearchBarForInitialViewWithHeight: (CGFloat) searchBarHeight andOffset: (CGFloat) searchBarOffset;
 
 
 @end

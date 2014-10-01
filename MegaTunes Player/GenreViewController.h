@@ -9,7 +9,7 @@
 @class CollectionItem;
 
 
-@interface GenreViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MPMediaPickerControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate> {
+@interface GenreViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MPMediaPickerControllerDelegate, UISearchControllerDelegate> {
     
     NSManagedObjectContext *managedObjectContext_;
 }
@@ -29,9 +29,7 @@
 @property (nonatomic, strong)   NSArray *albumCollection;
 @property (nonatomic, strong)   UIBarButtonItem *rightBarButton;
 @property (readwrite)           BOOL isIndexed;
-@property (readwrite)           BOOL isSearching;
 @property (readwrite)           BOOL cellScrolled;
-@property (nonatomic, strong)   NSArray *searchResults;
 
 
 

@@ -16,8 +16,6 @@
 #import "Reachability.h"
 #import "TestFlight.h"
 
-
-
 @implementation AppDelegate
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -46,6 +44,7 @@
 
 		//*** end of TestFlight code
 		//130906 1.1 add Store Button begin
+
 	NSUserDefaults * standardUserDefaults = [NSUserDefaults standardUserDefaults];
 	[standardUserDefaults setObject: @"at=10l9mp" forKey:@"affiliateID"];
 		//130906 1.1 add Store Button end
@@ -151,7 +150,7 @@
 //
 //	[[UINavigationBar appearance] setBackgroundImage:navBarLandscapeImage forBarMetrics:UIBarMetricsLandscapePhone];
 
-	[[UINavigationBar appearance] setTitleVerticalPositionAdjustment: 4 forBarMetrics: UIBarMetricsLandscapePhone];
+//	[[UINavigationBar appearance] setTitleVerticalPositionAdjustment: 4 forBarMetrics: UIBarMetricsCompact];
 
 //	UIImage* tabBarBackground = [UIImage imageNamed:@"tabbar.png"];
 

@@ -32,7 +32,6 @@
 		70515C38161028FE00D96335 /* CollectionItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 70515C37161028FE00D96335 /* CollectionItemCell.m */; };
 		70515C44161120C900D96335 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70515C43161120C900D96335 /* AudioToolbox.framework */; };
 		70515C461611210100D96335 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70515C451611210000D96335 /* MediaPlayer.framework */; };
-		705FF27A19D52E9400C41638 /* AutoScrollLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 705FF27919D52E9400C41638 /* AutoScrollLabel.m */; };
 		705FF27D19D594CC00C41638 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 705FF27B19D594CC00C41638 /* Localizable.strings */; };
 		7060522C14F88D43001A1CDB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7060522B14F88D43001A1CDB /* UIKit.framework */; };
 		7060522E14F88D43001A1CDB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7060522D14F88D43001A1CDB /* Foundation.framework */; };
@@ -68,6 +67,7 @@
 		70A13E15163DD1AA00244866 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70A13E14163DD1AA00244866 /* CFNetwork.framework */; };
 		70A13E17163DD1BD00244866 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70A13E16163DD1BC00244866 /* Accelerate.framework */; };
 		70A4B70B169602A300C84293 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70A4B70A169602A300C84293 /* QuartzCore.framework */; };
+		70A6003319DBB1D3003A2ABA /* AutoScrollLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 70A6003119DBB1D3003A2ABA /* AutoScrollLabel.m */; };
 		70A6444F16CE08120059C561 /* ITunesCommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70A6444E16CE08120059C561 /* ITunesCommentsViewController.m */; };
 		70A6445216CE0FEE0059C561 /* UserInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70A6445116CE0FEE0059C561 /* UserInfoViewController.m */; };
 		70ADDC1F1614178500219873 /* CollectionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 70ADDC1E1614178500219873 /* CollectionItem.m */; };
@@ -140,8 +140,6 @@
 		70515C411611208B00D96335 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		70515C43161120C900D96335 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		70515C451611210000D96335 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
-		705FF27819D52E9400C41638 /* AutoScrollLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoScrollLabel.h; sourceTree = "<group>"; };
-		705FF27919D52E9400C41638 /* AutoScrollLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoScrollLabel.m; sourceTree = "<group>"; };
 		705FF27C19D594CC00C41638 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
 		705FF27E19D5962B00C41638 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		705FF28019D5969F00C41638 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -223,6 +221,8 @@
 		70A13E14163DD1AA00244866 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		70A13E16163DD1BC00244866 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		70A4B70A169602A300C84293 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		70A6003119DBB1D3003A2ABA /* AutoScrollLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AutoScrollLabel.m; path = "MegaTunes Player/AutoScrollLabel.m"; sourceTree = SOURCE_ROOT; };
+		70A6003219DBB1D3003A2ABA /* AutoScrollLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AutoScrollLabel.h; path = "MegaTunes Player/AutoScrollLabel.h"; sourceTree = SOURCE_ROOT; };
 		70A6444D16CE08120059C561 /* ITunesCommentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITunesCommentsViewController.h; sourceTree = "<group>"; };
 		70A6444E16CE08120059C561 /* ITunesCommentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITunesCommentsViewController.m; sourceTree = "<group>"; };
 		70A6445016CE0FEE0059C561 /* UserInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserInfoViewController.h; sourceTree = "<group>"; };
@@ -308,16 +308,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		705FF27719D52E9400C41638 /* AutoScrollLabel */ = {
-			isa = PBXGroup;
-			children = (
-				705FF27819D52E9400C41638 /* AutoScrollLabel.h */,
-				705FF27919D52E9400C41638 /* AutoScrollLabel.m */,
-			);
-			name = AutoScrollLabel;
-			path = "MegaTunes Player/AutoScrollLabel";
-			sourceTree = SOURCE_ROOT;
-		};
 		7060521C14F88D43001A1CDB = {
 			isa = PBXGroup;
 			children = (
@@ -448,7 +438,7 @@
 		70A0491A16F6810000F70A90 /* 3rd Party */ = {
 			isa = PBXGroup;
 			children = (
-				705FF27719D52E9400C41638 /* AutoScrollLabel */,
+				70A6003419DBB1DB003A2ABA /* AutoScrollLabel */,
 				70CF0BDB176D33C2007AB6CF /* VBColorPicker */,
 				70CF0BD5176C0917007AB6CF /* KSLabel */,
 				70E8E80C175ABA2E0012CE74 /* iCarousel */,
@@ -457,6 +447,15 @@
 				7098ECFF19D9B005000196A3 /* MTSearchController */,
 			);
 			name = "3rd Party";
+			sourceTree = "<group>";
+		};
+		70A6003419DBB1DB003A2ABA /* AutoScrollLabel */ = {
+			isa = PBXGroup;
+			children = (
+				70A6003219DBB1D3003A2ABA /* AutoScrollLabel.h */,
+				70A6003119DBB1D3003A2ABA /* AutoScrollLabel.m */,
+			);
+			name = AutoScrollLabel;
 			sourceTree = "<group>";
 		};
 		70ADDC0E1612245400219873 /* Model */ = {
@@ -792,7 +791,6 @@
 				70984C221640C07A00CE7EA9 /* ItemCollection.m in Sources */,
 				7032984F19D0CA5B0019FF0E /* VBColorPicker.m in Sources */,
 				702B4149165714E7004A9265 /* InfoTabBarController.m in Sources */,
-				705FF27A19D52E9400C41638 /* AutoScrollLabel.m in Sources */,
 				702B414D165715C2004A9265 /* AlbumInfoViewController.m in Sources */,
 				7032986B19D0CFAD0019FF0E /* KSLabel.m in Sources */,
 				702B4158165743AB004A9265 /* UserDataForMediaItem.m in Sources */,
@@ -813,6 +811,7 @@
 				700443791763B49900DA8BB8 /* UserTagViewController.m in Sources */,
 				7032986719D0CF2D0019FF0E /* MTSearchBar.m in Sources */,
 				7098ECFE19D9AFE8000196A3 /* MTSearchController.m in Sources */,
+				70A6003319DBB1D3003A2ABA /* AutoScrollLabel.m in Sources */,
 				7004437C1763C05D00DA8BB8 /* UserTagCell.m in Sources */,
 				70890D2217663D2800D338A8 /* TagItem.m in Sources */,
 				7032983119D0C3D20019FF0E /* UIImage+AdditionalFunctionalities.m in Sources */,
@@ -1022,7 +1021,7 @@
 				GCC_PREFIX_HEADER = "MegaTunes Player/MegaTunes Player-Prefix.pch";
 				GCC_VERSION = "";
 				INFOPLIST_FILE = "MegaTunes Player/MegaTunes Player-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LIBRARY_SEARCH_PATHS = "";
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				OTHER_LDFLAGS = "-lstdc++";
@@ -1042,7 +1041,7 @@
 				GCC_PREFIX_HEADER = "MegaTunes Player/MegaTunes Player-Prefix.pch";
 				GCC_VERSION = "";
 				INFOPLIST_FILE = "MegaTunes Player/MegaTunes Player-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LIBRARY_SEARCH_PATHS = "";
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				OTHER_LDFLAGS = "-lstdc++";

@@ -107,7 +107,8 @@ static void each_object(NSArray *objects, void (^block)(id object))
 	_pauseInterval = kDefaultPauseTime;
 	_labelSpacing = kDefaultLabelBufferSpace;
     self.textAlignment = NSTextAlignmentCenter;
-    self.animationOptions = UIViewAnimationOptionCurveEaseIn;
+	self.animationOptions = (UIViewAnimationOptionCurveEaseIn |
+							 UIViewAnimationOptionBeginFromCurrentState);
 	self.showsVerticalScrollIndicator = NO;
 	self.showsHorizontalScrollIndicator = NO;
     self.scrollEnabled = NO;
@@ -129,7 +130,7 @@ static void each_object(NSArray *objects, void (^block)(id object))
 #pragma mark - Properties
 - (UILabel *)mainLabel
 {
-//    LogMethod();
+    LogMethod();
 	if ([mainLabel isEqual: nil]) {
 		NSLog (@"why oh why oh why?");
     }
@@ -233,7 +234,7 @@ static void each_object(NSArray *objects, void (^block)(id object))
 #pragma mark - Misc
 - (void)scrollLabelIfNeeded
 {
-//    LogMethod();
+    LogMethod();
 
     CGFloat labelWidth = CGRectGetWidth(self.mainLabel.bounds);
 	if (labelWidth <= CGRectGetWidth(self.bounds))

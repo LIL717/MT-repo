@@ -110,7 +110,7 @@ NSString *myAffiliateID;
     
     [self.navigationItem setHidesBackButton: YES animated: NO];
     
-    musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
+    musicPlayer = [MPMusicPlayerController systemMusicPlayer];
     
     self.appDelegate = (id) [[UIApplication sharedApplication] delegate];
     self.managedObjectContext = [self.appDelegate managedObjectContext];
@@ -581,7 +581,7 @@ NSString *myAffiliateID;
                                name: MPMediaLibraryDidChangeNotification
                              object: nil];
     
-    [[MPMediaLibrary defaultMediaLibrary] beginGeneratingLibraryChangeNotifications];
+//    [[MPMediaLibrary defaultMediaLibrary] beginGeneratingLibraryChangeNotifications];
     [musicPlayer beginGeneratingPlaybackNotifications];
     
 }
@@ -634,7 +634,7 @@ NSString *myAffiliateID;
 													name: MPMusicPlayerControllerPlaybackStateDidChangeNotification
 												  object: musicPlayer];
     
-    [[MPMediaLibrary defaultMediaLibrary] endGeneratingLibraryChangeNotifications];
+//    [[MPMediaLibrary defaultMediaLibrary] endGeneratingLibraryChangeNotifications];
     [musicPlayer endGeneratingPlaybackNotifications];
     
 }

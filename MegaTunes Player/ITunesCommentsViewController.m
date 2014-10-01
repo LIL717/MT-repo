@@ -35,7 +35,7 @@
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 //140221 1.2 iOS 7 end
     
-    musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
+    musicPlayer = [MPMusicPlayerController systemMusicPlayer];
     
     [self loadDataForView];
     

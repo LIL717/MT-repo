@@ -277,7 +277,7 @@ NSString *myAffiliateID;
     [self.rightBarButton setAccessibilityLabel: NSLocalizedString(@"Now Playing", nil)];
     [self.rightBarButton setAccessibilityTraits: UIAccessibilityTraitButton];
     
-    musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
+    musicPlayer = [MPMusicPlayerController systemMusicPlayer];
     
     [self registerForMediaPlayerNotifications];
     
@@ -877,7 +877,7 @@ NSString *myAffiliateID;
                                name: MPMediaLibraryDidChangeNotification
                              object: nil];
     
-    [[MPMediaLibrary defaultMediaLibrary] beginGeneratingLibraryChangeNotifications];
+//    [[MPMediaLibrary defaultMediaLibrary] beginGeneratingLibraryChangeNotifications];
     [musicPlayer beginGeneratingPlaybackNotifications];
     
 }
@@ -959,7 +959,7 @@ NSString *myAffiliateID;
                                                   object:nil];
     
     [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
-    [[MPMediaLibrary defaultMediaLibrary] endGeneratingLibraryChangeNotifications];
+//    [[MPMediaLibrary defaultMediaLibrary] endGeneratingLibraryChangeNotifications];
     [musicPlayer endGeneratingPlaybackNotifications];
     
     [alert dismissWithClickedButtonIndex:0 animated:YES];

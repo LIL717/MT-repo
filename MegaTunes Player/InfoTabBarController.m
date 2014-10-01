@@ -117,7 +117,7 @@
     [self setViewingNowPlaying: NO];
     [self setShowPlayButton: YES];
     
-    musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
+    musicPlayer = [MPMusicPlayerController systemMusicPlayer];
     
     NSString *playingItem = [[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyTitle];
     //    NSLog (@"playing Item is *%@*, songInfo.SongName is *%@*", playingItem, self.songInfo.songName);
@@ -495,7 +495,7 @@
                                name:UIKeyboardDidHideNotification
                              object:nil];
     
-    [[MPMediaLibrary defaultMediaLibrary] beginGeneratingLibraryChangeNotifications];
+//    [[MPMediaLibrary defaultMediaLibrary] beginGeneratingLibraryChangeNotifications];
     [musicPlayer beginGeneratingPlaybackNotifications];
     
 }
@@ -596,7 +596,7 @@
                                                     name:UIKeyboardDidHideNotification
                                                   object:nil];
     
-    [[MPMediaLibrary defaultMediaLibrary] endGeneratingLibraryChangeNotifications];
+//    [[MPMediaLibrary defaultMediaLibrary] endGeneratingLibraryChangeNotifications];
     [musicPlayer endGeneratingPlaybackNotifications];
     
 }

@@ -18,85 +18,14 @@
 #import "UserInfoViewcontroller.h"
 #import "OBSlider.h"
 #import "AccessibleButton.h"
+#import "CBAutoScrollLabel.h"
 
-//#import "AppDelegate.h"
-//#import "NSDateFormatter+Duration.h"
+@interface MainViewController ()
+
+
+@end
 
 #pragma mark Audio session callbacks_______________________
-
-// Audio session callback function for responding to audio route changes. If playing
-//		back application audio when the headset is unplugged, this callback pauses
-//		playback and displays an alert that allows the user to resume or stop playback.
-//
-//		The system takes care of iPod audio pausing during route changes--this callback
-//		is not involved with pausing playback of iPod audio.
-//void audioRouteChangeListenerCallback (
-//                                       void                      *inUserData,
-//                                       AudioSessionPropertyID    inPropertyID,
-//                                       UInt32                    inPropertyValueSize,
-//                                       const void                *inPropertyValue
-//                                       ) {
-//
-//	// ensure that this callback was invoked for a route change
-//	if (inPropertyID != kAudioSessionProperty_AudioRouteChange) return;
-//
-//	// This callback, being outside the implementation block, needs a reference to the
-//	//		MainViewController object, which it receives in the inUserData parameter.
-//	//		You provide this reference when registering this callback (see the call to
-//	//		AudioSessionAddPropertyListener).
-//	MainViewController *controller = (__bridge MainViewController *) inUserData;
-//
-//	// if application sound is not playing, there's nothing to do, so return.
-//	if (controller.appSoundPlayer.playing == 0 ) {
-//
-//		NSLog (@"Audio route change while application audio is stopped.");
-//		return;
-//
-//	} else {
-//
-//		// Determines the reason for the route change, to ensure that it is not
-//		//		because of a category change.
-//		CFDictionaryRef	routeChangeDictionary = inPropertyValue;
-//
-//		CFNumberRef routeChangeReasonRef =
-//        CFDictionaryGetValue (
-//                              routeChangeDictionary,
-//                              CFSTR (kAudioSession_AudioRouteChangeKey_Reason)
-//                              );
-//
-//		SInt32 routeChangeReason;
-//
-//		CFNumberGetValue (
-//                          routeChangeReasonRef,
-//                          kCFNumberSInt32Type,
-//                          &routeChangeReason
-//                          );
-//
-//		// "Old device unavailable" indicates that a headset was unplugged, or that the
-//		//	device was removed from a dock connector that supports audio output. This is
-//		//	the recommended test for when to pause audio.
-//		if (routeChangeReason == kAudioSessionRouteChangeReason_OldDeviceUnavailable) {
-//
-//			[controller.appSoundPlayer pause];
-//			NSLog (@"Output device removed, so application audio was paused.");
-//
-//			UIAlertView *routeChangeAlertView =
-//            [[UIAlertView alloc]	initWithTitle: NSLocalizedString (@"Playback Paused", @"Title for audio hardware route-changed alert view")
-//                                       message: NSLocalizedString (@"Audio output was changed", @"Explanation for route-changed alert view")
-//                                      delegate: controller
-//                             cancelButtonTitle: NSLocalizedString (@"StopPlaybackAfterRouteChange", @"Stop button title")
-//                             otherButtonTitles: NSLocalizedString (@"ResumePlaybackAfterRouteChange", @"Play button title"), nil];
-//			[routeChangeAlertView show];
-//			// release takes place in alertView:clickedButtonAtIndex: method
-//
-//		} else {
-//
-//			NSLog (@"A route change occurred that does not require pausing of application audio.");
-//		}
-//	}
-//}
-//
-
 
 @implementation MainViewController
 
@@ -161,7 +90,7 @@
 @synthesize verticalSpaceBetweenRewindAndReplay;
 //@synthesize topSpaceToPlayButton;
 @synthesize playButtonToBottomSpace;
-@synthesize centerXInScrollView;
+@synthesize centerXInNextSongScrollView;
 
 //@synthesize nextSongLabelWidthConstraint;
 @synthesize nowPlayingInfoButton;
@@ -192,7 +121,7 @@ BOOL delayPlaybackStateChange;
 - (void) viewDidLoad {
     //    LogMethod();
     [super viewDidLoad];
-    
+
 //    [TestFlight passCheckpoint:@"MainViewController"];
     
     UIImage *backgroundImage = [UIImage imageNamed: @"blueInfoImage.png"];
@@ -223,7 +152,7 @@ BOOL delayPlaybackStateChange;
 
     [self setPlayedMusicOnce: NO];
     
-    [self setMusicPlayer: [MPMusicPlayerController iPodMusicPlayer]];
+    [self setMusicPlayer: [MPMusicPlayerController systemMusicPlayer]];
     
     self.showPlaylistRemaining = [[NSUserDefaults standardUserDefaults] boolForKey:@"showPlaylistRemaining"];
     
@@ -313,7 +242,10 @@ BOOL delayPlaybackStateChange;
     }
     
     //set the temp initialNowPlayingLabel so something is there when view loads, gets removed from view in viewDidAppear when autoScrollLabel is created
-    self.initialNowPlayingLabel.text = [[musicPlayer nowPlayingItem] valueForProperty:  MPMediaItemPropertyTitle];
+	//this is hidden because AutoScrollLabel is not working so don't need it right now
+//    self.initialNowPlayingLabel.text = [[musicPlayer nowPlayingItem] valueForProperty:  MPMediaItemPropertyTitle];
+		//do this here instead temporarily
+	[self prepareNowPlayingLabel];
     
     NSLog (@"Shuffle Mode is %lu", musicPlayer.shuffleMode);
     
@@ -410,8 +342,9 @@ BOOL delayPlaybackStateChange;
 }
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
     //    LogMethod();
-    
-    [nowPlayingLabel  refreshLabels];
+
+		//removed because AutoScrollLabel not working
+//    [self.nowPlayingLabel  refreshLabels];
     if (UIInterfaceOrientationIsLandscape(orientation)) {
 //140127 1.2 iOS 7 begin
         self.leadingSpaceToSliderConstraint.constant = 120;
@@ -520,6 +453,7 @@ BOOL delayPlaybackStateChange;
                                                          repeats:YES];
     //omg this needs to be here or it does nothing!!
     //    [self scrollNextSongLabel];
+	[self.nowPlayingScrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];//temp for ios 8
     [self.nextSongScrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
     //    if ([musicPlayer playbackState] == MPMusicPlaybackStatePaused) {
     //        [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
@@ -541,9 +475,10 @@ BOOL delayPlaybackStateChange;
         //        [self.initialNowPlayingLabel removeFromSuperview];
         
     }
-    [self prepareNowPlayingLabel];
-    [self.initialNowPlayingLabel removeFromSuperview];
-    
+		//these 2 line commented out because the manual scrollview can be loaded in viewDidLoad
+//    [self prepareNowPlayingLabel];
+//    [self.initialNowPlayingLabel removeFromSuperview];
+
     [super viewDidAppear:(BOOL)animated];
     
 }
@@ -641,9 +576,12 @@ BOOL delayPlaybackStateChange;
 }
 - (void) refreshNowPlayingLabel:  (id) notification {
     //    LogMethod();
-    [nowPlayingLabel  refreshLabels];
-    //    [self prepareAllExceptNowPlaying];
-    
+	//the following line temporarily commented out
+//    [self.nowPlayingLabel  refreshLabels];
+//the following line added for manuallyscrolled nowPlayingLabel
+	[self prepareNowPlayingLabel];
+
+
     //    NSLog (@"nowPlayingLabel refreshed");
 }
 - (void) prepareAllExceptNowPlaying {
@@ -700,16 +638,59 @@ BOOL delayPlaybackStateChange;
     if (!self.nowPlayingLabel.text && musicPlayer.playbackState != MPMusicPlaybackStateStopped) {
         self.nowPlayingLabel.text = @"  iTunes Radio";
     }
+
 //131001 make player compatible with iTunes Radio end
 
+//this is added to allow user to manually scroll nowPlayingLabel because AutoScrollLabel is not working in iOS 8
+	[self scrollNowPlayingLabel];
+
+
 }
+	//this method added for manual scrolling temporarily until AutoScrollLabel is fixed
+- (void) scrollNowPlayingLabel {
+		//    LogMethod();
+
+		//calculate the label size to fit the text with the font size
+
+		//131210 1.2 iOS 7 begin
+
+		//    CGSize labelSize = [self.nextSongLabel.text sizeWithFont:self.nextSongLabel.font
+		//                                           constrainedToSize:CGSizeMake(INT16_MAX, CGRectGetHeight(self.nextSongScrollView.bounds))
+		//                                               lineBreakMode:NSLineBreakByClipping];
+
+	NSAttributedString *attributedText =[[NSAttributedString alloc]
+										 initWithString:self.nowPlayingLabel.text
+										attributes:@{NSFontAttributeName: self.nowPlayingLabel.font}];
+
+	CGRect rect = [attributedText boundingRectWithSize:CGSizeMake(INT16_MAX, CGRectGetHeight(self.nowPlayingScrollView.bounds))
+											   options:NSStringDrawingUsesLineFragmentOrigin
+											   context:nil];
+	CGSize labelSize = rect.size;
+
+		//131210 1.2 iOS 7 end
+
+	[self.nowPlayingScrollView removeConstraint:self.centerXInNowPlayingScrollView];
+
+		//Make sure that label is aligned with scrollView
+	[self.nowPlayingScrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+
+		//disable scroll if the content fits within the scrollView
+	if (labelSize.width > self.nowPlayingScrollView.frame.size.width) {
+		self.nowPlayingScrollView.scrollEnabled = YES;
+	}
+	else {
+		self.nowPlayingScrollView.scrollEnabled = NO;
+
+	}
+}
+
 - (void) prepareNextSongLabel {
     //    LogMethod();
     if (!queueIsKnown) {
         return;
     }
     NSUInteger nextPlayingIndex = [musicPlayer indexOfNowPlayingItem] + 1;
-    
+
     MPMediaItem *nextPlayingItem;
     if (skippedBack) {
         nextPlayingItem = predictedNextItem;
@@ -772,7 +753,7 @@ BOOL delayPlaybackStateChange;
     
 //131210 1.2 iOS 7 end
     
-    [self.nextSongScrollView removeConstraint:self.centerXInScrollView];
+    [self.nextSongScrollView removeConstraint:self.centerXInNextSongScrollView];
     
     //Make sure that label is aligned with scrollView
     [self.nextSongScrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
@@ -1391,7 +1372,7 @@ BOOL delayPlaybackStateChange;
                            selector:@selector(refreshNowPlayingLabel:)
                                name:UIApplicationDidBecomeActiveNotification
                              object:nil];
-    
+	
     [notificationCenter addObserver: self
                            selector: @selector (handle_iPodLibraryChanged:)
                                name: MPMediaLibraryDidChangeNotification
@@ -1402,8 +1383,8 @@ BOOL delayPlaybackStateChange;
                                name: UIApplicationDidBecomeActiveNotification
                              object: nil];
     
-    [[MPMediaLibrary defaultMediaLibrary] beginGeneratingLibraryChangeNotifications];
-    
+//    [[MPMediaLibrary defaultMediaLibrary] beginGeneratingLibraryChangeNotifications];
+
 	[musicPlayer beginGeneratingPlaybackNotifications];
 }
 
@@ -1706,9 +1687,9 @@ BOOL delayPlaybackStateChange;
     [[NSNotificationCenter defaultCenter] removeObserver: self
 													name: UIApplicationDidBecomeActiveNotification
 												  object: nil];
-    
-    [[MPMediaLibrary defaultMediaLibrary] endGeneratingLibraryChangeNotifications];
-    
+
+//    [[MPMediaLibrary defaultMediaLibrary] endGeneratingLibraryChangeNotifications];
+
 	[musicPlayer endGeneratingPlaybackNotifications];
     
     

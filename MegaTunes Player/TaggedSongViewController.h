@@ -12,7 +12,7 @@
 #import "InfoTabBarController.h"
 
 
-@interface TaggedSongViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, InfoTabBarControllerDelegate, MPMediaPickerControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate> {
+@interface TaggedSongViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, InfoTabBarControllerDelegate, MPMediaPickerControllerDelegate, UISearchControllerDelegate,  UISearchDisplayDelegate> {
     
     NSManagedObjectContext *managedObjectContext_;
     
@@ -22,7 +22,6 @@
 
 @property (strong, nonatomic)   IBOutlet UIView *shuffleView;
 @property (strong, nonatomic)   IBOutlet UIButton *shuffleButton;
-@property (strong, nonatomic)   IBOutlet UISearchBar *searchBar;
 
 @property (nonatomic, retain)   NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong)   CollectionItem *collectionItem;
@@ -33,7 +32,6 @@
 @property (nonatomic, strong)   MPMediaItem *itemToPlay;
 @property (readwrite)           BOOL iPodLibraryChanged;
 //@property (readwrite)           BOOL listIsAlphabetic;
-@property (readwrite)           BOOL isSearching;
 @property (nonatomic, retain)   MPMediaItemCollection *songCollection;
 @property (nonatomic, strong)   UIBarButtonItem *playBarButton;
 @property (nonatomic, strong)   UIBarButtonItem *tagBarButton;
@@ -41,7 +39,6 @@
 @property (nonatomic, strong)   UIBarButtonItem *noColorTagBarButton;
 
 @property (nonatomic, strong)   MPMediaQuery *collectionQueryType;
-@property (nonatomic, strong)   NSArray *searchResults;
 @property (nonatomic, strong)   CollectionItem *collectionItemToSave;
 @property (readwrite)           BOOL showTagButton;
 @property (readwrite)           BOOL showTags;

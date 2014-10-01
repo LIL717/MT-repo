@@ -32,7 +32,7 @@
 //    LogMethod();
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
+    musicPlayer = [MPMusicPlayerController systemMusicPlayer];
 
     [self.magnifiedText.titleLabel setNumberOfLines: 1];
     [self.magnifiedText.titleLabel setAdjustsFontSizeToFitWidth: YES];

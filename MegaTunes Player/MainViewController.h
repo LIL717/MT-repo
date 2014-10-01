@@ -14,13 +14,12 @@
 #import "TimeMagnifierViewController.h"
 #import "TextMagnifierViewController.h"
 #import "InfoTabBarController.h"
+#import "AutoScrollLabel.h"
 
 //#define AUDIO_TYPE_PREF_KEY @"audio_technology_preference"
 
 @import AVFoundation;
 @import AudioToolbox;
-
-#import "AutoScrollLabel.h"
 
 
 @interface MainViewController : UIViewController <MPMediaPickerControllerDelegate, AVAudioPlayerDelegate, TimeMagnifierViewControllerDelegate, TextMagnifierViewControllerDelegate, InfoTabBarControllerDelegate> {
@@ -72,9 +71,14 @@
 @property (nonatomic, strong)   UIBarButtonItem         *stopWatchBarButton;
 
 
+//@property (strong, nonatomic) IBOutlet AutoScrollLabel *nowPlayingLabel;
+//AutoScrollLable is not working properly in iOS 8, use regular UIScrollView
+
+// so use the following 2 properties to allow user to manually scroll
+@property (strong, nonatomic) IBOutlet UIScrollView *nowPlayingScrollView;
+@property (strong, nonatomic) IBOutlet UILabel *nowPlayingLabel;
 
 @property (strong, nonatomic) IBOutlet UILabel *initialNowPlayingLabel;
-@property (strong, nonatomic) IBOutlet AutoScrollLabel	*nowPlayingLabel;
 @property (strong, nonatomic) IBOutlet UILabel *elapsedTimeLabel;
 @property (strong, nonatomic) IBOutlet OBSlider *progressSlider;
 @property (strong, nonatomic) IBOutlet UILabel *remainingTimeLabel;
@@ -106,7 +110,8 @@
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceBetweenRewindAndReplay;
 //@property (strong, nonatomic) IBOutlet NSLayoutConstraint *topSpaceToPlayButton;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *playButtonToBottomSpace;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *centerXInScrollView;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *centerXInNextSongScrollView;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *centerXInNowPlayingScrollView;
 
 - (IBAction)handleScrub:(id)sender;
 - (IBAction)handleScrubberTouchDown:(id)sender;

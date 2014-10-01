@@ -15,7 +15,6 @@
 
 @property (strong, nonatomic)   IBOutlet UITableView *collectionTableView;
 @property (strong, nonatomic)   IBOutlet UIView *allAlbumsView;
-//@property (strong, nonatomic) IBOutlet UIView *searchControllerView;
 @property (strong, nonatomic)   IBOutlet UIButton *allAlbumsButton;
 //140114 1.2 iOS 7 begin
 
@@ -34,7 +33,6 @@
 @property (nonatomic, strong)	MPMusicPlayerController	*musicPlayer;
 @property (nonatomic, strong)   NSArray *albumCollection;
 @property (nonatomic, strong)   UIBarButtonItem *rightBarButton;
-//@property (nonatomic, strong)   NSArray *searchResults;
 @property (readwrite)           BOOL cellScrolled;
 
 //130909 1.1 add iTunesStoreButton begin

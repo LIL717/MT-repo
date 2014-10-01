@@ -11,7 +11,7 @@
 
 
 
-@interface AlbumViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MPMediaPickerControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate> {
+@interface AlbumViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MPMediaPickerControllerDelegate, UISearchControllerDelegate> {
     
     NSManagedObjectContext *managedObjectContext_;
 }
@@ -19,7 +19,6 @@
 @property (strong, nonatomic)   IBOutlet UITableView *collectionTableView;
 @property (strong, nonatomic)   IBOutlet UIView *allSongsView;
 @property (strong, nonatomic)   IBOutlet UIButton *allSongsButton;
-@property (strong, nonatomic)   IBOutlet UISearchBar *searchBar;
 //130912 1.1 add iTunesStoreButton begin
 @property (weak, nonatomic) IBOutlet UIButton *moreByArtistButton;
 //130912 1.1 add iTunesStoreButton end
@@ -32,11 +31,9 @@
 @property (nonatomic, strong)	MPMusicPlayerController	*musicPlayer;
 @property (readwrite)           BOOL showAllSongsCell;
 @property (readwrite)           BOOL isIndexed;
-@property (readwrite)           BOOL isSearching;
 @property (readwrite)           BOOL cellScrolled;
 @property (nonatomic, retain)   MPMediaItemCollection *songCollection;
 @property (nonatomic, strong)   UIBarButtonItem *rightBarButton;
-@property (nonatomic, strong)   NSArray *searchResults;
 @property (nonatomic, strong)   MPMediaPropertyPredicate *collectionPredicate;
 @property (nonatomic, strong)   AppDelegate *appDelegate;
 

@@ -76,7 +76,6 @@ MPMediaPropertyPredicate *selectedPredicate;
 
 BOOL showDuration;
 BOOL firstLoad;
-BOOL firstSearch;
 //131203 1.2 iOS 7 begin
 //BOOL viewIsAppearing;
 //131203 1.2 iOS 7 end
@@ -114,12 +113,10 @@ BOOL firstSearch;
     [self.rightBarButton setAccessibilityLabel: NSLocalizedString(@"Now Playing", nil)];
     [self.rightBarButton setAccessibilityTraits: UIAccessibilityTraitButton];
     
-    musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
+    musicPlayer = [MPMusicPlayerController systemMusicPlayer];
     
     [self registerForMediaPlayerNotifications];
     self.cellScrolled = NO;
-
-//	self.allAlbumsView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 110)];
 
 	UITableViewController *searchResultsController = [[UITableViewController alloc] initWithStyle:UITableViewStylePlain];
 
@@ -130,11 +127,9 @@ BOOL firstSearch;
 	self.searchController = [[MTSearchController alloc] initWithSearchResultsController:searchResultsController];
 	self.searchController.delegate = self;
 
-	[self.searchController formatSearchBarForInitialView];
+	[self.searchController formatSearchBarForInitialViewWithHeight: 99.0 andOffset: -20.0];
 	self.searchController.searchResultsUpdater = self;
 
-//	[self.allAlbumsView addSubview: self.searchController.searchBar];
-//
 	self.allAlbumsButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	CGRect frame = CGRectMake(0.0, 44.0, self.view.bounds.size.width, 55);
 	self.allAlbumsButton.frame = frame;
@@ -147,15 +142,8 @@ BOOL firstSearch;
 		//remember to add a segue to viewController for this action
 	[self.allAlbumsButton addTarget:self action:@selector(allAlbumsButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 	[self.searchController.searchBar addSubview: self.allAlbumsButton];
-//
-//	[self.allAlbumsView addSubview: self.allAlbumsButton];
 
 	self.collectionTableView.tableHeaderView = self.searchController.searchBar;
-	firstSearch = YES;
-//	self.collectionTableView.tableHeaderView = self.allAlbumsView;
-//	[self.collectionTableView.tableHeaderView addSubview: self.searchController.searchBar];
-//	[self.collectionTableView.tableHeaderView addSubview: self.allAlbumsButton];
-
 	self.definesPresentationContext = YES;
 
     self.collectionTableView.sectionIndexMinimumDisplayRowCount = 20;
@@ -491,7 +479,7 @@ BOOL firstSearch;
 	[searchController.searchBar setTintColor: [UIColor lightGrayColor]];
 }
 - (void)willDismissSearchController:(MTSearchController *)searchController {
-	[self.searchController formatSearchBarForInitialView];
+	[self.searchController formatSearchBarForInitialViewWithHeight: 99.0 andOffset: -20.0];
 	CGRect frame = CGRectMake(0.0, 44.0, self.view.bounds.size.width, 55);
 	self.allAlbumsButton.frame = frame;
 	[self.searchController.searchBar addSubview: self.allAlbumsButton];
@@ -687,7 +675,7 @@ BOOL firstSearch;
             searchResultsCell.accessoryView = accessory;
         }
 
-        MPMediaItemCollection *searchCollection = [searchResults objectAtIndex: indexPath.row];
+        MPMediaItemCollection *searchCollection = [self.searchResults objectAtIndex: indexPath.row];
         NSString *mediaItemName = [[searchCollection representativeItem] valueForProperty: searchMediaItemProperty];
 
         searchResultsCell.textLabel.text = mediaItemName;
@@ -1107,7 +1095,7 @@ BOOL firstSearch;
                                name: MPMediaLibraryDidChangeNotification
                              object: nil];
     
-    [[MPMediaLibrary defaultMediaLibrary] beginGeneratingLibraryChangeNotifications];
+//    [[MPMediaLibrary defaultMediaLibrary] beginGeneratingLibraryChangeNotifications];
     [musicPlayer beginGeneratingPlaybackNotifications];
 
 }
@@ -1164,7 +1152,7 @@ BOOL firstSearch;
 													name: MPMusicPlayerControllerPlaybackStateDidChangeNotification
 												  object: musicPlayer];
 
-    [[MPMediaLibrary defaultMediaLibrary] endGeneratingLibraryChangeNotifications];
+//    [[MPMediaLibrary defaultMediaLibrary] endGeneratingLibraryChangeNotifications];
     [musicPlayer endGeneratingPlaybackNotifications];
 
 }
