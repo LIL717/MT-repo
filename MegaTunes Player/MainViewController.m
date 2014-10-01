@@ -18,7 +18,7 @@
 #import "UserInfoViewcontroller.h"
 #import "OBSlider.h"
 #import "AccessibleButton.h"
-#import "CBAutoScrollLabel.h"
+//#import "CBAutoScrollLabel.h"
 
 @interface MainViewController ()
 

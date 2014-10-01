@@ -14,7 +14,7 @@
 #import "MediaItemUserData.h"
 #import "UserDataForMediaItem.h"
 #import "Reachability.h"
-#import "TestFlight.h"
+//#import "TestFlight.h"
 
 @implementation AppDelegate
 
@@ -35,12 +35,8 @@
 #pragma mark TODO before submit to Apple Store
 
 		//*** beginning of TestFlight code
-		// comment out #define TESTING 1 before production!!!!
-		//#define TESTING 1
-		//#ifdef TESTING
-		//    [TestFlight setDeviceIdentifier:[[UIDevice currentDevice] uniqueIdentifier]];
-		//#endif
-		//    [TestFlight takeOff:@"3ec22a1e-ddac-483c-8152-21c537a9fb42"];
+
+//	[TestFlight takeOff:@"3ec22a1e-ddac-483c-8152-21c537a9fb42"];
 
 		//*** end of TestFlight code
 		//130906 1.1 add Store Button begin
