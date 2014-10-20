@@ -14,7 +14,6 @@
 #import "MediaItemUserData.h"
 #import "UserDataForMediaItem.h"
 #import "Reachability.h"
-//#import "TestFlight.h"
 
 @implementation AppDelegate
 
@@ -36,7 +35,8 @@
 
 		//*** beginning of TestFlight code
 
-//	[TestFlight takeOff:@"3ec22a1e-ddac-483c-8152-21c537a9fb42"];
+	[TestFlight takeOff:@"3ec22a1e-ddac-483c-8152-21c537a9fb42"];
+	[TestFlight setOptions:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO] forKey:@"logToConsole"]];
 
 		//*** end of TestFlight code
 		//130906 1.1 add Store Button begin
@@ -211,6 +211,12 @@
 	 Save data if appropriate.
 	 See also applicationDidEnterBackground:.
 	 */
+}
+- (NSUInteger)application:(UIApplication *)application
+supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+
+  return UIInterfaceOrientationMaskAll;
+
 }
 #pragma mark - Core Data stack
 

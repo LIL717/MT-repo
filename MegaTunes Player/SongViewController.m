@@ -1307,8 +1307,9 @@ BOOL excludeICloudItems;
         
         MPMediaQuerySection * sec = self.songSections[indexPath.section];
         selectedSong = self.collectionItem.collectionArray[sec.range.location + indexPath.row];
+		NSLog (@"selectedSong %@", [selectedSong valueForProperty: MPMediaItemPropertyTitle]);
         self.songCollection = [MPMediaItemCollection collectionWithItems: self.collectionItem.collectionArray];
-        
+		NSLog (@"self.songCollection %@", self.songCollection);
         self.collectionItem.collection = self.songCollection;
         
         self.collectionItemToSave = self.collectionItem;

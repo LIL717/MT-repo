@@ -377,11 +377,11 @@ NSString *myAffiliateID;
     
     self.songArray = [mySongQuery items];
     
-    //    //uncomment to slow the load way way down to test tinyArray
-    //    for (MPMediaItem *song in self.songArray) {
-    //        NSLog (@"SongName is %@", [song valueForProperty: MPMediaItemPropertyTitle]);
-    //    }
-    
+        //uncomment to slow the load way way down to test tinyArray
+        for (MPMediaItem *song in self.songArray) {
+//            NSLog (@"SongName is %@", [song valueForProperty: MPMediaItemPropertyTitle]);
+        }
+
 }
 - (void)loadTaggedSongArrayWithCompletion:(void (^)(BOOL result))completionHandler {
     

@@ -18,7 +18,7 @@
 #import "UserInfoViewcontroller.h"
 #import "OBSlider.h"
 #import "AccessibleButton.h"
-//#import "CBAutoScrollLabel.h"
+#import "TestFlight.h"
 
 @interface MainViewController ()
 
@@ -122,8 +122,8 @@ BOOL delayPlaybackStateChange;
     //    LogMethod();
     [super viewDidLoad];
 
-//    [TestFlight passCheckpoint:@"MainViewController"];
-    
+    [TestFlight passCheckpoint:@"MainViewController- viewDidLoad"];
+
     UIImage *backgroundImage = [UIImage imageNamed: @"blueInfoImage.png"];
     [self.nowPlayingInfoButton setImage: backgroundImage forState:UIControlStateHighlighted];
     self.nextLabel.textColor = [UIColor yellowColor];
@@ -181,6 +181,7 @@ BOOL delayPlaybackStateChange;
     //        [self setPlayNew: NO];
     //    }
     if (playNew) {
+		NSLog (@"gonna setQueueWithItemCollection %@", self.userMediaItemCollection);
         [musicPlayer setQueueWithItemCollection: self.userMediaItemCollection];
         [musicPlayer setNowPlayingItem: self.itemToPlay];
         [self playMusic];
@@ -287,8 +288,19 @@ BOOL delayPlaybackStateChange;
     [self.volumeView setMinimumVolumeSliderImage:[UIImage imageNamed:@"slider-fill.png"] forState:UIControlStateNormal];
     [self.volumeView setMaximumVolumeSliderImage:[UIImage imageNamed:@"slider-trackGray.png"] forState:UIControlStateNormal];
     [self.volumeView setVolumeThumbImage:[UIImage imageNamed:@"shinyVolumeHandle.png"] forState:UIControlStateNormal];
-    
-    if (!UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+
+//	if (UIUserInterfaceSizeClassCompact) { //portrait
+	if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) { //landscape
+		//        [self.view removeConstraint:self.topSpaceToPlayButton];
+		[self.view addConstraint: self.playButtonToBottomSpace];
+		self.playButtonToBottomSpace.constant = 190;
+			//140127 1.2 iOS 7 begin
+		self.leadingSpaceToSliderConstraint.constant = 20;
+		self.trailingSpaceFromSliderConstraint.constant = 20;
+			//140127 1.2 iOS 7 end
+
+    } else {
+
 //140127 1.2 iOS 7 begin
         //        [self.view removeConstraint:self.leadingSpaceToSliderConstraint];
         //        [self.view removeConstraint:self.trailingSpaceFromSliderConstraint];
@@ -302,22 +314,11 @@ BOOL delayPlaybackStateChange;
         
         self.playButtonToBottomSpace.constant = 70;
         
-    } else {
-        
-//        [self.view removeConstraint:self.topSpaceToPlayButton];
-        [self.view addConstraint: self.playButtonToBottomSpace];
-        self.playButtonToBottomSpace.constant = 190;
-//140127 1.2 iOS 7 begin
-        self.leadingSpaceToSliderConstraint.constant = 20;
-        self.trailingSpaceFromSliderConstraint.constant = 20;
-//140127 1.2 iOS 7 end
-        
     }
     
-    [self willAnimateRotationToInterfaceOrientation: self.interfaceOrientation duration: 1];
     [self registerForMediaPlayerNotifications];
     [self setPlayedMusicOnce: YES];
-    
+	NSLog (@"reached end of viewDidLoad");
 }
 - (void)checkForICloudItemsWithCompletion:(void (^)(BOOL result))completionHandler {
     
@@ -334,18 +335,19 @@ BOOL delayPlaybackStateChange;
         // Check that there was not a nil handler passed.
         if( completionHandler ){
             dispatch_sync(dispatch_get_main_queue(), ^(void) {
-                NSLog (@"Done Checking For ICloud Items in MainViewController");
                 NSLog (@"unfiltered CollectionContainsICloudItem = %d", self.collectionContainsICloudItem);
             });
         }
     });
 }
-- (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
-    //    LogMethod();
 
+- (void) viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+    //    LogMethod();
+	[super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
 		//removed because AutoScrollLabel not working
 //    [self.nowPlayingLabel  refreshLabels];
-    if (UIInterfaceOrientationIsLandscape(orientation)) {
+	if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) { //landscape
+//    if (UIInterfaceOrientationIsLandscape(orientation)) {
 //140127 1.2 iOS 7 begin
         self.leadingSpaceToSliderConstraint.constant = 120;
         self.trailingSpaceFromSliderConstraint.constant = 135;
@@ -642,8 +644,9 @@ BOOL delayPlaybackStateChange;
 //131001 make player compatible with iTunes Radio end
 
 //this is added to allow user to manually scroll nowPlayingLabel because AutoScrollLabel is not working in iOS 8
-	[self scrollNowPlayingLabel];
-
+	if (self.nowPlayingLabel.text) {
+		[self scrollNowPlayingLabel];
+	}
 
 }
 	//this method added for manual scrolling temporarily until AutoScrollLabel is fixed
@@ -1624,7 +1627,6 @@ BOOL delayPlaybackStateChange;
     //    LogMethod();
     
 	[controller dismissViewControllerAnimated:YES completion:nil];
-    [self willAnimateRotationToInterfaceOrientation: self.interfaceOrientation duration: 1];
 }
 //#pragma mark - TextMagnifierViewControllerDelegate
 
@@ -1633,13 +1635,11 @@ BOOL delayPlaybackStateChange;
     stopWatchRunning = NO;
     //	[self dismissViewControllerAnimated:YES completion:nil];
     [controller dismissViewControllerAnimated:YES completion:nil];
-    [self willAnimateRotationToInterfaceOrientation: self.interfaceOrientation duration: 1];
 }
 //#pragma mark - InfoTabBarControllerDelegate
 
 - (void)infoTabBarControllerDidCancel:(InfoTabBarController *)controller
 {
-    [self willAnimateRotationToInterfaceOrientation: self.interfaceOrientation duration: 1];
     //need to add back observer for playbackStatechanged because it was removed before going to info in case user edits
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 	[notificationCenter addObserver: self

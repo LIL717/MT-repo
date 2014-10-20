@@ -18,7 +18,6 @@
 		7032982E19D0C3570019FF0E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7032982D19D0C3570019FF0E /* AppDelegate.m */; };
 		7032983119D0C3D20019FF0E /* UIImage+AdditionalFunctionalities.m in Sources */ = {isa = PBXBuildFile; fileRef = 7032983019D0C3D20019FF0E /* UIImage+AdditionalFunctionalities.m */; };
 		7032984619D0C94B0019FF0E /* DTCustomColoredAccessory.m in Sources */ = {isa = PBXBuildFile; fileRef = 7032984519D0C94B0019FF0E /* DTCustomColoredAccessory.m */; };
-		7032984C19D0C9EF0019FF0E /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7032984B19D0C9EF0019FF0E /* iCarousel.m */; };
 		7032984F19D0CA5B0019FF0E /* VBColorPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 7032984D19D0CA5B0019FF0E /* VBColorPicker.m */; };
 		7032986719D0CF2D0019FF0E /* MTSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 7032986619D0CF2D0019FF0E /* MTSearchBar.m */; };
 		7032986B19D0CFAD0019FF0E /* KSLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7032986A19D0CFAD0019FF0E /* KSLabel.m */; };
@@ -76,7 +75,7 @@
 		70CF0BD1176A6561007AB6CF /* AddTagViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70CF0BD0176A655F007AB6CF /* AddTagViewController.m */; };
 		70E8E8091759CDA10012CE74 /* MediaGroupCarouselViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70E8E8081759CD9F0012CE74 /* MediaGroupCarouselViewController.m */; };
 		70E8E839175C2AB80012CE74 /* page@2x in Resources */ = {isa = PBXBuildFile; fileRef = 70E8E838175C2AB60012CE74 /* page@2x */; };
-		E256B313B3D248AC9212DF66 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A4CD47D14E842D59EE838F8 /* libPods.a */; };
+		B05745DFE25D67C4548237C4 /* libPods-MegaTunes.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 75CD719C5A6608FB9591868F /* libPods-MegaTunes.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,7 +89,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1A4CD47D14E842D59EE838F8 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		70017F09177EBC100022CEAF /* TaggedSongViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaggedSongViewController.h; sourceTree = "<group>"; };
 		70017F0A177EBC110022CEAF /* TaggedSongViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaggedSongViewController.m; sourceTree = "<group>"; };
 		700443741763B0D300DA8BB8 /* TagData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TagData.h; sourceTree = "<group>"; };
@@ -114,8 +112,6 @@
 		7032983019D0C3D20019FF0E /* UIImage+AdditionalFunctionalities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+AdditionalFunctionalities.m"; path = "MegaTunes Player/UIImage+AdditionalFunctionalities.m"; sourceTree = SOURCE_ROOT; };
 		7032984419D0C94B0019FF0E /* DTCustomColoredAccessory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTCustomColoredAccessory.h; path = "MegaTunes Player/DTCustomColoredAccessory.h"; sourceTree = SOURCE_ROOT; };
 		7032984519D0C94B0019FF0E /* DTCustomColoredAccessory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTCustomColoredAccessory.m; path = "MegaTunes Player/DTCustomColoredAccessory.m"; sourceTree = SOURCE_ROOT; };
-		7032984A19D0C9EF0019FF0E /* iCarousel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = iCarousel.h; path = "MegaTunes Player/iCarousel.h"; sourceTree = SOURCE_ROOT; };
-		7032984B19D0C9EF0019FF0E /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = iCarousel.m; path = "MegaTunes Player/iCarousel.m"; sourceTree = SOURCE_ROOT; };
 		7032984D19D0CA5B0019FF0E /* VBColorPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VBColorPicker.m; path = "MegaTunes Player/VBColorPicker.m"; sourceTree = SOURCE_ROOT; };
 		7032984E19D0CA5B0019FF0E /* VBColorPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VBColorPicker.h; path = "MegaTunes Player/VBColorPicker.h"; sourceTree = SOURCE_ROOT; };
 		7032985D19D0CEE40019FF0E /* slider-handle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider-handle@2x.png"; sourceTree = "<group>"; };
@@ -271,7 +267,9 @@
 		70E8E8071759CD9B0012CE74 /* MediaGroupCarouselViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaGroupCarouselViewController.h; sourceTree = "<group>"; };
 		70E8E8081759CD9F0012CE74 /* MediaGroupCarouselViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaGroupCarouselViewController.m; sourceTree = "<group>"; };
 		70E8E838175C2AB60012CE74 /* page@2x */ = {isa = PBXFileReference; lastKnownFileType = file; path = "page@2x"; sourceTree = "<group>"; };
-		A7F48A292DD847A790DEEBB8 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		75CD719C5A6608FB9591868F /* libPods-MegaTunes.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MegaTunes.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A69AFB1AD8569880C7CE9677 /* Pods-MegaTunes.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MegaTunes.release.xcconfig"; path = "Pods/Target Support Files/Pods-MegaTunes/Pods-MegaTunes.release.xcconfig"; sourceTree = "<group>"; };
+		D56F15B5D2D94FB5738CAC51 /* Pods-MegaTunes.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MegaTunes.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MegaTunes/Pods-MegaTunes.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -292,7 +290,7 @@
 				7060522C14F88D43001A1CDB /* UIKit.framework in Frameworks */,
 				7060522E14F88D43001A1CDB /* Foundation.framework in Frameworks */,
 				7060523014F88D43001A1CDB /* CoreGraphics.framework in Frameworks */,
-				E256B313B3D248AC9212DF66 /* libPods.a in Frameworks */,
+				B05745DFE25D67C4548237C4 /* libPods-MegaTunes.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -318,7 +316,7 @@
 				7060524F14F88D44001A1CDB /* MegaTunes PlayerTests */,
 				7060522A14F88D43001A1CDB /* Frameworks */,
 				7060522814F88D43001A1CDB /* Products */,
-				A7F48A292DD847A790DEEBB8 /* Pods.xcconfig */,
+				FE9CF240547EDDF135068A39 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -346,7 +344,7 @@
 				7060522B14F88D43001A1CDB /* UIKit.framework */,
 				7060522D14F88D43001A1CDB /* Foundation.framework */,
 				7060522F14F88D43001A1CDB /* CoreGraphics.framework */,
-				1A4CD47D14E842D59EE838F8 /* libPods.a */,
+				75CD719C5A6608FB9591868F /* libPods-MegaTunes.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -441,7 +439,6 @@
 				70A6003419DBB1DB003A2ABA /* AutoScrollLabel */,
 				70CF0BDB176D33C2007AB6CF /* VBColorPicker */,
 				70CF0BD5176C0917007AB6CF /* KSLabel */,
-				70E8E80C175ABA2E0012CE74 /* iCarousel */,
 				70E8E80B175AB9950012CE74 /* DTCustomColoredAccessory */,
 				70E8E80A175AB9530012CE74 /* MTSearchBar */,
 				7098ECFF19D9B005000196A3 /* MTSearchController */,
@@ -600,13 +597,13 @@
 			path = "../../../../Development Sandbox/MegaTunesPlayer/MegaTunes Player/MegaTunes Player";
 			sourceTree = "<group>";
 		};
-		70E8E80C175ABA2E0012CE74 /* iCarousel */ = {
+		FE9CF240547EDDF135068A39 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				7032984A19D0C9EF0019FF0E /* iCarousel.h */,
-				7032984B19D0C9EF0019FF0E /* iCarousel.m */,
+				D56F15B5D2D94FB5738CAC51 /* Pods-MegaTunes.debug.xcconfig */,
+				A69AFB1AD8569880C7CE9677 /* Pods-MegaTunes.release.xcconfig */,
 			);
-			path = iCarousel;
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -616,11 +613,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7060525A14F88D44001A1CDB /* Build configuration list for PBXNativeTarget "MegaTunes" */;
 			buildPhases = (
-				0024FFAC643749608A8CA5B5 /* Check Pods Manifest.lock */,
+				C4E6C158F53CAA242656204F /* Check Pods Manifest.lock */,
 				7060522314F88D43001A1CDB /* Sources */,
 				7060522414F88D43001A1CDB /* Frameworks */,
 				7060522514F88D43001A1CDB /* Resources */,
-				128683901FFC41698817147E /* Copy Pods Resources */,
+				9E4BA72105B485B3C98C0328 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -725,7 +722,35 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0024FFAC643749608A8CA5B5 /* Check Pods Manifest.lock */ = {
+		7060524614F88D44001A1CDB /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+		9E4BA72105B485B3C98C0328 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MegaTunes/Pods-MegaTunes-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C4E6C158F53CAA242656204F /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -739,34 +764,6 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
-		};
-		128683901FFC41698817147E /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		7060524614F88D44001A1CDB /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -819,7 +816,6 @@
 				70017F0B177EBC120022CEAF /* TaggedSongViewController.m in Sources */,
 				708EA29317931AE000A826D6 /* TaggedSectionIndexData.m in Sources */,
 				707AC0F217D933BD009B49CA /* AccessibleButton.m in Sources */,
-				7032984C19D0C9EF0019FF0E /* iCarousel.m in Sources */,
 				707AC0F317D933BD009B49CA /* AccessibleLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1013,7 +1009,7 @@
 		};
 		7060525B14F88D44001A1CDB /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A7F48A292DD847A790DEEBB8 /* Pods.xcconfig */;
+			baseConfigurationReference = D56F15B5D2D94FB5738CAC51 /* Pods-MegaTunes.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-2";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -1022,14 +1018,13 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MegaTunes Player/MegaTunes Player-Prefix.pch";
 				GCC_VERSION = "";
+				HEADER_SEARCH_PATHS = "\"${PODS_ROOT}/Headers/Public\"";
 				INFOPLIST_FILE = "MegaTunes Player/MegaTunes Player-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/MegaTunes",
-					"Player/TestFlightSDK3-3",
-				);
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/TestFlightSDK3";
 				LINK_WITH_STANDARD_LIBRARIES = YES;
-				OTHER_LDFLAGS = "-lstdc++";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_LIBTOOLFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
@@ -1038,7 +1033,7 @@
 		};
 		7060525C14F88D44001A1CDB /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A7F48A292DD847A790DEEBB8 /* Pods.xcconfig */;
+			baseConfigurationReference = A69AFB1AD8569880C7CE9677 /* Pods-MegaTunes.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-2";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -1047,14 +1042,13 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MegaTunes Player/MegaTunes Player-Prefix.pch";
 				GCC_VERSION = "";
+				HEADER_SEARCH_PATHS = "\"${PODS_ROOT}/Headers/Public\"";
 				INFOPLIST_FILE = "MegaTunes Player/MegaTunes Player-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/MegaTunes",
-					"Player/TestFlightSDK3-3",
-				);
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/TestFlightSDK3";
 				LINK_WITH_STANDARD_LIBRARIES = YES;
-				OTHER_LDFLAGS = "-lstdc++";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_LIBTOOLFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;

@@ -55,8 +55,8 @@ BOOL itemHasTag;
 //    LogMethod();
     [super viewDidLoad];
     
-//    [TestFlight passCheckpoint:@"UserInfoViewController"];
-    
+    [TestFlight passCheckpoint:@"UserInfoViewController"];
+
     musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
     
 //140206 1.2 iOS 7 begin

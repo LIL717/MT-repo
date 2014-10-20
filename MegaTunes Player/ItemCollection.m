@@ -71,7 +71,10 @@
         
     NSError *error = nil;
     NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
-    
+
+	if (error) {
+		NSLog(@"Error requesting items from Core Data: %@", [error localizedDescription]);
+	}
     if (fetchedObjects == nil) {
         // Handle the error
         NSLog (@"fetch error");
@@ -110,14 +113,28 @@
     [allItems setIncludesPropertyValues:NO]; //only fetch the managedObjectID
     
     NSError * error = nil;
-    NSArray * items = [context executeFetchRequest:allItems error:&error];
-    
-    //error handling goes here
-    for (NSManagedObject * item in items) {
-        [context deleteObject:item];
-    }
-    NSError *saveError = nil;
-    [context save:&saveError];
+    NSArray * fetchedObjects = [context executeFetchRequest:allItems error:&error];
+
+	if (error) {
+		NSLog(@"Error requesting items from Core Data: %@", [error localizedDescription]);
+	}
+	if (fetchedObjects != nil) {
+//			//this is all for debugging can be removed
+//		MPMediaItemCollection *mediaItemCollection = [[fetchedObjects objectAtIndex:0] valueForKey: @"collection"];
+//		NSArray *savedQueue = [mediaItemCollection items];
+//
+//		for (MPMediaItem *song in savedQueue) {
+//			NSLog (@"%@", [song valueForProperty: MPMediaItemPropertyTitle]);
+//		}
+//			//end of code for debugging
+		for (NSManagedObject * item in fetchedObjects) {
+			[context deleteObject:item];
+		}
+	} else {
+		NSLog(@"%s: Problem saving: %@", __PRETTY_FUNCTION__, error);
+		abort();
+	}
+
 }
 
 @end

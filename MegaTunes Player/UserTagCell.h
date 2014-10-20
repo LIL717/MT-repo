@@ -6,8 +6,11 @@
 //
 //
 @class KSLabel;
+#import "FMMoveTableViewCell.h"
 
 @interface UserTagCell : UITableViewCell
+//@interface UserTagCell : FMMoveTableViewCell
+
 
 @property (strong, nonatomic) IBOutlet UIImageView *cellBackgroundImageView;
 @property (nonatomic, strong) IBOutlet KSLabel *tagLabel;

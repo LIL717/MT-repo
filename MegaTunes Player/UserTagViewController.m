@@ -223,30 +223,31 @@ NSString *actionType;
 {
     //    LogMethod();
     // Return the number of rows in the section.
-    
+
+	NSLog (@"tableView is %@", tableView);
     id sectionInfo = [self.fetchedResultsController sections][section];
     NSInteger numberOfRows = [sectionInfo numberOfObjects];
     
-//    /******************************** NOTE ********************************
-//	 * Implement this check in your table view data source to ensure correct access to the data source
-//	 *
-//	 * The data source is in a dirty state when moving a row and is only being updated after the user
-//	 * releases the moving row
-//	 **********************************************************************/
-//	
-//	// 1. A row is in a moving state
-//	// 2. The moving row is not in it's initial section
-//
-//	if ([tableView movingIndexPath] && [[tableView movingIndexPath] section] != [[tableView initialIndexPathForMovingRow] section])
-//	{
-//		if (section == [[tableView movingIndexPath] section]) {
-//			numberOfRows++;
-//		}
-//		else if (section == [[tableView initialIndexPathForMovingRow] section]) {
-//			numberOfRows--;
-//		}
-//	}
-    return numberOfRows;
+    /******************************** NOTE ********************************
+	 * Implement this check in your table view data source to ensure correct access to the data source
+	 *
+	 * The data source is in a dirty state when moving a row and is only being updated after the user
+	 * releases the moving row
+	 **********************************************************************/
+	
+	// 1. A row is in a moving state
+	// 2. The moving row is not in it's initial section
+	if (tableView.movingIndexPath && tableView.movingIndexPath.section != tableView.initialIndexPathForMovingRow.section)
+		{
+		if (section == tableView.movingIndexPath.section) {
+			numberOfRows++;
+		}
+		else if (section == tableView.initialIndexPathForMovingRow.section) {
+			numberOfRows--;
+		}
+	}
+
+	return numberOfRows;
     //        //---section 0 is the search button---
     //    }
 }
@@ -258,24 +259,24 @@ NSString *actionType;
     
 	UserTagCell *cell = (UserTagCell *)[tableView dequeueReusableCellWithIdentifier:@"UserTagCell"];
     
-//    
-//    /******************************** NOTE ********************************
-//     * Implement this check in your table view data source to ensure that the moving
-//     * row's content is being reseted
-//     **********************************************************************/
-//    if ([tableView indexPathIsMovingIndexPath:indexPath]) {
-//        [cell prepareForMove];
-//    } else {
-//		/******************************** NOTE ********************************
-//		 * Implement this check in your table view data source to ensure correct access to the data source
-//		 *
-//		 * The data source is in a dirty state when moving a row and is only being updated after the user
-//		 * releases the moving row
-//		 **********************************************************************/
-//        if ([tableView movingIndexPath]) {
-//            indexPath = [tableView adaptedIndexPathForRowAtIndexPath:indexPath];
-//        }
-
+    
+    /******************************** NOTE ********************************
+     * Implement this check in your table view data source to ensure that the moving
+     * row's content is being reseted
+     **********************************************************************/
+    if ([tableView indexPathIsMovingIndexPath:indexPath]) {
+        [cell prepareForMove];
+    } else {
+		/******************************** NOTE ********************************
+		 * Implement this check in your table view data source to ensure correct access to the data source
+		 *
+		 * The data source is in a dirty state when moving a row and is only being updated after the user
+		 * releases the moving row
+		 **********************************************************************/
+        if ([tableView movingIndexPath]) {
+            indexPath = [tableView adaptedIndexPathForRowAtIndexPath:indexPath];
+        }
+        
         TagData *tagData = [self.fetchedResultsController objectAtIndexPath:indexPath];
         
         [cell.tagLabel removeFromSuperview];
@@ -303,7 +304,7 @@ NSString *actionType;
         cell.backgroundColor = tagColor;
 //131203 1.2 iOS 7 end
 
-//    }
+    }
 
     return cell;
 }

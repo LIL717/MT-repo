@@ -15,9 +15,10 @@
     #import <MediaPlayer/MediaPlayer.h>
     #import <CoreData/CoreData.h>
     #import "UIImage+iPhone5.h"
+	#import "TestFlight.h"
 
 #endif
-
+#define NSLog(__FORMAT__, ...) TFLog((@"%s [Line %d] " __FORMAT__), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
 #if DEBUG
 #define MGLog(args...)  NSLog( @"%@", [NSString stringWithFormat:args])
 #define LogMethod() NSLog(@"%@ %@ %s (line %d)", NSStringFromSelector(_cmd), self, __PRETTY_FUNCTION__, __LINE__)
@@ -29,3 +30,4 @@
 #define LogMethod()
 
 #endif
+

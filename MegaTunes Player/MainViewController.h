@@ -70,9 +70,8 @@
 @property (nonatomic)           BOOL                    collectionContainsICloudItem;
 @property (nonatomic, strong)   UIBarButtonItem         *stopWatchBarButton;
 
-
-//@property (strong, nonatomic) IBOutlet AutoScrollLabel *nowPlayingLabel;
 //AutoScrollLable is not working properly in iOS 8, use regular UIScrollView
+//@property (strong, nonatomic) IBOutlet AutoScrollLabel *nowPlayingLabel;
 
 // so use the following 2 properties to allow user to manually scroll
 @property (strong, nonatomic) IBOutlet UIScrollView *nowPlayingScrollView;

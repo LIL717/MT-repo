@@ -54,7 +54,7 @@
     if (highlighted) {
         self.nameLabel.textColor = [UIColor blueColor];
         self.durationLabel.textColor = [UIColor blueColor];
-        NSLog(@"setSelected:YES");
+//        NSLog(@"setSelected:YES");
 //        self.selectionStyle = UITableViewCellSelectionStyleGray;
 
 //        self.nameLabel.highlightedTextColor = [UIColor blueColor];
