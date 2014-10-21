@@ -202,10 +202,9 @@ BOOL delayPlaybackStateChange;
         MPMediaItem *currentItem = [musicPlayer nowPlayingItem];
         //    NSLog (@" currentItem is %@", [currentItem valueForProperty: MPMediaItemPropertyTitle]);
         //check the queue stored in Core Data to see if the nowPlaying song is in that queue
-        ItemCollection *itemCollection = [ItemCollection alloc];
 
         //    self.collectionItem = [itemCollection containsItem: [currentItem valueForProperty: MPMediaItemPropertyTitle]];
-        self.collectionItem = [itemCollection containsItem: [currentItem valueForProperty:  MPMediaItemPropertyPersistentID]];
+        self.collectionItem = [self containsItem: [currentItem valueForProperty:  MPMediaItemPropertyPersistentID]];
         
         self.userMediaItemCollection = collectionItem.collection;
         
@@ -340,7 +339,48 @@ BOOL delayPlaybackStateChange;
         }
     });
 }
+- (CollectionItem *) containsItem: (NSNumber *) playingSongPersistentID
+{
+	BOOL itemFound;
 
+	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:@"ItemCollection"
+											  inManagedObjectContext:self.managedObjectContext];
+	[fetchRequest setEntity:entity];
+
+	NSError *error = nil;
+	NSArray *fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+
+	if (error) {
+		NSLog(@"Error requesting items from Core Data: %@", [error localizedDescription]);
+	}
+	if (fetchedObjects == nil) {
+			// Handle the error
+		NSLog (@"fetch error");
+	}
+
+	itemFound = NO;
+		//if there are no objects, set itemFound to NO
+	if ([fetchedObjects count] == 0) {
+		NSLog (@"no collection item objects fetched");
+	} else {
+			// if there is an object, need to see if song is in the list
+		MPMediaItemCollection *mediaItemCollection = [[fetchedObjects firstObject] valueForKey: @"collection"];
+		NSArray *savedQueue = [mediaItemCollection items];
+
+		for (MPMediaItem *song in savedQueue) {
+				//                if ([[song valueForProperty: MPMediaItemPropertyTitle] isEqual: playingSong]) {
+			if ([[song valueForProperty: MPMediaItemPropertyPersistentID] isEqual: playingSongPersistentID]) {
+				itemFound = YES;
+			}
+		}
+	}
+	if (itemFound) {
+		return [fetchedObjects firstObject];
+	} else {
+		return nil;
+	}
+}
 - (void) viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
     //    LogMethod();
 	[super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];

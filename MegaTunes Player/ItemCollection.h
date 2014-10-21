@@ -15,8 +15,4 @@
 @property (nonatomic)         BOOL inAppPlaylist;
 @property (nonatomic, retain) NSNumber *sortOrder;
 
-- (void)addCollectionToCoreData:(CollectionItem *) collectionItem;
-- (CollectionItem *) containsItem: (NSNumber *) playingSongPersistentID;
-- (void)removeCollectionFromCoreData;
-
 @end

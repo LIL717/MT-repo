@@ -1339,9 +1339,8 @@ BOOL excludeICloudItems;
         mainViewController.iPodLibraryChanged = self.iPodLibraryChanged;
         
         //save collection in Core Data
-        ItemCollection *itemCollection = [ItemCollection alloc];
         
-        [itemCollection addCollectionToCoreData: self.collectionItemToSave];
+        [self addCollectionToCoreData: self.collectionItemToSave];
         
         
     }
@@ -1354,6 +1353,56 @@ BOOL excludeICloudItems;
         
     }
 }
+- (void)addCollectionToCoreData:(CollectionItem *) newCollectionItem {
+
+		//LogMethod();
+
+	[self removeCollectionFromCoreData];
+
+		// insert the collection into Core Data
+	NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:@"ItemCollection" inManagedObjectContext:self.managedObjectContext];
+	[newManagedObject setValue: newCollectionItem.name forKey:@"name"];
+	[newManagedObject setValue: newCollectionItem.duration forKey: @"duration"];
+	[newManagedObject setValue: newCollectionItem.lastPlayedDate forKey: @"lastPlayedDate"];
+	[newManagedObject setValue: newCollectionItem.collection forKey: @"collection"];
+	[newManagedObject setValue: [NSNumber numberWithBool:newCollectionItem.inAppPlaylist ] forKey: @"inAppPlaylist"];
+	[newManagedObject setValue: newCollectionItem.sortOrder forKey:@"sortOrder"];
+
+		// Save the context.
+	NSError *error = nil;
+	if (![self.managedObjectContext save:&error]) {
+		NSLog(@"%s: Problem saving: %@", __PRETTY_FUNCTION__, error);
+		abort();
+	}
+
+}
+
+- (void)removeCollectionFromCoreData {
+		//    LogMethod();
+		//select all objects in the ItemCollection
+	NSFetchRequest * allItems = [[NSFetchRequest alloc] init];
+	[allItems setEntity:[NSEntityDescription entityForName:@"ItemCollection" inManagedObjectContext:self.managedObjectContext]];
+	[allItems setIncludesPropertyValues:NO]; //only fetch the managedObjectID
+
+	NSError * error = nil;
+	NSLog(@"Going to fetch objects from CoreData");
+
+	NSArray * fetchedObjects = [self.managedObjectContext executeFetchRequest:allItems error:&error];
+
+	if (error) {
+		NSLog(@"Error requesting items from Core Data: %@", [error localizedDescription]);
+	}
+	if (fetchedObjects != nil) {
+		for (NSManagedObject * item in fetchedObjects) {
+			[self.managedObjectContext deleteObject:item];
+		}
+	} else {
+		NSLog(@"%s: Problem saving: %@", __PRETTY_FUNCTION__, error);
+		abort();
+	}
+	
+}
+
 - (IBAction)viewNowPlaying {
     
     [self performSegueWithIdentifier: @"ViewNowPlaying" sender: self];
