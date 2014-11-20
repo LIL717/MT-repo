@@ -139,7 +139,7 @@ NSString *actionType;
     self.edgesForExtendedLayout = UIRectEdgeNone;
 //131216 1.2 iOS 7 end
     
-    [self updateLayoutForNewOrientation: self.interfaceOrientation];
+    [self updateLayoutForNewOrientation];
     
     [super viewWillAppear: animated];
     
@@ -184,10 +184,10 @@ NSString *actionType;
 
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
     
-    [self updateLayoutForNewOrientation: orientation];
+    [self updateLayoutForNewOrientation];
     
 }
-- (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
+- (void) updateLayoutForNewOrientation {
     //    LogMethod();
 //140216 1.2 iOS 7 begin
     BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);

@@ -378,9 +378,9 @@ NSString *myAffiliateID;
     self.songArray = [mySongQuery items];
     
         //uncomment to slow the load way way down to test tinyArray
-        for (MPMediaItem *song in self.songArray) {
+//        for (MPMediaItem *song in self.songArray) {
 //            NSLog (@"SongName is %@", [song valueForProperty: MPMediaItemPropertyTitle]);
-        }
+//        }
 
 }
 - (void)loadTaggedSongArrayWithCompletion:(void (^)(BOOL result))completionHandler {
@@ -520,7 +520,7 @@ NSString *myAffiliateID;
         self.navigationItem.rightBarButtonItem= nil;
     }
     
-    [self updateLayoutForNewOrientation: self.interfaceOrientation];
+    [self updateLayoutForNewOrientation];
     
     return;
 }
@@ -571,13 +571,15 @@ NSString *myAffiliateID;
 
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
     //    LogMethod();
-    [self updateLayoutForNewOrientation: orientation];
+    [self updateLayoutForNewOrientation];
     
 }
-- (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
+- (void) updateLayoutForNewOrientation {
     
     //    LogMethod();
-    if (UIInterfaceOrientationIsPortrait(orientation)) {
+	BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
+
+    if (isPortrait) {
 //140219 1.2 iOS 7 begin
         [self.groupTableView setContentInset:UIEdgeInsetsMake(-30,0,0,0)];
     }

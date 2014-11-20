@@ -152,7 +152,7 @@
 
 		//need to set the title because accessibility uses the title, set text to clear so it doesn't display
 	[[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-													   [UIColor clearColor], UITextAttributeTextColor,
+													   [UIColor clearColor], NSForegroundColorAttributeName,
 													   nil] forState:UIControlStateNormal];
 
 //	[[UITabBar appearance] setBackgroundImage:tabBarBackground];

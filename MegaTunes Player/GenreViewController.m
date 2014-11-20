@@ -188,7 +188,7 @@ BOOL firstLoad;
         }
         self.cellScrolled = NO;
     }
-    [self updateLayoutForNewOrientation: self.interfaceOrientation];
+    [self updateLayoutForNewOrientation];
     
     return;
 }
@@ -212,9 +212,9 @@ BOOL firstLoad;
 
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
     //    LogMethod();
-    [self updateLayoutForNewOrientation: orientation];
+    [self updateLayoutForNewOrientation];
 }
-- (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
+- (void) updateLayoutForNewOrientation {
     //    LogMethod();
     
 //131216 1.2 iOS 7 begin

@@ -104,7 +104,7 @@
     //set the navigation bar title
     self.navigationItem.titleView = [self customizeTitleView];
     
-    [self updateLayoutForNewOrientation: self.interfaceOrientation];
+    [self updateLayoutForNewOrientation];
     
     [super viewWillAppear: animated];
     
@@ -130,12 +130,14 @@
 
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
     
-    [self updateLayoutForNewOrientation: orientation];
+    [self updateLayoutForNewOrientation];
     
 }
-- (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
+- (void) updateLayoutForNewOrientation {
     //    LogMethod();
-    if (UIInterfaceOrientationIsPortrait(orientation)) {
+	BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
+
+    if (isPortrait) {
         //        NSLog (@"portrait");
         
         self.verticalSpaceTopToTagConstraint.constant = 11;

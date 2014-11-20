@@ -527,7 +527,7 @@ BOOL excludeICloudItems;
         //        [scrolledCellIndexArray removeAllObjects];
         self.cellScrolled = NO;
     }
-    [self updateLayoutForNewOrientation: self.interfaceOrientation];
+    [self updateLayoutForNewOrientation];
     
     [super viewWillAppear: animated];
     
@@ -580,17 +580,19 @@ BOOL excludeICloudItems;
 
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
     
-    [self updateLayoutForNewOrientation: orientation];
+    [self updateLayoutForNewOrientation];
     
 }
-- (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
+//- (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
+- (void) updateLayoutForNewOrientation {
+
     //    LogMethod();
 //131216 1.2 iOS 7 begin
     
     BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
     
     CGFloat navBarAdjustment = isPortrait ? 0 : 9;
-    
+
     if (isPortrait) {
 
         [tempPlayButton setContentEdgeInsets: UIEdgeInsetsMake(-1.0, 0.0, 1.0, 0.0)];
@@ -1588,7 +1590,7 @@ BOOL excludeICloudItems;
                 [self createSongArray];
                 [self prepareArrayDependentData];
                 [self.songTableView reloadData];
-                [self updateLayoutForNewOrientation: self.interfaceOrientation];
+                [self updateLayoutForNewOrientation];
                 
             }
         } else {
@@ -1601,7 +1603,7 @@ BOOL excludeICloudItems;
                 [self createSongArray];
                 [self prepareArrayDependentData];
                 [self.songTableView reloadData];
-                [self updateLayoutForNewOrientation: self.interfaceOrientation];
+                [self updateLayoutForNewOrientation];
                 
             }
         }

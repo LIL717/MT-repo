@@ -57,7 +57,7 @@ BOOL itemHasTag;
     
     [TestFlight passCheckpoint:@"UserInfoViewController"];
 
-    musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
+    musicPlayer = [MPMusicPlayerController systemMusicPlayer];
     
 //140206 1.2 iOS 7 begin
     // cause separator line to stretch to right side of view
@@ -75,7 +75,7 @@ BOOL itemHasTag;
     
     [self setShowCheckMarkButton: NO];
 
-    [self updateLayoutForNewOrientation: self.interfaceOrientation];
+    [self updateLayoutForNewOrientation];
 
 }
 
@@ -123,10 +123,10 @@ BOOL itemHasTag;
 
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
     
-    [self updateLayoutForNewOrientation: orientation];
+    [self updateLayoutForNewOrientation];
     
 }
-- (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
+- (void) updateLayoutForNewOrientation {
     //executes this method on initial load and the one in InfoTabBarController after that, so they need to stay in synch with each other and with the constaint set in interface builder
 //140216 1.2 iOS 7 begin
     BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
@@ -424,7 +424,7 @@ BOOL itemHasTag;
 
     self.userInfoTagArray = [NSArray arrayWithObjects: nil];
     [self loadDataForView];
-    [self willAnimateRotationToInterfaceOrientation: self.interfaceOrientation duration: 1];
+    [self updateLayoutForNewOrientation];
     //need to add back observer for playbackStatechanged because it was removed before going to info in case user edits
 
     

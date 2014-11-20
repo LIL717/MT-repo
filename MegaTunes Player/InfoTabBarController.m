@@ -197,7 +197,7 @@
     //    self.navigationItem.titleView = [self customizeTitleView];
     
     
-    [self updateLayoutForNewOrientation: self.interfaceOrientation];
+    [self updateLayoutForNewOrientation];
     
     
     //    NSLog (@"self.navigationItem.titleview is %@", self.navigationItem.titleView);
@@ -291,10 +291,10 @@
 
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
     
-    [self updateLayoutForNewOrientation: orientation];
+    [self updateLayoutForNewOrientation];
     
 }
-- (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
+- (void) updateLayoutForNewOrientation {
     //executes the method in the individual view on initial load and the one here after that, so they need to stay in synch with each other and with the constaints set in interface builder
 //140215 1.2 iOS 7 begin
     BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);

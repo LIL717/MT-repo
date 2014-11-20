@@ -113,7 +113,7 @@ NSString *myAffiliateID;
     
     //    [self registerForMediaPlayerNotifications];
     
-    [self updateLayoutForNewOrientation: self.interfaceOrientation];
+    [self updateLayoutForNewOrientation];
     
 }
 - (void) loadTableData {
@@ -362,7 +362,7 @@ NSString *myAffiliateID;
 //    return label;
 //}
 
-- (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation {
+- (void) updateLayoutForNewOrientation{
     
 //140216 1.2 iOS 7 begin
     BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
