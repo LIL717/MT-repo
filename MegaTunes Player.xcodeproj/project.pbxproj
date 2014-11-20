@@ -74,7 +74,6 @@
 		70BAC6281701434100C39980 /* AllSongsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BAC6271701434100C39980 /* AllSongsCell.m */; };
 		70CF0BD1176A6561007AB6CF /* AddTagViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70CF0BD0176A655F007AB6CF /* AddTagViewController.m */; };
 		70E8E8091759CDA10012CE74 /* MediaGroupCarouselViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70E8E8081759CD9F0012CE74 /* MediaGroupCarouselViewController.m */; };
-		70E8E839175C2AB80012CE74 /* page@2x in Resources */ = {isa = PBXBuildFile; fileRef = 70E8E838175C2AB60012CE74 /* page@2x */; };
 		B05745DFE25D67C4548237C4 /* libPods-MegaTunes.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 75CD719C5A6608FB9591868F /* libPods-MegaTunes.a */; };
 /* End PBXBuildFile section */
 
@@ -114,7 +113,6 @@
 		7032984519D0C94B0019FF0E /* DTCustomColoredAccessory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTCustomColoredAccessory.m; path = "MegaTunes Player/DTCustomColoredAccessory.m"; sourceTree = SOURCE_ROOT; };
 		7032984D19D0CA5B0019FF0E /* VBColorPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VBColorPicker.m; path = "MegaTunes Player/VBColorPicker.m"; sourceTree = SOURCE_ROOT; };
 		7032984E19D0CA5B0019FF0E /* VBColorPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VBColorPicker.h; path = "MegaTunes Player/VBColorPicker.h"; sourceTree = SOURCE_ROOT; };
-		7032985D19D0CEE40019FF0E /* slider-handle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider-handle@2x.png"; sourceTree = "<group>"; };
 		7032986619D0CF2D0019FF0E /* MTSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MTSearchBar.m; path = "MegaTunes Player/MTSearchBar.m"; sourceTree = SOURCE_ROOT; };
 		7032986819D0CF470019FF0E /* MTSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MTSearchBar.h; path = "MegaTunes Player/MTSearchBar.h"; sourceTree = SOURCE_ROOT; };
 		7032986919D0CFAD0019FF0E /* KSLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KSLabel.h; path = "MegaTunes Player/KSLabel.h"; sourceTree = SOURCE_ROOT; };
@@ -266,7 +264,6 @@
 		70E8E7E81756D84C0012CE74 /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		70E8E8071759CD9B0012CE74 /* MediaGroupCarouselViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaGroupCarouselViewController.h; sourceTree = "<group>"; };
 		70E8E8081759CD9F0012CE74 /* MediaGroupCarouselViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaGroupCarouselViewController.m; sourceTree = "<group>"; };
-		70E8E838175C2AB60012CE74 /* page@2x */ = {isa = PBXFileReference; lastKnownFileType = file; path = "page@2x"; sourceTree = "<group>"; };
 		75CD719C5A6608FB9591868F /* libPods-MegaTunes.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MegaTunes.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A69AFB1AD8569880C7CE9677 /* Pods-MegaTunes.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MegaTunes.release.xcconfig"; path = "Pods/Target Support Files/Pods-MegaTunes/Pods-MegaTunes.release.xcconfig"; sourceTree = "<group>"; };
 		D56F15B5D2D94FB5738CAC51 /* Pods-MegaTunes.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MegaTunes.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MegaTunes/Pods-MegaTunes.debug.xcconfig"; sourceTree = "<group>"; };
@@ -552,8 +549,6 @@
 				707AC0EF17D933BD009B49CA /* AccessibleButton.m */,
 				707AC0F017D933BD009B49CA /* AccessibleLabel.h */,
 				707AC0F117D933BD009B49CA /* AccessibleLabel.m */,
-				70E8E838175C2AB60012CE74 /* page@2x */,
-				7032985D19D0CEE40019FF0E /* slider-handle@2x.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -706,7 +701,6 @@
 				7060523F14F88D43001A1CDB /* MainStoryboard.storyboard in Resources */,
 				7041798119D4E1CC00BB6D14 /* Images.xcassets in Resources */,
 				705FF27D19D594CC00C41638 /* Localizable.strings in Resources */,
-				70E8E839175C2AB80012CE74 /* page@2x in Resources */,
 				7041797F19D4DAA400BB6D14 /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
