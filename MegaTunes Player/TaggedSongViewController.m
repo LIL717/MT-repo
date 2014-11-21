@@ -582,13 +582,13 @@ BOOL excludeICloudItems;
         
     } else {
         
-        [self.tempPlayButton setContentEdgeInsets: UIEdgeInsetsMake(3.0, 0.0, -3.0, 0.0)];
+        [self.tempPlayButton setContentEdgeInsets: UIEdgeInsetsMake(5.0, 0.0, -5.0, 0.0)];
         self.playBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.tempPlayButton];
         
-        [self.tempColorButton setContentEdgeInsets: UIEdgeInsetsMake(3.0, 0.0, -3.0, 0.0)];
+        [self.tempColorButton setContentEdgeInsets: UIEdgeInsetsMake(6.0, 0.0, -6.0, 0.0)];
         self.colorTagBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.tempColorButton];
         
-        [self.tempNoColorButton setContentEdgeInsets: UIEdgeInsetsMake(3.0, 0.0, -3.0, 0.0)];
+        [self.tempNoColorButton setContentEdgeInsets: UIEdgeInsetsMake(6.0, 0.0, -6.0, 0.0)];
         self.noColorTagBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.tempNoColorButton];
         
     }

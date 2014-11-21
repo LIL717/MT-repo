@@ -240,7 +240,7 @@ BOOL firstLoad;
         [tempPlayButton setImage:[UIImage imageNamed:@"redWhitePlayImage.png"] forState:UIControlStateNormal];
         [tempPlayButton setShowsTouchWhenHighlighted:NO];
         [tempPlayButton sizeToFit];
-        [tempPlayButton setContentEdgeInsets: UIEdgeInsetsMake(3.0, 0.0, -3.0, 0.0)];
+        [tempPlayButton setContentEdgeInsets: UIEdgeInsetsMake(5.0, 0.0, -5.0, 0.0)];
         
         self.rightBarButton = [[UIBarButtonItem alloc] initWithCustomView:tempPlayButton];
     }

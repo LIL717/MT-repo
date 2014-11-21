@@ -313,7 +313,7 @@
     } else {
         //        NSLog (@"landscape");
         
-        [self.tempPlayButton setContentEdgeInsets: UIEdgeInsetsMake(3.0, 0.0, -3.0, 0.0)];
+        [self.tempPlayButton setContentEdgeInsets: UIEdgeInsetsMake(5.0, 0.0, -5.0, 0.0)];
         self.playBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.tempPlayButton];
         
         self.albumInfoViewController.lastPlayedDateTitle = @"Last Played:";
