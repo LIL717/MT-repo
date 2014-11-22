@@ -128,16 +128,16 @@
     return label;
 }
 
-- (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
+- (void) viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+		//    LogMethod();
+	[super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
     
     [self updateLayoutForNewOrientation];
     
 }
 - (void) updateLayoutForNewOrientation {
     //    LogMethod();
-	BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
-
-    if (isPortrait) {
+	if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) { //portrait
         //        NSLog (@"portrait");
         
         self.verticalSpaceTopToTagConstraint.constant = 11;

@@ -289,19 +289,21 @@
     return label;
 }
 
-- (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
-    
-    [self updateLayoutForNewOrientation];
-    
+- (void) viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+		//    LogMethod();
+	[super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+
+	[self updateLayoutForNewOrientation];
+
 }
 - (void) updateLayoutForNewOrientation {
-    //executes the method in the individual view on initial load and the one here after that, so they need to stay in synch with each other and with the constaints set in interface builder
-//140215 1.2 iOS 7 begin
-    BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
-    
-    CGFloat navBarAdjustment = isPortrait ? 0 : 9;
+		//    LogMethod();
+	CGFloat navBarAdjustment = 0;
+//	CGFloat navBarAdjustment = isPortrait ? 0 : 9;
 
-    if (isPortrait) {
+
+	if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) { //portrait
+
         //        NSLog (@"portrait");
         
         [self.tempPlayButton setContentEdgeInsets: UIEdgeInsetsMake(-1.0, 0.0, 1.0, 0.0)];

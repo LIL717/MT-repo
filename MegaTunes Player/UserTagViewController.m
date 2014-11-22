@@ -182,18 +182,23 @@ NSString *actionType;
     return label;
 }
 
-- (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
-    
-    [self updateLayoutForNewOrientation];
-    
+- (void) viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+		//    LogMethod();
+	[super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+
+	[self updateLayoutForNewOrientation];
+
 }
 - (void) updateLayoutForNewOrientation {
-    //    LogMethod();
-//140216 1.2 iOS 7 begin
-    BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
-    
-    CGFloat navBarAdjustment = isPortrait ? 0 : 7;
-    
+		//    LogMethod();
+	CGFloat navBarAdjustment = 0;
+//	CGFloat navBarAdjustment = isPortrait ? 0 : 7;
+
+
+	if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) { //landscape
+		navBarAdjustment = 7;
+	}
+
     [self.userTagTableView setContentOffset:CGPointMake(0, navBarAdjustment)];
     [self.userTagTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
 
@@ -529,23 +534,6 @@ NSString *actionType;
 //140217 1.2 iOS 7 end
 - (void)addTagViewControllerDidCancel:(AddTagViewController *)controller
 {
-    //    if (newTagInserted) {
-    //        // First figure out how many sections there are
-    //        NSInteger lastSectionIndex = [self.userTagTableView numberOfSections] - 1;
-    //
-    //        // Then grab the number of rows in the last section
-    //        NSInteger lastRowIndex = [self.userTagTableView numberOfRowsInSection:lastSectionIndex] - 1;
-    //
-    //        NSIndexPath *pathToLastRow = [NSIndexPath indexPathForRow:lastRowIndex inSection:lastSectionIndex];
-    //        [self.userTagTableView scrollToRowAtIndexPath:pathToLastRow atScrollPosition:UITableViewScrollPositionTop animated:YES];
-    //        newTagInserted = NO;
-    //
-    ////        [self.userTagTableView reloadData];
-    //
-    //    }
-    //    [self willAnimateRotationToInterfaceOrientation: self.interfaceOrientation duration: 1];
-    
-    
 }
 
 - (void)listenForChanges {

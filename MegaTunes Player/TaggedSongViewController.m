@@ -556,20 +556,18 @@ BOOL excludeICloudItems;
     return label;
 }
 
-- (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
-    
-    [self updateLayoutForNewOrientation];
-    
+- (void) viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+		//    LogMethod();
+	[super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+
+	[self updateLayoutForNewOrientation];
+
 }
 - (void) updateLayoutForNewOrientation {
-    //    LogMethod();
-//131216 1.2 iOS 7 begin
-    
-    BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
-    
-    CGFloat navBarAdjustment = isPortrait ? 0 : 0;
-    
-    if (isPortrait) {
+		//    LogMethod();
+	CGFloat navBarAdjustment = 0;
+
+	if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) { //portrait
         
         [self.tempPlayButton setContentEdgeInsets: UIEdgeInsetsMake(-1.0, 0.0, 1.0, 0.0)];
         self.playBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.tempPlayButton];
@@ -1681,7 +1679,6 @@ BOOL excludeICloudItems;
 
 - (void)infoTabBarControllerDidCancel:(InfoTabBarController *)controller
 {
-    //    [self willAnimateRotationToInterfaceOrientation: self.interfaceOrientation duration: 1];
     //need to add back observer for playbackStatechanged because it was removed before going to info in case user edits
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 	[notificationCenter addObserver: self

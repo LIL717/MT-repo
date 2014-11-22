@@ -121,17 +121,20 @@ BOOL itemHasTag;
 
 }
 
-- (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
-    
-    [self updateLayoutForNewOrientation];
-    
+- (void) viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+		//    LogMethod();
+	[super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+
+	[self updateLayoutForNewOrientation];
+
 }
 - (void) updateLayoutForNewOrientation {
-    //executes this method on initial load and the one in InfoTabBarController after that, so they need to stay in synch with each other and with the constaint set in interface builder
-//140216 1.2 iOS 7 begin
-    BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
-    
-    CGFloat navBarAdjustment = isPortrait ? 0 : 9;
+		//    LogMethod();
+	CGFloat navBarAdjustment = 0;
+
+	if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) { //landscape
+			navBarAdjustment = 9;
+	}
     self.verticalSpaceTopToTableViewConstraint.constant = navBarAdjustment;
     self.verticalSpaceTopToCommentsConstraint.constant = 55 + navBarAdjustment;
 //131216 1.2 iOS 7 end

@@ -48,7 +48,7 @@
 		//    //Load a couple defaults to userTag Core Data if there aren't any objects in TagData
 
 	TagData *tagData = [TagData alloc];
-	[tagData listAll];
+//	[tagData listAll];
 
 	if ([[tagData fetchTagList] count] == 0) {
 

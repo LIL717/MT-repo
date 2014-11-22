@@ -569,17 +569,17 @@ NSString *myAffiliateID;
 }
 
 
-- (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation) orientation duration:(NSTimeInterval)duration {
-    //    LogMethod();
-    [self updateLayoutForNewOrientation];
-    
+- (void) viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+		//    LogMethod();
+	[super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+
+	[self updateLayoutForNewOrientation];
+
 }
 - (void) updateLayoutForNewOrientation {
-    
-    //    LogMethod();
-	BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
+		//    LogMethod();
 
-    if (isPortrait) {
+	if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) { //portrait
 //140219 1.2 iOS 7 begin
         [self.groupTableView setContentInset:UIEdgeInsetsMake(-30,0,0,0)];
     }
