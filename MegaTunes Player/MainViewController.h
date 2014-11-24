@@ -104,13 +104,11 @@
 //@property (strong, nonatomic) IBOutlet NSLayoutConstraint *nextSongLabelWidthConstraint;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *leadingSpaceToSliderConstraint;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *trailingSpaceFromSliderConstraint;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceBetweenSliderAndElapsedTime;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceBetweenSliderAndRemainingTime;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceBetweenRewindAndReplay;
-//@property (strong, nonatomic) IBOutlet NSLayoutConstraint *topSpaceToPlayButton;
+
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *playButtonToBottomSpace;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *centerXInNextSongScrollView;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *centerXInNowPlayingScrollView;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceNowPlayingScrollViewToElapsedLabel;
 
 - (IBAction)handleScrub:(id)sender;
 - (IBAction)handleScrubberTouchDown:(id)sender;

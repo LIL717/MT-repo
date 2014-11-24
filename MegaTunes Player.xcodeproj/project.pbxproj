@@ -15,6 +15,7 @@
 		702B4149165714E7004A9265 /* InfoTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 702B4148165714E7004A9265 /* InfoTabBarController.m */; };
 		702B414D165715C2004A9265 /* AlbumInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 702B414C165715C2004A9265 /* AlbumInfoViewController.m */; };
 		702B4158165743AB004A9265 /* UserDataForMediaItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 702B4157165743AB004A9265 /* UserDataForMediaItem.m */; };
+		7031F13A1A23B855009B4E7D /* UIViewController+Rotate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7031F1391A23B855009B4E7D /* UIViewController+Rotate.m */; };
 		7032982E19D0C3570019FF0E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7032982D19D0C3570019FF0E /* AppDelegate.m */; };
 		7032983119D0C3D20019FF0E /* UIImage+AdditionalFunctionalities.m in Sources */ = {isa = PBXBuildFile; fileRef = 7032983019D0C3D20019FF0E /* UIImage+AdditionalFunctionalities.m */; };
 		7032984619D0C94B0019FF0E /* DTCustomColoredAccessory.m in Sources */ = {isa = PBXBuildFile; fileRef = 7032984519D0C94B0019FF0E /* DTCustomColoredAccessory.m */; };
@@ -105,6 +106,8 @@
 		702B414C165715C2004A9265 /* AlbumInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumInfoViewController.m; sourceTree = "<group>"; };
 		702B4156165743AB004A9265 /* UserDataForMediaItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserDataForMediaItem.h; sourceTree = "<group>"; };
 		702B4157165743AB004A9265 /* UserDataForMediaItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserDataForMediaItem.m; sourceTree = "<group>"; };
+		7031F1381A23B855009B4E7D /* UIViewController+Rotate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Rotate.h"; sourceTree = SOURCE_ROOT; };
+		7031F1391A23B855009B4E7D /* UIViewController+Rotate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Rotate.m"; sourceTree = SOURCE_ROOT; };
 		7032982C19D0C3570019FF0E /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = "MegaTunes Player/AppDelegate.h"; sourceTree = SOURCE_ROOT; };
 		7032982D19D0C3570019FF0E /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = "MegaTunes Player/AppDelegate.m"; sourceTree = SOURCE_ROOT; };
 		7032982F19D0C3D20019FF0E /* UIImage+AdditionalFunctionalities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+AdditionalFunctionalities.h"; path = "MegaTunes Player/UIImage+AdditionalFunctionalities.h"; sourceTree = SOURCE_ROOT; };
@@ -414,6 +417,8 @@
 		70974B291630698200A33B7D /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				7031F1381A23B855009B4E7D /* UIViewController+Rotate.h */,
+				7031F1391A23B855009B4E7D /* UIViewController+Rotate.m */,
 				7032982F19D0C3D20019FF0E /* UIImage+AdditionalFunctionalities.h */,
 				7032983019D0C3D20019FF0E /* UIImage+AdditionalFunctionalities.m */,
 			);
@@ -807,6 +812,7 @@
 				70890D2217663D2800D338A8 /* TagItem.m in Sources */,
 				7032983119D0C3D20019FF0E /* UIImage+AdditionalFunctionalities.m in Sources */,
 				70CF0BD1176A6561007AB6CF /* AddTagViewController.m in Sources */,
+				7031F13A1A23B855009B4E7D /* UIViewController+Rotate.m in Sources */,
 				70017F0B177EBC120022CEAF /* TaggedSongViewController.m in Sources */,
 				708EA29317931AE000A826D6 /* TaggedSectionIndexData.m in Sources */,
 				707AC0F217D933BD009B49CA /* AccessibleButton.m in Sources */,

@@ -75,7 +75,7 @@ NSString *myAffiliateID;
     //get the affliate ID
     myAffiliateID = [[NSUserDefaults standardUserDefaults] stringForKey:@"affiliateID"];
 //140219 1.2 iOS 7 begin
-    self.title = NSLocalizedString(@"Select Music", nil);
+//    self.title = NSLocalizedString(@"Select Music", nil);
     self.navigationItem.titleView = [self customizeTitleView];
     
     UIButton *iTunesButton = [UIButton buttonWithType:UIButtonTypeCustom];

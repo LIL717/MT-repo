@@ -83,16 +83,16 @@
 @synthesize repeatButton;
 @synthesize shuffleButton;
 
-@synthesize leadingSpaceToSliderConstraint;
-@synthesize trailingSpaceFromSliderConstraint;
-@synthesize verticalSpaceBetweenSliderAndElapsedTime;
-@synthesize verticalSpaceBetweenSliderAndRemainingTime;
-@synthesize verticalSpaceBetweenRewindAndReplay;
-//@synthesize topSpaceToPlayButton;
-@synthesize playButtonToBottomSpace;
-@synthesize centerXInNextSongScrollView;
+//@synthesize leadingSpaceToSliderConstraint;
+//@synthesize trailingSpaceFromSliderConstraint;
+//@synthesize verticalSpaceBetweenSliderAndElapsedTime;
+//@synthesize verticalSpaceBetweenSliderAndRemainingTime;
+//@synthesize verticalSpaceBetweenRewindAndReplay;
+////@synthesize topSpaceToPlayButton;
+//@synthesize playButtonToBottomSpace;
+//@synthesize centerXInNextSongScrollView;
+//@synthesize centerXInNowPlayingScrollView;
 
-//@synthesize nextSongLabelWidthConstraint;
 @synthesize nowPlayingInfoButton;
 
 @synthesize currentPlaybackPosition;
@@ -287,33 +287,30 @@ BOOL delayPlaybackStateChange;
     [self.volumeView setMaximumVolumeSliderImage:[UIImage imageNamed:@"slider-trackGray.png"] forState:UIControlStateNormal];
     [self.volumeView setVolumeThumbImage:[UIImage imageNamed:@"shinyVolumeHandle.png"] forState:UIControlStateNormal];
 
-//	if (UIUserInterfaceSizeClassCompact) { //portrait
+
 	if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) { //landscape
-		//        [self.view removeConstraint:self.topSpaceToPlayButton];
-		[self.view addConstraint: self.playButtonToBottomSpace];
-		self.playButtonToBottomSpace.constant = 190;
-			//140127 1.2 iOS 7 begin
+
+		self.leadingSpaceToSliderConstraint.constant = 120;
+		self.trailingSpaceFromSliderConstraint.constant = 135;
+		self.verticalSpaceNowPlayingScrollViewToElapsedLabel.constant = 1;
+		self.repeatButton.hidden = YES;
+		self.shuffleButton.hidden = YES;
+		self.volumeView.hidden = YES;
+
+
+	}
+	if (self.traitCollection.verticalSizeClass == UIUserInterfaceSizeClassRegular) { //portrait
+
 		self.leadingSpaceToSliderConstraint.constant = 20;
 		self.trailingSpaceFromSliderConstraint.constant = 20;
-			//140127 1.2 iOS 7 end
+		self.verticalSpaceNowPlayingScrollViewToElapsedLabel.constant = 53;
 
-    } else {
+		self.repeatButton.hidden = NO;
+		self.shuffleButton.hidden = NO;
+		self.volumeView.hidden = NO;
 
-//140127 1.2 iOS 7 begin
-        //        [self.view removeConstraint:self.leadingSpaceToSliderConstraint];
-        //        [self.view removeConstraint:self.trailingSpaceFromSliderConstraint];
-        self.leadingSpaceToSliderConstraint.constant = 120;
-        self.trailingSpaceFromSliderConstraint.constant = 135;
-//140127 1.2 iOS 7 end
-        [self.view removeConstraint:self.verticalSpaceBetweenSliderAndElapsedTime];
-        [self.view removeConstraint:self.verticalSpaceBetweenSliderAndRemainingTime];
-        [self.view removeConstraint:self.verticalSpaceBetweenRewindAndReplay];
-//        [self.view removeConstraint:self.topSpaceToPlayButton];
-        
-        self.playButtonToBottomSpace.constant = 70;
-        
-    }
-    
+	}
+
     [self registerForMediaPlayerNotifications];
     [self setPlayedMusicOnce: YES];
 
@@ -383,56 +380,37 @@ BOOL delayPlaybackStateChange;
 - (void) viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
     //    LogMethod();
 	[super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+
+	NSLog (@"WIDTH is %f, HEIGHT is %f", size.width, size.height);
 		//removed because AutoScrollLabel not working
 //    [self.nowPlayingLabel  refreshLabels];
+//added for ios 8 because AutoScrollLabel not working
+	if (self.nowPlayingLabel.text) {
+		[self scrollNowPlayingLabel];
+	}
+		//end added for iOS 8
+
 	if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) { //landscape
-//    if (UIInterfaceOrientationIsLandscape(orientation)) {
-//140127 1.2 iOS 7 begin
+
         self.leadingSpaceToSliderConstraint.constant = 120;
         self.trailingSpaceFromSliderConstraint.constant = 135;
-//140127 1.2 iOS 7 end
-        [self.view removeConstraint:self.verticalSpaceBetweenSliderAndElapsedTime];
-        [self.view removeConstraint:self.verticalSpaceBetweenSliderAndRemainingTime];
-        [self.view removeConstraint:self.verticalSpaceBetweenRewindAndReplay];
-//        [self.view removeConstraint:self.topSpaceToPlayButton];
-        self.playButtonToBottomSpace.constant = 70;
-        
-        
+		self.verticalSpaceNowPlayingScrollViewToElapsedLabel.constant = 1;
         self.repeatButton.hidden = YES;
         self.shuffleButton.hidden = YES;
         self.volumeView.hidden = YES;
         
-        // could add a button to call the following method to show a floating volume control alert
-        //        MPVolumeSettingsAlertShow();
-        
-        //        if (self.showTitle) {
-        ////            self.title = @"Now Playing";
-        ////            self.navigationItem.titleView = [self customizeTitleView];
-        //        } else self.Title = @"";
-        
-        
-    } else {
-        
-//140127 1.2 iOS 7 begin
+    }
+
+	if (self.traitCollection.verticalSizeClass == UIUserInterfaceSizeClassCompact) { //portrait
+
         self.leadingSpaceToSliderConstraint.constant = 20;
         self.trailingSpaceFromSliderConstraint.constant = 20;
-//140127 1.2 iOS 7 end
-        [self.view addConstraint:self.verticalSpaceBetweenSliderAndElapsedTime];
-        [self.view addConstraint:self.verticalSpaceBetweenSliderAndRemainingTime];
-        [self.view addConstraint:self.verticalSpaceBetweenRewindAndReplay];
-        
-//        [self.view removeConstraint:self.topSpaceToPlayButton];
-        [self.view addConstraint:self.playButtonToBottomSpace];
-        
-        self.playButtonToBottomSpace.constant = 190;
-        
-        
+		self.verticalSpaceNowPlayingScrollViewToElapsedLabel.constant = 53;
+
         self.repeatButton.hidden = NO;
         self.shuffleButton.hidden = NO;
         self.volumeView.hidden = NO;
-        
-        //        self.title = @"";
-        //        self.navigationItem.titleView = [self customizeTitleView];
+
     }
 //131001 make player compatible with iTunes Radio begin
 
@@ -711,14 +689,19 @@ BOOL delayPlaybackStateChange;
 
 		//131210 1.2 iOS 7 end
 
-	[self.nowPlayingScrollView removeConstraint:self.centerXInNowPlayingScrollView];
-
-		//Make sure that label is aligned with scrollView
-	[self.nowPlayingScrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+//	[self.nowPlayingScrollView removeConstraint:self.centerXInNowPlayingScrollView];
+//
+//		//Make sure that label is aligned with scrollView
+//	[self.nowPlayingScrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
 
 		//disable scroll if the content fits within the scrollView
+	NSLog (@"labelSize.width is %f and self.nowPlayingScrollView.frame.size.width is %f", labelSize.width, self.nowPlayingScrollView.frame.size.width);
 	if (labelSize.width > self.nowPlayingScrollView.frame.size.width) {
 		self.nowPlayingScrollView.scrollEnabled = YES;
+		[self.nowPlayingScrollView removeConstraint:self.centerXInNowPlayingScrollView];
+
+			//Make sure that label is aligned with scrollView
+		[self.nowPlayingScrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
 	}
 	else {
 		self.nowPlayingScrollView.scrollEnabled = NO;

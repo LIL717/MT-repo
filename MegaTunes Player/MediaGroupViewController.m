@@ -577,13 +577,9 @@ NSString *myAffiliateID;
 
 }
 - (void) updateLayoutForNewOrientation {
-		//    LogMethod();
 
-	if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) { //portrait
-//140219 1.2 iOS 7 begin
         [self.groupTableView setContentInset:UIEdgeInsetsMake(-30,0,0,0)];
-    }
-//1402191.2 iOS 7 end
+
 }
 - (void) viewWillLayoutSubviews {
     //    LogMethod();

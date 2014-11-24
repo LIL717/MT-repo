@@ -212,12 +212,12 @@
 	 See also applicationDidEnterBackground:.
 	 */
 }
-- (NSUInteger)application:(UIApplication *)application
-supportedInterfaceOrientationsForWindow:(UIWindow *)window {
-
-  return UIInterfaceOrientationMaskAll;
-
-}
+//- (NSUInteger)application:(UIApplication *)application
+//supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+//
+//  return UIInterfaceOrientationMaskPortraitUpsideDown;
+//
+//}
 #pragma mark - Core Data stack
 
 @synthesize managedObjectContext = _managedObjectContext;

@@ -9,6 +9,7 @@ pod 'OBSlider'
 pod 'FMMoveTableView'
 pod 'iCarousel'
 pod 'TestFlightSDK'
+pod 'MarqueeLabel'
 
 
 end
