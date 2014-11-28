@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="1j9-19-lml">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -124,42 +125,35 @@
                         <viewControllerLayoutGuide type="bottom" id="odI-eg-HCw"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="1ht-Bf-15S">
-                        <rect key="frame" x="0.0" y="64" width="600" height="506"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O5R-7c-38I" userLabel="NowPlayingScrollview">
-                                <rect key="frame" x="16" y="0.0" width="538" height="55"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LyH-nq-M7f" userLabel="NowPlayingLabel">
-                                        <fontDescription key="fontDescription" type="system" pointSize="44"/>
-                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UZm-bO-c11" userLabel="nowPlayingMarqueeLabel" customClass="MarqueeLabel">
+                                <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
+                                <accessibility key="accessibilityConfiguration" hint="Tap to magnify." label="">
+                                    <accessibilityTraits key="traits" none="YES" staticText="YES" updatesFrequently="YES"/>
+                                </accessibility>
                                 <constraints>
-                                    <constraint firstItem="LyH-nq-M7f" firstAttribute="leading" secondItem="O5R-7c-38I" secondAttribute="leading" id="9Kw-HG-on9"/>
-                                    <constraint firstAttribute="centerX" secondItem="LyH-nq-M7f" secondAttribute="centerX" id="G78-qO-TqR"/>
-                                    <constraint firstAttribute="height" constant="55" id="HkU-m2-vcE"/>
-                                    <constraint firstAttribute="bottom" secondItem="LyH-nq-M7f" secondAttribute="bottom" id="VXV-sL-IFa"/>
-                                    <constraint firstItem="LyH-nq-M7f" firstAttribute="top" secondItem="O5R-7c-38I" secondAttribute="top" id="aMz-hr-eJa"/>
-                                    <constraint firstAttribute="trailing" secondItem="LyH-nq-M7f" secondAttribute="trailing" id="nfG-D3-Tp6"/>
+                                    <constraint firstAttribute="height" constant="55" id="hcX-S3-V4R"/>
                                 </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
                                 <variation key="default">
                                     <mask key="constraints">
-                                        <exclude reference="G78-qO-TqR"/>
+                                        <exclude reference="hcX-S3-V4R"/>
                                     </mask>
                                 </variation>
                                 <variation key="widthClass=compact">
                                     <mask key="constraints">
-                                        <include reference="G78-qO-TqR"/>
+                                        <include reference="hcX-S3-V4R"/>
                                     </mask>
                                 </variation>
                                 <connections>
-                                    <outletCollection property="gestureRecognizers" destination="DEb-ti-79t" appends="YES" id="yBC-Q0-yG2"/>
+                                    <outletCollection property="gestureRecognizers" destination="DEb-ti-79t" appends="YES" id="WmS-UN-FuK"/>
                                 </connections>
-                            </scrollView>
-                            <label opaque="NO" clipsSubviews="YES" contentMode="left" text="0:00" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jp7-Ow-fVH" userLabel="elapsedLabel">
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" contentMode="left" misplaced="YES" text="0:00" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jp7-Ow-fVH" userLabel="elapsedLabel">
                                 <rect key="frame" x="4" y="93" width="126" height="52"/>
                                 <accessibility key="accessibilityConfiguration" hint="Tap to magnify." label="Elapsed time">
                                     <accessibilityTraits key="traits" none="YES" staticText="YES" updatesFrequently="YES"/>
@@ -179,7 +173,7 @@
                                     <outletCollection property="gestureRecognizers" destination="ruF-Pi-kTB" appends="YES" id="HiP-1l-nCG"/>
                                 </connections>
                             </label>
-                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1000" translatesAutoresizingMaskIntoConstraints="NO" id="vBs-Pg-YLN" userLabel="elapsedTimeSlider" customClass="OBSlider">
+                            <slider opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1000" translatesAutoresizingMaskIntoConstraints="NO" id="vBs-Pg-YLN" userLabel="elapsedTimeSlider" customClass="OBSlider">
                                 <rect key="frame" x="18" y="65" width="563" height="24"/>
                                 <accessibility key="accessibilityConfiguration" label="Progress Bar">
                                     <bool key="isElement" value="YES"/>
@@ -194,7 +188,7 @@
                                     <action selector="handleScrubberTouchUp:" destination="SKu-HW-GrJ" eventType="touchUpInside" id="iAh-SQ-xkS"/>
                                 </connections>
                             </slider>
-                            <label opaque="NO" clipsSubviews="YES" contentMode="left" text="0:00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r00-yo-I0n" userLabel="remainingLabel">
+                            <label opaque="NO" clipsSubviews="YES" contentMode="left" misplaced="YES" text="0:00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r00-yo-I0n" userLabel="remainingLabel">
                                 <rect key="frame" x="468" y="93" width="128" height="52"/>
                                 <accessibility key="accessibilityConfiguration" hint="Tap to magnify." label="Remaining time">
                                     <accessibilityTraits key="traits" none="YES" staticText="YES" updatesFrequently="YES"/>
@@ -218,7 +212,7 @@
                                 </connections>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="926" text="" lineBreakMode="clip" minimumFontSize="10" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pNh-na-wBJ" userLabel="Next:">
-                                <rect key="frame" x="3" y="456" width="108" height="46"/>
+                                <rect key="frame" x="3" y="486" width="108" height="46"/>
                                 <accessibility key="accessibilityConfiguration" label="Next track">
                                     <bool key="isElement" value="YES"/>
                                 </accessibility>
@@ -231,7 +225,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <scrollView clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UXV-Pt-1xE" userLabel="NextScrollView">
-                                <rect key="frame" x="115" y="453" width="485" height="52"/>
+                                <rect key="frame" x="115" y="483" width="485" height="52"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="clip" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="819-GM-MVw">
                                         <rect key="frame" x="0.0" y="0.0" width="486" height="52"/>
@@ -255,7 +249,7 @@
                                 </connections>
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EYp-S6-Fep" userLabel="backButton" customClass="AccessibleButton">
-                                <rect key="frame" x="11" y="222" width="92" height="62"/>
+                                <rect key="frame" x="11" y="237" width="92" height="62"/>
                                 <accessibility key="accessibilityConfiguration" label="Previous track">
                                     <bool key="isElement" value="YES"/>
                                 </accessibility>
@@ -282,7 +276,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U4I-PN-hea" userLabel="playPauseButton" customClass="AccessibleButton">
-                                <rect key="frame" x="254" y="222" width="92" height="62"/>
+                                <rect key="frame" x="254" y="237" width="92" height="62"/>
                                 <accessibility key="accessibilityConfiguration" hint="" label="">
                                     <bool key="isElement" value="YES"/>
                                 </accessibility>
@@ -313,7 +307,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xek-mb-ENQ" userLabel="forwardButton" customClass="AccessibleButton">
-                                <rect key="frame" x="498" y="222" width="92" height="62"/>
+                                <rect key="frame" x="498" y="237" width="92" height="62"/>
                                 <accessibility key="accessibilityConfiguration" label="Next track">
                                     <bool key="isElement" value="YES"/>
                                 </accessibility>
@@ -330,7 +324,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wwo-eb-cjv" userLabel="loopButton">
-                                <rect key="frame" x="11" y="288" width="92" height="62"/>
+                                <rect key="frame" x="11" y="303" width="92" height="62"/>
                                 <accessibility key="accessibilityConfiguration" label="">
                                     <accessibilityTraits key="traits" none="YES" button="YES"/>
                                     <bool key="isElement" value="YES"/>
@@ -358,7 +352,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YF1-6P-sPE" userLabel="shuffleButton" customClass="AccessibleButton">
-                                <rect key="frame" x="498" y="288" width="92" height="62"/>
+                                <rect key="frame" x="498" y="303" width="92" height="62"/>
                                 <accessibility key="accessibilityConfiguration" label="Shuffle">
                                     <accessibilityTraits key="traits" none="YES" button="YES"/>
                                     <bool key="isElement" value="YES"/>
@@ -396,7 +390,7 @@
                                     <segue destination="h0z-UX-YEa" kind="show" identifier="ViewInfo" id="pO3-jk-z6Z"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jQh-tN-5vH" customClass="MPVolumeView">
+                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jQh-tN-5vH" customClass="MPVolumeView">
                                 <rect key="frame" x="20" y="366" width="560" height="40"/>
                                 <accessibility key="accessibilityConfiguration" label="">
                                     <bool key="isElement" value="NO"/>
@@ -429,12 +423,9 @@
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="r00-yo-I0n" firstAttribute="top" secondItem="vBs-Pg-YLN" secondAttribute="bottom" constant="5" id="1UV-e5-F7v"/>
-                            <constraint firstItem="jQh-tN-5vH" firstAttribute="top" secondItem="O5R-7c-38I" secondAttribute="top" id="1xw-Ep-roQ"/>
+                            <constraint firstItem="vBs-Pg-YLN" firstAttribute="top" secondItem="UZm-bO-c11" secondAttribute="bottom" constant="15" id="2D5-GH-PvY"/>
+                            <constraint firstItem="UZm-bO-c11" firstAttribute="top" secondItem="okS-jy-1Zc" secondAttribute="bottom" constant="5" id="3o0-j2-QgZ"/>
                             <constraint firstItem="wwo-eb-cjv" firstAttribute="height" secondItem="YF1-6P-sPE" secondAttribute="height" id="4P4-22-aa9"/>
-                            <constraint firstItem="jp7-Ow-fVH" firstAttribute="top" secondItem="O5R-7c-38I" secondAttribute="bottom" constant="53" id="5bB-px-ETf"/>
-                            <constraint firstItem="O5R-7c-38I" firstAttribute="top" secondItem="1ht-Bf-15S" secondAttribute="topMargin" id="6h6-C6-WdD">
-                                <variation key="widthClass=compact" constant="5"/>
-                            </constraint>
                             <constraint firstItem="EYp-S6-Fep" firstAttribute="width" secondItem="wwo-eb-cjv" secondAttribute="width" id="7Gt-nY-xz2"/>
                             <constraint firstItem="pNh-na-wBJ" firstAttribute="leading" secondItem="1ht-Bf-15S" secondAttribute="leading" constant="3" id="7vj-hT-W1o"/>
                             <constraint firstItem="jp7-Ow-fVH" firstAttribute="top" secondItem="vBs-Pg-YLN" secondAttribute="bottom" constant="5" id="8LE-Kx-iS3"/>
@@ -448,6 +439,7 @@
                             <constraint firstItem="wwo-eb-cjv" firstAttribute="top" secondItem="EYp-S6-Fep" secondAttribute="bottom" constant="4" id="Fjt-Rx-bCJ"/>
                             <constraint firstItem="wwo-eb-cjv" firstAttribute="leading" secondItem="EYp-S6-Fep" secondAttribute="leading" id="FqK-az-kxZ"/>
                             <constraint firstAttribute="bottom" secondItem="UXV-Pt-1xE" secondAttribute="bottom" constant="1" id="GGi-So-jWx"/>
+                            <constraint firstItem="jp7-Ow-fVH" firstAttribute="top" secondItem="UZm-bO-c11" secondAttribute="bottom" constant="53" id="GYP-lG-XXw"/>
                             <constraint firstItem="wwo-eb-cjv" firstAttribute="height" secondItem="U4I-PN-hea" secondAttribute="height" id="GbK-xz-XHn"/>
                             <constraint firstItem="wwo-eb-cjv" firstAttribute="height" secondItem="U4I-PN-hea" secondAttribute="height" id="IMJ-fW-XnK"/>
                             <constraint firstItem="UXV-Pt-1xE" firstAttribute="top" secondItem="jQh-tN-5vH" secondAttribute="bottom" constant="20" id="JUh-Bc-O1L">
@@ -457,13 +449,13 @@
                             <constraint firstItem="r00-yo-I0n" firstAttribute="height" secondItem="jp7-Ow-fVH" secondAttribute="height" id="KSE-gr-fbm"/>
                             <constraint firstItem="r00-yo-I0n" firstAttribute="baseline" secondItem="jp7-Ow-fVH" secondAttribute="baseline" id="LDJ-yd-4v6"/>
                             <constraint firstItem="YF1-6P-sPE" firstAttribute="height" secondItem="Xek-mb-ENQ" secondAttribute="height" id="LwR-fo-R5O"/>
+                            <constraint firstItem="UZm-bO-c11" firstAttribute="leading" secondItem="1ht-Bf-15S" secondAttribute="leadingMargin" id="MUi-yd-Xq8"/>
                             <constraint firstItem="UXV-Pt-1xE" firstAttribute="trailing" secondItem="1ht-Bf-15S" secondAttribute="trailing" id="Nn0-9R-Zo2"/>
                             <constraint firstItem="wwo-eb-cjv" firstAttribute="height" secondItem="YF1-6P-sPE" secondAttribute="height" id="Oxe-FL-jKf"/>
                             <constraint firstItem="wwo-eb-cjv" firstAttribute="top" secondItem="EYp-S6-Fep" secondAttribute="bottom" constant="4" id="PQO-7M-bj7"/>
                             <constraint firstItem="wwo-eb-cjv" firstAttribute="width" secondItem="U4I-PN-hea" secondAttribute="width" id="QNl-Gy-GUW"/>
                             <constraint firstItem="EYp-S6-Fep" firstAttribute="leading" secondItem="1ht-Bf-15S" secondAttribute="leading" constant="11" id="Qi8-Uh-bpY"/>
                             <constraint firstItem="UXV-Pt-1xE" firstAttribute="leading" secondItem="1ht-Bf-15S" secondAttribute="leading" constant="115" id="QtE-LH-iN9"/>
-                            <constraint firstItem="uyn-go-sp7" firstAttribute="leading" secondItem="O5R-7c-38I" secondAttribute="trailing" constant="4" id="R67-nO-53j"/>
                             <constraint firstItem="YF1-6P-sPE" firstAttribute="height" secondItem="wwo-eb-cjv" secondAttribute="height" id="RBD-5y-i0X"/>
                             <constraint firstItem="wwo-eb-cjv" firstAttribute="height" secondItem="Xek-mb-ENQ" secondAttribute="height" id="TmL-iz-zrz"/>
                             <constraint firstAttribute="trailing" secondItem="uyn-go-sp7" secondAttribute="trailing" id="VH7-h6-HTD"/>
@@ -479,9 +471,6 @@
                             </constraint>
                             <constraint firstItem="U4I-PN-hea" firstAttribute="width" secondItem="EYp-S6-Fep" secondAttribute="width" id="c6c-nJ-dcp"/>
                             <constraint firstItem="YF1-6P-sPE" firstAttribute="leading" secondItem="Xek-mb-ENQ" secondAttribute="leading" id="c7F-Ou-Ys4"/>
-                            <constraint firstItem="vBs-Pg-YLN" firstAttribute="top" secondItem="O5R-7c-38I" secondAttribute="bottom" constant="10" id="cxo-Ma-mfU">
-                                <variation key="widthClass=compact" constant="15"/>
-                            </constraint>
                             <constraint firstItem="YF1-6P-sPE" firstAttribute="width" secondItem="Xek-mb-ENQ" secondAttribute="width" id="ddu-b2-PNK"/>
                             <constraint firstItem="YF1-6P-sPE" firstAttribute="height" secondItem="EYp-S6-Fep" secondAttribute="height" id="dea-Vc-ZsJ"/>
                             <constraint firstItem="vBs-Pg-YLN" firstAttribute="leading" secondItem="1ht-Bf-15S" secondAttribute="leading" constant="20" id="eNp-wC-9Ew"/>
@@ -506,17 +495,23 @@
                             <constraint firstAttribute="trailing" secondItem="jQh-tN-5vH" secondAttribute="trailing" constant="20" symbolic="YES" id="rsD-rx-8hJ"/>
                             <constraint firstItem="wwo-eb-cjv" firstAttribute="height" secondItem="U4I-PN-hea" secondAttribute="height" id="s7q-Kf-Qiy"/>
                             <constraint firstItem="YF1-6P-sPE" firstAttribute="width" secondItem="EYp-S6-Fep" secondAttribute="width" id="sBN-lv-ehI"/>
-                            <constraint firstItem="O5R-7c-38I" firstAttribute="leading" secondItem="1ht-Bf-15S" secondAttribute="leadingMargin" id="sRL-Ka-olB"/>
                             <constraint firstItem="U4I-PN-hea" firstAttribute="baseline" secondItem="Xek-mb-ENQ" secondAttribute="baseline" id="tZC-PC-7A0"/>
                             <constraint firstItem="wwo-eb-cjv" firstAttribute="top" secondItem="YF1-6P-sPE" secondAttribute="top" id="uRn-oZ-muf"/>
                             <constraint firstItem="wwo-eb-cjv" firstAttribute="height" secondItem="EYp-S6-Fep" secondAttribute="height" id="ubl-Xf-FwQ"/>
+                            <constraint firstItem="uyn-go-sp7" firstAttribute="leading" secondItem="UZm-bO-c11" secondAttribute="trailing" constant="4" id="ush-Zy-7Hv"/>
                             <constraint firstItem="Xek-mb-ENQ" firstAttribute="baseline" secondItem="EYp-S6-Fep" secondAttribute="baseline" id="wVk-F7-tSE"/>
                             <constraint firstAttribute="trailing" secondItem="Xek-mb-ENQ" secondAttribute="trailing" constant="10" id="xja-DQ-pUS"/>
                             <constraint firstItem="wwo-eb-cjv" firstAttribute="height" secondItem="EYp-S6-Fep" secondAttribute="height" id="y6M-cJ-0KV"/>
                         </constraints>
                         <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="UZm-bO-c11"/>
+                            </mask>
                             <mask key="constraints">
-                                <exclude reference="5bB-px-ETf"/>
+                                <exclude reference="3o0-j2-QgZ"/>
+                                <exclude reference="MUi-yd-Xq8"/>
+                                <exclude reference="2D5-GH-PvY"/>
+                                <exclude reference="GYP-lG-XXw"/>
                                 <exclude reference="q5K-lA-UVP"/>
                                 <exclude reference="4P4-22-aa9"/>
                                 <exclude reference="GbK-xz-XHn"/>
@@ -529,13 +524,15 @@
                                 <exclude reference="ubl-Xf-FwQ"/>
                                 <exclude reference="y6M-cJ-0KV"/>
                                 <exclude reference="KSE-gr-fbm"/>
+                                <exclude reference="JUh-Bc-O1L"/>
+                                <exclude reference="gUw-tr-h1P"/>
                                 <exclude reference="Af3-Mh-uc6"/>
                                 <exclude reference="CgX-I8-Apk"/>
                                 <exclude reference="Xzm-kD-2Uk"/>
                                 <exclude reference="jBX-QQ-Ztu"/>
                                 <exclude reference="o3F-jr-S1G"/>
                                 <exclude reference="wVk-F7-tSE"/>
-                                <exclude reference="1xw-Ep-roQ"/>
+                                <exclude reference="ush-Zy-7Hv"/>
                                 <exclude reference="8r8-Do-ZLe"/>
                                 <exclude reference="LwR-fo-R5O"/>
                                 <exclude reference="RBD-5y-i0X"/>
@@ -544,22 +541,24 @@
                                 <exclude reference="ecc-LH-Sdc"/>
                                 <exclude reference="gDo-Tx-JbD"/>
                                 <exclude reference="sBN-lv-ehI"/>
-                                <exclude reference="JUh-Bc-O1L"/>
-                                <exclude reference="gUw-tr-h1P"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="UZm-bO-c11"/>
+                            </mask>
                             <mask key="constraints">
-                                <include reference="5bB-px-ETf"/>
+                                <include reference="3o0-j2-QgZ"/>
+                                <include reference="MUi-yd-Xq8"/>
+                                <include reference="2D5-GH-PvY"/>
                                 <exclude reference="8LE-Kx-iS3"/>
+                                <include reference="GYP-lG-XXw"/>
                                 <exclude reference="biW-dF-s2M"/>
                                 <exclude reference="7Gt-nY-xz2"/>
                                 <exclude reference="ecR-fA-kBu"/>
                                 <exclude reference="gO7-xD-xEL"/>
                                 <exclude reference="lmi-J6-t6I"/>
                                 <include reference="q5K-lA-UVP"/>
-                                <exclude reference="AGq-Zl-Vyg"/>
-                                <exclude reference="jl1-5J-8SQ"/>
                                 <exclude reference="4P4-22-aa9"/>
                                 <include reference="GbK-xz-XHn"/>
                                 <exclude reference="IMJ-fW-XnK"/>
@@ -571,8 +570,14 @@
                                 <exclude reference="s7q-Kf-Qiy"/>
                                 <exclude reference="ubl-Xf-FwQ"/>
                                 <exclude reference="y6M-cJ-0KV"/>
+                                <exclude reference="AGq-Zl-Vyg"/>
+                                <exclude reference="jl1-5J-8SQ"/>
+                                <exclude reference="YWp-gW-4Jg"/>
                                 <exclude reference="1UV-e5-F7v"/>
                                 <include reference="KSE-gr-fbm"/>
+                                <include reference="JUh-Bc-O1L"/>
+                                <exclude reference="gUw-tr-h1P"/>
+                                <exclude reference="pNo-N6-J1i"/>
                                 <include reference="Af3-Mh-uc6"/>
                                 <exclude reference="CgX-I8-Apk"/>
                                 <exclude reference="Xzm-kD-2Uk"/>
@@ -581,8 +586,7 @@
                                 <exclude reference="jBX-QQ-Ztu"/>
                                 <include reference="o3F-jr-S1G"/>
                                 <include reference="wVk-F7-tSE"/>
-                                <exclude reference="1xw-Ep-roQ"/>
-                                <exclude reference="YWp-gW-4Jg"/>
+                                <include reference="ush-Zy-7Hv"/>
                                 <include reference="8r8-Do-ZLe"/>
                                 <exclude reference="LwR-fo-R5O"/>
                                 <exclude reference="RBD-5y-i0X"/>
@@ -591,9 +595,6 @@
                                 <include reference="ecc-LH-Sdc"/>
                                 <exclude reference="gDo-Tx-JbD"/>
                                 <exclude reference="sBN-lv-ehI"/>
-                                <include reference="JUh-Bc-O1L"/>
-                                <exclude reference="gUw-tr-h1P"/>
-                                <exclude reference="pNo-N6-J1i"/>
                             </mask>
                         </variation>
                     </view>
@@ -603,7 +604,6 @@
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="centerXInNextSongScrollView" destination="OHM-41-vw8" id="l7G-3x-rS4"/>
-                        <outlet property="centerXInNowPlayingScrollView" destination="G78-qO-TqR" id="Mh3-z3-uVV"/>
                         <outlet property="elapsedTimeLabel" destination="jp7-Ow-fVH" id="XRO-tm-sfx"/>
                         <outlet property="forwardButton" destination="Xek-mb-ENQ" id="dtw-nc-89v"/>
                         <outlet property="leadingSpaceToSliderConstraint" destination="eNp-wC-9Ew" id="ypq-PR-p1I"/>
@@ -611,8 +611,7 @@
                         <outlet property="nextSongLabel" destination="819-GM-MVw" id="2kV-hL-AR7"/>
                         <outlet property="nextSongScrollView" destination="UXV-Pt-1xE" id="B9h-AU-WyF"/>
                         <outlet property="nowPlayingInfoButton" destination="uyn-go-sp7" id="Vaa-CZ-no2"/>
-                        <outlet property="nowPlayingLabel" destination="LyH-nq-M7f" id="LXm-q4-yK1"/>
-                        <outlet property="nowPlayingScrollView" destination="O5R-7c-38I" id="c46-hM-Mzh"/>
+                        <outlet property="nowPlayingMarqueeLabel" destination="UZm-bO-c11" id="iie-FJ-bTe"/>
                         <outlet property="playButtonToBottomSpace" destination="pNo-N6-J1i" id="S6E-Is-hED"/>
                         <outlet property="playPauseButton" destination="U4I-PN-hea" id="IKd-YN-7LN"/>
                         <outlet property="progressSlider" destination="vBs-Pg-YLN" id="r3f-gC-8qq"/>
@@ -621,7 +620,7 @@
                         <outlet property="rewindButton" destination="EYp-S6-Fep" id="Evi-ip-XTu"/>
                         <outlet property="shuffleButton" destination="YF1-6P-sPE" id="81D-xE-uol"/>
                         <outlet property="trailingSpaceFromSliderConstraint" destination="Jld-bM-wPW" id="xGx-fu-Pp4"/>
-                        <outlet property="verticalSpaceNowPlayingScrollViewToElapsedLabel" destination="5bB-px-ETf" id="A5m-EH-kUp"/>
+                        <outlet property="verticalSpaceNowPlayingMarqueeToElapsedLabel" destination="GYP-lG-XXw" id="8XG-AW-9xF"/>
                         <outlet property="volumeView" destination="jQh-tN-5vH" id="Bo8-aw-ABE"/>
                         <segue destination="cAc-tr-olB" kind="presentation" identifier="MagnifyNextSong" modalTransitionStyle="crossDissolve" id="uzR-Fh-xG0"/>
                         <segue destination="cAc-tr-olB" kind="presentation" identifier="MagnifyNowPlaying" modalTransitionStyle="crossDissolve" id="hHs-2t-p2p"/>
@@ -887,7 +886,7 @@
             <objects>
                 <viewController autoresizesArchivedViewToFullSize="NO" title="Info" automaticallyAdjustsScrollViewInsets="NO" modalTransitionStyle="partialCurl" id="0BK-h9-5Yl" customClass="AlbumInfoViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" sectionIndexMinimumDisplayRowCount="3" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="55" sectionHeaderHeight="1" sectionFooterHeight="1" id="Km2-GT-jmW">
-                        <rect key="frame" x="0.0" y="64" width="600" height="457"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="487"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="separatorColor" white="0.80000000000000004" alpha="1" colorSpace="deviceWhite"/>
                         <imageView key="tableFooterView" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="1" verticalHuggingPriority="1" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" id="xgF-dE-gGX">
@@ -1277,7 +1276,7 @@
             <objects>
                 <viewController id="527-b6-fAN" customClass="AlbumViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="grouped" rowHeight="55" sectionHeaderHeight="1" sectionFooterHeight="1" id="oc8-bL-YeY">
-                        <rect key="frame" x="0.0" y="64" width="600" height="506"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -1378,7 +1377,7 @@
             <objects>
                 <viewController id="DLM-JZ-gUa" customClass="GenreViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="grouped" rowHeight="55" sectionHeaderHeight="1" sectionFooterHeight="1" id="dU2-ae-vO5">
-                        <rect key="frame" x="0.0" y="64" width="600" height="506"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -1585,7 +1584,7 @@
             <objects>
                 <viewController id="bxD-3g-ILC" customClass="TaggedSongViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" rowHeight="55" sectionHeaderHeight="1" sectionFooterHeight="1" id="5P1-CA-UpH">
-                        <rect key="frame" x="0.0" y="64" width="600" height="506"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <inset key="scrollIndicatorInsets" minX="1" minY="0.0" maxX="0.0" maxY="0.0"/>

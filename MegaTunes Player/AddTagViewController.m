@@ -94,6 +94,27 @@
 //131203 1.2 iOS 7 end
 
     }
+	if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) { //landscape
+
+		NSLog (@"landscape");
+		self.verticalSpaceTopToTagConstraint.constant += landscapeOffset;
+		self.verticalSpaceTopToColorViewConstraint.constant = self.verticalSpaceTopToTagConstraint.constant + 20;
+		[self.view removeConstraint: centerXColorViewConstraint];
+		self.horizontalSpaceTagToColorViewConstraint.constant = 5;
+		[self.view addConstraint: self.horizontalSpaceTagToColorViewConstraint];
+
+		self.horizontalSpaceTagToSuperviewConstraint.constant = 207;
+
+	}
+	if (self.traitCollection.verticalSizeClass == UIUserInterfaceSizeClassRegular) { //portrait
+
+		self.verticalSpaceTopToTagConstraint.constant = 11;
+		self.verticalSpaceTopToColorViewConstraint.constant = 96;
+		self.horizontalSpaceTagToSuperviewConstraint.constant = 10;
+		[self.view removeConstraint: horizontalSpaceTagToColorViewConstraint];
+		[self.view addConstraint: centerXColorViewConstraint];
+		
+	}
 }
 - (void) viewWillAppear:(BOOL)animated
 {
@@ -103,21 +124,16 @@
     //131216 1.2 iOS 7 end
     //set the navigation bar title
     self.navigationItem.titleView = [self customizeTitleView];
-    
-    [self updateLayoutForNewOrientation];
-    
+
     [super viewWillAppear: animated];
     
     return;
 }
 - (UILabel *) customizeTitleView
 {
-//131205 1.2 iOS 7 begin
-    
-    //    CGRect frame = CGRectMake(0, 0, [self.title sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 48);
+
     CGRect frame = CGRectMake(0, 0, [self.title sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:44]}].width, 48);
     
-//131205 1.2 iOS 7 end
     UILabel *label = [[UILabel alloc] initWithFrame:frame];
     label.backgroundColor = [UIColor clearColor];
     label.textAlignment = NSTextAlignmentCenter;
@@ -136,48 +152,51 @@
     
 }
 - (void) updateLayoutForNewOrientation {
-    //    LogMethod();
-	if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) { //portrait
-        //        NSLog (@"portrait");
-        
-        self.verticalSpaceTopToTagConstraint.constant = 11;
-        self.verticalSpaceTopToColorViewConstraint.constant = 96;
-        //        [self.view removeConstraint: horizontalSpaceSuperviewToColorViewConstraint];
-        //        [self.view removeConstraint: horizontalSpaceColorViewToSuperviewConstraint];
-        self.horizontalSpaceTagToSuperviewConstraint.constant = 10;
-        [self.view removeConstraint: horizontalSpaceTagToColorViewConstraint];
-        [self.view addConstraint: centerXColorViewConstraint];
-        
-        
-        //        [self.cPicker setCenter:self.colorView.center];
-        
-        
-        
-    } else {
-        //        NSLog (@"landscape");
-        self.verticalSpaceTopToTagConstraint.constant += landscapeOffset;
-        self.verticalSpaceTopToColorViewConstraint.constant = self.verticalSpaceTopToTagConstraint.constant + 20;
-        [self.view removeConstraint: centerXColorViewConstraint];
-        //        self.horizontalSpaceSuperviewToColorViewConstraint.constant = 120;
-        //        [self.view addConstraint: self.horizontalSpaceSuperviewToColorViewConstraint];
-        //        self.horizontalSpaceColorViewToSuperviewConstraint.constant = 5;
-        //        [self.view removeConstraint: horizontalSpaceSuperviewToColorViewConstraint];
-        //        [self.view removeConstraint: horizontalSpaceColorViewToSuperviewConstraint];
-        self.horizontalSpaceTagToColorViewConstraint.constant = 5;
-        [self.view addConstraint: self.horizontalSpaceTagToColorViewConstraint];
-        
-        self.horizontalSpaceTagToSuperviewConstraint.constant = 207;
-        
-        //        [self.cPicker setCenter:self.colorView.center];
-        //        [self.view addSubview:_cPicker];
-    }
+		//    LogMethod();
+	if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) { //landscape
+		NSLog (@"landscape");
+		self.verticalSpaceTopToTagConstraint.constant += landscapeOffset;
+		self.verticalSpaceTopToColorViewConstraint.constant = self.verticalSpaceTopToTagConstraint.constant + 20;
+		[self.view removeConstraint: centerXColorViewConstraint];
+			//        self.horizontalSpaceSuperviewToColorViewConstraint.constant = 120;
+			//        [self.view addConstraint: self.horizontalSpaceSuperviewToColorViewConstraint];
+			//        self.horizontalSpaceColorViewToSuperviewConstraint.constant = 5;
+			//        [self.view removeConstraint: horizontalSpaceSuperviewToColorViewConstraint];
+			//        [self.view removeConstraint: horizontalSpaceColorViewToSuperviewConstraint];
+		self.horizontalSpaceTagToColorViewConstraint.constant = 5;
+		[self.view addConstraint: self.horizontalSpaceTagToColorViewConstraint];
+
+		self.horizontalSpaceTagToSuperviewConstraint.constant = 207;
+
+			//        [self.cPicker setCenter:self.colorView.center];
+			//        [self.view addSubview:_cPicker];
+	}
+	
+	if (self.traitCollection.verticalSizeClass == UIUserInterfaceSizeClassCompact) { //portrait
+        NSLog (@"portrait");
+
+		self.verticalSpaceTopToTagConstraint.constant = 11;
+		self.verticalSpaceTopToColorViewConstraint.constant = 96;
+			//        [self.view removeConstraint: horizontalSpaceSuperviewToColorViewConstraint];
+			//        [self.view removeConstraint: horizontalSpaceColorViewToSuperviewConstraint];
+		self.horizontalSpaceTagToSuperviewConstraint.constant = 10;
+		[self.view removeConstraint: horizontalSpaceTagToColorViewConstraint];
+		[self.view addConstraint: centerXColorViewConstraint];
+
+
+			//        [self.cPicker setCenter:self.colorView.center];
+
+
+
+	}
+
 }
 
 - (void) textFieldDidBeginEditing: (UITextField *) textField {
     //    LogMethod();
     if (!self.hasColor) {
 //131203 1.2 iOS 7 begin
-        
+
         [textField setBackgroundColor:[UIColor blackColor]];
 
 //131203 1.2 iOS 7 end

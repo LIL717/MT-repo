@@ -14,7 +14,7 @@
 #import "TimeMagnifierViewController.h"
 #import "TextMagnifierViewController.h"
 #import "InfoTabBarController.h"
-#import "AutoScrollLabel.h"
+#import "MarqueeLabel.h"
 
 //#define AUDIO_TYPE_PREF_KEY @"audio_technology_preference"
 
@@ -74,8 +74,8 @@
 //@property (strong, nonatomic) IBOutlet AutoScrollLabel *nowPlayingLabel;
 
 // so use the following 2 properties to allow user to manually scroll
-@property (strong, nonatomic) IBOutlet UIScrollView *nowPlayingScrollView;
-@property (strong, nonatomic) IBOutlet UILabel *nowPlayingLabel;
+@property (strong, nonatomic) IBOutlet MarqueeLabel *nowPlayingMarqueeLabel;
+//@property (strong, nonatomic) IBOutlet UILabel *nowPlayingLabel;
 
 @property (strong, nonatomic) IBOutlet UILabel *initialNowPlayingLabel;
 @property (strong, nonatomic) IBOutlet UILabel *elapsedTimeLabel;
@@ -107,8 +107,8 @@
 
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *playButtonToBottomSpace;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *centerXInNextSongScrollView;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *centerXInNowPlayingScrollView;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceNowPlayingScrollViewToElapsedLabel;
+//@property (strong, nonatomic) IBOutlet NSLayoutConstraint *centerXInNowPlayingScrollView;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceNowPlayingMarqueeToElapsedLabel;
 
 - (IBAction)handleScrub:(id)sender;
 - (IBAction)handleScrubberTouchDown:(id)sender;

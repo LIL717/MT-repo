@@ -10,6 +10,7 @@ pod 'FMMoveTableView'
 pod 'iCarousel'
 pod 'TestFlightSDK'
 pod 'MarqueeLabel'
+pod 'SFHFKeychainUtils'
 
 
 end

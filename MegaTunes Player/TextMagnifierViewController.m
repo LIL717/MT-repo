@@ -153,7 +153,7 @@
     LogMethod();
 
     if ([self.textType isEqualToString: @"MagnifyNowPlaying"]) {
-            self.textToMagnify = self.mainViewController.nowPlayingLabel.text;
+            self.textToMagnify = self.mainViewController.nowPlayingMarqueeLabel.text;
     } else {
         self.textToMagnify = self.mainViewController.nextSongLabel.text;
     }

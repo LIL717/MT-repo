@@ -14,6 +14,7 @@
 #import "MediaItemUserData.h"
 #import "UserDataForMediaItem.h"
 #import "Reachability.h"
+#import "SFHFKeychainUtils.h"
 
 @implementation AppDelegate
 
@@ -109,6 +110,13 @@
 
 	[self customizeGlobalTheme];
 
+		//set purchased to yes so that any that were purchased before the free/iap version get the flag set.
+		//can also check itemCollection.lastPlayedDate as a secondary check.  
+	if (![self IAPItemPurchased]) {
+		NSError *error = nil;
+
+		[SFHFKeychainUtils storeUsername:@"IAProduct" andPassword:@"purchased" forServiceName:@"Premium" updateExisting:YES error:&error];
+	}
 	return YES;
 }
 	// // Add to end of "Helpers" section
@@ -132,6 +140,7 @@
 	//
 	//
 	// }
+
 
 - (void)customizeGlobalTheme {
 
@@ -212,12 +221,7 @@
 	 See also applicationDidEnterBackground:.
 	 */
 }
-//- (NSUInteger)application:(UIApplication *)application
-//supportedInterfaceOrientationsForWindow:(UIWindow *)window {
-//
-//  return UIInterfaceOrientationMaskPortraitUpsideDown;
-//
-//}
+
 #pragma mark - Core Data stack
 
 @synthesize managedObjectContext = _managedObjectContext;
@@ -295,6 +299,19 @@
 			NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 			abort();
 		}
+	}
+}
+#pragma mark - In-app purchase Item purchased determination
+
+-(BOOL)IAPItemPurchased {
+
+	NSError *error = nil;
+	NSString *password = [SFHFKeychainUtils getPasswordForUsername:@"IAProduct" andServiceName:@"Premium" error:&error];
+
+	if ([password isEqualToString:@"purchased"]) {
+		return YES;
+	} else {
+		return NO;
 	}
 }
 @end

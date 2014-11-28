@@ -67,7 +67,9 @@ BOOL itemHasTag;
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 //140206 1.2 iOS 7 end
     [self loadDataForView];
-    
+	self.comments.scrollEnabled = NO;
+	self.automaticallyAdjustsScrollViewInsets = NO;
+
     [self setEditingUserInfo: NO];
     // save to NSUserDefaults so that the MainViewController can check before popping out if state changes to stopped
     NSUserDefaults * standardUserDefaults = [NSUserDefaults standardUserDefaults];
@@ -109,8 +111,6 @@ BOOL itemHasTag;
     
     if ([self.userDataForMediaItem.comments length] > 0) {
         self.comments.text = self.userDataForMediaItem.comments;
-        [self.comments setContentOffset:CGPointMake(0, 0) animated:YES];
-
         [self.placeholderLabel setHidden:YES];
     } else {
         self.comments.text = @"";
@@ -120,7 +120,16 @@ BOOL itemHasTag;
     
 
 }
+- (void) viewWillAppear:(BOOL)animated
+{
+		//    LogMethod();
+	[super viewWillAppear: animated];
 
+	self.comments.scrollEnabled = YES;
+	[self.comments setContentOffset:CGPointMake(0, 0) animated:YES];
+
+	return;
+}
 - (void) viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
 		//    LogMethod();
 	[super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
@@ -137,7 +146,6 @@ BOOL itemHasTag;
 	}
     self.verticalSpaceTopToTableViewConstraint.constant = navBarAdjustment;
     self.verticalSpaceTopToCommentsConstraint.constant = 55 + navBarAdjustment;
-//131216 1.2 iOS 7 end
     [self loadDataForView];
     [self.userInfoTagTable reloadData];
 
@@ -168,14 +176,7 @@ BOOL itemHasTag;
         [self.placeholderLabel setHidden:YES];
     }
 }
-//- (BOOL) textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
-//    if([text isEqualToString:@"\n"]){
-//        [textView resignFirstResponder];
-//        return NO;
-//    }else{
-//        return YES;
-//    }
-//}
+
 - (void) textViewDidEndEditing: (UITextView *) textView {
     LogMethod();
 
@@ -232,6 +233,14 @@ BOOL itemHasTag;
         textView.selectedRange = range;
     }
 }
+//- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
+//
+////	NSString *updatedString = [textView.text stringByReplacingCharactersInRange:range withString:text];
+//		//textView.text = updatedString;
+//	[textView replaceRange:textView.selectedTextRange withText:text];
+//	return NO;
+//
+//}
 //140220 1.2 iOS 7 end
 // Called when the UIKeyboardDidShowNotification is sent.
 - (void)keyboardWasShown:(NSNotification*)aNotification
@@ -241,17 +250,14 @@ BOOL itemHasTag;
     NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     
     CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-    //hmmm this is width 162 and height 480 for landscape so the following 2 lines are a hack to swap width for height
-    
-    BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
-    CGFloat kbHeight = isPortrait ? kbSize.height : kbSize.width;
+	CGFloat kbHeight = kbSize.height;
+
 
     //since this view contains a tabBar, which is not visible when the keyboard is present, need to subtract the height of the tabBar from the keyboard height to get the right constraint since original constraint is to top of tabBar
     
     kbHeight -= self.tabBarController.tabBar.frame.size.height;
+    self.verticalSpaceCommentsToBottomConstraint.constant = -kbHeight;
 
-    self.verticalSpaceCommentsToBottomConstraint.constant = kbHeight;
-    
     //pull the field up to the top (over the tagItem field while editing)
     self.verticalSpaceTopToCommentsConstraint.constant -= (self.userInfoTagTable.frame.size.height);
 
@@ -274,13 +280,14 @@ BOOL itemHasTag;
 
     self.verticalSpaceTopToCommentsConstraint.constant += self.userInfoTagTable.frame.size.height;
 
+	[self.comments setContentOffset:CGPointMake(0, 0) animated:YES];
+
     [self.view setNeedsUpdateConstraints];
 
     [UIView animateWithDuration:animationDuration animations:^{
         [self.view layoutIfNeeded];
     }];
-    
-    
+
 }
 #pragma mark - Table view data source
 

@@ -19,6 +19,7 @@
 #import "OBSlider.h"
 #import "AccessibleButton.h"
 #import "TestFlight.h"
+#import "MarqueeLabel.h"	
 
 @interface MainViewController ()
 
@@ -33,7 +34,7 @@
 @synthesize musicPlayer;				// the music player, which plays media items from the iPod library
 
 @synthesize navigationBar;				// the application's Navigation bar
-@synthesize nowPlayingLabel;			// descriptive text shown on the main screen about the now-playing media item
+//@synthesize nowPlayingLabel;			// descriptive text shown on the main screen about the now-playing media item
 @synthesize appSoundPlayer;				// An AVAudioPlayer object for playing application sound
 @synthesize soundFileURL;				// The path to the application sound
 @synthesize interruptedOnPlayback;		// A flag indicating whether or not the application was interrupted during application audio playback
@@ -83,15 +84,7 @@
 @synthesize repeatButton;
 @synthesize shuffleButton;
 
-//@synthesize leadingSpaceToSliderConstraint;
-//@synthesize trailingSpaceFromSliderConstraint;
-//@synthesize verticalSpaceBetweenSliderAndElapsedTime;
-//@synthesize verticalSpaceBetweenSliderAndRemainingTime;
-//@synthesize verticalSpaceBetweenRewindAndReplay;
-////@synthesize topSpaceToPlayButton;
-//@synthesize playButtonToBottomSpace;
-//@synthesize centerXInNextSongScrollView;
-//@synthesize centerXInNowPlayingScrollView;
+
 
 @synthesize nowPlayingInfoButton;
 
@@ -176,10 +169,7 @@ BOOL delayPlaybackStateChange;
     queueIsKnown = YES;
     initialView = YES;
     skippedBack = NO;
-    
-    //    if (self.itemToPlay == [musicPlayer nowPlayingItem]) {
-    //        [self setPlayNew: NO];
-    //    }
+
     if (playNew) {
         [musicPlayer setQueueWithItemCollection: self.userMediaItemCollection];
         [musicPlayer setNowPlayingItem: self.itemToPlay];
@@ -196,13 +186,10 @@ BOOL delayPlaybackStateChange;
         
     } else if ([musicPlayer nowPlayingItem]) {
         
-        // Update the UI to reflect the now-playing item except nowPlayingLabel must be set in viewWillAppear instead of viewDidLoad or it appears from bottom
-        
         MPMediaItem *currentItem = [musicPlayer nowPlayingItem];
         //    NSLog (@" currentItem is %@", [currentItem valueForProperty: MPMediaItemPropertyTitle]);
         //check the queue stored in Core Data to see if the nowPlaying song is in that queue
 
-        //    self.collectionItem = [itemCollection containsItem: [currentItem valueForProperty: MPMediaItemPropertyTitle]];
         self.collectionItem = [self containsItem: [currentItem valueForProperty:  MPMediaItemPropertyPersistentID]];
         
         self.userMediaItemCollection = collectionItem.collection;
@@ -239,11 +226,10 @@ BOOL delayPlaybackStateChange;
         
         
     }
-    
-    //set the temp initialNowPlayingLabel so something is there when view loads, gets removed from view in viewDidAppear when autoScrollLabel is created
-	//this is hidden because AutoScrollLabel is not working so don't need it right now
-//    self.initialNowPlayingLabel.text = [[musicPlayer nowPlayingItem] valueForProperty:  MPMediaItemPropertyTitle];
-		//do this here instead temporarily
+
+	self.nowPlayingMarqueeLabel.marqueeType = MLContinuous;
+	self.nowPlayingMarqueeLabel.continuousMarqueeExtraBuffer = 30.0;
+	[self.nowPlayingMarqueeLabel setFont: [UIFont systemFontOfSize:44]];
 	[self prepareNowPlayingLabel];
     
     NSLog (@"Shuffle Mode is %lu", musicPlayer.shuffleMode);
@@ -292,7 +278,7 @@ BOOL delayPlaybackStateChange;
 
 		self.leadingSpaceToSliderConstraint.constant = 120;
 		self.trailingSpaceFromSliderConstraint.constant = 135;
-		self.verticalSpaceNowPlayingScrollViewToElapsedLabel.constant = 1;
+		self.verticalSpaceNowPlayingMarqueeToElapsedLabel.constant = 1;
 		self.repeatButton.hidden = YES;
 		self.shuffleButton.hidden = YES;
 		self.volumeView.hidden = YES;
@@ -303,7 +289,7 @@ BOOL delayPlaybackStateChange;
 
 		self.leadingSpaceToSliderConstraint.constant = 20;
 		self.trailingSpaceFromSliderConstraint.constant = 20;
-		self.verticalSpaceNowPlayingScrollViewToElapsedLabel.constant = 53;
+		self.verticalSpaceNowPlayingMarqueeToElapsedLabel.constant = 53;
 
 		self.repeatButton.hidden = NO;
 		self.shuffleButton.hidden = NO;
@@ -381,20 +367,11 @@ BOOL delayPlaybackStateChange;
     //    LogMethod();
 	[super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
 
-	NSLog (@"WIDTH is %f, HEIGHT is %f", size.width, size.height);
-		//removed because AutoScrollLabel not working
-//    [self.nowPlayingLabel  refreshLabels];
-//added for ios 8 because AutoScrollLabel not working
-	if (self.nowPlayingLabel.text) {
-		[self scrollNowPlayingLabel];
-	}
-		//end added for iOS 8
-
 	if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) { //landscape
 
         self.leadingSpaceToSliderConstraint.constant = 120;
         self.trailingSpaceFromSliderConstraint.constant = 135;
-		self.verticalSpaceNowPlayingScrollViewToElapsedLabel.constant = 1;
+		self.verticalSpaceNowPlayingMarqueeToElapsedLabel.constant = 1;
         self.repeatButton.hidden = YES;
         self.shuffleButton.hidden = YES;
         self.volumeView.hidden = YES;
@@ -405,7 +382,7 @@ BOOL delayPlaybackStateChange;
 
         self.leadingSpaceToSliderConstraint.constant = 20;
         self.trailingSpaceFromSliderConstraint.constant = 20;
-		self.verticalSpaceNowPlayingScrollViewToElapsedLabel.constant = 53;
+		self.verticalSpaceNowPlayingMarqueeToElapsedLabel.constant = 53;
 
         self.repeatButton.hidden = NO;
         self.shuffleButton.hidden = NO;
@@ -435,14 +412,8 @@ BOOL delayPlaybackStateChange;
 }
 - (UILabel *) customizeTitleView
 {
-    //    LogMethod();
 
-//131205 1.2 iOS 7 begin
-    
-    //    CGRect frame = CGRectMake(0, 0, [self.title sizeWithFont:[UIFont systemFontOfSize:44.0]].width, 48);
     CGRect frame = CGRectMake(0, 0, [self.title sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:44]}].width, 48);
-    
-//131205 1.2 iOS 7 end
 
     UILabel *label = [[UILabel alloc] initWithFrame:frame];
     label.backgroundColor = [UIColor clearColor];
@@ -472,7 +443,7 @@ BOOL delayPlaybackStateChange;
                                                          repeats:YES];
     //omg this needs to be here or it does nothing!!
     //    [self scrollNextSongLabel];
-	[self.nowPlayingScrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];//temp for ios 8
+//	[self.nowPlayingMarqueeLabel scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];//temp for ios 8
     [self.nextSongScrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
     //    if ([musicPlayer playbackState] == MPMusicPlaybackStatePaused) {
     //        [playPauseButton setImage: [UIImage imageNamed:@"bigplay.png"] forState:UIControlStateNormal];
@@ -489,15 +460,7 @@ BOOL delayPlaybackStateChange;
     if (playNew) {
         [self setPlayNew: NO];
         
-        //    } else if ([musicPlayer nowPlayingItem]) {
-        //        [self prepareNowPlayingLabel];
-        //        [self.initialNowPlayingLabel removeFromSuperview];
-        
     }
-		//these 2 line commented out because the manual scrollview can be loaded in viewDidLoad
-//    [self prepareNowPlayingLabel];
-//    [self.initialNowPlayingLabel removeFromSuperview];
-
     [super viewDidAppear:(BOOL)animated];
     
 }
@@ -562,11 +525,7 @@ BOOL delayPlaybackStateChange;
         //        }
         
         [self prepareAllExceptNowPlaying];
-        if (!playNew) {
-            //don't do this here if playNew, it will happen in viewWillAppear
-            [self prepareNowPlayingLabel];
-        }
-        //        [self.initialNowPlayingLabel removeFromSuperview];
+		[self prepareNowPlayingLabel];
         
     }
     
@@ -593,16 +552,7 @@ BOOL delayPlaybackStateChange;
 
     
 }
-- (void) refreshNowPlayingLabel:  (id) notification {
-    //    LogMethod();
-	//the following line temporarily commented out
-//    [self.nowPlayingLabel  refreshLabels];
-//the following line added for manuallyscrolled nowPlayingLabel
-	[self prepareNowPlayingLabel];
 
-
-    //    NSLog (@"nowPlayingLabel refreshed");
-}
 - (void) prepareAllExceptNowPlaying {
     //    LogMethod();
     
@@ -646,68 +596,23 @@ BOOL delayPlaybackStateChange;
     
     // Display the song name for the now-playing media item
     // scroll marquee style if too long for field
-    
-    [self.nowPlayingLabel setText: [[musicPlayer nowPlayingItem] valueForProperty:  MPMediaItemPropertyTitle]];
-    [self.nowPlayingLabel setAccessibilityHint:  NSLocalizedString(@"Tap to magnify", nil)];
-    //    NSLog (@"nowPlayingLabel.text is %@", self.nowPlayingLabel.text);
-    UIFont *newFont = [UIFont systemFontOfSize:44];
-    [self.nowPlayingLabel setFont: newFont];
+
+	//need these two lines otherwise 2nd label is elevated = weird
+	self.nowPlayingMarqueeLabel.text = @"";
+	[self.nowPlayingMarqueeLabel restartLabel];
+
+    [self.nowPlayingMarqueeLabel setText: [[musicPlayer nowPlayingItem] valueForProperty:  MPMediaItemPropertyTitle]];
+
 //131001 make player compatible with iTunes Radio begin
 
-    if (!self.nowPlayingLabel.text && musicPlayer.playbackState != MPMusicPlaybackStateStopped) {
-        self.nowPlayingLabel.text = @"  iTunes Radio";
+    if (!self.nowPlayingMarqueeLabel.text && musicPlayer.playbackState != MPMusicPlaybackStateStopped) {
+        self.nowPlayingMarqueeLabel.text = @"  iTunes Radio";
     }
 
 //131001 make player compatible with iTunes Radio end
 
-//this is added to allow user to manually scroll nowPlayingLabel because AutoScrollLabel is not working in iOS 8
-	if (self.nowPlayingLabel.text) {
-		[self scrollNowPlayingLabel];
-	}
-
 }
-	//this method added for manual scrolling temporarily until AutoScrollLabel is fixed
-- (void) scrollNowPlayingLabel {
-		//    LogMethod();
 
-		//calculate the label size to fit the text with the font size
-
-		//131210 1.2 iOS 7 begin
-
-		//    CGSize labelSize = [self.nextSongLabel.text sizeWithFont:self.nextSongLabel.font
-		//                                           constrainedToSize:CGSizeMake(INT16_MAX, CGRectGetHeight(self.nextSongScrollView.bounds))
-		//                                               lineBreakMode:NSLineBreakByClipping];
-
-	NSAttributedString *attributedText =[[NSAttributedString alloc]
-										 initWithString:self.nowPlayingLabel.text
-										attributes:@{NSFontAttributeName: self.nowPlayingLabel.font}];
-
-	CGRect rect = [attributedText boundingRectWithSize:CGSizeMake(INT16_MAX, CGRectGetHeight(self.nowPlayingScrollView.bounds))
-											   options:NSStringDrawingUsesLineFragmentOrigin
-											   context:nil];
-	CGSize labelSize = rect.size;
-
-		//131210 1.2 iOS 7 end
-
-//	[self.nowPlayingScrollView removeConstraint:self.centerXInNowPlayingScrollView];
-//
-//		//Make sure that label is aligned with scrollView
-//	[self.nowPlayingScrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-
-		//disable scroll if the content fits within the scrollView
-	NSLog (@"labelSize.width is %f and self.nowPlayingScrollView.frame.size.width is %f", labelSize.width, self.nowPlayingScrollView.frame.size.width);
-	if (labelSize.width > self.nowPlayingScrollView.frame.size.width) {
-		self.nowPlayingScrollView.scrollEnabled = YES;
-		[self.nowPlayingScrollView removeConstraint:self.centerXInNowPlayingScrollView];
-
-			//Make sure that label is aligned with scrollView
-		[self.nowPlayingScrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-	}
-	else {
-		self.nowPlayingScrollView.scrollEnabled = NO;
-
-	}
-}
 
 - (void) prepareNextSongLabel {
     //    LogMethod();
@@ -1107,7 +1012,7 @@ BOOL delayPlaybackStateChange;
 	{
         TextMagnifierViewController *textMagnifierViewController = [[navigationController viewControllers] objectAtIndex:0];
         textMagnifierViewController.delegate = self;
-        textMagnifierViewController.textToMagnify = self.nowPlayingLabel.text;
+        textMagnifierViewController.textToMagnify = self.nowPlayingMarqueeLabel.text;
         textMagnifierViewController.textType = segue.identifier;
         textMagnifierViewController.mainViewController = self;
         
@@ -1378,11 +1283,6 @@ BOOL delayPlaybackStateChange;
     
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     
-    //    [notificationCenter addObserver: self
-    //                           selector: @selector (iCloudAccountAvailabilityChanged:)
-    //                               name: NSUbiquityIdentityDidChangeNotification
-    //                             object: nil];
-    
 	[notificationCenter addObserver: self
 						   selector: @selector (handle_NowPlayingItemChanged:)
 							   name: MPMusicPlayerControllerNowPlayingItemDidChangeNotification
@@ -1392,11 +1292,6 @@ BOOL delayPlaybackStateChange;
 						   selector: @selector (handle_PlaybackStateChanged:)
 							   name: MPMusicPlayerControllerPlaybackStateDidChangeNotification
 							 object: musicPlayer];
-    
-    [notificationCenter addObserver:self
-                           selector:@selector(refreshNowPlayingLabel:)
-                               name:UIApplicationDidBecomeActiveNotification
-                             object:nil];
 
     [notificationCenter addObserver: self
                            selector: @selector (handle_iPodLibraryChanged:)
@@ -1476,7 +1371,7 @@ BOOL delayPlaybackStateChange;
 //131011 1.1 fix musicPlayer bug begin
     MPMusicPlaybackState playbackState = [musicPlayer playbackState];
     
-    NSLog (@"                                           playbackState = %d", playbackState);
+    NSLog (@"                                           playbackState = %ld", playbackState);
 
     if (!delayPlaybackStateChange) {
         delayPlaybackStateChange = YES;
@@ -1547,7 +1442,7 @@ BOOL delayPlaybackStateChange;
             NSLog (@"turned volume on");
 
         }
-        NSLog (@" Final playbackState = %d", playbackState);
+        NSLog (@" Final playbackState = %ld", playbackState);
 
 //131011 1.1 fix musicPlayer bug end
 
@@ -1821,7 +1716,7 @@ BOOL delayPlaybackStateChange;
     //    LogMethod();
 	// Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-    [self setNowPlayingLabel:nil];
+    [self setNowPlayingMarqueeLabel:nil];
     [self setElapsedTimeLabel:nil];
     [self setProgressSlider:nil];
     [self setRemainingTimeLabel:nil];

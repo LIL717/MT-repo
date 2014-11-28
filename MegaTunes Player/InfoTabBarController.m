@@ -259,10 +259,10 @@
             self.navigationItem.titleView = nil;
             [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects: self.remainingTimeButton, self.elapsedTimeButton, nil] animated: NO];
         } else {
-            [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects: nil] animated: YES];
-            //                    self.title = self.saveTitle;
-            //                    self.navigationItem.titleView = [self customizeTitleView];
-            
+			[self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects: nil] animated: YES];
+			self.title = self.saveTitle;
+			self.navigationItem.titleView = [self customizeTitleView];
+
         }
         //                [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects: nil] animated: YES];
         //        self.title = nil;
