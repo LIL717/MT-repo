@@ -23,6 +23,7 @@
 #import "MediaGroupCarouselViewController.h"
 #import "Reachability.h"
 #import "MTSearchController.h"
+#import "AppDelegate.h"
 
 @interface SongViewController () <UISearchResultsUpdating>
 @property (nonatomic, strong) NSArray * songSections;
@@ -115,7 +116,9 @@ BOOL excludeICloudItems;
 {
     //    LogMethod();
     [super viewDidLoad];
-    
+
+	AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+	self.managedObjectContext = appDelegate.managedObjectContext;
     //as this method starts, the whole collectionArray is available including ICloudItems
     currentDataSourceContainsICloudItems = YES;
     
@@ -1416,12 +1419,18 @@ BOOL excludeICloudItems;
 
 	NSArray * fetchedObjects = [self.managedObjectContext executeFetchRequest:allItems error:&error];
 
+	NSLog(@"fetchedObjects %@", fetchedObjects);
+
 	if (error) {
 		NSLog(@"Error requesting items from Core Data: %@", [error localizedDescription]);
 	}
 	if (fetchedObjects != nil) {
-		for (NSManagedObject * item in fetchedObjects) {
-			[self.managedObjectContext deleteObject:item];
+		NSLog(@"not nil");
+		if ([fetchedObjects count] > 0) {
+			NSLog(@"count > 0");
+			for (NSManagedObject * item in fetchedObjects) {
+				[self.managedObjectContext deleteObject:item];
+			}
 		}
 	} else {
 		NSLog(@"%s: Problem saving: %@", __PRETTY_FUNCTION__, error);

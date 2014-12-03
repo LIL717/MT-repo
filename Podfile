@@ -8,7 +8,7 @@ pod 'Reachability'
 pod 'OBSlider'
 pod 'FMMoveTableView'
 pod 'iCarousel'
-pod 'TestFlightSDK'
+#pod 'TestFlightSDK'  not working add TestFlightSDK to project
 pod 'MarqueeLabel'
 pod 'SFHFKeychainUtils'
 

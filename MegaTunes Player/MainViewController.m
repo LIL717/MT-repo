@@ -18,8 +18,7 @@
 #import "UserInfoViewcontroller.h"
 #import "OBSlider.h"
 #import "AccessibleButton.h"
-#import "TestFlight.h"
-#import "MarqueeLabel.h"	
+#import "MarqueeLabel.h"
 
 @interface MainViewController ()
 
@@ -170,6 +169,11 @@ BOOL delayPlaybackStateChange;
     initialView = YES;
     skippedBack = NO;
 
+	self.nowPlayingMarqueeLabel.marqueeType = MLContinuous;
+	self.nowPlayingMarqueeLabel.continuousMarqueeExtraBuffer = 30.0;
+	[self.nowPlayingMarqueeLabel setFont: [UIFont systemFontOfSize:44]];
+	[self prepareNowPlayingLabel];
+
     if (playNew) {
         [musicPlayer setQueueWithItemCollection: self.userMediaItemCollection];
         [musicPlayer setNowPlayingItem: self.itemToPlay];
@@ -227,11 +231,11 @@ BOOL delayPlaybackStateChange;
         
     }
 
-	self.nowPlayingMarqueeLabel.marqueeType = MLContinuous;
-	self.nowPlayingMarqueeLabel.continuousMarqueeExtraBuffer = 30.0;
-	[self.nowPlayingMarqueeLabel setFont: [UIFont systemFontOfSize:44]];
-	[self prepareNowPlayingLabel];
-    
+//	self.nowPlayingMarqueeLabel.marqueeType = MLContinuous;
+//	self.nowPlayingMarqueeLabel.continuousMarqueeExtraBuffer = 30.0;
+//	[self.nowPlayingMarqueeLabel setFont: [UIFont systemFontOfSize:44]];
+//	[self prepareNowPlayingLabel];
+
     NSLog (@"Shuffle Mode is %lu", musicPlayer.shuffleMode);
     
     if (musicPlayer.shuffleMode == MPMusicShuffleModeSongs) {
@@ -460,7 +464,10 @@ BOOL delayPlaybackStateChange;
     if (playNew) {
         [self setPlayNew: NO];
         
-    }
+	} else {
+			//need this here or 2nd scroll label is elevated until it fills screen :(
+		[self prepareNowPlayingLabel];
+	}
     [super viewDidAppear:(BOOL)animated];
     
 }
