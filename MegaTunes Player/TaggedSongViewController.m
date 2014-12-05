@@ -506,7 +506,13 @@ BOOL excludeICloudItems;
         
         self.cellScrolled = NO;
     }
-    [self updateLayoutForNewOrientation];
+	if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) { //landscape
+		[self landscapeAdjustments];
+	}
+	if (self.traitCollection.verticalSizeClass == UIUserInterfaceSizeClassRegular) { //portrait
+		[self portraitAdjustments];
+	}
+	[self updateLayoutForNewOrientation];
     
     [super viewWillAppear: animated];
     
@@ -559,37 +565,40 @@ BOOL excludeICloudItems;
 - (void) viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
 		//    LogMethod();
 	[super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+	if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) { //landscape
+		[self landscapeAdjustments];
+	}
+	if (self.traitCollection.verticalSizeClass == UIUserInterfaceSizeClassCompact) { //portrait
+		[self portraitAdjustments];
+	}
 
 	[self updateLayoutForNewOrientation];
 
 }
+- (void) landscapeAdjustments {
+	[self.tempPlayButton setContentEdgeInsets: UIEdgeInsetsMake(5.0, 0.0, -5.0, 0.0)];
+	self.playBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.tempPlayButton];
+
+	[self.tempColorButton setContentEdgeInsets: UIEdgeInsetsMake(6.0, 0.0, -6.0, 0.0)];
+	self.colorTagBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.tempColorButton];
+
+	[self.tempNoColorButton setContentEdgeInsets: UIEdgeInsetsMake(6.0, 0.0, -6.0, 0.0)];
+	self.noColorTagBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.tempNoColorButton];
+}
+- (void) portraitAdjustments {
+
+	[self.tempPlayButton setContentEdgeInsets: UIEdgeInsetsMake(-1.0, 0.0, 1.0, 0.0)];
+	self.playBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.tempPlayButton];
+
+	[self.tempColorButton setContentEdgeInsets: UIEdgeInsetsMake(-1.0, 0.0, 1.0, 0.0)];
+	self.colorTagBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.tempColorButton];
+
+	[self.tempNoColorButton setContentEdgeInsets: UIEdgeInsetsMake(-1.0, 0.0, 1.0, 0.0)];
+	self.noColorTagBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.tempNoColorButton];
+}
 - (void) updateLayoutForNewOrientation {
 		//    LogMethod();
-	CGFloat navBarAdjustment = 0;
-
-	if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) { //portrait
-        
-        [self.tempPlayButton setContentEdgeInsets: UIEdgeInsetsMake(-1.0, 0.0, 1.0, 0.0)];
-        self.playBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.tempPlayButton];
-        
-        [self.tempColorButton setContentEdgeInsets: UIEdgeInsetsMake(-1.0, 0.0, 1.0, 0.0)];
-        self.colorTagBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.tempColorButton];
-        
-        [self.tempNoColorButton setContentEdgeInsets: UIEdgeInsetsMake(-1.0, 0.0, 1.0, 0.0)];
-        self.noColorTagBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.tempNoColorButton];
-        
-    } else {
-        
-        [self.tempPlayButton setContentEdgeInsets: UIEdgeInsetsMake(5.0, 0.0, -5.0, 0.0)];
-        self.playBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.tempPlayButton];
-        
-        [self.tempColorButton setContentEdgeInsets: UIEdgeInsetsMake(6.0, 0.0, -6.0, 0.0)];
-        self.colorTagBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.tempColorButton];
-        
-        [self.tempNoColorButton setContentEdgeInsets: UIEdgeInsetsMake(6.0, 0.0, -6.0, 0.0)];
-        self.noColorTagBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.tempNoColorButton];
-        
-    }
+	CGFloat navBarAdjustment = 11;
     
     [self buildRightNavBarArray];
     
@@ -614,7 +623,7 @@ BOOL excludeICloudItems;
     
     // hide the search bar and All Songs cell
     CGFloat tableViewHeaderHeight = self.searchController.searchBar.frame.size.height;
-    CGFloat adjustedHeaderHeight = tableViewHeaderHeight - navBarAdjustment;
+    CGFloat adjustedHeaderHeight = tableViewHeaderHeight + navBarAdjustment;
 //140113 1.2 iOS 7 begin
     //        NSInteger possibleRows = self.collectionTableView.frame.size.height / self.collectionTableView.rowHeight;
     ////        NSLog (@"possibleRows = %d collection count = %d", possibleRows, [self.collection count]);
@@ -898,7 +907,8 @@ BOOL excludeICloudItems;
     
 	SongCell *cell = (SongCell *)[tableView
                                   dequeueReusableCellWithIdentifier:@"SongCell"];
-    
+	cell.preservesSuperviewLayoutMargins = NO;
+	[cell setLayoutMargins:UIEdgeInsetsZero];
 //140116 1.2 iOS 7 begin
     //    //these are necessary to make the grouped cell look like ungrouped (makes the cell wider like ungrouped)
     //    cell.textLabelOffset = 8.0;
@@ -1559,8 +1569,13 @@ BOOL excludeICloudItems;
                 [self createTaggedSongArray];
                 [self prepareArrayDependentData];
                 [self.songTableView reloadData];
-                [self updateLayoutForNewOrientation];
-                
+				if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) { //landscape
+					[self landscapeAdjustments];
+				}
+				if (self.traitCollection.verticalSizeClass == UIUserInterfaceSizeClassRegular) { //portrait
+					[self portraitAdjustments];
+				}
+				[self updateLayoutForNewOrientation];
             }
         } else {
             //if network is unAvailable
@@ -1572,8 +1587,13 @@ BOOL excludeICloudItems;
                 [self createTaggedSongArray];
                 [self prepareArrayDependentData];
                 [self.songTableView reloadData];
-                [self updateLayoutForNewOrientation];
-                
+				if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) { //landscape
+					[self landscapeAdjustments];
+				}
+				if (self.traitCollection.verticalSizeClass == UIUserInterfaceSizeClassRegular) { //portrait
+					[self portraitAdjustments];
+				}
+				[self updateLayoutForNewOrientation];
             }
         }
     }

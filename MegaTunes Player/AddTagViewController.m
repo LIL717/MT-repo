@@ -95,25 +95,10 @@
 
     }
 	if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) { //landscape
-
-		NSLog (@"landscape");
-		self.verticalSpaceTopToTagConstraint.constant += landscapeOffset;
-		self.verticalSpaceTopToColorViewConstraint.constant = self.verticalSpaceTopToTagConstraint.constant + 20;
-		[self.view removeConstraint: centerXColorViewConstraint];
-		self.horizontalSpaceTagToColorViewConstraint.constant = 5;
-		[self.view addConstraint: self.horizontalSpaceTagToColorViewConstraint];
-
-		self.horizontalSpaceTagToSuperviewConstraint.constant = 207;
-
+		[self landscapeAdjustments];
 	}
 	if (self.traitCollection.verticalSizeClass == UIUserInterfaceSizeClassRegular) { //portrait
-
-		self.verticalSpaceTopToTagConstraint.constant = 11;
-		self.verticalSpaceTopToColorViewConstraint.constant = 96;
-		self.horizontalSpaceTagToSuperviewConstraint.constant = 10;
-		[self.view removeConstraint: horizontalSpaceTagToColorViewConstraint];
-		[self.view addConstraint: centerXColorViewConstraint];
-		
+		[self portraitAdjustments];
 	}
 }
 - (void) viewWillAppear:(BOOL)animated
@@ -148,47 +133,34 @@
 		//    LogMethod();
 	[super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
     
-    [self updateLayoutForNewOrientation];
-    
-}
-- (void) updateLayoutForNewOrientation {
-		//    LogMethod();
 	if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) { //landscape
-		NSLog (@"landscape");
-		self.verticalSpaceTopToTagConstraint.constant += landscapeOffset;
-		self.verticalSpaceTopToColorViewConstraint.constant = self.verticalSpaceTopToTagConstraint.constant + 20;
-		[self.view removeConstraint: centerXColorViewConstraint];
-			//        self.horizontalSpaceSuperviewToColorViewConstraint.constant = 120;
-			//        [self.view addConstraint: self.horizontalSpaceSuperviewToColorViewConstraint];
-			//        self.horizontalSpaceColorViewToSuperviewConstraint.constant = 5;
-			//        [self.view removeConstraint: horizontalSpaceSuperviewToColorViewConstraint];
-			//        [self.view removeConstraint: horizontalSpaceColorViewToSuperviewConstraint];
-		self.horizontalSpaceTagToColorViewConstraint.constant = 5;
-		[self.view addConstraint: self.horizontalSpaceTagToColorViewConstraint];
-
-		self.horizontalSpaceTagToSuperviewConstraint.constant = 207;
-
-			//        [self.cPicker setCenter:self.colorView.center];
-			//        [self.view addSubview:_cPicker];
+		[self landscapeAdjustments];
 	}
-	
 	if (self.traitCollection.verticalSizeClass == UIUserInterfaceSizeClassCompact) { //portrait
-        NSLog (@"portrait");
-
-		self.verticalSpaceTopToTagConstraint.constant = 11;
-		self.verticalSpaceTopToColorViewConstraint.constant = 96;
-			//        [self.view removeConstraint: horizontalSpaceSuperviewToColorViewConstraint];
-			//        [self.view removeConstraint: horizontalSpaceColorViewToSuperviewConstraint];
-		self.horizontalSpaceTagToSuperviewConstraint.constant = 10;
-		[self.view removeConstraint: horizontalSpaceTagToColorViewConstraint];
-		[self.view addConstraint: centerXColorViewConstraint];
-
-
-			//        [self.cPicker setCenter:self.colorView.center];
-
-
-
+		[self portraitAdjustments];
 	}
+
+}
+- (void) landscapeAdjustments {
+	NSLog (@"landscape");
+	self.verticalSpaceTopToTagConstraint.constant += landscapeOffset;
+	self.verticalSpaceTopToColorViewConstraint.constant = self.verticalSpaceTopToTagConstraint.constant + 20;
+	[self.view removeConstraint: centerXColorViewConstraint];
+
+	self.horizontalSpaceTagToColorViewConstraint.constant = 5;
+	[self.view addConstraint: self.horizontalSpaceTagToColorViewConstraint];
+
+	self.horizontalSpaceTagToSuperviewConstraint.constant = 207;
+
+}
+- (void) portraitAdjustments {
+
+	self.verticalSpaceTopToTagConstraint.constant = 11;
+	self.verticalSpaceTopToColorViewConstraint.constant = 96;
+
+	self.horizontalSpaceTagToSuperviewConstraint.constant = 10;
+	[self.view removeConstraint: horizontalSpaceTagToColorViewConstraint];
+	[self.view addConstraint: centerXColorViewConstraint];
 
 }
 

@@ -139,11 +139,9 @@ BOOL itemHasTag;
 }
 - (void) updateLayoutForNewOrientation {
 		//    LogMethod();
-	CGFloat navBarAdjustment = 0;
 
-	if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) { //landscape
-			navBarAdjustment = 9;
-	}
+	CGFloat navBarAdjustment = 11;
+
     self.verticalSpaceTopToTableViewConstraint.constant = navBarAdjustment;
     self.verticalSpaceTopToCommentsConstraint.constant = 55 + navBarAdjustment;
     [self loadDataForView];
@@ -308,7 +306,8 @@ BOOL itemHasTag;
     //    LogMethod();
     
 	UserTagCell *cell = (UserTagCell *)[tableView dequeueReusableCellWithIdentifier:@"UserTagCell"];
-    
+	cell.preservesSuperviewLayoutMargins = NO;
+	[cell setLayoutMargins:UIEdgeInsetsZero];
     [cell.tagLabel removeFromSuperview];
     
     cell.tagLabel = [[KSLabel alloc] initWithFrame:CGRectMake(8, 0, cell.frame.size.width - 8, 55)];

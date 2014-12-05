@@ -197,8 +197,13 @@
     //    self.navigationItem.titleView = [self customizeTitleView];
     
     
-    [self updateLayoutForNewOrientation];
-    
+	if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) { //landscape
+		[self landscapeAdjustments];
+	}
+	if (self.traitCollection.verticalSizeClass == UIUserInterfaceSizeClassRegular) { //portrait
+		[self portraitAdjustments];
+	}
+	[self updateLayoutForNewOrientation];
     
     //    NSLog (@"self.navigationItem.titleview is %@", self.navigationItem.titleView);
     //
@@ -293,35 +298,35 @@
 		//    LogMethod();
 	[super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
 
+	if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) { //landscape
+		[self landscapeAdjustments];
+	}
+	if (self.traitCollection.verticalSizeClass == UIUserInterfaceSizeClassCompact) { //portrait
+		[self portraitAdjustments];
+	}
+
 	[self updateLayoutForNewOrientation];
 
 }
+- (void) landscapeAdjustments {
+	[self.tempPlayButton setContentEdgeInsets: UIEdgeInsetsMake(5.0, 0.0, -5.0, 0.0)];
+	self.playBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.tempPlayButton];
+
+	self.albumInfoViewController.lastPlayedDateTitle = @"Last Played:";
+	self.albumInfoViewController.userGroupingTitle = @"iTunes Grouping:";
+}
+- (void) portraitAdjustments {
+
+	[self.tempPlayButton setContentEdgeInsets: UIEdgeInsetsMake(-1.0, 0.0, 1.0, 0.0)];
+	self.playBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.tempPlayButton];
+
+	self.albumInfoViewController.lastPlayedDateTitle = @"Played:";
+	self.albumInfoViewController.userGroupingTitle = @"Grouping:";
+}
 - (void) updateLayoutForNewOrientation {
 		//    LogMethod();
-	CGFloat navBarAdjustment = 0;
-//	CGFloat navBarAdjustment = isPortrait ? 0 : 9;
+	CGFloat navBarAdjustment = 11;
 
-
-	if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) { //portrait
-
-        //        NSLog (@"portrait");
-        
-        [self.tempPlayButton setContentEdgeInsets: UIEdgeInsetsMake(-1.0, 0.0, 1.0, 0.0)];
-        self.playBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.tempPlayButton];
-        
-        self.albumInfoViewController.lastPlayedDateTitle = @"Played:";
-        self.albumInfoViewController.userGroupingTitle = @"Grouping:";
-
-    } else {
-        //        NSLog (@"landscape");
-        
-        [self.tempPlayButton setContentEdgeInsets: UIEdgeInsetsMake(5.0, 0.0, -5.0, 0.0)];
-        self.playBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.tempPlayButton];
-        
-        self.albumInfoViewController.lastPlayedDateTitle = @"Last Played:";
-        self.albumInfoViewController.userGroupingTitle = @"iTunes Grouping:";
-
-    }
     [self.albumInfoViewController.infoTableView setContentOffset:CGPointMake(0, navBarAdjustment)];
     [self.albumInfoViewController.infoTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
     [self.albumInfoViewController loadTableData];

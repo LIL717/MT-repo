@@ -42,14 +42,10 @@
 		7060524C14F88D44001A1CDB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7060522D14F88D43001A1CDB /* Foundation.framework */; };
 		7060525414F88D44001A1CDB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7060525214F88D44001A1CDB /* InfoPlist.strings */; };
 		7060525714F88D44001A1CDB /* MegaTunes_PlayerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7060525614F88D44001A1CDB /* MegaTunes_PlayerTests.m */; };
-		70631BE81A2C3C4A00E0878F /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 70631BE21A2C3C4A00E0878F /* libTestFlight.a */; };
-		70631BE91A2C3C4A00E0878F /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 70631BE31A2C3C4A00E0878F /* README.md */; };
-		70631BEA1A2C3C4A00E0878F /* release_notes.md in Sources */ = {isa = PBXBuildFile; fileRef = 70631BE41A2C3C4A00E0878F /* release_notes.md */; };
 		7068279919D47F8900441F5B /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70515C411611208B00D96335 /* AVFoundation.framework */; };
 		707797F816EFF4A90026FD56 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 707797F716EFF4A90026FD56 /* libz.dylib */; };
 		707862A51626385700871260 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 707862A41626385700871260 /* CoreData.framework */; };
 		707862A81626391600871260 /* MegaTunes Player.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 707862A61626391600871260 /* MegaTunes Player.xcdatamodeld */; };
-		707862B21626631700871260 /* TextMagnifierViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 707862B11626631700871260 /* TextMagnifierViewController.m */; };
 		707862BF162C729300871260 /* TimeMagnifierViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 707862BE162C729300871260 /* TimeMagnifierViewController.m */; };
 		707AC0F217D933BD009B49CA /* AccessibleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 707AC0EF17D933BD009B49CA /* AccessibleButton.m */; };
 		707AC0F317D933BD009B49CA /* AccessibleLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 707AC0F117D933BD009B49CA /* AccessibleLabel.m */; };
@@ -74,6 +70,7 @@
 		70ADDC1F1614178500219873 /* CollectionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 70ADDC1E1614178500219873 /* CollectionItem.m */; };
 		70BAC6251700C9A100C39980 /* AlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BAC6241700C9A000C39980 /* AlbumViewController.m */; };
 		70BAC6281701434100C39980 /* AllSongsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BAC6271701434100C39980 /* AllSongsCell.m */; };
+		70C7933B1A2EDC3900C2D562 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 70C793371A2EDC3900C2D562 /* libTestFlight.a */; };
 		70CF0BD1176A6561007AB6CF /* AddTagViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70CF0BD0176A655F007AB6CF /* AddTagViewController.m */; };
 		70E8E8091759CDA10012CE74 /* MediaGroupCarouselViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70E8E8081759CD9F0012CE74 /* MediaGroupCarouselViewController.m */; };
 		B05745DFE25D67C4548237C4 /* libPods-MegaTunes.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 75CD719C5A6608FB9591868F /* libPods-MegaTunes.a */; };
@@ -167,12 +164,6 @@
 		7060525314F88D44001A1CDB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		7060525514F88D44001A1CDB /* MegaTunes_PlayerTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MegaTunes_PlayerTests.h; sourceTree = "<group>"; };
 		7060525614F88D44001A1CDB /* MegaTunes_PlayerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MegaTunes_PlayerTests.m; sourceTree = "<group>"; };
-		70631BE21A2C3C4A00E0878F /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
-		70631BE31A2C3C4A00E0878F /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		70631BE41A2C3C4A00E0878F /* release_notes.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = release_notes.md; sourceTree = "<group>"; };
-		70631BE51A2C3C4A00E0878F /* TestFlight+AsyncLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+AsyncLogging.h"; sourceTree = "<group>"; };
-		70631BE61A2C3C4A00E0878F /* TestFlight+ManualSessions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+ManualSessions.h"; sourceTree = "<group>"; };
-		70631BE71A2C3C4A00E0878F /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = "<group>"; };
 		707797F716EFF4A90026FD56 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		707862A41626385700871260 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		707862A71626391600871260 /* MegaTunes Player.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "MegaTunes Player.xcdatamodel"; sourceTree = "<group>"; };
@@ -234,6 +225,10 @@
 		70BAC6241700C9A000C39980 /* AlbumViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumViewController.m; sourceTree = "<group>"; };
 		70BAC6261701434000C39980 /* AllSongsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllSongsCell.h; sourceTree = "<group>"; };
 		70BAC6271701434100C39980 /* AllSongsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllSongsCell.m; sourceTree = "<group>"; };
+		70C793371A2EDC3900C2D562 /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
+		70C793381A2EDC3900C2D562 /* TestFlight+AsyncLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+AsyncLogging.h"; sourceTree = "<group>"; };
+		70C793391A2EDC3900C2D562 /* TestFlight+ManualSessions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+ManualSessions.h"; sourceTree = "<group>"; };
+		70C7933A1A2EDC3900C2D562 /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = "<group>"; };
 		70CF0BCF176A655D007AB6CF /* AddTagViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddTagViewController.h; sourceTree = "<group>"; };
 		70CF0BD0176A655F007AB6CF /* AddTagViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddTagViewController.m; sourceTree = "<group>"; };
 		70E8E7B71755D4090012CE74 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/MainStoryboard.strings; sourceTree = "<group>"; };
@@ -281,7 +276,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				70631BE81A2C3C4A00E0878F /* libTestFlight.a in Frameworks */,
+				70C7933B1A2EDC3900C2D562 /* libTestFlight.a in Frameworks */,
 				7068279919D47F8900441F5B /* AVFoundation.framework in Frameworks */,
 				707797F816EFF4A90026FD56 /* libz.dylib in Frameworks */,
 				70A4B70B169602A300C84293 /* QuartzCore.framework in Frameworks */,
@@ -356,7 +351,7 @@
 		7060523114F88D43001A1CDB /* MegaTunes Player */ = {
 			isa = PBXGroup;
 			children = (
-				70631BE11A2C3C4A00E0878F /* TestFlightSDK3 */,
+				70C793361A2EDC3900C2D562 /* TestFlightSDK3 */,
 				70974B251630698200A33B7D /* AppDelegate */,
 				70974B241630698200A33B7D /* Classes */,
 				70ADDC0F1612245F00219873 /* View */,
@@ -397,19 +392,6 @@
 				7060525214F88D44001A1CDB /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		70631BE11A2C3C4A00E0878F /* TestFlightSDK3 */ = {
-			isa = PBXGroup;
-			children = (
-				70631BE21A2C3C4A00E0878F /* libTestFlight.a */,
-				70631BE31A2C3C4A00E0878F /* README.md */,
-				70631BE41A2C3C4A00E0878F /* release_notes.md */,
-				70631BE51A2C3C4A00E0878F /* TestFlight+AsyncLogging.h */,
-				70631BE61A2C3C4A00E0878F /* TestFlight+ManualSessions.h */,
-				70631BE71A2C3C4A00E0878F /* TestFlight.h */,
-			);
-			path = TestFlightSDK3;
 			sourceTree = "<group>";
 		};
 		70974B241630698200A33B7D /* Classes */ = {
@@ -564,6 +546,17 @@
 				707AC0F117D933BD009B49CA /* AccessibleLabel.m */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		70C793361A2EDC3900C2D562 /* TestFlightSDK3 */ = {
+			isa = PBXGroup;
+			children = (
+				70C793371A2EDC3900C2D562 /* libTestFlight.a */,
+				70C793381A2EDC3900C2D562 /* TestFlight+AsyncLogging.h */,
+				70C793391A2EDC3900C2D562 /* TestFlight+ManualSessions.h */,
+				70C7933A1A2EDC3900C2D562 /* TestFlight.h */,
+			);
+			path = TestFlightSDK3;
 			sourceTree = "<group>";
 		};
 		70CF0BD5176C0917007AB6CF /* KSLabel */ = {
@@ -780,15 +773,12 @@
 			files = (
 				7060523814F88D43001A1CDB /* main.m in Sources */,
 				70515C29160F986E00D96335 /* SongCell.m in Sources */,
-				70631BEA1A2C3C4A00E0878F /* release_notes.md in Sources */,
 				70515C2C160FD2DC00D96335 /* SongViewController.m in Sources */,
 				7031F13D1A23BB46009B4E7D /* UIViewController+Rotate.m in Sources */,
 				70515C321610184A00D96335 /* MainViewController.m in Sources */,
 				70515C38161028FE00D96335 /* CollectionItemCell.m in Sources */,
 				70ADDC1F1614178500219873 /* CollectionItem.m in Sources */,
 				707862A81626391600871260 /* MegaTunes Player.xcdatamodeld in Sources */,
-				70631BE91A2C3C4A00E0878F /* README.md in Sources */,
-				707862B21626631700871260 /* TextMagnifierViewController.m in Sources */,
 				707862BF162C729300871260 /* TimeMagnifierViewController.m in Sources */,
 				70A13D861631AD8700244866 /* MediaGroupViewController.m in Sources */,
 				70A13D8E1631B40300244866 /* MediaGroup.m in Sources */,

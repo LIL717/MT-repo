@@ -30,6 +30,9 @@
 @property (nonatomic, strong) NSArray * songSectionTitles;
 @property (nonatomic, strong) MTSearchController *searchController;
 @property (nonatomic, strong) NSArray *searchResults; // Filtered search results
+@property (nonatomic, strong) UIButton *tempPlayButton;
+@property (nonatomic, strong) UIButton *tempColorButton;
+@property (nonatomic, strong) UIButton *tempNoColorButton;
 @end
 
 @implementation SongViewController
@@ -95,11 +98,6 @@ NSString *searchMediaItemProperty;
 CGFloat constraintConstant;
 //UIImage *backgroundImage;
 UIButton *infoButton;
-//140220 1.2 iOS 7 begin
-UIButton *tempPlayButton;
-UIButton *tempColorButton;
-UIButton *tempNoColorButton;
-//140220 1.2 iOS 7 end
 
 BOOL isIndexed;
 BOOL showDuration;
@@ -132,48 +130,40 @@ BOOL excludeICloudItems;
     self.showTagButton = NO;
     self.songTableView.scrollsToTop = YES;
     self.showTags = [[NSUserDefaults standardUserDefaults] boolForKey:@"showTags"];
-    
-    
-//131203 1.2 iOS 7 begin
-    
+
     self.navigationController.navigationBar.topItem.title = @"";
     //set the navigation bar title
     self.navigationItem.titleView = [self customizeTitleView];
 
-    tempPlayButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.tempPlayButton = [UIButton buttonWithType:UIButtonTypeCustom];
     
-    [tempPlayButton addTarget:self action:@selector(viewNowPlaying) forControlEvents:UIControlEventTouchUpInside];
-    [tempPlayButton setImage:[UIImage imageNamed:@"redWhitePlayImage.png"] forState:UIControlStateNormal];
-    [tempPlayButton setShowsTouchWhenHighlighted:NO];
-    [tempPlayButton sizeToFit];
-//140127 1.2 iOS 7 end
-    
+    [self.tempPlayButton addTarget:self action:@selector(viewNowPlaying) forControlEvents:UIControlEventTouchUpInside];
+    [self.tempPlayButton setImage:[UIImage imageNamed:@"redWhitePlayImage.png"] forState:UIControlStateNormal];
+    [self.tempPlayButton setShowsTouchWhenHighlighted:NO];
+    [self.tempPlayButton sizeToFit];
+
     [self.playBarButton setIsAccessibilityElement:YES];
     [self.playBarButton setAccessibilityLabel: NSLocalizedString(@"Now Playing", nil)];
     [self.playBarButton setAccessibilityTraits: UIAccessibilityTraitButton];
     
-//140124 1.2 iOS 7 begin
-    tempColorButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.tempColorButton = [UIButton buttonWithType:UIButtonTypeCustom];
     
-    [tempColorButton addTarget:self action:@selector(showTagColors) forControlEvents:UIControlEventTouchUpInside];
-    [tempColorButton setImage:[UIImage imageNamed:@"colorImage.png"] forState:UIControlStateNormal];
-    [tempColorButton setShowsTouchWhenHighlighted:NO];
-    [tempColorButton sizeToFit];
-//140124 1.2 iOS 7 end
-    
+    [self.tempColorButton addTarget:self action:@selector(showTagColors) forControlEvents:UIControlEventTouchUpInside];
+    [self.tempColorButton setImage:[UIImage imageNamed:@"colorImage.png"] forState:UIControlStateNormal];
+    [self.tempColorButton setShowsTouchWhenHighlighted:NO];
+    [self.tempColorButton sizeToFit];
+
     [self.colorTagBarButton setIsAccessibilityElement:YES];
     [self.colorTagBarButton setAccessibilityLabel: NSLocalizedString(@"Show tag colors", nil)];
     [self.colorTagBarButton setAccessibilityTraits: UIAccessibilityTraitButton];
     
-//140124 1.2 iOS 7 begin
-    tempNoColorButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.tempNoColorButton = [UIButton buttonWithType:UIButtonTypeCustom];
     
-    [tempNoColorButton addTarget:self action:@selector(showTagColors) forControlEvents:UIControlEventTouchUpInside];
-    [tempNoColorButton setImage:[UIImage imageNamed:@"noColorImage.png"] forState:UIControlStateNormal];
-    [tempNoColorButton setShowsTouchWhenHighlighted:NO];
-    [tempNoColorButton sizeToFit];
-//140124 1.2 iOS 7 end
-    
+    [self.tempNoColorButton addTarget:self action:@selector(showTagColors) forControlEvents:UIControlEventTouchUpInside];
+    [self.tempNoColorButton setImage:[UIImage imageNamed:@"noColorImage.png"] forState:UIControlStateNormal];
+    [self.tempNoColorButton setShowsTouchWhenHighlighted:NO];
+    [self.tempNoColorButton sizeToFit];
+
     [self.noColorTagBarButton setIsAccessibilityElement:YES];
     [self.noColorTagBarButton setAccessibilityLabel: NSLocalizedString(@"Hide tag colors", nil)];
     [self.noColorTagBarButton setAccessibilityTraits: UIAccessibilityTraitButton];
@@ -530,7 +520,13 @@ BOOL excludeICloudItems;
         //        [scrolledCellIndexArray removeAllObjects];
         self.cellScrolled = NO;
     }
-    [self updateLayoutForNewOrientation];
+	if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) { //landscape
+		[self landscapeAdjustments];
+	}
+	if (self.traitCollection.verticalSizeClass == UIUserInterfaceSizeClassRegular) { //portrait
+		[self portraitAdjustments];
+	}
+	[self updateLayoutForNewOrientation];
     
     [super viewWillAppear: animated];
     
@@ -584,48 +580,45 @@ BOOL excludeICloudItems;
 - (void) viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
 		//    LogMethod();
 	[super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+	if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) { //landscape
+		[self landscapeAdjustments];
+	}
+	if (self.traitCollection.verticalSizeClass == UIUserInterfaceSizeClassCompact) { //portrait
+		[self portraitAdjustments];
+	}
 
 	[self updateLayoutForNewOrientation];
 
 }
+- (void) landscapeAdjustments {
+	[self.tempPlayButton setContentEdgeInsets: UIEdgeInsetsMake(5.0, 0.0, -5.0, 0.0)];
+	self.playBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.tempPlayButton];
+
+	[self.tempColorButton setContentEdgeInsets: UIEdgeInsetsMake(6.0, 0.0, -6.0, 0.0)];
+	self.colorTagBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.tempColorButton];
+
+	[self.tempNoColorButton setContentEdgeInsets: UIEdgeInsetsMake(6.0, 0.0, -6.0, 0.0)];
+	self.noColorTagBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.tempNoColorButton];
+}
+- (void) portraitAdjustments {
+
+	[self.tempPlayButton setContentEdgeInsets: UIEdgeInsetsMake(-1.0, 0.0, 1.0, 0.0)];
+	self.playBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.tempPlayButton];
+
+	[self.tempColorButton setContentEdgeInsets: UIEdgeInsetsMake(-1.0, 0.0, 1.0, 0.0)];
+	self.colorTagBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.tempColorButton];
+
+	[self.tempNoColorButton setContentEdgeInsets: UIEdgeInsetsMake(-1.0, 0.0, 1.0, 0.0)];
+	self.noColorTagBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.tempNoColorButton];
+}
 - (void) updateLayoutForNewOrientation {
 		//    LogMethod();
-	CGFloat navBarAdjustment = 0;
-//	CGFloat navBarAdjustment = isPortrait ? 0 : 9;
-
-
-	if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) { //portrait
-    
-        [tempPlayButton setContentEdgeInsets: UIEdgeInsetsMake(-1.0, 0.0, 1.0, 0.0)];
-        self.playBarButton = [[UIBarButtonItem alloc] initWithCustomView:tempPlayButton];
-        
-        [tempColorButton setContentEdgeInsets: UIEdgeInsetsMake(-1.0, 0.0, 1.0, 0.0)];
-        self.colorTagBarButton = [[UIBarButtonItem alloc] initWithCustomView:tempColorButton];
-
-        [tempNoColorButton setContentEdgeInsets: UIEdgeInsetsMake(-1.0, 0.0, 1.0, 0.0)];
-        self.noColorTagBarButton = [[UIBarButtonItem alloc] initWithCustomView:tempNoColorButton];
-        
-    } else {
-
-        [tempPlayButton setContentEdgeInsets: UIEdgeInsetsMake(5.0, 0.0, -5.0, 0.0)];
-        self.playBarButton = [[UIBarButtonItem alloc] initWithCustomView:tempPlayButton];
-
-        [tempColorButton setContentEdgeInsets: UIEdgeInsetsMake(6.0, 0.0, -6.0, 0.0)];
-        self.colorTagBarButton = [[UIBarButtonItem alloc] initWithCustomView:tempColorButton];
-        
-        [tempNoColorButton setContentEdgeInsets: UIEdgeInsetsMake(6.0, 0.0, -6.0, 0.0)];
-        self.noColorTagBarButton = [[UIBarButtonItem alloc] initWithCustomView:tempNoColorButton];
-        
-    }
+	CGFloat navBarAdjustment = 11;
     
     [self buildRightNavBarArray];
-    
-//131216 1.2 iOS 7 end
-    
+
     BOOL firstRowVisible = NO;
-    
-    
-    
+
     //visibleRows is always 0 the first time through here for a table, populated after that
     if (firstLoad) {
         firstLoad = NO;
@@ -642,7 +635,7 @@ BOOL excludeICloudItems;
     
     // hide the search bar and All Songs cell
     CGFloat tableViewHeaderHeight = self.searchController.searchBar.frame.size.height;
-    CGFloat adjustedHeaderHeight = tableViewHeaderHeight - navBarAdjustment;
+    CGFloat adjustedHeaderHeight = tableViewHeaderHeight + navBarAdjustment;
 //140113 1.2 iOS 7 begin
     //        NSInteger possibleRows = self.collectionTableView.frame.size.height / self.collectionTableView.rowHeight;
     ////        NSLog (@"possibleRows = %d collection count = %d", possibleRows, [self.collection count]);
@@ -663,19 +656,19 @@ BOOL excludeICloudItems;
     self.cellScrolled = NO;
     
 }
-- (void)updateContentOffset {
-    //this is only necessary when screen will not be filled - this method is executed afterDelay because ContentOffset is probably not correct until after layoutSubviews happens
-    
-    //    NSLog (@"tableView content size is %f %f",self.collectionTableView.contentSize.height, self.collectionTableView.contentSize.width);
-    
-    BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
-    
-    CGFloat largeHeaderAdjustment = isPortrait ? 11 : 23;
-    
-    CGFloat tableViewHeaderHeight = self.shuffleView.frame.size.height;
-    
-    [self.songTableView setContentOffset:CGPointMake(0, tableViewHeaderHeight - largeHeaderAdjustment)];
-}
+//- (void)updateContentOffset {
+//    //this is only necessary when screen will not be filled - this method is executed afterDelay because ContentOffset is probably not correct until after layoutSubviews happens
+//    
+//    //    NSLog (@"tableView content size is %f %f",self.collectionTableView.contentSize.height, self.collectionTableView.contentSize.width);
+//    
+//    BOOL isPortrait = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
+//    
+//    CGFloat largeHeaderAdjustment = isPortrait ? 11 : 23;
+//    
+//    CGFloat tableViewHeaderHeight = self.shuffleView.frame.size.height;
+//    
+//    [self.songTableView setContentOffset:CGPointMake(0, tableViewHeaderHeight - largeHeaderAdjustment)];
+//}
 - (void) viewWillLayoutSubviews {
     //need this to pin portrait view to bounds otherwise if start in landscape, push to next view, rotate to portrait then pop back the original view in portrait - it will be too wide and "scroll" horizontally
     self.songTableView.contentSize = CGSizeMake(self.songTableView.frame.size.width, self.songTableView.contentSize.height);
@@ -805,28 +798,18 @@ BOOL excludeICloudItems;
         return nil;
         
     } else {
-        NSString *sectionTitle = [self tableView:tableView titleForHeaderInSection:section];
-        if (sectionTitle == nil) {
-            return nil;
-        }
-        CGFloat sectionHeaderHeight;
-        CGFloat sectionHeaderWidth;
-        UIColor *sectionHeaderColor;
-        //if there aren't enough for indexing, dispense with the section headers
-        if (isIndexed) {
-            sectionHeaderHeight = 10;
-            sectionHeaderWidth = tableView.bounds.size.width;
-            sectionHeaderColor = [UIColor whiteColor];
-        } else {
-            sectionHeaderHeight = 0;
-            sectionHeaderWidth = 0;
-        }
-        
-        UIView *sectionHeader = [[UIView alloc] initWithFrame:CGRectMake(0, 0, sectionHeaderWidth, sectionHeaderHeight)];
-        [sectionHeader setBackgroundColor:sectionHeaderColor];
-        //    [sectionView addSubview:label];
-        
-        return sectionHeader;
+		NSString *sectionTitle = [self tableView:tableView titleForHeaderInSection:section];
+		if (sectionTitle == nil) {
+			return nil;
+		}
+		CGFloat sectionViewHeight = 10;
+		CGFloat sectionViewWidth = tableView.bounds.size.width;
+		UIColor *sectionHeaderColor = [UIColor whiteColor];
+
+		UIView *sectionView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, sectionViewWidth, sectionViewHeight)];
+		[sectionView setBackgroundColor:sectionHeaderColor];
+
+		return sectionView;
     }
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -893,6 +876,8 @@ BOOL excludeICloudItems;
     
 	SongCell *cell = (SongCell *)[tableView
                                   dequeueReusableCellWithIdentifier:@"SongCell"];
+	cell.preservesSuperviewLayoutMargins = NO;
+	[cell setLayoutMargins:UIEdgeInsetsZero];
 //140116 1.2 iOS 7 begin
 //    //these are necessary to make the grouped cell look like ungrouped (makes the cell wider like ungrouped)
 //    cell.textLabelOffset = 8.0;
@@ -1597,8 +1582,13 @@ BOOL excludeICloudItems;
                 [self createSongArray];
                 [self prepareArrayDependentData];
                 [self.songTableView reloadData];
-                [self updateLayoutForNewOrientation];
-                
+				if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) { //landscape
+					[self landscapeAdjustments];
+				}
+				if (self.traitCollection.verticalSizeClass == UIUserInterfaceSizeClassRegular) { //portrait
+					[self portraitAdjustments];
+				}
+				[self updateLayoutForNewOrientation];
             }
         } else {
             //if network is unAvailable
@@ -1610,8 +1600,13 @@ BOOL excludeICloudItems;
                 [self createSongArray];
                 [self prepareArrayDependentData];
                 [self.songTableView reloadData];
-                [self updateLayoutForNewOrientation];
-                
+				if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) { //landscape
+					[self landscapeAdjustments];
+				}
+				if (self.traitCollection.verticalSizeClass == UIUserInterfaceSizeClassRegular) { //portrait
+					[self portraitAdjustments];
+				}
+				[self updateLayoutForNewOrientation];
             }
         }
     }

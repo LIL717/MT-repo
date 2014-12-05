@@ -23,7 +23,6 @@
 }
 
 @property (strong, nonatomic) IBOutlet FMMoveTableView *userTagTableView;
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *rightBarButton;
 
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, retain)   NSManagedObjectContext *managedObjectContext;

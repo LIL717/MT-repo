@@ -37,10 +37,10 @@
         
         //        self.nameLabel.highlightedTextColor = [UIColor blueColor];
         
-        CGRect frame = CGRectMake(0, 53, self.frame.size.width, 1);
-        UIView *separatorLine = [[UILabel alloc] initWithFrame:frame];
-        separatorLine.backgroundColor = [UIColor whiteColor];
-        [self.backgroundView addSubview: separatorLine];
+//        CGRect frame = CGRectMake(0, 53, self.frame.size.width, 1);
+//        UIView *separatorLine = [[UILabel alloc] initWithFrame:frame];
+//        separatorLine.backgroundColor = [UIColor whiteColor];
+//        [self.backgroundView addSubview: separatorLine];
     } else {
         self.nameLabel.textColor = [UIColor whiteColor];
         self.durationLabel.textColor = [UIColor whiteColor];

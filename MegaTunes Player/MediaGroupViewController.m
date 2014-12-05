@@ -607,6 +607,8 @@ NSString *myAffiliateID;
     
 	MediaGroupCell *cell = (MediaGroupCell *)[tableView
                                               dequeueReusableCellWithIdentifier:@"MediaGroupCell"];
+	cell.preservesSuperviewLayoutMargins = NO;
+	[cell setLayoutMargins:UIEdgeInsetsZero];
     MediaGroup *group = [self.groupingData objectAtIndex:indexPath.row];
     cell.nameLabel.text = NSLocalizedString(group.name, nil);
     DTCustomColoredAccessory *accessory = [DTCustomColoredAccessory accessoryWithColor:cell.nameLabel.textColor];

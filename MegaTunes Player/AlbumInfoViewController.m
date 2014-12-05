@@ -113,8 +113,13 @@ NSString *myAffiliateID;
     
     //    [self registerForMediaPlayerNotifications];
     
-    [self updateLayoutForNewOrientation];
-    
+	if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) { //landscape
+		[self landscapeAdjustments];
+	}
+	if (self.traitCollection.verticalSizeClass == UIUserInterfaceSizeClassRegular) { //portrait
+		[self portraitAdjustments];
+	}
+	[self updateLayoutForNewOrientation];
 }
 - (void) loadTableData {
     //get the specific info from the
@@ -362,6 +367,15 @@ NSString *myAffiliateID;
 //    return label;
 //}
 
+- (void) landscapeAdjustments {
+	self.lastPlayedDateTitle = @"Last Played:";
+	self.userGroupingTitle = @"iTunes Grouping:";
+}
+- (void) portraitAdjustments {
+
+	self.lastPlayedDateTitle = @"Played:";
+	self.userGroupingTitle = @"Grouping:";
+}
 - (void) updateLayoutForNewOrientation{
     
 //140216 1.2 iOS 7 begin
@@ -371,20 +385,7 @@ NSString *myAffiliateID;
     
     [self.infoTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
     [self.infoTableView setContentOffset:CGPointMake(0, navBarAdjustment)];
-    
-    if (isPortrait) {
-//        NSLog (@"portrait");
-        self.lastPlayedDateTitle = @"Played:";
-        self.userGroupingTitle = @"Grouping:";
-        
-        
-    } else {
-//        NSLog (@"landscape");
-//140216 1.2 iOS 7 end
-        self.lastPlayedDateTitle = @"Last Played:";
-        self.userGroupingTitle = @"iTunes Grouping:";
-        
-    }
+
     //    [self.infoTableView reloadData];
 }
 
@@ -407,7 +408,8 @@ NSString *myAffiliateID;
     
     SongInfoCell *cell = (SongInfoCell *)[tableView
                                           dequeueReusableCellWithIdentifier:@"SongInfoCell"];
-    
+	cell.preservesSuperviewLayoutMargins = NO;
+	[cell setLayoutMargins:UIEdgeInsetsZero];
     cell.nameLabel.text = [self.songInfoData objectAtIndex:indexPath.row];
     //    NSLog (@"cell.nameLabel.frame.size.width is %f", CGRectGetWidth(cell.scrollView.bounds));
     

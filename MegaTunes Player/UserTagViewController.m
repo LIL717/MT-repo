@@ -19,6 +19,9 @@
 
 
 @interface UserTagViewController ()
+@property (strong, nonatomic) UIButton *tempAddButton;
+@property (strong, nonatomic) UIBarButtonItem *rightBarButton;
+@property (assign, nonatomic) CGFloat navBarAdjustment;
 
 @end
 
@@ -32,7 +35,6 @@
 //@synthesize iPodLibraryChanged;         //A flag indicating whether the library has been changed due to a sync
 @synthesize userDataForMediaItem;
 @synthesize userTagViewControllerDelegate;
-@synthesize rightBarButton;
 
 NSIndexPath *selectedIndexPath;
 CGFloat constraintConstant;
@@ -60,13 +62,13 @@ NSString *actionType;
     
     [self setupFetchedResultsController];
     
-    NSError *error = nil;
-    NSArray *allFetchedObjects = [self.managedObjectContext executeFetchRequest:[self fetchRequest] error:&error];
-    for (TagData *tagData in allFetchedObjects) {
-        NSLog (@"tagData.tagName is %@", tagData.tagName);
-        NSLog (@"tagData.sortOrder is %d", [tagData.sortOrder intValue]);
-    }
-    
+//    NSError *error = nil;
+//    NSArray *allFetchedObjects = [self.managedObjectContext executeFetchRequest:[self fetchRequest] error:&error];
+//    for (TagData *tagData in allFetchedObjects) {
+//        NSLog (@"tagData.tagName is %@", tagData.tagName);
+//        NSLog (@"tagData.sortOrder is %d", [tagData.sortOrder intValue]);
+//    }
+
     //
     //
     //    //if the tag of the current mediaItem is already in the table, scroll that item to the top on first view
@@ -91,22 +93,23 @@ NSString *actionType;
     //set the navigation bar title
     self.navigationItem.titleView = [self customizeTitleView];
     
-    UIButton *tempAddButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.tempAddButton = [UIButton buttonWithType:UIButtonTypeCustom];
     
-    [tempAddButton addTarget:self action:@selector(addNewTag) forControlEvents:UIControlEventTouchUpInside];
-    [tempAddButton setImage:[UIImage imageNamed:@"addImage.png"] forState:UIControlStateNormal];
-    [tempAddButton setShowsTouchWhenHighlighted:NO];
-    [tempAddButton sizeToFit];
+    [self.tempAddButton addTarget:self action:@selector(addNewTag) forControlEvents:UIControlEventTouchUpInside];
+    [self.tempAddButton setImage:[UIImage imageNamed:@"addImage.png"] forState:UIControlStateNormal];
+    [self.tempAddButton setShowsTouchWhenHighlighted:NO];
+    [self.tempAddButton sizeToFit];
     
-    self.rightBarButton = [[UIBarButtonItem alloc] initWithCustomView:tempAddButton];
-//140127 1.2 iOS 7 end
+//    self.rightBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.tempAddButton];
+////140127 1.2 iOS 7 end
+//
+//    [self.rightBarButton setIsAccessibilityElement:YES];
+//    [self.rightBarButton setAccessibilityLabel: NSLocalizedString(@"Add", nil)];
+//    [self.rightBarButton setAccessibilityTraits: UIAccessibilityTraitButton];
+//    
+//    self.navigationItem.rightBarButtonItem = self.rightBarButton;
 
-    [self.rightBarButton setIsAccessibilityElement:YES];
-    [self.rightBarButton setAccessibilityLabel: NSLocalizedString(@"Add", nil)];
-    [self.rightBarButton setAccessibilityTraits: UIAccessibilityTraitButton];
-    
-    self.navigationItem.rightBarButtonItem = self.rightBarButton;
-    
+
 }
 - (NSFetchRequest *)fetchRequest {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"TagData"];
@@ -139,8 +142,13 @@ NSString *actionType;
     self.edgesForExtendedLayout = UIRectEdgeNone;
 //131216 1.2 iOS 7 end
     
-    [self updateLayoutForNewOrientation];
-    
+	if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) { //landscape
+		[self landscapeAdjustments];
+	}
+	if (self.traitCollection.verticalSizeClass == UIUserInterfaceSizeClassRegular) { //portrait
+		[self portraitAdjustments];
+	}
+	[self updateLayoutForNewOrientation];
     [super viewWillAppear: animated];
     
     return;
@@ -185,32 +193,46 @@ NSString *actionType;
 - (void) viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
 		//    LogMethod();
 	[super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-
+	if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) { //landscape
+		[self landscapeAdjustments];
+	}
+	if (self.traitCollection.verticalSizeClass == UIUserInterfaceSizeClassCompact) { //portrait
+		[self portraitAdjustments];
+	}
 	[self updateLayoutForNewOrientation];
+}
+- (void) landscapeAdjustments {
+	[self.tempAddButton setContentEdgeInsets: UIEdgeInsetsMake(5.0, 0.0, -5.0, 0.0)];
+	self.rightBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.tempAddButton];
 
+	[self.rightBarButton setIsAccessibilityElement:YES];
+	[self.rightBarButton setAccessibilityLabel: NSLocalizedString(@"Add", nil)];
+	[self.rightBarButton setAccessibilityTraits: UIAccessibilityTraitButton];
+
+	self.navigationItem.rightBarButtonItem = self.rightBarButton;
+	self.navBarAdjustment = 30;
+
+}
+- (void) portraitAdjustments {
+
+	[self.tempAddButton setContentEdgeInsets: UIEdgeInsetsMake(-1.0, 0.0, 1.0, 0.0)];
+	self.rightBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.tempAddButton];
+
+	[self.rightBarButton setIsAccessibilityElement:YES];
+	[self.rightBarButton setAccessibilityLabel: NSLocalizedString(@"Add", nil)];
+	[self.rightBarButton setAccessibilityTraits: UIAccessibilityTraitButton];
+
+	self.navigationItem.rightBarButtonItem = self.rightBarButton;
+	self.navBarAdjustment = 30;
 }
 - (void) updateLayoutForNewOrientation {
 		//    LogMethod();
-	CGFloat navBarAdjustment = 0;
-//	CGFloat navBarAdjustment = isPortrait ? 0 : 7;
+//	CGFloat navBarAdjustment = -11;
 
+	[self.userTagTableView setContentOffset:CGPointMake(0, self.navBarAdjustment)];
 
-	if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) { //landscape
-		navBarAdjustment = 7;
-	}
+	[self.userTagTableView reloadData];
 
-    [self.userTagTableView setContentOffset:CGPointMake(0, navBarAdjustment)];
-    [self.userTagTableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-
-    
-//140216 1.2 iOS 7 end
-}
-
-- (void) viewWillLayoutSubviews {
-    //need this to pin portrait view to bounds otherwise if start in landscape, push to next view, rotate to portrait then pop back the original view in portrait - it will be too wide and "scroll" horizontally
-    self.userTagTableView.contentSize = CGSizeMake(self.userTagTableView.frame.size.width, self.userTagTableView.contentSize.height);
-    
-    [super viewWillLayoutSubviews];
 }
 
 #pragma mark - Table view data source
@@ -263,8 +285,9 @@ NSString *actionType;
     //    LogMethod();
     
 	UserTagCell *cell = (UserTagCell *)[tableView dequeueReusableCellWithIdentifier:@"UserTagCell"];
-    
-    
+	cell.preservesSuperviewLayoutMargins = NO;
+	[cell setLayoutMargins:UIEdgeInsetsZero];
+
     /******************************** NOTE ********************************
      * Implement this check in your table view data source to ensure that the moving
      * row's content is being reseted

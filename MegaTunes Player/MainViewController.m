@@ -279,26 +279,10 @@ BOOL delayPlaybackStateChange;
 
 
 	if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) { //landscape
-
-		self.leadingSpaceToSliderConstraint.constant = 120;
-		self.trailingSpaceFromSliderConstraint.constant = 135;
-		self.verticalSpaceNowPlayingMarqueeToElapsedLabel.constant = 1;
-		self.repeatButton.hidden = YES;
-		self.shuffleButton.hidden = YES;
-		self.volumeView.hidden = YES;
-
-
+		[self landscapeAdjustments];
 	}
 	if (self.traitCollection.verticalSizeClass == UIUserInterfaceSizeClassRegular) { //portrait
-
-		self.leadingSpaceToSliderConstraint.constant = 20;
-		self.trailingSpaceFromSliderConstraint.constant = 20;
-		self.verticalSpaceNowPlayingMarqueeToElapsedLabel.constant = 53;
-
-		self.repeatButton.hidden = NO;
-		self.shuffleButton.hidden = NO;
-		self.volumeView.hidden = NO;
-
+		[self portraitAdjustments];
 	}
 
     [self registerForMediaPlayerNotifications];
@@ -367,31 +351,33 @@ BOOL delayPlaybackStateChange;
 		return nil;
 	}
 }
+- (void) landscapeAdjustments {
+	self.leadingSpaceToSliderConstraint.constant = 120;
+	self.trailingSpaceFromSliderConstraint.constant = 135;
+	self.verticalSpaceNowPlayingMarqueeToElapsedLabel.constant = 1;
+	self.repeatButton.hidden = YES;
+	self.shuffleButton.hidden = YES;
+	self.volumeView.hidden = YES;
+}
+- (void) portraitAdjustments {
+	self.leadingSpaceToSliderConstraint.constant = 20;
+	self.trailingSpaceFromSliderConstraint.constant = 20;
+	self.verticalSpaceNowPlayingMarqueeToElapsedLabel.constant = 53;
+
+	self.repeatButton.hidden = NO;
+	self.shuffleButton.hidden = NO;
+	self.volumeView.hidden = NO;
+}
 - (void) viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
     //    LogMethod();
 	[super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
 
 	if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) { //landscape
-
-        self.leadingSpaceToSliderConstraint.constant = 120;
-        self.trailingSpaceFromSliderConstraint.constant = 135;
-		self.verticalSpaceNowPlayingMarqueeToElapsedLabel.constant = 1;
-        self.repeatButton.hidden = YES;
-        self.shuffleButton.hidden = YES;
-        self.volumeView.hidden = YES;
-        
+		[self landscapeAdjustments];
     }
 
 	if (self.traitCollection.verticalSizeClass == UIUserInterfaceSizeClassCompact) { //portrait
-
-        self.leadingSpaceToSliderConstraint.constant = 20;
-        self.trailingSpaceFromSliderConstraint.constant = 20;
-		self.verticalSpaceNowPlayingMarqueeToElapsedLabel.constant = 53;
-
-        self.repeatButton.hidden = NO;
-        self.shuffleButton.hidden = NO;
-        self.volumeView.hidden = NO;
-
+		[self portraitAdjustments];
     }
 //131001 make player compatible with iTunes Radio begin
 

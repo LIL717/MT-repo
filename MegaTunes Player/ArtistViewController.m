@@ -318,6 +318,12 @@ BOOL firstLoad;
         }
         self.cellScrolled = NO;
     }
+	if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) { //landscape
+		[self landscapeAdjustments];
+	}
+	if (self.traitCollection.verticalSizeClass == UIUserInterfaceSizeClassRegular) { //portrait
+		[self portraitAdjustments];
+	}
     [self updateLayoutForNewOrientation];
 
     return;
@@ -343,36 +349,43 @@ BOOL firstLoad;
 - (void) viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
 		//    LogMethod();
 	[super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-
+	if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) { //landscape
+		[self landscapeAdjustments];
+	}
+	if (self.traitCollection.verticalSizeClass == UIUserInterfaceSizeClassCompact) { //portrait
+		[self portraitAdjustments];
+	}
 	[self updateLayoutForNewOrientation];
+
+}
+- (void) landscapeAdjustments {
+	UIButton *tempPlayButton = [UIButton buttonWithType:UIButtonTypeCustom];
+
+	[tempPlayButton addTarget:self action:@selector(viewNowPlaying) forControlEvents:UIControlEventTouchUpInside];
+	[tempPlayButton setImage:[UIImage imageNamed:@"redWhitePlayImage.png"] forState:UIControlStateNormal];
+	[tempPlayButton setShowsTouchWhenHighlighted:NO];
+	[tempPlayButton sizeToFit];
+	[tempPlayButton setContentEdgeInsets: UIEdgeInsetsMake(5.0, 0.0, -5.0, 0.0)];
+
+	self.rightBarButton = [[UIBarButtonItem alloc] initWithCustomView:tempPlayButton];
+}
+- (void) portraitAdjustments {
+
+	UIButton *tempPlayButton = [UIButton buttonWithType:UIButtonTypeCustom];
+
+	[tempPlayButton addTarget:self action:@selector(viewNowPlaying) forControlEvents:UIControlEventTouchUpInside];
+	[tempPlayButton setImage:[UIImage imageNamed:@"redWhitePlayImage.png"] forState:UIControlStateNormal];
+	[tempPlayButton setShowsTouchWhenHighlighted:NO];
+	[tempPlayButton sizeToFit];
+	[tempPlayButton setContentEdgeInsets: UIEdgeInsetsMake(-1.0, 0.0, 1.0, 0.0)];
+
+	self.rightBarButton = [[UIBarButtonItem alloc] initWithCustomView:tempPlayButton];
 
 }
 - (void) updateLayoutForNewOrientation {
 		//    LogMethod();
-	CGFloat navBarAdjustment = 0;
+	CGFloat navBarAdjustment = 11;
 
-	if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) { //portrait
-
-        UIButton *tempPlayButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        
-        [tempPlayButton addTarget:self action:@selector(viewNowPlaying) forControlEvents:UIControlEventTouchUpInside];
-        [tempPlayButton setImage:[UIImage imageNamed:@"redWhitePlayImage.png"] forState:UIControlStateNormal];
-        [tempPlayButton setShowsTouchWhenHighlighted:NO];
-        [tempPlayButton sizeToFit];
-        [tempPlayButton setContentEdgeInsets: UIEdgeInsetsMake(-1.0, 0.0, 1.0, 0.0)];
-        
-        self.rightBarButton = [[UIBarButtonItem alloc] initWithCustomView:tempPlayButton];
-    } else {
-        UIButton *tempPlayButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        
-        [tempPlayButton addTarget:self action:@selector(viewNowPlaying) forControlEvents:UIControlEventTouchUpInside];
-        [tempPlayButton setImage:[UIImage imageNamed:@"redWhitePlayImage.png"] forState:UIControlStateNormal];
-        [tempPlayButton setShowsTouchWhenHighlighted:NO];
-        [tempPlayButton sizeToFit];
-        [tempPlayButton setContentEdgeInsets: UIEdgeInsetsMake(5.0, 0.0, -5.0, 0.0)];
-        
-        self.rightBarButton = [[UIBarButtonItem alloc] initWithCustomView:tempPlayButton];
-    }
     NSString *playingItem = [[musicPlayer nowPlayingItem] valueForProperty: MPMediaItemPropertyTitle];
     
     if (playingItem) {
@@ -406,7 +419,7 @@ BOOL firstLoad;
         
         // hide the search bar and All Albums cell
         CGFloat tableViewHeaderHeight = self.searchController.searchBar.frame.size.height;
-        CGFloat adjustedHeaderHeight = tableViewHeaderHeight - navBarAdjustment;
+        CGFloat adjustedHeaderHeight = tableViewHeaderHeight + navBarAdjustment;
 //140113 1.2 iOS 7 begin
 //        NSInteger possibleRows = self.collectionTableView.frame.size.height / self.collectionTableView.rowHeight;
 ////        NSLog (@"possibleRows = %d collection count = %d", possibleRows, [self.collection count]);
@@ -592,28 +605,18 @@ BOOL firstLoad;
         return nil;
 
     } else {
-        NSString *sectionTitle = [self tableView:tableView titleForHeaderInSection:section];
-        if (sectionTitle == nil) {
-            return nil;
-        }
-        CGFloat sectionViewHeight;
-        CGFloat sectionViewWidth;
-        UIColor *sectionHeaderColor;
-        //if there aren't enough for indexing, dispense with the section headers
-        if (isIndexed) {
-            sectionViewHeight = 10;
-            sectionViewWidth = tableView.bounds.size.width;
-            sectionHeaderColor = [UIColor whiteColor];
-        } else {
-            sectionViewHeight = 0;
-            sectionViewWidth = 0;
-        }
-        
-        UIView *sectionView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, sectionViewWidth, sectionViewHeight)];
-        [sectionView setBackgroundColor:sectionHeaderColor];
-        //    [sectionView addSubview:label];
-        
-        return sectionView;
+		NSString *sectionTitle = [self tableView:tableView titleForHeaderInSection:section];
+		if (sectionTitle == nil) {
+			return nil;
+		}
+		CGFloat sectionViewHeight = 10;
+		CGFloat sectionViewWidth = tableView.bounds.size.width;
+		UIColor *sectionHeaderColor = [UIColor whiteColor];
+
+		UIView *sectionView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, sectionViewWidth, sectionViewHeight)];
+		[sectionView setBackgroundColor:sectionHeaderColor];
+
+		return sectionView;
     }
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -640,7 +643,8 @@ BOOL firstLoad;
     
 	CollectionItemCell *cell = (CollectionItemCell *)[tableView dequeueReusableCellWithIdentifier:@"CollectionItemCell"];
     cell.durationLabel.text = @"";
-
+	cell.preservesSuperviewLayoutMargins = NO;
+	[cell setLayoutMargins:UIEdgeInsetsZero];
     MPMediaQuerySection * sec = self.artistCollectionSections[indexPath.section];
 //    NSLog (@" section is %d", indexPath.section);
 
